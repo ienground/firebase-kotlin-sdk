@@ -6,7 +6,7 @@ import swiftPMImport.zone.ien.firebase.firebase.common.FIRApp
 actual class FirebasePlatformContext
 
 @OptIn(ExperimentalForeignApi::class)
-actual class FirebaseApp private constructor(private val iosApp: FIRApp) {
+actual class FirebaseApp private constructor(val iosApp: FIRApp) {
     actual fun getName(): String = iosApp.name
 
     actual companion object {

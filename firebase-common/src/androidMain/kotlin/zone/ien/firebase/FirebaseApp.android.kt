@@ -7,7 +7,7 @@ import com.google.firebase.FirebaseApp as AndroidFirebaseApp
 
 actual class FirebasePlatformContext(val androidContext: Context)
 
-actual class FirebaseApp(private val androidApp: AndroidFirebaseApp) {
+actual class FirebaseApp(val androidApp: AndroidFirebaseApp) {
     actual fun getName(): String = androidApp.name
 
     actual companion object {

@@ -113,6 +113,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.Storage) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Cloud Functions",
+                        subtitle = "Invoke serverless HTTPS callable trigger function.",
+                        indicatorColor = Color(0xFFFF5722),
+                        onClick = { onNavigate(ScreenRoute.Functions) }
+                    )
+                }
             }
         }
     }
