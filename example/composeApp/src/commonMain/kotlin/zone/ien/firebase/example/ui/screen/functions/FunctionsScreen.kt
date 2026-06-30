@@ -33,6 +33,23 @@ fun FunctionsScreen(onBack: () -> Unit) {
     var logText by remember { mutableStateOf("Ready to call Firebase Cloud Functions.") }
     var simulatedErrorCode by remember { mutableStateOf("permission-denied") }
 
+    val errorCodes = remember { listOf(
+        "unknown",
+        "invalid-argument",
+        "deadline-exceeded",
+        "not-found",
+        "permission-denied",
+        "resource-exhausted",
+        "failed-precondition",
+        "aborted",
+        "out_of_range",
+        "unimplemented",
+        "internal",
+        "unavailable",
+        "data-loss",
+        "unauthenticated",
+    ) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -133,22 +150,7 @@ fun FunctionsScreen(onBack: () -> Unit) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                listOf(
-                    "unknown",
-                    "invalid-argument",
-                    "deadline-exceeded",
-                    "not-found",
-                    "permission-denied",
-                    "resource-exhausted",
-                    "failed-precondition",
-                    "aborted",
-                    "out_of_range",
-                    "unimplemented",
-                    "internal",
-                    "unavailable",
-                    "data-loss",
-                    "unauthenticated",
-                ).forEach { code ->
+                errorCodes.forEach { code ->
                     val isSelected = simulatedErrorCode == code
                     OutlinedButton(
                         onClick = { simulatedErrorCode = code },
