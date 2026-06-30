@@ -50,7 +50,7 @@ kotlin {
 
             implementation(libs.androidx.annotation)
             implementation(libs.errorprone.annotations)
-            api(libs.firebase.annotations)
+            api(project(":firebase-annotations"))
         }
 
         // Configure standard KMP androidMain source directory
