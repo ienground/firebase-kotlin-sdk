@@ -1,7 +1,6 @@
 package zone.ien.firebase.example.ui.screen.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,12 +25,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import zone.ien.firebase.example.ui.navigation.ScreenRoute
+import zone.ien.firebase.abt.FirebaseABTesting
 import zone.ien.firebase.annotations.PreviewApi
+import zone.ien.firebase.example.ui.navigation.ScreenRoute
 
 @PreviewApi
 @Composable
 fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
+    val verifyAbtImport: FirebaseABTesting? = null
     Scaffold(
         topBar = {
             TopAppBar(
