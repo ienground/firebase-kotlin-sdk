@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 35
-- **KMP Enabled**: 0
-- **Android Native Only**: 35
+- **KMP Enabled**: 6
+- **Android Native Only**: 29
 
 ---
 
@@ -26,13 +26,13 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `ai-logic:firebase-ai`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `ai-logic:firebase-ai-ondevice`                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `ai-logic:firebase-ai-ondevice-interop`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-abt`                                        | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-annotations`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-abt`                                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
+| `firebase-annotations`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common annotations.  |
 | `firebase-appdistribution`                            | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-appdistribution-api`                        | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-common`                                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-components`                                 | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-components:firebase-dynamic-module-support` | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-components`                                 | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common components.   |
+| `firebase-components:firebase-dynamic-module-support` | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-config`                                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-config-interop`                             | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-crashlytics`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -42,7 +42,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-dataconnect`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-dataconnect:connectors`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-datatransport`                              | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-functions`                                  | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-functions`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `firebase-messaging`                                  | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-messaging-directboot`                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-inappmessaging`                             | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -52,7 +52,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-ml-modeldownloader`                         | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-perf`                                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-sessions`                                   | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-storage`                                    | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-storage`                                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `protolite-well-known-types`                          | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `encoders:firebase-encoders`                          | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `encoders:firebase-encoders-json`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
