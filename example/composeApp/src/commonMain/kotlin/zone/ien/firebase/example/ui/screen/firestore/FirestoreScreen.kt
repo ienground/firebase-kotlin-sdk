@@ -42,23 +42,23 @@ import zone.ien.firebase.firestore.FirebaseFirestore
 
 @Composable
 fun FirestoreScreen(onBack: () -> Unit) {
-    var firestore: FirebaseFirestore? by remember { mutableStateOf(null) }
-    var initError by remember { mutableStateOf<String?>(null) }
+    val firestore = remember {
+        if (FirebaseApp.isInitialized) {
+            runCatching { FirebaseFirestore.getInstance() }.getOrNull()
+        } else {
+            null
+        }
+    }
+    val initError = remember {
+        if (!FirebaseApp.isInitialized) {
+            "Firebase Core must be initialized first. Go to 'Firebase Init' screen."
+        } else {
+            runCatching { FirebaseFirestore.getInstance() }.exceptionOrNull()?.message
+        }
+    }
     var counter by remember { mutableStateOf(0L) }
     var inputText by remember { mutableStateOf("") }
     var singleReadText by remember { mutableStateOf("Not read yet") }
-
-    remember {
-        try {
-            if (FirebaseApp.isInitialized) {
-                firestore = FirebaseFirestore.getInstance()
-            } else {
-                initError = "Firebase Core must be initialized first. Go to 'Firebase Init' screen."
-            }
-        } catch (e: Exception) {
-            initError = e.message ?: "Firebase not configured on local platform yet."
-        }
-    }
 
     val scope = rememberCoroutineScope()
 
