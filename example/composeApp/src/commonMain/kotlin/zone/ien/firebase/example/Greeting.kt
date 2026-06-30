@@ -1,4 +1,4 @@
-package zone.ien.utils.example
+package zone.ien.firebase.example
 
 class Greeting {
     private val platform = getPlatform()

@@ -1,4 +1,4 @@
-package zone.ien.utils.example
+package zone.ien.firebase.example
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

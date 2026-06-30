@@ -1,4 +1,4 @@
-package zone.ien.utils.example
+package zone.ien.firebase.example
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
