@@ -44,6 +44,7 @@ kotlin {
             implementation(project(":firebase-common"))
             implementation(project(":firebase-firestore"))
             implementation(project(":firebase-annotations"))
+            implementation(project(":firebase-abt"))
 
             implementation(libs.bundles.ienlab.cmp)
         }

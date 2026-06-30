@@ -13,7 +13,7 @@ kotlin {
     jvmToolchain(17)
 
     androidLibrary {
-        namespace = "zone.ien.firebase.components"
+        namespace = "zone.ien.firebase.annotations"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -34,32 +34,18 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "FirebaseComponents"
+            baseName = "FirebaseAnnotations"
             isStatic = true
         }
     }
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.kotlinx.coroutines.core)
+            // Annotations module has no external dependencies
         }
 
-        androidMain.dependencies {
-            implementation(project.dependencies.platform(libs.firebase.android.bom))
-            api(libs.firebase.android.components)
-
-            implementation(libs.androidx.annotation)
-            implementation(libs.errorprone.annotations)
-            api(project(":firebase-annotations"))
-        }
-
-        // Configure standard KMP androidMain source directory
         val androidMain by getting {
             kotlin.setSrcDirs(listOf("src/androidMain/kotlin"))
-        }
-
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
         }
     }
 }
@@ -67,11 +53,11 @@ kotlin {
 mavenPublishing {
     publishToMavenCentral()
     signAllPublications()
-    coordinates(group.toString(), "firebase-components", version.toString())
+    coordinates(group.toString(), "firebase-annotations", version.toString())
 
     pom {
-        name = "Firebase Components KMP"
-        description = "Kotlin Multiplatform Firebase Components DI Wrapper"
+        name = "Firebase Annotations KMP"
+        description = "Kotlin Multiplatform Firebase Marker Annotations SDK"
         inceptionYear = "2026"
         url = "https://github.com/ienground/firebase-kotlin-sdk"
         licenses {
