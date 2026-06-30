@@ -127,3 +127,11 @@ Stop and call out the issue instead of guessing if:
     - existing tests only when small and directly relevant
 - If build verification is needed, propose the command to the user instead of running it automatically.
 - Do not trigger long Gradle tasks just to “be safe”.
+
+## Migration status update rule
+- After every completed KMP migration task, update `KMP_MIGRATION_STATUS.md`.
+- Treat `KMP_MIGRATION_STATUS.md` as the migration progress tracker for this repository.
+- Record what module was migrated, what was changed, what remains, and any important caveats or follow-up work.
+- If the migration result is partial, clearly mark the incomplete areas.
+- If sample app or test integration was updated, include that too.
+- Do not skip this step after finishing a migration-related code change.
