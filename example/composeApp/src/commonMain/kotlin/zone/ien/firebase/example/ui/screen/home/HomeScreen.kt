@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import zone.ien.firebase.abt.FirebaseABTesting
 import zone.ien.firebase.annotations.PreviewApi
 import zone.ien.firebase.example.ui.navigation.ScreenRoute
+import zone.ien.firebase.storage.FirebaseStorage
 
 @PreviewApi
 @Composable
@@ -102,6 +103,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         subtitle = "Placeholder feature.",
                         indicatorColor = Color(0xFF80CBC4),
                         onClick = { onNavigate(ScreenRoute.MessagingPlaceholder) }
+                    )
+                }
+                item {
+                    DemoCard(
+                        title = "Cloud Storage",
+                        subtitle = "Upload, download, delete and retrieve URLs.",
+                        indicatorColor = Color(0xFF00B0FF),
+                        onClick = { onNavigate(ScreenRoute.Storage) }
                     )
                 }
             }
