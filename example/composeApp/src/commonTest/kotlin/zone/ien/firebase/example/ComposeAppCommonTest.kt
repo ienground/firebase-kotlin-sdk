@@ -1,4 +1,4 @@
-package zone.ien.utils.example
+package zone.ien.firebase.example
 
 import kotlin.test.Test
 import kotlin.test.assertEquals

@@ -1,4 +1,4 @@
-package zone.ien.utils.example
+package zone.ien.firebase.example
 
 import androidx.compose.ui.window.ComposeUIViewController
 
