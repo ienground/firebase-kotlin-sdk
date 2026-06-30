@@ -45,15 +45,17 @@ kotlin {
         }
 
         androidMain.dependencies {
+            implementation(project.dependencies.platform(libs.firebase.android.bom))
+            implementation(libs.firebase.android.components)
+
             implementation(libs.androidx.annotation)
             implementation(libs.errorprone.annotations)
             api(libs.firebase.annotations)
         }
 
-        // Redirect androidMain to the existing Android SDK layout
+        // Configure standard KMP androidMain source directory
         val androidMain by getting {
-            kotlin.setSrcDirs(listOf("src/main/java", "src/androidMain/kotlin"))
-            resources.setSrcDirs(listOf("src/main/res"))
+            kotlin.setSrcDirs(listOf("src/androidMain/kotlin"))
         }
 
         commonTest.dependencies {
@@ -69,7 +71,7 @@ mavenPublishing {
 
     pom {
         name = "Firebase Components KMP"
-        description = "Kotlin Multiplatform Firebase Components DI SDK"
+        description = "Kotlin Multiplatform Firebase Components DI Wrapper"
         inceptionYear = "2026"
         url = "https://github.com/ienground/firebase-kotlin-sdk"
         licenses {
