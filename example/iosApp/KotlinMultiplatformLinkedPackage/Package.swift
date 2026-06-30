@@ -13,12 +13,14 @@ let package = Package(
     )
   ],
   dependencies: [
+    .package(path: "subpackages/_firebase_firestore"),
     .package(path: "subpackages/_firebase_common")
   ],
   targets: [
     .target(
       name: "KotlinMultiplatformLinkedPackage",
       dependencies: [
+        .product(name: "_firebase_firestore", package: "_firebase_firestore"),
         .product(name: "_firebase_common", package: "_firebase_common")
       ]
     )
