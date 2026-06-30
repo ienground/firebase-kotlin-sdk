@@ -34,7 +34,6 @@ import zone.ien.firebase.storage.FirebaseStorage
 @Composable
 fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
     val verifyAbtImport: FirebaseABTesting? = null
-    val verifyStorageImport = FirebaseStorage.getInstance().reference.child("images/photo.jpg")
     Scaffold(
         topBar = {
             TopAppBar(
