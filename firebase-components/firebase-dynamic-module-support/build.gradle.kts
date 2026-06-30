@@ -13,7 +13,7 @@ kotlin {
     jvmToolchain(17)
 
     androidLibrary {
-        namespace = "com.google.firebase.dynamicloading"
+        namespace = "zone.ien.firebase.dynamicloading"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -46,7 +46,7 @@ kotlin {
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
-            implementation(libs.firebase.android.dynamic.module.support)
+            api(libs.firebase.android.dynamic.module.support)
         }
 
         val androidMain by getting {
