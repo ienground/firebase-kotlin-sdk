@@ -1,0 +1,67 @@
+package zone.ien.firebase.example.ui.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import kotlinx.serialization.Serializable
+import zone.ien.firebase.FirebasePlatformContext
+import zone.ien.firebase.example.ui.screen.core.FirebaseInitScreen
+import zone.ien.firebase.example.ui.screen.firestore.FirestoreScreen
+import zone.ien.firebase.example.ui.screen.home.HomeScreen
+import zone.ien.firebase.example.ui.screen.placeholder.PlaceholderScreen
+import zone.ien.utils.navigation.BaseNavDisplay
+
+@Serializable
+sealed interface ScreenRoute: NavKey {
+    @Serializable data object Home: ScreenRoute
+    @Serializable data object FirebaseInit: ScreenRoute
+    @Serializable data object Firestore: ScreenRoute
+    @Serializable data object AnalyticsPlaceholder: ScreenRoute
+    @Serializable data object MessagingPlaceholder: ScreenRoute
+}
+
+@Composable
+fun ScreenNavigationGraph(
+    modifier: Modifier = Modifier,
+    context: FirebasePlatformContext,
+    backStack: NavBackStack<ScreenRoute>
+) {
+    BaseNavDisplay(
+        backStack = backStack,
+        modifier = modifier,
+        entryProvider = entryProvider {
+            entry<ScreenRoute.Home> {
+                HomeScreen(
+                    onNavigate = { backStack.add(it) }
+                )
+            }
+            entry<ScreenRoute.FirebaseInit> {
+                FirebaseInitScreen(
+                    context = context,
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.Firestore> {
+                FirestoreScreen(
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.AnalyticsPlaceholder> {
+                PlaceholderScreen(
+                    title = "Firebase Analytics",
+                    description = "Google Analytics for Firebase wrapper is coming soon to KMP SDK.",
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.MessagingPlaceholder> {
+                PlaceholderScreen(
+                    title = "Cloud Messaging",
+                    description = "Firebase Cloud Messaging (FCM) push notification handler wrapper is coming soon to KMP SDK.",
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+        }
+    )
+}

@@ -1,14 +1,15 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.googleServices)
 }
 
 android {
-    namespace = "zone.ien.utils.example"
+    namespace = "zone.ien.firebase.example"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "zone.ien.utils.example"
+        applicationId = "zone.ien.firebase.example"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -35,6 +36,7 @@ android {
 
 dependencies {
     implementation(project(":example:composeApp"))
+    implementation(project(":firebase-common"))
     implementation(libs.activity.compose)
     implementation(libs.compose.preview)
 }
