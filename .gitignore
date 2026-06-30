@@ -16,7 +16,8 @@ xcuserdata
 .kotlin/swift-dependencies/
 .kotlin/swiftpm/
 
-# [확인 필요] SPM Lock 파일(.swiftpm-locks) 버전 관리 여부 결정
-# 여러 환경에서 동일 패키지 버전을 강제하려면 커밋해야 하지만, 
-# 로컬 경로 차이 등으로 충돌이 잦으면 이 주석을 풀고 .gitignore에 추가할 수 있습니다.
-# .swiftpm-locks/
+
+# SPM Lock 파일(.swiftpm-locks) 버전 관리
+# Kotlin 공식 가이드에서는 버전 동기화를 위해 커밋할 것을 권장하나, 
+# 로컬 빌드 경로 차이로 인한 충돌 방지 및 Clean Git History를 위해 무시 설정합니다.
+.swiftpm-locks/
