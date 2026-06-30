@@ -11,3 +11,16 @@ xcuserdata
 .kotlin
 #So we don't accidentally commit our private keys
 *.gpg
+
+# SwiftPM Integration Generated Artifacts
+.kotlin/swift-dependencies/
+.kotlin/swiftpm/
+
+
+# SPM Lock 파일(.swiftpm-locks) 버전 관리
+# Kotlin 공식 가이드에서는 버전 동기화를 위해 커밋할 것을 권장하나, 
+# 로컬 빌드 경로 차이로 인한 충돌 방지 및 Clean Git History를 위해 무시 설정합니다.
+.swiftpm-locks/
+
+example/androidApp/google-services.json
+example/iosApp/iosApp/GoogleService-Info.plist

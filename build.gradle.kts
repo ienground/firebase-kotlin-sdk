@@ -6,4 +6,6 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.vanniktech.mavenPublish) apply false
     alias(libs.plugins.android.lint) apply false
+    alias(libs.plugins.googleServices) apply false
+    alias(libs.plugins.serialization) apply false
 }

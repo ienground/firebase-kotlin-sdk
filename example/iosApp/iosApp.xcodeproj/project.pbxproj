@@ -6,8 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E361954727FD2B111D631FD3 /* KotlinMultiplatformLinkedPackage in Frameworks */ = {isa = PBXBuildFile; productRef = BB47342BBF5D1AFAB0CDA2BB /* KotlinMultiplatformLinkedPackage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
-		3A70B7FFD2EF9475B39878DC /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A70B7FFD2EF9475B39878DC /* FirebaseKMP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirebaseKMP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -41,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E361954727FD2B111D631FD3 /* KotlinMultiplatformLinkedPackage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,7 +55,7 @@
 		9A4064F9F00428CC8A74D355 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3A70B7FFD2EF9475B39878DC /* Example.app */,
+				3A70B7FFD2EF9475B39878DC /* FirebaseKMP.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -85,9 +90,10 @@
 			);
 			name = iosApp;
 			packageProductDependencies = (
+				BB47342BBF5D1AFAB0CDA2BB /* KotlinMultiplatformLinkedPackage */,
 			);
 			productName = iosApp;
-			productReference = 3A70B7FFD2EF9475B39878DC /* Example.app */;
+			productReference = 3A70B7FFD2EF9475B39878DC /* FirebaseKMP.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -114,6 +120,9 @@
 			);
 			mainGroup = E0D5208EC197DC2AAFCBD5F8;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CB8AFB990C6E7C465758C0DB /* XCLocalSwiftPackageReference "KotlinMultiplatformLinkedPackage" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9A4064F9F00428CC8A74D355 /* Products */;
 			projectDirPath = "";
@@ -368,6 +377,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		CB8AFB990C6E7C465758C0DB /* XCLocalSwiftPackageReference "KotlinMultiplatformLinkedPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = KotlinMultiplatformLinkedPackage;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BB47342BBF5D1AFAB0CDA2BB /* KotlinMultiplatformLinkedPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KotlinMultiplatformLinkedPackage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A8E4552D1C27948C03A84D99 /* Project object */;
 }
