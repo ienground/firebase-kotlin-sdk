@@ -27,7 +27,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import zone.ien.firebase.example.ui.navigation.ScreenRoute
+import zone.ien.firebase.annotations.PreviewApi
 
+@PreviewApi
 @Composable
 fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
     Scaffold(
