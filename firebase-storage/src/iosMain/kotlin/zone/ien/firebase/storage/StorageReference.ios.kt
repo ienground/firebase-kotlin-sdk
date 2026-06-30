@@ -1,18 +1,23 @@
 package zone.ien.firebase.storage
 
+import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.usePinned
 import kotlinx.coroutines.suspendCancellableCoroutine
 import platform.Foundation.NSData
 import platform.Foundation.create
+import platform.Foundation.data
 import swiftPMImport.zone.ien.firebase.firebase.storage.FIRStorageReference
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-@OptIn(ExperimentalForeignApi::class)
-fun ByteArray.toNSData(): NSData = usePinned { pinned ->
-    NSData.create(bytes = pinned.addressOf(0), length = this.size.toULong())
+@OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
+fun ByteArray.toNSData(): NSData {
+    if (isEmpty()) return NSData.data()
+    return usePinned { pinned ->
+        NSData.create(bytes = pinned.addressOf(0), length = this.size.toULong())
+    }
 }
 
 @OptIn(ExperimentalForeignApi::class)

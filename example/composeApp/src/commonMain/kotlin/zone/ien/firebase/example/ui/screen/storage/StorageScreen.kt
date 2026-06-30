@@ -58,36 +58,23 @@ fun StorageScreen(onBack: () -> Unit) {
     var pathInput by remember { mutableStateOf("images/sample.jpg") }
     var uploadInput by remember { mutableStateOf("Hello Firebase Storage KMP!") }
     var logText by remember { mutableStateOf("Ready to inspect Firebase Storage.") }
-    
-    // Core Reference Metadata properties
-    var refName by remember { mutableStateOf("-") }
-    var refPath by remember { mutableStateOf("-") }
-    var refBucket by remember { mutableStateOf("-") }
-    var hasParent by remember { mutableStateOf(false) }
 
-    fun updateMetadata(path: String) {
-        if (initError != null) return
-        try {
-            val storage = FirebaseStorage.getInstance()
-            val reference = storage.reference.child(path)
-            refName = reference.name
-            refPath = reference.path
-            refBucket = reference.bucket
-            hasParent = reference.parent != null
-            logText = "Successfully retrieved metadata for reference at path: '$path'"
-        } catch (e: Exception) {
-            logText = "Error during metadata lookup: ${e.message}"
-            refName = "-"
-            refPath = "-"
-            refBucket = "-"
-            hasParent = false
+    // Core Reference Metadata properties derived reactively from pathInput
+    val reference = remember(pathInput, initError) {
+        if (initError == null) {
+            runCatching {
+                val storage = FirebaseStorage.getInstance()
+                storage.reference.child(pathInput)
+            }.getOrNull()
+        } else {
+            null
         }
     }
 
-    // Perform initial metadata lookup on start
-    LaunchedEffect(pathInput) {
-        updateMetadata(pathInput)
-    }
+    val refName = reference?.name ?: "-"
+    val refPath = reference?.path ?: "-"
+    val refBucket = reference?.bucket ?: "-"
+    val hasParent = reference?.parent != null
 
     Scaffold(
         topBar = {
