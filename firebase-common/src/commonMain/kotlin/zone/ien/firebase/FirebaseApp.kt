@@ -1,13 +1,16 @@
 package zone.ien.firebase
 
 /**
- * Common entry point for Firebase SDK, mirroring com.google.firebase.FirebaseApp.
+ * Platform-abstracted context for initializing platform SDKs.
  */
+expect class FirebasePlatformContext
+
 expect class FirebaseApp {
     fun getName(): String
 
     companion object {
-        fun getInstance(): FirebaseApp
-        fun initialize(): FirebaseApp
+        val instance: FirebaseApp
+        val isInitialized: Boolean
+        fun initialize(context: FirebasePlatformContext): FirebaseApp
     }
 }

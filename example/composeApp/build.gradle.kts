@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -16,7 +17,7 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
 
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
     
@@ -35,12 +36,15 @@ kotlin {
             implementation(libs.compose.material3)
             implementation(libs.compose.preview)
             implementation(libs.compose.resources)
-
+            implementation(libs.compose.navigation3)
 
             implementation(libs.lifecycle.viewmodel)
             implementation(libs.lifecycle.runtime)
 
             implementation(project(":firebase-common"))
+            implementation(project(":firebase-firestore"))
+
+            implementation(libs.bundles.ienlab.cmp)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

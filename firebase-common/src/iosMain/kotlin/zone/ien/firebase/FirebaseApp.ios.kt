@@ -1,23 +1,29 @@
 package zone.ien.firebase
 
 import kotlinx.cinterop.ExperimentalForeignApi
-// Kotlin 2.4.0 SPM namespace structure: swiftPMImport.<group>.<project>.<ClangModule>
-// Gradle group: zone.ien.firebase, Project: firebase-common (dash converted to underscore)
 import swiftPMImport.zone.ien.firebase.firebase.common.FIRApp
+
+actual class FirebasePlatformContext
 
 @OptIn(ExperimentalForeignApi::class)
 actual class FirebaseApp private constructor(private val iosApp: FIRApp) {
     actual fun getName(): String = iosApp.name
 
     actual companion object {
-        actual fun getInstance(): FirebaseApp {
-            val app = FIRApp.defaultApp() ?: throw IllegalStateException("Firebase has not been configured yet.")
-            return FirebaseApp(app)
-        }
+        actual val isInitialized: Boolean
+            get() = FIRApp.defaultApp() != null
 
-        actual fun initialize(): FirebaseApp {
-            FIRApp.configure()
-            return getInstance()
+        actual val instance: FirebaseApp
+            get() {
+                val app = FIRApp.defaultApp() ?: throw IllegalStateException("Firebase has not been configured yet.")
+                return FirebaseApp(app)
+            }
+
+        actual fun initialize(context: FirebasePlatformContext): FirebaseApp {
+            if (!isInitialized) {
+                FIRApp.configure()
+            }
+            return instance
         }
     }
 }

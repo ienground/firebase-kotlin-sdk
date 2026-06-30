@@ -5,28 +5,31 @@ android-minSdk = "29"
 android-compileSdk = "36"
 android-targetSdk = "36"
 lib-version-name = "0.0.0"
-firebase-android-bom = "33.1.2"
+firebase-android-bom = "34.15.0"
 firebase-ios-sdk = "11.3.0"
+google-services = "4.5.0"
 
 # plugin
 compose-plugin = "1.11.1"
 compose-material3 = "1.11.0-alpha07"
 
 # ui
-activity-compose = "1.12.2"
-lifecycle = "2.10.0-alpha07"
+activity-compose = "1.13.0"
+lifecycle = "2.10.0"
+compose-navigation3 = "1.1.1"
 
 # backend
 core = "1.17.0"
 ext-junit = "1.3.0"
 
-vanniktechMavenPublish = "0.35.0"
-
+vanniktechMavenPublish = "0.37.0"
+ienlab-cmp = "2.11.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 firebase-android-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-android-bom" }
 firebase-android-common = { module = "com.google.firebase:firebase-common" }
+firebase-android-firestore = { module = "com.google.firebase:firebase-firestore" }
 
 # ui
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
@@ -36,6 +39,22 @@ lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runti
 compose-material3 = { group = "org.jetbrains.compose.material3", name = "material3", version.ref = "compose-material3" }
 compose-preview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "compose-plugin" }
 compose-resources = { group = "org.jetbrains.compose.components", name = "components-resources", version.ref = "compose-plugin" }
+compose-navigation3 = { group = "org.jetbrains.androidx.navigation3", name = "navigation3-ui", version.ref = "compose-navigation3" }
+
+# utils
+cmp-common = { group = "zone.ien.utils", name = "cmp-common", version.ref = "ienlab-cmp" }
+cmp-adaptive = { group = "zone.ien.utils", name = "cmp-adaptive", version.ref = "ienlab-cmp" }
+cmp-navigation = { group = "zone.ien.utils", name = "cmp-navigation", version.ref = "ienlab-cmp" }
+cmp-ui = { group = "zone.ien.utils", name = "cmp-ui", version.ref = "ienlab-cmp" }
+cmp-utils = { group = "zone.ien.utils", name = "cmp-utils", version.ref = "ienlab-cmp" }
+cmp-date = { group = "zone.ien.utils", name = "cmp-date", version.ref = "ienlab-cmp" }
+cmp-firebase = { group = "zone.ien.utils", name = "cmp-firebase", version.ref = "ienlab-cmp" }
+cmp-icon = { group = "zone.ien.utils", name = "cmp-icon", version.ref = "ienlab-cmp" }
+cmp-pref = { group = "zone.ien.utils", name = "cmp-pref", version.ref = "ienlab-cmp" }
+cmp-filekit = { group = "zone.ien.utils", name = "cmp-filekit", version.ref = "ienlab-cmp" }
+
+[bundles]
+ienlab-cmp = ["cmp-common", "cmp-adaptive", "cmp-navigation", "cmp-ui", "cmp-utils",  "cmp-filekit"]
 
 [plugins]
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
@@ -45,3 +64,5 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
 android-lint = { id = "com.android.lint", version.ref = "agp" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
