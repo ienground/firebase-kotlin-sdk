@@ -42,16 +42,16 @@ compose-resources = { group = "org.jetbrains.compose.components", name = "compon
 compose-navigation3 = { group = "org.jetbrains.androidx.navigation3", name = "navigation3-ui", version.ref = "compose-navigation3" }
 
 # utils
-cmp-common = { group = "zone.ien.utils", name = "cmp-common", version.ref = "ienlab-cmp"}
-cmp-adaptive = { group = "zone.ien.utils", name = "cmp-adaptive", version.ref = "ienlab-cmp"}
-cmp-navigation = { group = "zone.ien.utils", name = "cmp-navigation", version.ref = "ienlab-cmp"}
-cmp-ui = { group = "zone.ien.utils", name = "cmp-ui", version.ref = "ienlab-cmp"}
-cmp-utils = { group = "zone.ien.utils", name = "cmp-utils", version.ref = "ienlab-cmp"}
-cmp-date = { group = "zone.ien.utils", name = "cmp-date", version.ref = "ienlab-cmp"}
-cmp-firebase = { group = "zone.ien.utils", name = "cmp-firebase", version.ref = "ienlab-cmp"}
+cmp-common = { group = "zone.ien.utils", name = "cmp-common", version.ref = "ienlab-cmp" }
+cmp-adaptive = { group = "zone.ien.utils", name = "cmp-adaptive", version.ref = "ienlab-cmp" }
+cmp-navigation = { group = "zone.ien.utils", name = "cmp-navigation", version.ref = "ienlab-cmp" }
+cmp-ui = { group = "zone.ien.utils", name = "cmp-ui", version.ref = "ienlab-cmp" }
+cmp-utils = { group = "zone.ien.utils", name = "cmp-utils", version.ref = "ienlab-cmp" }
+cmp-date = { group = "zone.ien.utils", name = "cmp-date", version.ref = "ienlab-cmp" }
+cmp-firebase = { group = "zone.ien.utils", name = "cmp-firebase", version.ref = "ienlab-cmp" }
 cmp-icon = { group = "zone.ien.utils", name = "cmp-icon", version.ref = "ienlab-cmp" }
-cmp-pref = { group = "zone.ien.utils", name = "cmp-pref", version.ref = "ienlab-cmp"}
-cmp-filekit = { group = "zone.ien.utils", name = "cmp-filekit", version.ref = "ienlab-cmp"}
+cmp-pref = { group = "zone.ien.utils", name = "cmp-pref", version.ref = "ienlab-cmp" }
+cmp-filekit = { group = "zone.ien.utils", name = "cmp-filekit", version.ref = "ienlab-cmp" }
 
 [bundles]
 ienlab-cmp = ["cmp-common", "cmp-adaptive", "cmp-navigation", "cmp-ui", "cmp-utils",  "cmp-filekit"]
