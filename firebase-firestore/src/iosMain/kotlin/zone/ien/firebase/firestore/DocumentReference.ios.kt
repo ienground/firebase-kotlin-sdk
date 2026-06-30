@@ -11,8 +11,8 @@ import swiftPMImport.zone.ien.firebase.firebase.firestore.FIRDocumentReference
 
 @OptIn(ExperimentalForeignApi::class)
 actual class DocumentReference(private val iosDocument: FIRDocumentReference) {
-    actual fun getId(): String = iosDocument.documentID()
-    actual fun getPath(): String = iosDocument.path()
+    actual fun getId(): String = iosDocument.documentID
+    actual fun getPath(): String = iosDocument.path
 
     actual suspend fun set(data: Map<String, Any>) = suspendCancellableCoroutine<Unit> { cont ->
         iosDocument.setData(data as Map<Any?, *>) { error ->
