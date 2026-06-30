@@ -11,3 +11,12 @@ xcuserdata
 .kotlin
 #So we don't accidentally commit our private keys
 *.gpg
+
+# SwiftPM Integration Generated Artifacts
+.kotlin/swift-dependencies/
+.kotlin/swiftpm/
+
+# [확인 필요] SPM Lock 파일(.swiftpm-locks) 버전 관리 여부 결정
+# 여러 환경에서 동일 패키지 버전을 강제하려면 커밋해야 하지만, 
+# 로컬 경로 차이 등으로 충돌이 잦으면 이 주석을 풀고 .gitignore에 추가할 수 있습니다.
+# .swiftpm-locks/
