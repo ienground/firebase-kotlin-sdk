@@ -1,0 +1,135 @@
+package zone.ien.firebase.example.ui.home
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import zone.ien.firebase.example.ui.navigation.ScreenRoute
+
+@Composable
+fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp)
+    ) {
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = "Firebase KMP Hub",
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        Text(
+            text = "Compose Multiplatform Demo Framework",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+        )
+        Spacer(modifier = Modifier.height(32.dp))
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            item {
+                DemoCard(
+                    title = "Firebase Init",
+                    subtitle = "Setup and check core configuration status.",
+                    indicatorColor = Color(0xFFF58220),
+                    onClick = { onNavigate(ScreenRoute.FirebaseInit) }
+                )
+            }
+            item {
+                DemoCard(
+                    title = "Firestore DB",
+                    subtitle = "Real-time read/write collection stream.",
+                    indicatorColor = Color(0xFFFFCA28),
+                    onClick = { onNavigate(ScreenRoute.Firestore) }
+                )
+            }
+            item {
+                DemoCard(
+                    title = "Analytics",
+                    subtitle = "Placeholder feature.",
+                    indicatorColor = Color(0xFF039BE5),
+                    onClick = { onNavigate(ScreenRoute.AnalyticsPlaceholder) }
+                )
+            }
+            item {
+                DemoCard(
+                    title = "Messaging",
+                    subtitle = "Placeholder feature.",
+                    indicatorColor = Color(0xFF80CBC4),
+                    onClick = { onNavigate(ScreenRoute.MessagingPlaceholder) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun DemoCard(
+    title: String,
+    subtitle: String,
+    indicatorColor: Color,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(150.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(14.dp)
+                    .clip(RoundedCornerShape(7.dp))
+                    .background(indicatorColor)
+            )
+            Column {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                )
+            }
+        }
+    }
+}
