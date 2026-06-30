@@ -13,7 +13,7 @@ kotlin {
     jvmToolchain(17)
 
     androidLibrary {
-        namespace = "zone.ien.firebase.components"
+        namespace = "zone.ien.firebase.abt"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -34,26 +34,22 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "FirebaseComponents"
+            baseName = "FirebaseAbt"
             isStatic = true
         }
     }
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.kotlinx.coroutines.core)
+            implementation(project(":firebase-common"))
+            implementation(project(":firebase-components"))
         }
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
-            api(libs.firebase.android.components)
-
-            implementation(libs.androidx.annotation)
-            implementation(libs.errorprone.annotations)
-            api(project(":firebase-annotations"))
+            api(libs.firebase.android.abt)
         }
 
-        // Configure standard KMP androidMain source directory
         val androidMain by getting {
             kotlin.setSrcDirs(listOf("src/androidMain/kotlin"))
         }
@@ -67,11 +63,11 @@ kotlin {
 mavenPublishing {
     publishToMavenCentral()
     signAllPublications()
-    coordinates(group.toString(), "firebase-components", version.toString())
+    coordinates(group.toString(), "firebase-abt", version.toString())
 
     pom {
-        name = "Firebase Components KMP"
-        description = "Kotlin Multiplatform Firebase Components DI Wrapper"
+        name = "Firebase A/B Testing KMP"
+        description = "Kotlin Multiplatform Firebase A/B Testing Wrapper"
         inceptionYear = "2026"
         url = "https://github.com/ienground/firebase-kotlin-sdk"
         licenses {
