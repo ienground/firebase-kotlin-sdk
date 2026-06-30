@@ -20,6 +20,7 @@ sealed interface ScreenRoute: NavKey {
     @Serializable data object Firestore: ScreenRoute
     @Serializable data object AnalyticsPlaceholder: ScreenRoute
     @Serializable data object MessagingPlaceholder: ScreenRoute
+    @Serializable data object Storage: ScreenRoute
 }
 
 @Composable
@@ -45,6 +46,11 @@ fun ScreenNavigationGraph(
             }
             entry<ScreenRoute.Firestore> {
                 FirestoreScreen(
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.Storage> {
+                zone.ien.firebase.example.ui.screen.storage.StorageScreen(
                     onBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }
