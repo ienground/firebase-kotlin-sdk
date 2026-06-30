@@ -1,7 +1,7 @@
 package zone.ien.firebase.abt
 
-expect class AbtException : Exception
+expect class AbtException(message: String) : Exception
 
-expect class AbtExperimentInfo
+expect class AbtExperimentInfo private constructor()
 
-expect class FirebaseABTesting
+expect class FirebaseABTesting private constructor()
