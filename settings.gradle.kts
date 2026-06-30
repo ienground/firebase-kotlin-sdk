@@ -17,6 +17,7 @@ rootProject.name = "firebase-kotlin-sdk"
 include(":firebase-common")
 include(":firebase-firestore")
 include(":firebase-components")
+include(":firebase-components:firebase-dynamic-module-support")
 include(":example")
 include(":example:androidApp")
 include(":example:composeApp")
