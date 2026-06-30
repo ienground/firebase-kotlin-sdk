@@ -37,6 +37,8 @@ android {
 dependencies {
     implementation(project(":example:composeApp"))
     implementation(project(":firebase-common"))
+    implementation(project(":firebase-messaging"))
     implementation(libs.activity.compose)
     implementation(libs.compose.preview)
+    implementation(libs.firebase.android.messaging)
 }

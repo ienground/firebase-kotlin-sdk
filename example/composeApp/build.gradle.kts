@@ -30,6 +30,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            export(project(":firebase-messaging"))
         }
     }
     
@@ -49,6 +50,7 @@ kotlin {
             implementation(project(":firebase-abt"))
             implementation(project(":firebase-storage"))
             implementation(project(":firebase-functions"))
+            api(project(":firebase-messaging"))
 
             implementation(libs.bundles.ienlab.cmp)
         }

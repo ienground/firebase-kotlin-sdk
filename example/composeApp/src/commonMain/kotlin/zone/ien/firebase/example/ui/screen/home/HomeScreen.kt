@@ -100,9 +100,9 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                 item {
                     DemoCard(
                         title = "Messaging",
-                        subtitle = "Placeholder feature.",
+                        subtitle = "Request device token and manage notifications.",
                         indicatorColor = Color(0xFF80CBC4),
-                        onClick = { onNavigate(ScreenRoute.MessagingPlaceholder) }
+                        onClick = { onNavigate(ScreenRoute.Messaging) }
                     )
                 }
                 item {

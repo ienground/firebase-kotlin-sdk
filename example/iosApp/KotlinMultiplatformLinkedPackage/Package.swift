@@ -13,6 +13,7 @@ let package = Package(
     )
   ],
   dependencies: [
+    .package(path: "subpackages/_firebase_messaging"),
     .package(path: "subpackages/_firebase_firestore"),
     .package(path: "subpackages/_firebase_storage"),
     .package(path: "subpackages/_firebase_functions"),
@@ -22,6 +23,7 @@ let package = Package(
     .target(
       name: "KotlinMultiplatformLinkedPackage",
       dependencies: [
+        .product(name: "_firebase_messaging", package: "_firebase_messaging"),
         .product(name: "_firebase_firestore", package: "_firebase_firestore"),
         .product(name: "_firebase_storage", package: "_firebase_storage"),
         .product(name: "_firebase_functions", package: "_firebase_functions"),

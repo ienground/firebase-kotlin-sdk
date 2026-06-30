@@ -19,7 +19,7 @@ sealed interface ScreenRoute: NavKey {
     @Serializable data object FirebaseInit: ScreenRoute
     @Serializable data object Firestore: ScreenRoute
     @Serializable data object AnalyticsPlaceholder: ScreenRoute
-    @Serializable data object MessagingPlaceholder: ScreenRoute
+    @Serializable data object Messaging: ScreenRoute
     @Serializable data object Storage: ScreenRoute
     @Serializable data object Functions: ScreenRoute
 }
@@ -60,17 +60,15 @@ fun ScreenNavigationGraph(
                     onBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }
+            entry<ScreenRoute.Messaging> {
+                zone.ien.firebase.example.ui.screen.messaging.MessagingScreen(
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
             entry<ScreenRoute.AnalyticsPlaceholder> {
                 PlaceholderScreen(
                     title = "Firebase Analytics",
                     description = "Google Analytics for Firebase wrapper is coming soon to KMP SDK.",
-                    onBack = { backStack.removeAt(backStack.lastIndex) }
-                )
-            }
-            entry<ScreenRoute.MessagingPlaceholder> {
-                PlaceholderScreen(
-                    title = "Cloud Messaging",
-                    description = "Firebase Cloud Messaging (FCM) push notification handler wrapper is coming soon to KMP SDK.",
                     onBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }
