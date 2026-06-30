@@ -12,7 +12,8 @@ actual class FirebaseFunctions private constructor(private val iosFunctions: FIR
     }
 
     actual fun getHttpsCallableFromUrl(url: String): HttpsCallableReference {
-        return HttpsCallableReference(iosFunctions.HTTPSCallableWithURL(NSURL(string = url)))
+        val nsUrl = NSURL(string = url) ?: throw IllegalArgumentException("Invalid URL: $url")
+        return HttpsCallableReference(iosFunctions.HTTPSCallableWithURL(nsUrl))
     }
 
     actual companion object {
