@@ -40,7 +40,7 @@ kotlin {
             implementation(libs.lifecycle.viewmodel)
             implementation(libs.lifecycle.runtime)
 
-            implementation(project(":library"))
+            implementation(project(":firebase-common"))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

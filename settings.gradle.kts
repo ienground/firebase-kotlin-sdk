@@ -13,8 +13,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ienground-kmp-library-template"
-include(":library")
+rootProject.name = "firebase-kotlin-sdk"
+include(":firebase-common")
 include(":example")
 include(":example:androidApp")
 include(":example:composeApp")
