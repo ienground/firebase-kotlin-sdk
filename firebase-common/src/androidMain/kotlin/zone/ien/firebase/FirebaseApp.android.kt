@@ -36,15 +36,7 @@ actual class FirebaseApp(private val androidApp: AndroidFirebaseApp) {
         }
 
         private fun isMainProcess(context: Context): Boolean {
-            val am = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager ?: return true
-            val runningProcesses = am.runningAppProcesses ?: return true
-            val myPid = Process.myPid()
-            for (info in runningProcesses) {
-                if (info.pid == myPid) {
-                    return info.processName == context.packageName
-                }
-            }
-            return true
+            return android.app.Application.getProcessName() == context.packageName
         }
     }
 }
