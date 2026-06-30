@@ -7,10 +7,10 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import kotlinx.serialization.Serializable
 import zone.ien.firebase.FirebasePlatformContext
-import zone.ien.firebase.example.ui.core.FirebaseInitScreen
-import zone.ien.firebase.example.ui.firestore.FirestoreScreen
-import zone.ien.firebase.example.ui.home.HomeScreen
-import zone.ien.firebase.example.ui.placeholder.PlaceholderScreen
+import zone.ien.firebase.example.ui.screen.core.FirebaseInitScreen
+import zone.ien.firebase.example.ui.screen.firestore.FirestoreScreen
+import zone.ien.firebase.example.ui.screen.home.HomeScreen
+import zone.ien.firebase.example.ui.screen.placeholder.PlaceholderScreen
 import zone.ien.utils.navigation.BaseNavDisplay
 
 @Serializable
