@@ -33,6 +33,7 @@ firebase-android-firestore = { module = "com.google.firebase:firebase-firestore"
 firebase-android-components = { module = "com.google.firebase:firebase-components", version = "18.0.0" }
 firebase-android-dynamic-module-support = { module = "com.google.firebase:firebase-dynamic-module-support", version = "16.0.0-beta04" }
 firebase-android-abt = { module = "com.google.firebase:firebase-abt", version = "21.1.1" }
+firebase-android-storage = { module = "com.google.firebase:firebase-storage", version = "21.0.1" }
 androidx-annotation = { module = "androidx.annotation:annotation", version = "1.8.0" }
 errorprone-annotations = { module = "com.google.errorprone:error_prone_annotations", version = "2.26.0" }
 firebase-annotations = { module = "com.google.firebase:firebase-annotations", version = "16.2.0" }
