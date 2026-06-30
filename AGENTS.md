@@ -135,3 +135,8 @@ Stop and call out the issue instead of guessing if:
 - If the migration result is partial, clearly mark the incomplete areas.
 - If sample app or test integration was updated, include that too.
 - Do not skip this step after finishing a migration-related code change.
+
+## Git staging rule
+- If you create new files as part of the task, stage them with `git add .`.
+- This applies especially to files newly created by the agent, such as source files, Gradle files, documentation updates, and migration status files.
+- Do not assume newly created files will be picked up later; explicitly stage them with `git add .`.
