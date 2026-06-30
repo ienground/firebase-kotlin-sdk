@@ -16,6 +16,8 @@ kotlin {
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
+        androidResources.enable = true
+
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
         }
@@ -45,6 +47,7 @@ kotlin {
             implementation(project(":firebase-firestore"))
             implementation(project(":firebase-annotations"))
             implementation(project(":firebase-abt"))
+            implementation(project(":firebase-storage"))
 
             implementation(libs.bundles.ienlab.cmp)
         }
