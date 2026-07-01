@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 35
-- **KMP Enabled**: 6
-- **Android Native Only**: 29
+- **KMP Enabled**: 7
+- **Android Native Only**: 28
 
 ---
 
@@ -20,7 +20,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `appcheck:firebase-appcheck`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `appcheck:firebase-appcheck-debug`                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `appcheck:firebase-appcheck-debug-testing`            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP internal support shell. |
-| `appcheck:firebase-appcheck-interop`                  | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `appcheck:firebase-appcheck-interop`                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP interop contract wrapper. |
 | `appcheck:firebase-appcheck-playintegrity`            | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `appcheck:firebase-appcheck-recaptcha`                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `ai-logic:firebase-ai`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -80,6 +80,12 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-01: `appcheck:firebase-appcheck-interop` KMP Module Creation & Interop contract wrapper
+* **KMP Module Realization**: Created the new `:appcheck:firebase-appcheck-interop` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform SDK Wrapping**: Designed expect interfaces `InteropAppCheckTokenProvider` and `AppCheckTokenListener`, and model class `AppCheckTokenResult` inside `commonMain`, delegating to official AppCheck Interop dependencies on Android and SwiftPM `FirebaseAppCheckInterop` products on iOS (`FIRAppCheckInteropProtocol` etc.).
+* **Asynchronous Coroutine Bridging**: Implemented Task listener awaiting on Android and completion-block to Coroutine suspension on iOS for token retrieval APIs.
+* **Dependency Reference Check**: Added `:appcheck:firebase-appcheck-interop` compile reference in `composeApp` and `AppCheckInteropTest` helper to verify core interop boundary contract compilation.
 
 ### 2026-07-01: `firebase-database` KMP Module Creation & Platform SDK Wrapper
 * **KMP Module Realization**: Created the new `:firebase-database` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
