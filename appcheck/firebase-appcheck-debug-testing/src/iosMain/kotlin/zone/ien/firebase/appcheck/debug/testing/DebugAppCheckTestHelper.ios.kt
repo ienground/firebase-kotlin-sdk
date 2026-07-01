@@ -2,7 +2,7 @@ package zone.ien.firebase.appcheck.debug.testing
 
 import zone.ien.firebase.FirebaseApp
 
-public actual class DebugAppCheckTestHelper {
+public actual class DebugAppCheckTestHelper private actual constructor() {
     public actual fun withDebugProvider(runnable: () -> Unit) {
         throw UnsupportedOperationException("DebugAppCheckTestHelper is not supported on iOS.")
     }

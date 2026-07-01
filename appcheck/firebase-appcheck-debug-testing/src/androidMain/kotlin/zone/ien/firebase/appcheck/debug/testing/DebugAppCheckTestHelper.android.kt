@@ -4,9 +4,12 @@ import com.google.firebase.appcheck.debug.testing.DebugAppCheckTestHelper as And
 
 import zone.ien.firebase.FirebaseApp
 
-public actual class DebugAppCheckTestHelper private constructor(
-    private val androidHelper: AndroidDebugAppCheckTestHelper
-) {
+public actual class DebugAppCheckTestHelper private actual constructor() {
+    private lateinit var androidHelper: AndroidDebugAppCheckTestHelper
+
+    internal constructor(androidHelper: AndroidDebugAppCheckTestHelper) : this() {
+        this.androidHelper = androidHelper
+    }
     public actual fun withDebugProvider(runnable: () -> Unit) {
         androidHelper.withDebugProvider<Throwable> {
             runnable()

@@ -3,7 +3,12 @@ package zone.ien.firebase.appcheck
 import zone.ien.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck as AndroidFirebaseAppCheck
 
-public actual class FirebaseAppCheck(private val androidAppCheck: AndroidFirebaseAppCheck) {
+public actual class FirebaseAppCheck private actual constructor() {
+    private lateinit var androidAppCheck: AndroidFirebaseAppCheck
+
+    internal constructor(androidAppCheck: AndroidFirebaseAppCheck) : this() {
+        this.androidAppCheck = androidAppCheck
+    }
 
     public actual fun installAppCheckProviderFactory(factory: AppCheckProviderFactory) {
         androidAppCheck.installAppCheckProviderFactory(factory.androidFactory)
