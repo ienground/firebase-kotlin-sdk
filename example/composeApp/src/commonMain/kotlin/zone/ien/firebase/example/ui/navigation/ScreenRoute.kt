@@ -22,6 +22,7 @@ sealed interface ScreenRoute: NavKey {
     @Serializable data object MessagingPlaceholder: ScreenRoute
     @Serializable data object Storage: ScreenRoute
     @Serializable data object Functions: ScreenRoute
+    @Serializable data object Database: ScreenRoute
 }
 
 @Composable
@@ -71,6 +72,11 @@ fun ScreenNavigationGraph(
                 PlaceholderScreen(
                     title = "Cloud Messaging",
                     description = "Firebase Cloud Messaging (FCM) push notification handler wrapper is coming soon to KMP SDK.",
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.Database> {
+                zone.ien.firebase.example.ui.screen.database.DatabaseScreen(
                     onBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }
