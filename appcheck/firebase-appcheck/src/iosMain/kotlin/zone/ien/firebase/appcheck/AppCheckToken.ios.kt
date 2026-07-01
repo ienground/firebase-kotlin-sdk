@@ -1,0 +1,17 @@
+package zone.ien.firebase.appcheck
+
+import kotlinx.cinterop.ExperimentalForeignApi
+import platform.Foundation.timeIntervalSince1970
+import swiftPMImport.zone.ien.firebase.appcheck.firebase.appcheck.FIRAppCheckToken
+
+@OptIn(ExperimentalForeignApi::class)
+public actual class AppCheckToken private actual constructor() {
+    private lateinit var iosToken: FIRAppCheckToken
+    internal constructor(iosToken: FIRAppCheckToken) : this() {
+        this.iosToken = iosToken
+    }
+    public actual val token: String
+        get() = iosToken.token()
+    public actual val expireTimeMillis: Long
+        get() = (iosToken.expirationDate().timeIntervalSince1970() * 1000).toLong()
+}

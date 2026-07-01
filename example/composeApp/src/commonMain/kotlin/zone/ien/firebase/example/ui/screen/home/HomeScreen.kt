@@ -139,10 +139,10 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                 }
                 item {
                     DemoCard(
-                        title = "Crashlytics",
-                        subtitle = "Log, set metadata, non-fatal and test fatal app crashes.",
+                        title = "Play Integrity",
+                        subtitle = "Android Play Integrity App Check provider verification.",
                         indicatorColor = Color(0xFFE91E63),
-                        onClick = { onNavigate(ScreenRoute.Crashlytics) }
+                        onClick = { onNavigate(ScreenRoute.PlayIntegrity) }
                     )
                 }
             }
