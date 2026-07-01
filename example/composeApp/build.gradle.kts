@@ -53,6 +53,13 @@ kotlin {
             implementation(project(":firebase-crashlytics"))
             implementation(project(":firebase-crashlytics-ndk"))
             implementation(project(":firebase-functions"))
+            implementation(project(":firebase-datatransport"))
+            implementation(project(":appcheck:firebase-appcheck"))
+            implementation(project(":appcheck:firebase-appcheck-interop"))
+            implementation(project(":appcheck:firebase-appcheck-debug"))
+            implementation(project(":appcheck:firebase-appcheck-playintegrity"))
+            implementation(project(":appcheck:firebase-appcheck-recaptcha"))
+            implementation(project(":appcheck:firebase-appcheck-debug-testing"))
 
             implementation(libs.bundles.ienlab.cmp)
         }
