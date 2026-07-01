@@ -12,6 +12,7 @@ google-services = "4.5.0"
 # plugin
 compose-plugin = "1.11.1"
 compose-material3 = "1.11.0-alpha07"
+firebase-crashlytics = "3.0.7"
 
 # ui
 activity-compose = "1.13.0"
@@ -34,6 +35,8 @@ firebase-android-components = { module = "com.google.firebase:firebase-component
 firebase-android-dynamic-module-support = { module = "com.google.firebase:firebase-dynamic-module-support", version = "16.0.0-beta04" }
 firebase-android-abt = { module = "com.google.firebase:firebase-abt", version = "21.1.1" }
 firebase-android-storage = { module = "com.google.firebase:firebase-storage", version = "21.0.1" }
+firebase-android-appcheck-recaptcha = { module = "com.google.firebase:firebase-appcheck-recaptcha", version = "19.0.0" }
+firebase-android-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "19.0.3" }
 firebase-android-database = { module = "com.google.firebase:firebase-database", version = "21.0.0" }
 firebase-android-functions = { module = "com.google.firebase:firebase-functions", version = "21.0.0" }
 androidx-annotation = { module = "androidx.annotation:annotation", version = "1.8.0" }
@@ -76,3 +79,4 @@ vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "
 android-lint = { id = "com.android.lint", version.ref = "agp" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics"}
