@@ -41,7 +41,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-database-collection`                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP sorted collections helper. |
 | `firebase-dataconnect`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-dataconnect:connectors`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-datatransport`                              | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-datatransport`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP internal support shell. |
 | `firebase-functions`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `firebase-messaging`                                  | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-messaging-directboot`                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
