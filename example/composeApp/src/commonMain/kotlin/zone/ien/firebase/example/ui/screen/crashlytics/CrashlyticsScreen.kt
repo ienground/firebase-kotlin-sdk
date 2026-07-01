@@ -30,14 +30,8 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
 
     // Verify NDK support module availability safely
     val ndkStatus = remember {
-        try {
-            val ndk = FirebaseCrashlyticsNdk.getInstance()
-            if (ndk.isNdkCrashCaptureEnabled()) "Enabled (Android NDK Library Present)" else "Disabled"
-        } catch (e: UnsupportedOperationException) {
-            "Unsupported: ${e.message}"
-        } catch (e: Exception) {
-            "Error: ${e.message}"
-        }
+        val ndk = FirebaseCrashlyticsNdk.getInstance()
+        if (ndk.isNdkCrashCaptureEnabled()) "Enabled (Android NDK Library Present)" else "Disabled"
     }
 
     Scaffold(
