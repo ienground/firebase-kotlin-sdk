@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 35
-- **KMP Enabled**: 6
-- **Android Native Only**: 29
+- **KMP Enabled**: 11
+- **Android Native Only**: 24
 
 ---
 
@@ -35,8 +35,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-components:firebase-dynamic-module-support` | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-config`                                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-config-interop`                             | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-crashlytics`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-crashlytics-ndk`                            | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-crashlytics`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
+| `firebase-crashlytics-ndk`                            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP NDK support wrapper.   |
 | `firebase-database`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-database-collection`                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP sorted collections helper. |
 | `firebase-dataconnect`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -80,6 +80,12 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-02: `firebase-crashlytics-ndk` KMP Module Creation & Android NDK Crash Capture support wrapper
+* **KMP Module Realization**: Created the new `:firebase-crashlytics-ndk` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform SDK Wrapping**: Designed expect class `FirebaseCrashlyticsNdk` inside `commonMain` to support verification of NDK crash capture enablement status.
+* **Platform Factory Bindings**: Delegates to Android's official `com.google.firebase.crashlytics.ndk` components on Android Target. Provides an unsupported exception on iOS since Apple platforms record native C/C++ crashes directly inside the core runner framework instead of requiring a separate NDK layer. SwiftPM is **not** required.
+* **Interactive NDK Verification**: Expanded `CrashlyticsScreen` inside the Sample App to display dynamic capture statuses, and detail NDK configuration instructions (CMake, ndk-build, symbol upload commands).
 
 ### 2026-07-01: `firebase-database` KMP Module Creation & Platform SDK Wrapper
 * **KMP Module Realization**: Created the new `:firebase-database` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
