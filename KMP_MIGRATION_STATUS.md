@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 35
-- **KMP Enabled**: 7
-- **Android Native Only**: 28
+- **KMP Enabled**: 9
+- **Android Native Only**: 26
 
 ---
 
@@ -21,8 +21,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `appcheck:firebase-appcheck-debug`                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `appcheck:firebase-appcheck-debug-testing`            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP internal support shell. |
 | `appcheck:firebase-appcheck-interop`                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP interop contract wrapper. |
-| `appcheck:firebase-appcheck-playintegrity`            | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `appcheck:firebase-appcheck-recaptcha`                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `appcheck:firebase-appcheck-playintegrity`            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP play integrity provider wrapper. |
+| `appcheck:firebase-appcheck-recaptcha`                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP recaptcha provider wrapper. |
 | `ai-logic:firebase-ai`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `ai-logic:firebase-ai-ondevice`                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `ai-logic:firebase-ai-ondevice-interop`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -80,6 +80,18 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-01: `appcheck:firebase-appcheck-recaptcha` KMP Module Creation & Web-centric reCAPTCHA Provider Wrapper
+* **KMP Module Realization**: Created the new `:appcheck:firebase-appcheck-recaptcha` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform SDK Wrapping**: Designed expect class `RecaptchaAppCheckProviderFactory` inside `commonMain` conforming to `AppCheckProviderFactory`.
+* **Platform Factory Bindings**: Delegates to Android's official `com.google.firebase.appcheck.recaptcha.RecaptchaAppCheckProviderFactory` on Android Target. Provides an unsupported exception on iOS since Apple platforms use native AppAttest/DeviceCheck options instead of Google reCAPTCHA. SwiftPM is **not** required.
+* **Dependency Reference Check**: Added `:appcheck:firebase-appcheck-recaptcha` compile reference in `composeApp` and `AppCheckRecaptchaTest` helper to verify core factory contract compilation and safe iOS runtime exception handling.
+
+### 2026-07-01: `appcheck:firebase-appcheck-playintegrity` KMP Module Creation & Android Play Integrity Provider Wrapper
+* **KMP Module Realization**: Created the new `:appcheck:firebase-appcheck-playintegrity` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform SDK Wrapping**: Designed expect class `PlayIntegrityAppCheckProviderFactory` inside `commonMain` conforming to `AppCheckProviderFactory`.
+* **Platform Factory Bindings**: Delegates to Android's official `com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory` on Android Target. Provides an unsupported exception on iOS since Apple platforms use other native verification solutions (e.g., DeviceCheck/AppAttest) instead of Google Play Services. SwiftPM is **not** required.
+* **Interactive Verification Screen**: Added `PlayIntegrityScreen` in the Sample App enabling user-facing verification, environment setup prerequisites guidelines (SHA-256 fingerprint, Console configuration), and dynamic provider installation checks.
 
 ### 2026-07-01: `appcheck:firebase-appcheck-interop` KMP Module Creation & Interop contract wrapper
 * **KMP Module Realization**: Created the new `:appcheck:firebase-appcheck-interop` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
