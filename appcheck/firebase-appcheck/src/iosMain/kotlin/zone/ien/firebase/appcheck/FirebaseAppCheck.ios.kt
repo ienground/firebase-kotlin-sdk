@@ -8,7 +8,12 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 @OptIn(ExperimentalForeignApi::class)
-public actual class FirebaseAppCheck private constructor(private val iosAppCheck: FIRAppCheck) {
+public actual class FirebaseAppCheck private actual constructor() {
+    private lateinit var iosAppCheck: FIRAppCheck
+
+    internal constructor(iosAppCheck: FIRAppCheck) : this() {
+        this.iosAppCheck = iosAppCheck
+    }
 
     public actual fun installAppCheckProviderFactory(factory: AppCheckProviderFactory) {
         FIRAppCheck.setAppCheckProviderFactory(factory.iosFactory)
@@ -21,7 +26,7 @@ public actual class FirebaseAppCheck private constructor(private val iosAppCheck
     public actual suspend fun getToken(forceRefresh: Boolean): AppCheckToken = suspendCoroutine { cont ->
         iosAppCheck.tokenForcingRefresh(forceRefresh) { token, error ->
             if (error != null) {
-                cont.resumeWithException(AppCheckException(error.localizedDescription ?: "Unknown error", null))
+                cont.resumeWithException(AppCheckException(error.localizedDescription, null))
             } else if (token != null) {
                 cont.resume(AppCheckToken(token))
             } else {
@@ -33,7 +38,7 @@ public actual class FirebaseAppCheck private constructor(private val iosAppCheck
     public actual suspend fun getLimitedUseToken(): AppCheckToken = suspendCoroutine { cont ->
         iosAppCheck.limitedUseTokenWithCompletion { token, error ->
             if (error != null) {
-                cont.resumeWithException(AppCheckException(error.localizedDescription ?: "Unknown error", null))
+                cont.resumeWithException(AppCheckException(error.localizedDescription, null))
             } else if (token != null) {
                 cont.resume(AppCheckToken(token))
             } else {
@@ -48,7 +53,9 @@ public actual class FirebaseAppCheck private constructor(private val iosAppCheck
         }
 
         public actual fun getInstance(app: FirebaseApp): FirebaseAppCheck {
-            return FirebaseAppCheck(FIRAppCheck.appCheckWithApp(app.iosApp)!!)
+            val iosAppCheck = FIRAppCheck.appCheckWithApp(app.iosApp)
+                ?: throw IllegalStateException("FirebaseAppCheck instance could not be initialized for the given FirebaseApp.")
+            return FirebaseAppCheck(iosAppCheck)
         }
     }
 }
