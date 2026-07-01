@@ -15,9 +15,12 @@ public actual class FirebaseCrashlytics private constructor(
 
     public actual fun recordException(throwable: Throwable) {
         val error = NSError.errorWithDomain(
-            domain = "zone.ien.firebase.crashlytics",
+            domain = throwable::class.qualifiedName ?: throwable::class.simpleName ?: "Throwable",
             code = 0,
-            userInfo = mapOf(NSLocalizedDescriptionKey to (throwable.message ?: "Unknown Kotlin Exception"))
+            userInfo = mapOf(
+                NSLocalizedDescriptionKey to (throwable.message ?: "Unknown Kotlin Exception"),
+                "KotlinStackTrace" to throwable.stackTraceToString()
+            )
         )
         iosCrashlytics.recordError(error)
     }
