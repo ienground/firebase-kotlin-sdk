@@ -37,6 +37,7 @@ firebase-android-abt = { module = "com.google.firebase:firebase-abt", version = 
 firebase-android-storage = { module = "com.google.firebase:firebase-storage", version = "21.0.1" }
 firebase-android-appcheck-recaptcha = { module = "com.google.firebase:firebase-appcheck-recaptcha", version = "19.0.0" }
 firebase-android-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "19.0.3" }
+firebase-android-crashlytics-ndk = { module = "com.google.firebase:firebase-crashlytics-ndk", version = "19.0.3" }
 firebase-android-database = { module = "com.google.firebase:firebase-database", version = "21.0.0" }
 firebase-android-appcheck = { module = "com.google.firebase:firebase-appcheck", version = "19.2.0" }
 firebase-android-appcheck-interop = { module = "com.google.firebase:firebase-appcheck-interop", version = "17.1.0" }

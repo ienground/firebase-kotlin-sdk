@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import zone.ien.firebase.crashlytics.FirebaseCrashlytics
+import zone.ien.firebase.crashlytics.ndk.FirebaseCrashlyticsNdk
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,6 +27,12 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
 
     var statusText by remember { mutableStateOf("Idle") }
     var statusColor by remember { mutableStateOf(defaultColor) }
+
+    // Verify NDK support module availability safely
+    val ndkStatus = remember {
+        val ndk = FirebaseCrashlyticsNdk.getInstance()
+        if (ndk.isNdkCrashCaptureEnabled()) "Enabled (Android NDK Library Present)" else "Disabled"
+    }
 
     Scaffold(
         topBar = {
@@ -61,6 +68,34 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
                         text = "1. To view reports, verify your app is registered in Firebase Console.\n" +
                                "2. [Android] Ensure Firebase Crashlytics Gradle plugin is applied in your app module.\n" +
                                "3. [iOS] Make sure to upload dSYM files during the build phase to de-obfuscate stack traces.",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+
+            // Android NDK Support Status Card
+            Card(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = "🤖 Android NDK Crash Capture",
+                        style = MaterialTheme.typography.titleSmall,
+                        color = primaryColor
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Status: $ndkStatus",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = if (ndkStatus.startsWith("Enabled")) primaryColor else MaterialTheme.colorScheme.error
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Prerequisites for Android NDK crash capture:\n" +
+                               "- Configure CMake/ndk-build in app build.gradle.\n" +
+                               "- Enable NDK symbols upload in Gradle via: \n" +
+                               "  firebaseCrashlytics { nativeSymbolUploadEnabled true }\n" +
+                               "- Apple platforms do not require NDK capture as Crashlytics natively records all C/C++/Swift exceptions.",
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
