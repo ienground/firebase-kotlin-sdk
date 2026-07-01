@@ -51,6 +51,9 @@ kotlin {
             implementation(project(":firebase-database"))
             implementation(project(":firebase-database-collection"))
             implementation(project(":firebase-functions"))
+            implementation(project(":appcheck:firebase-appcheck"))
+            implementation(project(":appcheck:firebase-appcheck-debug"))
+            implementation(project(":appcheck:firebase-appcheck-debug-testing"))
 
             implementation(libs.bundles.ienlab.cmp)
         }
