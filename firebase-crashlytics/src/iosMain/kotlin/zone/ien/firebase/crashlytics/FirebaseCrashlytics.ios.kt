@@ -33,23 +33,23 @@ public actual class FirebaseCrashlytics private constructor(
     }
 
     public actual fun setCustomKey(key: String, value: Boolean) {
-        iosCrashlytics.setCustomValue(value, key)
+        iosCrashlytics.setCustomValue(platform.Foundation.NSNumber(bool = value), key)
     }
 
     public actual fun setCustomKey(key: String, value: Double) {
-        iosCrashlytics.setCustomValue(value, key)
+        iosCrashlytics.setCustomValue(platform.Foundation.NSNumber(double = value), key)
     }
 
     public actual fun setCustomKey(key: String, value: Float) {
-        iosCrashlytics.setCustomValue(value, key)
+        iosCrashlytics.setCustomValue(platform.Foundation.NSNumber(float = value), key)
     }
 
     public actual fun setCustomKey(key: String, value: Int) {
-        iosCrashlytics.setCustomValue(value, key)
+        iosCrashlytics.setCustomValue(platform.Foundation.NSNumber(int = value), key)
     }
 
     public actual fun setCustomKey(key: String, value: Long) {
-        iosCrashlytics.setCustomValue(value, key)
+        iosCrashlytics.setCustomValue(platform.Foundation.NSNumber(longLong = value), key)
     }
 
     public actual fun setUserId(identifier: String) {

@@ -12,6 +12,7 @@ google-services = "4.5.0"
 # plugin
 compose-plugin = "1.11.1"
 compose-material3 = "1.11.0-alpha07"
+firebase-crashlytics = "3.0.7"
 
 # ui
 activity-compose = "1.13.0"
@@ -38,6 +39,12 @@ firebase-android-appcheck-recaptcha = { module = "com.google.firebase:firebase-a
 firebase-android-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "19.0.3" }
 firebase-android-crashlytics-ndk = { module = "com.google.firebase:firebase-crashlytics-ndk", version = "19.0.3" }
 firebase-android-database = { module = "com.google.firebase:firebase-database", version = "21.0.0" }
+firebase-android-appcheck = { module = "com.google.firebase:firebase-appcheck", version = "19.2.0" }
+firebase-android-appcheck-interop = { module = "com.google.firebase:firebase-appcheck-interop", version = "17.1.0" }
+firebase-android-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug", version = "19.2.0" }
+firebase-android-appcheck-debug-testing = { module = "com.google.firebase:firebase-appcheck-debug-testing", version = "19.2.0" }
+firebase-android-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity", version = "18.0.0" }
+firebase-android-appcheck-recaptcha = { module = "com.google.firebase:firebase-appcheck-recaptcha", version = "19.0.0" }
 firebase-android-functions = { module = "com.google.firebase:firebase-functions", version = "21.0.0" }
 androidx-annotation = { module = "androidx.annotation:annotation", version = "1.8.0" }
 errorprone-annotations = { module = "com.google.errorprone:error_prone_annotations", version = "2.26.0" }
@@ -79,3 +86,4 @@ vanniktech-mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "
 android-lint = { id = "com.android.lint", version.ref = "agp" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics"}
