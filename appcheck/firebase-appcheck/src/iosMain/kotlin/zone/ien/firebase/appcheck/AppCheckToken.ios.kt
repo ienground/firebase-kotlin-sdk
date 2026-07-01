@@ -6,14 +6,12 @@ import swiftPMImport.zone.ien.firebase.appcheck.firebase.appcheck.FIRAppCheckTok
 
 @OptIn(ExperimentalForeignApi::class)
 public actual class AppCheckToken private actual constructor() {
-    private var iosToken: FIRAppCheckToken? = null
-
-    public constructor(iosToken: FIRAppCheckToken) : this() {
+    private lateinit var iosToken: FIRAppCheckToken
+    internal constructor(iosToken: FIRAppCheckToken) : this() {
         this.iosToken = iosToken
     }
-
     public actual val token: String
-        get() = iosToken?.token() ?: ""
+        get() = iosToken.token()
     public actual val expireTimeMillis: Long
-        get() = ((iosToken?.expirationDate()?.timeIntervalSince1970() ?: 0.0) * 1000).toLong()
+        get() = (iosToken.expirationDate().timeIntervalSince1970() * 1000).toLong()
 }

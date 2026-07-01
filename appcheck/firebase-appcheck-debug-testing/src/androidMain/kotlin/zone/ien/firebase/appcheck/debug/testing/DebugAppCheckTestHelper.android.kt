@@ -10,6 +10,7 @@ public actual class DebugAppCheckTestHelper private actual constructor() {
     internal constructor(androidHelper: AndroidDebugAppCheckTestHelper) : this() {
         this.androidHelper = androidHelper
     }
+
     public actual fun withDebugProvider(runnable: () -> Unit) {
         androidHelper.withDebugProvider<Throwable> {
             runnable()
