@@ -39,7 +39,7 @@ public class ImmutableSortedMap<K, V> private constructor(
     public fun isEmpty(): Boolean = entries.isEmpty()
 
     override fun iterator(): Iterator<Map.Entry<K, V>> {
-        return entries.map { entry ->
+        return entries.asSequence().map { entry ->
             object : Map.Entry<K, V> {
                 override val key: K = entry.first
                 override val value: V = entry.second
