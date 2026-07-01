@@ -7,11 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DCE3B0E02FF48DAC00E776BF /* NotificationService.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DCE3B0D92FF48DAC00E776BF /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E361954727FD2B111D631FD3 /* KotlinMultiplatformLinkedPackage in Frameworks */ = {isa = PBXBuildFile; productRef = BB47342BBF5D1AFAB0CDA2BB /* KotlinMultiplatformLinkedPackage */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		DCE3B0DE2FF48DAC00E776BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A8E4552D1C27948C03A84D99 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DCE3B0D82FF48DAC00E776BF;
+			remoteInfo = NotificationService;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DCE3B0E52FF48DAC00E776BF /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DCE3B0E02FF48DAC00E776BF /* NotificationService.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		3A70B7FFD2EF9475B39878DC /* FirebaseKMP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirebaseKMP.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCE3B0D92FF48DAC00E776BF /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -21,6 +47,13 @@
 				Info.plist,
 			);
 			target = 451901D00D1CFF1EE0CD9FA3 /* iosApp */;
+		};
+		DCE3B0E42FF48DAC00E776BF /* Exceptions for "NotificationService" folder in "NotificationService" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DCE3B0D82FF48DAC00E776BF /* NotificationService */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -38,10 +71,26 @@
 			path = Configuration;
 			sourceTree = "<group>";
 		};
+		DCE3B0DA2FF48DAC00E776BF /* NotificationService */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DCE3B0E42FF48DAC00E776BF /* Exceptions for "NotificationService" folder in "NotificationService" target */,
+			);
+			path = NotificationService;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		4E041684C0A28B3842B9CDB1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E361954727FD2B111D631FD3 /* KotlinMultiplatformLinkedPackage in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCE3B0D62FF48DAC00E776BF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -56,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				3A70B7FFD2EF9475B39878DC /* FirebaseKMP.app */,
+				DCE3B0D92FF48DAC00E776BF /* NotificationService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -65,6 +115,7 @@
 			children = (
 				7F32DC8847A2528DD5BA3D3C /* Configuration */,
 				618D6E17DA4269CB0EBD4332 /* iosApp */,
+				DCE3B0DA2FF48DAC00E776BF /* NotificationService */,
 				9A4064F9F00428CC8A74D355 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -80,10 +131,12 @@
 				7182ADBE3A18A5ED0EABA306 /* Sources */,
 				4E041684C0A28B3842B9CDB1 /* Frameworks */,
 				ADE552C2797EC60E023FB327 /* Resources */,
+				DCE3B0E52FF48DAC00E776BF /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DCE3B0DF2FF48DAC00E776BF /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				618D6E17DA4269CB0EBD4332 /* iosApp */,
@@ -96,6 +149,29 @@
 			productReference = 3A70B7FFD2EF9475B39878DC /* FirebaseKMP.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DCE3B0D82FF48DAC00E776BF /* NotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCE3B0E12FF48DAC00E776BF /* Build configuration list for PBXNativeTarget "NotificationService" */;
+			buildPhases = (
+				DCE3B0D52FF48DAC00E776BF /* Sources */,
+				DCE3B0D62FF48DAC00E776BF /* Frameworks */,
+				DCE3B0D72FF48DAC00E776BF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				DCE3B0DA2FF48DAC00E776BF /* NotificationService */,
+			);
+			name = NotificationService;
+			packageProductDependencies = (
+				BB47342BBF5D1AFAB0CDA2BB /* KotlinMultiplatformLinkedPackage */,
+			);
+			productName = NotificationService;
+			productReference = DCE3B0D92FF48DAC00E776BF /* NotificationService.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -103,11 +179,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 2660;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					451901D00D1CFF1EE0CD9FA3 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					DCE3B0D82FF48DAC00E776BF = {
+						CreatedOnToolsVersion = 26.6;
 					};
 				};
 			};
@@ -129,12 +208,20 @@
 			projectRoot = "";
 			targets = (
 				451901D00D1CFF1EE0CD9FA3 /* iosApp */,
+				DCE3B0D82FF48DAC00E776BF /* NotificationService */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		ADE552C2797EC60E023FB327 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCE3B0D72FF48DAC00E776BF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -173,7 +260,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DCE3B0D52FF48DAC00E776BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DCE3B0DF2FF48DAC00E776BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DCE3B0D82FF48DAC00E776BF /* NotificationService */;
+			targetProxy = DCE3B0DE2FF48DAC00E776BF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1BC302D312A25FFCB2FC8457 /* Release */ = {
@@ -357,9 +459,100 @@
 			};
 			name = Debug;
 		};
+		DCE3B0E22FF48DAC00E776BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M8ZHHMB2AV;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = zone.ien.firebase.example.Example.NotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILT_PRODUCTS_DIR)",
+					"$(SRCROOT)/../composeApp/build/bin/iosSimulatorArm64/debugFramework",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"ComposeApp",
+				);
+			};
+			name = Debug;
+		};
+		DCE3B0E32FF48DAC00E776BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M8ZHHMB2AV;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = zone.ien.firebase.example.Example.NotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILT_PRODUCTS_DIR)",
+					"$(SRCROOT)/../composeApp/build/bin/iosArm64/releaseFramework",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"ComposeApp",
+				);
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		DCE3B0E12FF48DAC00E776BF /* Build configuration list for PBXNativeTarget "NotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCE3B0E22FF48DAC00E776BF /* Debug */,
+				DCE3B0E32FF48DAC00E776BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		EDDB7722E65351F3212F695A /* Build configuration list for PBXNativeTarget "iosApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

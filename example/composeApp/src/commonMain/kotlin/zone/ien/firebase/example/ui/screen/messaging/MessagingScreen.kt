@@ -16,7 +16,11 @@ import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebaseApp
-import zone.ien.firebase.messaging.FirebaseMessaging
+import androidx.compose.runtime.saveable.rememberSaveable
+import zone.ien.firebase.messaging.FirebasePush
+import zone.ien.firebase.messaging.PushListener
+import zone.ien.firebase.messaging.PushDisplayMode
+import zone.ien.utils.utils.Dlog
 import zone.ien.utils.utils.toClipEntry
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -30,20 +34,64 @@ fun MessagingScreen(onBack: () -> Unit) {
         if (!FirebaseApp.isInitialized) {
             "Firebase Core must be initialized first. Go to 'Firebase Init' screen."
         } else {
-            runCatching { FirebaseMessaging.getInstance() }.exceptionOrNull()?.message
+            runCatching { FirebasePush.notifier }.exceptionOrNull()?.message
         }
     }
 
-    var logText by remember { mutableStateOf("Ready to inspect Firebase Cloud Messaging.") }
-    var tokenValue by remember { mutableStateOf("-") }
+    var logText by rememberSaveable { mutableStateOf("Ready to inspect Firebase Cloud Messaging.") }
+    var tokenValue by rememberSaveable { mutableStateOf("-") }
+    var displayMode by rememberSaveable { mutableStateOf(PushDisplayMode.AUTO_DISPLAY) }
+
+    LaunchedEffect(displayMode) {
+        if (initError == null) {
+            runCatching {
+                FirebasePush.displayMode = displayMode
+            }
+        }
+    }
 
     LaunchedEffect(initError) {
         if (initError == null) {
             runCatching {
-                FirebaseMessaging.getInstance().addOnMessageReceivedListener { data ->
-                    val prettyPayload = data.entries.joinToString(separator = "\n") { "${it.key}: ${it.value}" }
-                    logText = "New Data Payload Received:\n\n$prettyPayload"
+                // Register custom dynamic notification formatter inside the application (commonMain)
+                FirebasePush.notificationFormatter = object : zone.ien.firebase.messaging.NotificationFormatter {
+                    override fun format(data: Map<String, String>, title: String?, body: String?): zone.ien.firebase.messaging.NotificationContent? {
+                        val nickname = data["sender_nickname"]
+                        val content = data["content"]
+                        if (nickname != null && content != null) {
+                            return zone.ien.firebase.messaging.NotificationContent(
+                                title = "$nickname 님이 보낸 책 보고서",
+                                body = "내용: $content"
+                            )
+                        }
+                        if (title != null || body != null) {
+                            return zone.ien.firebase.messaging.NotificationContent(title, body)
+                        }
+                        return null
+                    }
                 }
+
+                // Register unified FirebasePush listener matching reference architecture
+                FirebasePush.setListener(object : PushListener {
+                    override fun onNewToken(token: String) {
+                        tokenValue = token
+                        logText = "FCM registration token updated:\n$token"
+                    }
+
+                    override fun onPayloadData(data: Map<String, String>) {
+                        val prettyPayload = data.entries.joinToString(separator = "\n") { "${it.key}: ${it.value}" }
+                        logText = "New Data Payload Received:\n\n$prettyPayload"
+                    }
+
+                    override fun onPushNotification(title: String?, body: String?) {
+                        logText = "New Push Notification Received:\nTitle: $title\nBody: $body"
+                    }
+
+                    override fun onPushNotificationWithPayloadData(title: String?, body: String?, data: Map<String, String>) {
+                        val prettyPayload = data.entries.joinToString(separator = "\n") { "${it.key}: ${it.value}" }
+                        logText = "New Notification & Data Received:\nTitle: $title\nBody: $body\n\nPayload:\n$prettyPayload"
+                    }
+                })
             }
         }
     }
@@ -54,82 +102,42 @@ fun MessagingScreen(onBack: () -> Unit) {
                 title = { Text("Cloud Messaging Demo") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Text(
-                            text = "←",
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
+                        Text("←")
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                )
+                }
             )
         }
-    ) { padding ->
-        if (initError != null) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding)
-                    .padding(24.dp),
-                contentAlignment = androidx.compose.ui.Alignment.Center
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp)
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            if (initError != null) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
                         text = initError,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                        modifier = Modifier.padding(16.dp)
                     )
-                    Button(onClick = onBack) {
-                        Text("Go Back")
-                    }
                 }
-            }
-        } else {
-            Column(
-                modifier = Modifier
-                    .padding(padding)
-                    .fillMaxSize()
-                    .padding(horizontal = 24.dp)
-                    .verticalScroll(scrollState),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Spacer(modifier = Modifier.height(8.dp))
+            } else {
+                Text(
+                    text = "Observe real-time FCM tokens and received background/foreground push notification payloads.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
 
                 Card(
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(8.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                    ),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Text(
-                            text = "FCM Specification",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        HorizontalDivider(color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f))
-                        Text(
-                            text = "Firebase Cloud Messaging (FCM) handles remote push notifications. Request or clear your device token for server-side push targeting.",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-
-                Card(
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                     ),
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -161,8 +169,7 @@ fun MessagingScreen(onBack: () -> Unit) {
                             coroutineScope.launch {
                                 logText = "Retrieving FCM device token..."
                                 try {
-                                    val messaging = FirebaseMessaging.getInstance()
-                                    val token = messaging.getToken()
+                                    val token = FirebasePush.notifier.getToken() ?: "-"
                                     tokenValue = token
                                     logText = "Token retrieved successfully!\nToken: $token"
                                 } catch (e: Exception) {
@@ -180,8 +187,7 @@ fun MessagingScreen(onBack: () -> Unit) {
                             coroutineScope.launch {
                                 logText = "Deleting FCM device token..."
                                 try {
-                                    val messaging = FirebaseMessaging.getInstance()
-                                    messaging.deleteToken()
+                                    FirebasePush.notifier.deleteMyToken()
                                     tokenValue = "-"
                                     logText = "Token deleted successfully!"
                                 } catch (e: Exception) {
@@ -196,26 +202,71 @@ fun MessagingScreen(onBack: () -> Unit) {
                     }
                 }
 
+                Spacer(modifier = Modifier.height(8.dp))
+                HorizontalDivider()
+
+                Text(
+                    text = "Configure Push Display Mode",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        RadioButton(
+                            selected = displayMode == PushDisplayMode.AUTO_DISPLAY,
+                            onClick = { displayMode = PushDisplayMode.AUTO_DISPLAY }
+                        )
+                        Text(
+                            text = "AUTO_DISPLAY\n(SDK displays local notification popup)",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.clickable { displayMode = PushDisplayMode.AUTO_DISPLAY }
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        RadioButton(
+                            selected = displayMode == PushDisplayMode.CALLBACK_ONLY,
+                            onClick = { displayMode = PushDisplayMode.CALLBACK_ONLY }
+                        )
+                        Text(
+                            text = "CALLBACK_ONLY\n(Silence banner, app listener handling only)",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.clickable { displayMode = PushDisplayMode.CALLBACK_ONLY }
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+                HorizontalDivider()
+
+                Text(
+                    text = "Event Terminal Logs",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+
                 Card(
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E)),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(min = 150.dp)
+                        .height(180.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.Black)
                 ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Text(
-                            text = "Console Output Log",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = Color.Gray
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
+                    Box(modifier = Modifier.padding(12.dp)) {
                         Text(
                             text = logText,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Green
+                            color = Color.Green,
+                            style = MaterialTheme.typography.bodySmall
                         )
                     }
                 }
