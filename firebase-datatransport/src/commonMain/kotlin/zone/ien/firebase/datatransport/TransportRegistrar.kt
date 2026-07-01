@@ -1,5 +1,7 @@
 package zone.ien.firebase.datatransport
 
-public expect class TransportRegistrar {
+import zone.ien.firebase.components.ComponentRegistrar
+
+public expect class TransportRegistrar : ComponentRegistrar {
     public constructor()
 }
