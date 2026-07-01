@@ -76,14 +76,11 @@ public fun FirebasePush.formatNotification(userInfo: Map<Any?, *>) : Notificatio
     }
     
     val formatter = FirebasePush.notificationFormatter
-    println("formatter: ${formatter != null}")
     if (formatter != null) {
         return formatter.format(filteredData, title, body)
     }
     
     if (title != null || body != null) {
-        println("formatter: ${formatter} $title $body")
-        return NotificationContent("h", "w formatter: ${formatter} $title $body")
         return NotificationContent(title, body)
     }
     

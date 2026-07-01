@@ -18,6 +18,8 @@ import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebaseApp
 import androidx.compose.runtime.saveable.rememberSaveable
 import zone.ien.firebase.messaging.FirebasePush
+import zone.ien.firebase.messaging.NotificationContent
+import zone.ien.firebase.messaging.NotificationFormatter
 import zone.ien.firebase.messaging.PushListener
 import zone.ien.firebase.messaging.PushDisplayMode
 import zone.ien.utils.utils.Dlog
@@ -53,23 +55,8 @@ fun MessagingScreen(onBack: () -> Unit) {
     LaunchedEffect(initError) {
         if (initError == null) {
             runCatching {
-                // Register custom dynamic notification formatter inside the application (commonMain)
-                FirebasePush.notificationFormatter = object : zone.ien.firebase.messaging.NotificationFormatter {
-                    override fun format(data: Map<String, String>, title: String?, body: String?): zone.ien.firebase.messaging.NotificationContent? {
-                        val nickname = data["sender_nickname"]
-                        val content = data["content"]
-                        if (nickname != null && content != null) {
-                            return zone.ien.firebase.messaging.NotificationContent(
-                                title = "$nickname 님이 보낸 책 보고서",
-                                body = "내용: $content"
-                            )
-                        }
-                        if (title != null || body != null) {
-                            return zone.ien.firebase.messaging.NotificationContent(title, body)
-                        }
-                        return null
-                    }
-                }
+                // Initialize push configuration including notification formatter
+                zone.ien.firebase.example.KmpPushInitializer.initialize(formatter = zone.ien.firebase.example.ExampleNotificationFormatter())
 
                 // Register unified FirebasePush listener matching reference architecture
                 FirebasePush.setListener(object : PushListener {

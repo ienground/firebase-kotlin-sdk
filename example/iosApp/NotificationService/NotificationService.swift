@@ -10,6 +10,9 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
+        // Initialize centralized push configuration inside App Extension process
+        KmpPushInitializer.shared.initialize(formatter: ComposeApp.ExampleNotificationFormatter())
+        
         if let bestAttemptContent = bestAttemptContent {
             let userInfo = bestAttemptContent.userInfo
             

@@ -4,6 +4,15 @@ public interface NotificationFormatter {
     public fun format(data: Map<String, String>, title: String?, body: String?): NotificationContent?
 }
 
+public class DefaultNotificationFormatter : NotificationFormatter {
+    override fun format(data: Map<String, String>, title: String?, body: String?): NotificationContent? {
+        if (title != null || body != null) {
+            return NotificationContent(title, body)
+        }
+        return null
+    }
+}
+
 public object FirebasePush {
 
     private var listeners = setOf<PushListener>()
@@ -11,8 +20,8 @@ public object FirebasePush {
     // Allow setting the dynamic display mode (AUTO_DISPLAY or CALLBACK_ONLY)
     public var displayMode: PushDisplayMode = PushDisplayMode.AUTO_DISPLAY
 
-    // Client-injected dynamic formatter
-    public var notificationFormatter: NotificationFormatter? = null
+    // Client-injected dynamic formatter (defaults to DefaultNotificationFormatter)
+    public var notificationFormatter: NotificationFormatter? = DefaultNotificationFormatter()
 
     internal val eventSink: PushEventSink = object : PushEventSink {
         override fun onNewToken(token: String) {
