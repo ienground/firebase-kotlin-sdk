@@ -14,7 +14,7 @@ public class AndroidInteropAppCheckTokenProvider(
     private val androidProvider: AndroidInteropAppCheckTokenProvider
 ) : InteropAppCheckTokenProvider {
 
-    private val listenerMap = mutableMapOf<AppCheckTokenListener, AndroidAppCheckTokenListenerAdapter>()
+    private val listenerMap = java.util.concurrent.ConcurrentHashMap<AppCheckTokenListener, AndroidAppCheckTokenListenerAdapter>()
 
     override suspend fun getToken(forceRefresh: Boolean): AppCheckTokenResult {
         val res = androidProvider.getToken(forceRefresh).await()
