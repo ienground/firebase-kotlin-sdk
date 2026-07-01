@@ -137,6 +137,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.DatabaseCollection) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Play Integrity",
+                        subtitle = "Android Play Integrity App Check provider verification.",
+                        indicatorColor = Color(0xFFE91E63),
+                        onClick = { onNavigate(ScreenRoute.PlayIntegrity) }
+                    )
+                }
             }
         }
     }
