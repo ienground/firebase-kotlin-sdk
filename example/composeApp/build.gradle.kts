@@ -50,6 +50,7 @@ kotlin {
             implementation(project(":firebase-storage"))
             implementation(project(":firebase-database"))
             implementation(project(":firebase-database-collection"))
+            implementation(project(":firebase-crashlytics"))
             implementation(project(":firebase-functions"))
             implementation(project(":appcheck:firebase-appcheck"))
             implementation(project(":appcheck:firebase-appcheck-interop"))
