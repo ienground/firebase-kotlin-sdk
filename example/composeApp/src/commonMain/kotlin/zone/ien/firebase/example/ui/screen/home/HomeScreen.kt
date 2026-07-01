@@ -121,6 +121,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.Functions) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Realtime Database",
+                        subtitle = "Write, push, remove and update database nodes.",
+                        indicatorColor = Color(0xFFFFCA28),
+                        onClick = { onNavigate(ScreenRoute.Database) }
+                    )
+                }
             }
         }
     }
