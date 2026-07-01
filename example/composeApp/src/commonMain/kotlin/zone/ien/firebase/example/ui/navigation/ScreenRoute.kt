@@ -24,6 +24,7 @@ sealed interface ScreenRoute: NavKey {
     @Serializable data object Functions: ScreenRoute
     @Serializable data object Database: ScreenRoute
     @Serializable data object DatabaseCollection: ScreenRoute
+    @Serializable data object Crashlytics: ScreenRoute
 }
 
 @Composable
@@ -83,6 +84,11 @@ fun ScreenNavigationGraph(
             }
             entry<ScreenRoute.DatabaseCollection> {
                 zone.ien.firebase.example.ui.screen.database.DatabaseCollectionScreen(
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.Crashlytics> {
+                zone.ien.firebase.example.ui.screen.crashlytics.CrashlyticsScreen(
                     onBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }
