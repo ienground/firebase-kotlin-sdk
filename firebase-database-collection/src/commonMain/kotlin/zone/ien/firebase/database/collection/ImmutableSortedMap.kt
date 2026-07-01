@@ -48,11 +48,9 @@ public class ImmutableSortedMap<K, V> private constructor(
     }
 
     private fun binarySearch(key: K): Int {
-        val target = Pair(key, null as V)
-        val pairComparator = Comparator<Pair<K, V>> { p1, p2 ->
-            comparator.compare(p1.first, p2.first)
+        return entries.binarySearch { entry ->
+            comparator.compare(entry.first, key)
         }
-        return entries.binarySearch(target, pairComparator)
     }
 
     public companion object {
