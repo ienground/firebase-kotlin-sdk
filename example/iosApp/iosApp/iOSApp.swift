@@ -26,8 +26,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
             }
         }
         
-        // KMP FirebasePush internally configures the FIRMessaging delegate and registers for remote notifications
-        _ = FirebasePush.shared.notifier
+        // KMP KMPNotifier internally configures the FIRMessaging delegate and registers for remote notifications
+        _ = KMPNotifier.shared.notifier
         
         return true
     }
@@ -38,20 +38,20 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         Messaging.messaging().apnsToken = deviceToken
     }
 
-    // Intercept background remote payloads and bridge to Kotlin FirebasePush extension
+    // Intercept background remote payloads and bridge to Kotlin KMPNotifier extension
     func application(_ application: UIApplication,
                      didReceiveRemoteNotification userInfo: [AnyHashable : Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        FirebasePush.shared.onApplicationDidReceiveRemoteNotification(userInfo: userInfo)
+        KMPNotifier.shared.onApplicationDidReceiveRemoteNotification(userInfo: userInfo)
         completionHandler(.newData)
     }
 
-    // Suppress native foreground banners and route payloads to Kotlin FirebasePush extension
+    // Suppress native foreground banners and route payloads to Kotlin KMPNotifier extension
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo
-        FirebasePush.shared.onApplicationDidReceiveRemoteNotification(userInfo: userInfo)
+        KMPNotifier.shared.onApplicationDidReceiveRemoteNotification(userInfo: userInfo)
         completionHandler([])
     }
 }

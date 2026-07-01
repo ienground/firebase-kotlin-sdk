@@ -10,14 +10,11 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
-        // Initialize centralized push configuration inside App Extension process
-        KmpPushInitializer.shared.initialize(formatter: ComposeApp.ExampleNotificationFormatter())
-        
         if let bestAttemptContent = bestAttemptContent {
             let userInfo = bestAttemptContent.userInfo
             
-            // Centralized formatting rule call from KMP framework
-            if let formatted = FirebasePush.shared.formatNotification(userInfo: userInfo) {
+            // Format via App-level helper which automatically handles internal formatter registration
+            if let formatted = AppNotificationServiceHelper.shared.formatNotification(userInfo: userInfo) {
                 bestAttemptContent.title = formatted.title ?? ""
                 bestAttemptContent.body = formatted.body ?? ""
             }

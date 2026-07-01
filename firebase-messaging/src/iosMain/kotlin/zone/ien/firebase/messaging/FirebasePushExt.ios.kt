@@ -8,10 +8,10 @@ import platform.UserNotifications.UNNotificationRequest
 import platform.UserNotifications.UNUserNotificationCenter
 
 // Centralized dynamic payload parser for Swift application didReceiveRemoteNotification
-public fun FirebasePush.onApplicationDidReceiveRemoteNotification(userInfo: Map<Any?, *>) {
-    val dataMap = mutableMapOf<String, String>()
+public fun KMPNotifier.onApplicationDidReceiveRemoteNotification(userInfo: Map<Any?, *>) {
+    val dataMap = mutableMapOf<String, Any?>()
     userInfo.forEach { (key, value) ->
-        if (key is String && value is String) {
+        if (key is String) {
             dataMap[key] = value
         }
     }
@@ -27,22 +27,22 @@ public fun FirebasePush.onApplicationDidReceiveRemoteNotification(userInfo: Map<
     val hasPayload = filteredMap.isNotEmpty()
 
     if (hasNotification && hasPayload) {
-        FirebasePush.eventSink.onPushNotificationWithPayloadData(originalNotifTitle, originalNotifBody, filteredMap)
+        KMPNotifier.eventSink.onPushNotificationWithPayloadData(originalNotifTitle, originalNotifBody, filteredMap)
     } else if (hasNotification) {
-        FirebasePush.eventSink.onPushNotification(originalNotifTitle, originalNotifBody)
+        KMPNotifier.eventSink.onPushNotification(originalNotifTitle, originalNotifBody)
     } else if (hasPayload) {
-        FirebasePush.eventSink.onPushPayloadData(filteredMap)
+        KMPNotifier.eventSink.onPushPayloadData(filteredMap)
     }
 
     // 2. Local notification trigger
-    if (FirebasePush.displayMode == PushDisplayMode.AUTO_DISPLAY && (originalNotifTitle != null || originalNotifBody != null)) {
+    if (KMPNotifier.displayMode == PushDisplayMode.AUTO_DISPLAY && (originalNotifTitle != null || originalNotifBody != null)) {
         val content = UNMutableNotificationContent().apply {
             setTitle(originalNotifTitle ?: "")
             setBody(originalNotifBody ?: "")
             setSound(UNNotificationSound.defaultSound)
         }
         val trigger = UNTimeIntervalNotificationTrigger.triggerWithTimeInterval(0.1, repeats = false)
-        val notiId = filteredMap["id"]?.toIntOrNull() ?: filteredMap["notiId"]?.toIntOrNull() ?: 0
+        val notiId = filteredMap["id"]?.toString()?.toIntOrNull() ?: filteredMap["notiId"]?.toString()?.toIntOrNull() ?: 0
         val request = UNNotificationRequest.requestWithIdentifier(
             identifier = notiId.toString(),
             content = content,
@@ -53,10 +53,10 @@ public fun FirebasePush.onApplicationDidReceiveRemoteNotification(userInfo: Map<
 }
 
 // Swift-facing dynamic layout formattings linked natively inside NotificationService extension
-public fun FirebasePush.formatNotification(userInfo: Map<Any?, *>) : NotificationContent? {
-    val dataMap = mutableMapOf<String, String>()
+public fun KMPNotifier.formatNotification(userInfo: Map<Any?, *>) : NotificationContent? {
+    val dataMap = mutableMapOf<String, Any?>()
     userInfo.forEach { (key, value) ->
-        if (key is String && value is String) {
+        if (key is String) {
             dataMap[key] = value
         }
     }
@@ -75,7 +75,7 @@ public fun FirebasePush.formatNotification(userInfo: Map<Any?, *>) : Notificatio
         body = alert
     }
     
-    val formatter = FirebasePush.notificationFormatter
+    val formatter = KMPNotifier.notificationFormatter
     if (formatter != null) {
         return formatter.format(filteredData, title, body)
     }

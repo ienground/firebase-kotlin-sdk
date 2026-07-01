@@ -4,17 +4,22 @@ import zone.ien.firebase.messaging.NotificationContent
 import zone.ien.firebase.messaging.NotificationFormatter
 
 public class ExampleNotificationFormatter : NotificationFormatter {
-    override fun format(data: Map<String, String>, title: String?, body: String?): NotificationContent? {
-        val nickname = data["sender_nickname"]
-        val content = data["content"]
-        if (nickname != null && content != null) {
-            return NotificationContent(
-                title = "$nickname 님이 보낸 책 보고서? $title",
-                body = "내용: $nickname $content"
-            )
+    override fun format(data: zone.ien.firebase.messaging.PayloadData, title: String?, body: String?): NotificationContent? {
+        // Dynamic placeholder interpolation: replaces {{key}} with data[key]
+        fun String.interpolate(): String {
+            var result = this
+            data.forEach { (key, value) ->
+                val strValue = value?.toString() ?: ""
+                result = result.replace("{{$key}}", strValue)
+            }
+            return result
         }
-        if (title != null || body != null) {
-            return NotificationContent(title, body)
+
+        val finalTitle = title?.interpolate()
+        val finalBody = body?.interpolate()
+
+        if (finalTitle != null || finalBody != null) {
+            return NotificationContent(finalTitle, finalBody)
         }
         return null
     }

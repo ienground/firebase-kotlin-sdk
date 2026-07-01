@@ -14,7 +14,7 @@ internal class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        FirebasePush.eventSink.onNewToken(token)
+        KMPNotifier.eventSink.onNewToken(token)
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
@@ -25,7 +25,7 @@ internal class MyFirebaseMessagingService : FirebaseMessagingService() {
         var targetTitle = notification?.title
         var targetBody = notification?.body
         
-        val formatter = FirebasePush.notificationFormatter
+        val formatter = KMPNotifier.notificationFormatter
         if (formatter != null) {
             val formatted = formatter.format(payloadData, targetTitle, targetBody)
             if (formatted != null) {
@@ -34,7 +34,7 @@ internal class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
         }
         
-        if (FirebasePush.displayMode == PushDisplayMode.AUTO_DISPLAY && (targetTitle != null || targetBody != null)) {
+        if (KMPNotifier.displayMode == PushDisplayMode.AUTO_DISPLAY && (targetTitle != null || targetBody != null)) {
             showNotification(targetTitle ?: "", targetBody ?: "", payloadData)
         }
         
@@ -42,11 +42,11 @@ internal class MyFirebaseMessagingService : FirebaseMessagingService() {
         val hasPayload = payloadData.isNotEmpty()
 
         if (hasNotification && hasPayload) {
-            FirebasePush.eventSink.onPushNotificationWithPayloadData(targetTitle, targetBody, payloadData)
+            KMPNotifier.eventSink.onPushNotificationWithPayloadData(targetTitle, targetBody, payloadData)
         } else if (hasNotification) {
-            FirebasePush.eventSink.onPushNotification(targetTitle, targetBody)
+            KMPNotifier.eventSink.onPushNotification(targetTitle, targetBody)
         } else if (hasPayload) {
-            FirebasePush.eventSink.onPushPayloadData(payloadData)
+            KMPNotifier.eventSink.onPushPayloadData(payloadData)
         }
     }
 

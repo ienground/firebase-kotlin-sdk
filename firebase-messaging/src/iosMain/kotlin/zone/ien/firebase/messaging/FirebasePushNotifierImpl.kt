@@ -49,7 +49,7 @@ internal class FirebasePushNotifierImpl : PushNotifier {
     private class FirebaseMessageDelegate : FIRMessagingDelegateProtocol, NSObject() {
         override fun messaging(messaging: FIRMessaging, didReceiveRegistrationToken: String?) {
             didReceiveRegistrationToken?.let { token ->
-                FirebasePush.eventSink.onNewToken(token)
+                KMPNotifier.eventSink.onNewToken(token)
             }
         }
     }

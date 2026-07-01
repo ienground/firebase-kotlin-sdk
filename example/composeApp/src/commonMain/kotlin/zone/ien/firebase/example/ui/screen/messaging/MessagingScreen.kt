@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebaseApp
 import androidx.compose.runtime.saveable.rememberSaveable
-import zone.ien.firebase.messaging.FirebasePush
+import zone.ien.firebase.messaging.KMPNotifier
 import zone.ien.firebase.messaging.NotificationContent
 import zone.ien.firebase.messaging.NotificationFormatter
 import zone.ien.firebase.messaging.PushListener
@@ -36,18 +36,44 @@ fun MessagingScreen(onBack: () -> Unit) {
         if (!FirebaseApp.isInitialized) {
             "Firebase Core must be initialized first. Go to 'Firebase Init' screen."
         } else {
-            runCatching { FirebasePush.notifier }.exceptionOrNull()?.message
+            runCatching { KMPNotifier.notifier }.exceptionOrNull()?.message
         }
     }
 
     var logText by rememberSaveable { mutableStateOf("Ready to inspect Firebase Cloud Messaging.") }
     var tokenValue by rememberSaveable { mutableStateOf("-") }
     var displayMode by rememberSaveable { mutableStateOf(PushDisplayMode.AUTO_DISPLAY) }
+    var customTemplate by rememberSaveable { mutableStateOf("{{sender_nickname}} 님이 보낸 책 보고서? {{title}}") }
 
     LaunchedEffect(displayMode) {
         if (initError == null) {
             runCatching {
-                FirebasePush.displayMode = displayMode
+                zone.ien.firebase.messaging.KMPNotifier.displayMode = displayMode
+            }
+        }
+    }
+
+    LaunchedEffect(customTemplate) {
+        if (initError == null) {
+            runCatching {
+                zone.ien.firebase.messaging.KMPNotifier.notificationFormatter = object : NotificationFormatter {
+                    override fun format(data: zone.ien.firebase.messaging.PayloadData, title: String?, body: String?): NotificationContent? {
+                        fun String.interpolate(): String {
+                            var result = this
+                            data.forEach { (key, value) ->
+                                result = result.replace("{{$key}}", value?.toString() ?: "")
+                            }
+                            result = result.replace("{{title}}", title ?: "")
+                            result = result.replace("{{body}}", body ?: "")
+                            return result
+                        }
+
+                        val finalTitle = customTemplate.interpolate()
+                        val finalBody = body?.interpolate()
+
+                        return NotificationContent(finalTitle, finalBody)
+                    }
+                }
             }
         }
     }
@@ -55,17 +81,14 @@ fun MessagingScreen(onBack: () -> Unit) {
     LaunchedEffect(initError) {
         if (initError == null) {
             runCatching {
-                // Initialize push configuration including notification formatter
-                zone.ien.firebase.example.KmpPushInitializer.initialize(formatter = zone.ien.firebase.example.ExampleNotificationFormatter())
-
-                // Register unified FirebasePush listener matching reference architecture
-                FirebasePush.setListener(object : PushListener {
+                // Register unified KMPNotifier listener matching reference architecture
+                zone.ien.firebase.messaging.KMPNotifier.addPushListener(object : PushListener {
                     override fun onNewToken(token: String) {
                         tokenValue = token
                         logText = "FCM registration token updated:\n$token"
                     }
 
-                    override fun onPayloadData(data: Map<String, String>) {
+                    override fun onPayloadData(data: zone.ien.firebase.messaging.PayloadData) {
                         val prettyPayload = data.entries.joinToString(separator = "\n") { "${it.key}: ${it.value}" }
                         logText = "New Data Payload Received:\n\n$prettyPayload"
                     }
@@ -74,7 +97,7 @@ fun MessagingScreen(onBack: () -> Unit) {
                         logText = "New Push Notification Received:\nTitle: $title\nBody: $body"
                     }
 
-                    override fun onPushNotificationWithPayloadData(title: String?, body: String?, data: Map<String, String>) {
+                    override fun onPushNotificationWithPayloadData(title: String?, body: String?, data: zone.ien.firebase.messaging.PayloadData) {
                         val prettyPayload = data.entries.joinToString(separator = "\n") { "${it.key}: ${it.value}" }
                         logText = "New Notification & Data Received:\nTitle: $title\nBody: $body\n\nPayload:\n$prettyPayload"
                     }
@@ -147,6 +170,14 @@ fun MessagingScreen(onBack: () -> Unit) {
                     }
                 }
 
+                OutlinedTextField(
+                    value = customTemplate,
+                    onValueChange = { customTemplate = it },
+                    label = { Text("Title Formatting Template") },
+                    placeholder = { Text("e.g. {{title}} 님이 보낸 책 보고서") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -156,7 +187,7 @@ fun MessagingScreen(onBack: () -> Unit) {
                             coroutineScope.launch {
                                 logText = "Retrieving FCM device token..."
                                 try {
-                                    val token = FirebasePush.notifier.getToken() ?: "-"
+                                    val token = KMPNotifier.notifier.getToken() ?: "-"
                                     tokenValue = token
                                     logText = "Token retrieved successfully!\nToken: $token"
                                 } catch (e: Exception) {
@@ -174,7 +205,7 @@ fun MessagingScreen(onBack: () -> Unit) {
                             coroutineScope.launch {
                                 logText = "Deleting FCM device token..."
                                 try {
-                                    FirebasePush.notifier.deleteMyToken()
+                                    KMPNotifier.notifier.deleteMyToken()
                                     tokenValue = "-"
                                     logText = "Token deleted successfully!"
                                 } catch (e: Exception) {

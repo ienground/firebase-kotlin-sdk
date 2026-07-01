@@ -2,7 +2,7 @@ package zone.ien.firebase.messaging
 
 // Unified push message container
 public data class PushMessage(
-    val data: Map<String, String>,
+    val data: PayloadData,
     val notification: NotificationContent?
 )
 

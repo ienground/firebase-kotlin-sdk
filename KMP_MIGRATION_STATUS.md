@@ -82,8 +82,7 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ## 📜 Recent Migration History
 
 ### 2026-07-01: `firebase-messaging` KMPNotifier-style Refactoring & Xcode Build Succeeded
-* **Reference Architecture Alignment**: Rewrote the entire `:firebase-messaging` KMP module to align 100% with the provided `firebase-messaging-reference` structure. Removed custom formatters and introduced `FirebasePush`, `PushNotifier`, and `PushListener` singleton routing.
-* **Notification Centralization**: Centralized dynamic notification data payload handling on iOS (`FirebasePushExt.ios.kt` - `formatNotification`) so that `NotificationService.swift` queries KMP directly.
-* **Parallel Build Race Mitigation**: Configured `FRAMEWORK_SEARCH_PATHS` in `project.pbxproj` for both Debug and Release configurations of the `NotificationService` Extension to query the local Gradle build directory directly. This bypasses Xcode's build phase race conditions, eliminating `Unable to resolve module dependency: 'ComposeApp'` and ensuring a reliable `** BUILD SUCCEEDED **`.
-* **Legacy Cleanups**: Removed the unused duplicate service file `KmpFirebaseMessagingService.kt` which was causing `Unresolved reference 'FirebaseMessaging'` during compilation due to old references.
+* **KMPNotifier Design Pattern Alignment**: Refactored the `:firebase-messaging` library APIs to match `KMPNotifier` exact signature style (`KMPNotifier.addPushListener`, `PayloadData` typealias, etc.).
+* **Process Isolation Integration**: Introduced `AppNotificationServiceHelper` under `iosMain` target to automatically initialize customized app-level formatter internally on demand, entirely eliminating duplicate initializer setup calls (`initialize(...)`) inside Swift code blocks.
+* **APNs & Swizzling Optimization**: Added `FirebaseAppDelegateProxyEnabled = NO` within `Info.plist` to disable automatic swizzling, ensuring that KMP manual token delegation and notification events route stably without native collisions.
 * **Exclusive Push Callbacks**: Refactored the KMP push event routing to trigger listener callbacks exclusively. If both alert title/body and data payload exist, only `onPushNotificationWithPayloadData` will fire. Otherwise, `onPushNotification` or `onPushPayloadData` fires individually, eliminating duplicate event notifications in the client app.
