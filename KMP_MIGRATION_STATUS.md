@@ -41,7 +41,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-database-collection`                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP sorted collections helper. |
 | `firebase-dataconnect`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-dataconnect:connectors`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-datatransport`                              | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-datatransport`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP internal support shell. |
 | `firebase-functions`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `firebase-messaging`                                  | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-messaging-directboot`                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -90,3 +90,8 @@ To convert any pending module (`firebase-xxx`) into KMP:
 * **Kotlin-only Data Structure**: Created the new `:firebase-database-collection` module from scratch. Implemented pure Kotlin immutable sorted map (`ImmutableSortedMap`) and set (`ImmutableSortedSet`) inside `commonMain` using standard list-binary-search, achieving 100% platform-agnostic performance.
 * **Android Backward Compatibility**: Set `api("com.google.firebase:firebase-database-collection")` dependency on Android Target to retain binary interoperability.
 * **Interactive Sorted Map Screen**: Added `DatabaseCollectionScreen` in the Sample App allowing real-time insertion, dynamic sorting, and key-removal visualization.
+
+### 2026-07-01: `firebase-datatransport` KMP Module Creation & Internal support shell
+* **Minimal Infrastructure Shell**: Created the new `:firebase-datatransport` module from scratch containing a thin expectation registrar `TransportRegistrar`.
+* **Android Registrar Association**: Linked actual class to Android's official `com.google.firebase.datatransport.TransportRegistrar` to support native components registration automatically.
+* **iOS Compatibility Shell**: Designed a dummy ios actual shell keeping iOS target fully compiling, as event dispatching is natively packed inside feature SDK products. SwiftPM is **not** required.

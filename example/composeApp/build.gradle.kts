@@ -51,6 +51,7 @@ kotlin {
             implementation(project(":firebase-database"))
             implementation(project(":firebase-database-collection"))
             implementation(project(":firebase-functions"))
+            implementation(project(":firebase-datatransport"))
 
             implementation(libs.bundles.ienlab.cmp)
         }
