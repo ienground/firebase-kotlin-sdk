@@ -1,0 +1,11 @@
+package zone.ien.firebase.database
+
+public expect class DatabaseReference {
+    public val key: String?
+    public fun child(pathString: String): DatabaseReference
+    public fun push(): DatabaseReference
+
+    public suspend fun setValue(value: Any?)
+    public suspend fun removeValue()
+    public suspend fun updateChildren(update: Map<String, Any?>)
+}

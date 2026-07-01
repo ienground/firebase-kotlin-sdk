@@ -37,7 +37,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-config-interop`                             | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-crashlytics`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-crashlytics-ndk`                            | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-database`                                   | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-database`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-database-collection`                        | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-dataconnect`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-dataconnect:connectors`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -76,3 +76,12 @@ To convert any pending module (`firebase-xxx`) into KMP:
 3. Setup SwiftPM dependencies block if linking Objective-C/Swift binary.
 4. Establish `src/commonMain/kotlin` for generic APIs.
 5. Point the `androidMain` source directory back to `src/main/java`.
+
+---
+
+## 📜 Recent Migration History
+
+### 2026-07-01: `firebase-database` KMP Module Creation & Platform SDK Wrapper
+* **KMP Module Realization**: Created the new `:firebase-database` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform SDK Wrapping**: Designed clean `expect` classes `FirebaseDatabase`, `DatabaseReference`, `DataSnapshot` inside `commonMain`, delegating seamlessly to official BOM Database dependencies on Android and SwiftPM `FirebaseDatabase` products on iOS (`FIRDatabase` etc.).
+* **Asynchronous Coroutine Bridging**: Implemented Task listener awaiting on Android and Completion-block to Coroutine suspension on iOS for setValue, removeValue, and updateChildren APIs.
