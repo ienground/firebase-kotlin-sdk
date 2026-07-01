@@ -129,6 +129,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.Database) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Database Collection",
+                        subtitle = "Test local ImmutableSortedMap insertion, sorting and removal.",
+                        indicatorColor = Color(0xFF4CAF50),
+                        onClick = { onNavigate(ScreenRoute.DatabaseCollection) }
+                    )
+                }
             }
         }
     }
