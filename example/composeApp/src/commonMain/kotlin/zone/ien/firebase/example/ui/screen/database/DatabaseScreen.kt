@@ -66,7 +66,7 @@ fun DatabaseScreen(onBack: () -> Unit) {
             }
 
             Card(
-                modifier = Modifier.fillMaxWidth().weight(1f)
+                modifier = Modifier.fillMaxWidth().heightIn(min = 150.dp)
             ) {
                 Text(
                     text = logs,
