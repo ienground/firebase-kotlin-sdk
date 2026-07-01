@@ -137,6 +137,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.DatabaseCollection) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Crashlytics",
+                        subtitle = "Log, set metadata, non-fatal and test fatal app crashes.",
+                        indicatorColor = Color(0xFFE91E63),
+                        onClick = { onNavigate(ScreenRoute.Crashlytics) }
+                    )
+                }
             }
         }
     }

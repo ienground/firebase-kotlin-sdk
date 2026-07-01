@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 35
-- **KMP Enabled**: 6
-- **Android Native Only**: 29
+- **KMP Enabled**: 10
+- **Android Native Only**: 25
 
 ---
 
@@ -35,7 +35,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-components:firebase-dynamic-module-support` | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-config`                                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-config-interop`                             | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-crashlytics`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-crashlytics`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-crashlytics-ndk`                            | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-database`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-database-collection`                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP sorted collections helper. |
@@ -80,6 +80,13 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-01: `firebase-crashlytics` KMP Module Creation & Platform SDK Wrapper
+* **KMP Module Realization**: Created the new `:firebase-crashlytics` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform SDK Wrapping**: Designed expect class `FirebaseCrashlytics` inside `commonMain`, exposing log, recordException, setCustomKey, setUserId, and data collection configurations.
+* **Platform Factory Bindings**: Delegates seamlessly to official BOM Crashlytics dependencies on Android and SwiftPM `FirebaseCrashlytics` products on iOS (`FIRCrashlytics`).
+* **Asynchronous Exception Mapping**: Maps Kotlin `Throwable` structures to iOS native `NSError` entities automatically using localized exception messages.
+* **Interactive Verification Screen**: Added `CrashlyticsScreen` in the Sample App enabling user-facing logging, custom key pairing, non-fatal exception triggers, fatal crash simulations, and build-time pipeline guidelines (dSYM uploads and Gradle plugins).
 
 ### 2026-07-01: `firebase-database` KMP Module Creation & Platform SDK Wrapper
 * **KMP Module Realization**: Created the new `:firebase-database` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
