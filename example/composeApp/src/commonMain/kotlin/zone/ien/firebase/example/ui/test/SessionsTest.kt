@@ -6,6 +6,6 @@ public object SessionsTest {
     public fun verifyCompilation(): Boolean {
         // Minimal compilation reference proving class path visibility
         val sessionsClass = FirebaseSessions::class
-        return sessionsClass != null
+        return true
     }
 }
