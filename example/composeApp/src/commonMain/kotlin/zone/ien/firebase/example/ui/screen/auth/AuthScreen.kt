@@ -23,7 +23,8 @@ public fun AuthScreen(onBack: () -> Unit) {
     val scrollState = rememberScrollState()
 
     // Real-time auth state updates via authStateFlow
-    val currentUserState = auth.authStateFlow.collectAsState(initial = auth.currentUser)
+    val authStateFlow = remember(auth) { auth.authStateFlow }
+    val currentUserState = authStateFlow.collectAsState(initial = auth.currentUser)
     val user = currentUserState.value
 
     var email by remember { mutableStateOf("") }

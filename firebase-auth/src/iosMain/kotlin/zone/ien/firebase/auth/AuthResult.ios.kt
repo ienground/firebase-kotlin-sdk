@@ -5,12 +5,11 @@ import swiftPMImport.zone.ien.firebase.firebase.auth.FIRAuthDataResult
 
 @OptIn(ExperimentalForeignApi::class)
 public actual class AuthResult private actual constructor() {
-    private var iosResult: FIRAuthDataResult? = null
+    private lateinit var iosResult: FIRAuthDataResult
 
-    public constructor(iosResult: FIRAuthDataResult?) : this() {
+    public constructor(iosResult: FIRAuthDataResult) : this() {
         this.iosResult = iosResult
     }
-
     public actual val user: FirebaseUser?
-        get() = iosResult?.user?.let { FirebaseUser(it) }
+        get() = FirebaseUser(iosResult.user)
 }

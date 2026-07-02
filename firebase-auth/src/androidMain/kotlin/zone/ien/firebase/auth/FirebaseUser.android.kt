@@ -4,26 +4,26 @@ import com.google.firebase.auth.FirebaseUser as AndroidFirebaseUser
 import kotlinx.coroutines.tasks.await
 
 public actual class FirebaseUser private actual constructor() {
-    private var androidUser: AndroidFirebaseUser? = null
+    private lateinit var androidUser: AndroidFirebaseUser
 
     public constructor(androidUser: AndroidFirebaseUser) : this() {
         this.androidUser = androidUser
     }
 
     public actual val uid: String
-        get() = androidUser?.uid ?: ""
+        get() = androidUser.uid
 
     public actual val email: String?
-        get() = androidUser?.email
+        get() = androidUser.email
 
     public actual val isAnonymous: Boolean
-        get() = androidUser?.isAnonymous ?: true
+        get() = androidUser.isAnonymous
 
     public actual suspend fun delete() {
-        androidUser?.delete()?.await()
+        androidUser.delete().await()
     }
 
     public actual suspend fun getIdToken(forceRefresh: Boolean): String {
-        return androidUser?.getIdToken(forceRefresh)?.await()?.token ?: ""
+        return androidUser.getIdToken(forceRefresh).await().token ?: ""
     }
 }

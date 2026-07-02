@@ -1,9 +1,16 @@
 package zone.ien.firebase.auth
 
+import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.alloc
+import kotlinx.cinterop.memScoped
+import kotlinx.cinterop.ptr
+import kotlinx.cinterop.value
+import kotlinx.cinterop.ObjCObjectVar
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 import swiftPMImport.zone.ien.firebase.firebase.auth.FIRAuth
 import zone.ien.firebase.FirebaseApp
 import kotlin.coroutines.resume
@@ -31,7 +38,7 @@ public actual class FirebaseAuth private actual constructor() {
             }
         }
 
-    public actual suspend fun signInAnonymously(): AuthResult = suspendCoroutine { cont ->
+    public actual suspend fun signInAnonymously(): AuthResult = suspendCancellableCoroutine { cont ->
         iosAuth.signInAnonymouslyWithCompletion { result, error ->
             if (error != null) {
                 cont.resumeWithException(Exception(error.localizedDescription))
@@ -43,7 +50,7 @@ public actual class FirebaseAuth private actual constructor() {
         }
     }
 
-    public actual suspend fun signInWithCustomToken(token: String): AuthResult = suspendCoroutine { cont ->
+    public actual suspend fun signInWithCustomToken(token: String): AuthResult = suspendCancellableCoroutine { cont ->
         iosAuth.signInWithCustomToken(token) { result, error ->
             if (error != null) {
                 cont.resumeWithException(Exception(error.localizedDescription))
@@ -55,7 +62,7 @@ public actual class FirebaseAuth private actual constructor() {
         }
     }
 
-    public actual suspend fun signInWithEmailAndPassword(email: String, password: String): AuthResult = suspendCoroutine { cont ->
+    public actual suspend fun signInWithEmailAndPassword(email: String, password: String): AuthResult = suspendCancellableCoroutine { cont ->
         iosAuth.signInWithEmail(email = email, password = password) { result, error ->
             if (error != null) {
                 cont.resumeWithException(Exception(error.localizedDescription))
@@ -67,7 +74,7 @@ public actual class FirebaseAuth private actual constructor() {
         }
     }
 
-    public actual suspend fun createUserWithEmailAndPassword(email: String, password: String): AuthResult = suspendCoroutine { cont ->
+    public actual suspend fun createUserWithEmailAndPassword(email: String, password: String): AuthResult = suspendCancellableCoroutine { cont ->
         iosAuth.createUserWithEmail(email, password) { result, error ->
             if (error != null) {
                 cont.resumeWithException(Exception(error.localizedDescription))
@@ -79,20 +86,28 @@ public actual class FirebaseAuth private actual constructor() {
         }
     }
 
-    public actual suspend fun signInWithCredential(credential: AuthCredential): AuthResult = suspendCoroutine { cont ->
-        iosAuth.signInWithCredential(credential.iosCredential) { result, error ->
-            if (error != null) {
-                cont.resumeWithException(Exception(error.localizedDescription))
-            } else if (result != null) {
-                cont.resume(AuthResult(result))
-            } else {
-                cont.resumeWithException(Exception("Sign in with credential returned null result and error"))
+    public actual suspend fun signInWithCredential(credential: AuthCredential): AuthResult = suspendCancellableCoroutine { cont ->
+            iosAuth.signInWithCredential(credential.iosCredential) { result, error ->
+                if (error != null) {
+                    cont.resumeWithException(Exception(error.localizedDescription))
+                } else if (result != null) {
+                    cont.resume(AuthResult(result))
+                } else {
+                    cont.resumeWithException(Exception("Sign in with credential returned null result and error"))
+                }
             }
         }
-    }
 
+    @OptIn(BetaInteropApi::class)
     public actual fun signOut() {
-        iosAuth.signOut(null)
+        memScoped {
+            val errorPointer = alloc<ObjCObjectVar<platform.Foundation.NSError?>>()
+            val success = iosAuth.signOut(errorPointer.ptr)
+            if (!success) {
+                val error = errorPointer.value
+                throw Exception(error?.localizedDescription ?: "Sign out failed")
+            }
+        }
     }
 
     public actual companion object {
@@ -102,7 +117,6 @@ public actual class FirebaseAuth private actual constructor() {
 
         public actual fun getInstance(app: FirebaseApp): FirebaseAuth {
             val iosAuth = FIRAuth.authWithApp(app.iosApp)
-                ?: throw IllegalStateException("FirebaseAuth instance could not be initialized for the given FirebaseApp.")
             return FirebaseAuth(iosAuth)
         }
     }
