@@ -55,6 +55,7 @@ kotlin {
             implementation(project(":firebase-auth"))
             implementation(project(":firebase-functions"))
             implementation(project(":firebase-datatransport"))
+            implementation(project(":protolite-well-known-types"))
             implementation(project(":appcheck:firebase-appcheck"))
             implementation(project(":appcheck:firebase-appcheck-interop"))
             implementation(project(":appcheck:firebase-appcheck-debug"))
