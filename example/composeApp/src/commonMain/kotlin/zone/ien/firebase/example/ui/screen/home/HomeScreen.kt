@@ -145,6 +145,22 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.PlayIntegrity) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Crashlytics",
+                        subtitle = "Log, set metadata, non-fatal and test fatal app crashes.",
+                        indicatorColor = Color(0xFFFF5722),
+                        onClick = { onNavigate(ScreenRoute.Crashlytics) }
+                    )
+                }
+                item {
+                    DemoCard(
+                        title = "Authentication",
+                        subtitle = "Anonymous & Email/Password session management.",
+                        indicatorColor = Color(0xFF00BCD4),
+                        onClick = { onNavigate(ScreenRoute.Auth) }
+                    )
+                }
             }
         }
     }
