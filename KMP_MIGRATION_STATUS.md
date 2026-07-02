@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 13
-- **Android Native Only**: 23
+- **KMP Enabled**: 14
+- **Android Native Only**: 22
 
 ---
 
@@ -52,7 +52,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-installations`                              | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-ml-modeldownloader`                         | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-perf`                                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-sessions`                                   | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-sessions`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Sessions internal support. |
 | `firebase-storage`                                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `protolite-well-known-types`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Protobuf Well-Known Types wrapper. |
 | `encoders:firebase-encoders`                          | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -81,6 +81,14 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-02: `firebase-sessions` KMP Module Creation & Platform Wrapper
+* **KMP Module Realization**: Created the new `:firebase-sessions` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Module Classification**: Designated as a `sessions/support/internal-infra` support module.
+* **Platform Wrapper & Isolation**: Created clean expect/actual contract for `FirebaseSessions` class to provide package visibility compatibility while satisfying Crashlytics and Performance SDK class path verification requirements.
+* **Android Delegation**: Wraps official `com.google.firebase:firebase-sessions:2.0.8` on Android Target. Configured with a clean actual class to avoid compiler circular reference or internal visibility clashes.
+* **iOS Platform Stubs**: Implemented clean actual class stubs for Apple targets without introducing unnecessary SwiftPM dependencies.
+* **Verification Integration**: Wired `:firebase-sessions` dependency into the Sample App and integrated `SessionsTest` compiler validations inside `FirebaseInitScreen`.
 
 ### 2026-07-02: `protolite-well-known-types` KMP Module Creation & Platform Wrapper
 * **KMP Module Realization**: Created the new `:protolite-well-known-types` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.

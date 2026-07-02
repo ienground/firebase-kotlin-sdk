@@ -118,8 +118,9 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
                             FirebaseApp.initialize(context)
                             checkIsInitialized = FirebaseApp.isInitialized
                             val wellKnownValid = zone.ien.firebase.example.ui.test.WellKnownTypesTest.verifyCompilation()
+                            val sessionsValid = zone.ien.firebase.example.ui.test.SessionsTest.verifyCompilation()
                             statusText = "Firebase Initialized Successfully!"
-                            detailMessage = "App: ${FirebaseApp.instance.getName()} (WellKnownTypes verification: $wellKnownValid)"
+                            detailMessage = "App: ${FirebaseApp.instance.getName()} (WellKnownTypes: $wellKnownValid, Sessions: $sessionsValid)"
                         } catch (e: Exception) {
                             checkIsInitialized = FirebaseApp.isInitialized
                             statusText = "Initialization Failed"
