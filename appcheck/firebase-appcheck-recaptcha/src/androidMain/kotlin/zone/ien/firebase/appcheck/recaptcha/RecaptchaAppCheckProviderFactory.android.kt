@@ -4,7 +4,7 @@ import zone.ien.firebase.appcheck.AppCheckProviderFactory
 import com.google.firebase.appcheck.AppCheckProviderFactory as AndroidAppCheckProviderFactory
 import com.google.firebase.appcheck.recaptcha.RecaptchaAppCheckProviderFactory as AndroidRecaptchaAppCheckProviderFactory
 
-public actual class RecaptchaAppCheckProviderFactory private constructor() : AppCheckProviderFactory {
+public actual class RecaptchaAppCheckProviderFactory private actual constructor() : AppCheckProviderFactory {
     private lateinit var androidRecaptchaFactory: AndroidRecaptchaAppCheckProviderFactory
 
     internal constructor(androidRecaptchaFactory: AndroidRecaptchaAppCheckProviderFactory) : this() {
