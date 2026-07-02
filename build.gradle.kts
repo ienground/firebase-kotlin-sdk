@@ -19,7 +19,7 @@ subprojects {
             publishToMavenCentral(automaticRelease = true)
 
             // Artifact ID만 각 프로젝트의 이름으로 자동 설정
-            group = "zone.ien.utils"
+            group = "zone.ien.firebase"
             version = libs.versions.lib.version.name.get()
             println("${group} ${project.name} ${version}")
 
@@ -27,8 +27,7 @@ subprojects {
 
             pom {
                 name = project.name
-                description = "About\n" +
-                        "Firebase Kotlin Multiplatform SDK"
+                description = "About Firebase Kotlin Multiplatform SDK"
                 inceptionYear = "2026"
                 url = "https://github.com/ienground/firebase-kotlin-sdk"
                 licenses {
