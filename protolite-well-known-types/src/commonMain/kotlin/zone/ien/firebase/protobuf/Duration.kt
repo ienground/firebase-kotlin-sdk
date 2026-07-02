@@ -1,6 +1,6 @@
 package zone.ien.firebase.protobuf
 
-public expect class Duration {
+public expect class Duration private constructor() {
     public val seconds: Long
     public val nanos: Int
 
