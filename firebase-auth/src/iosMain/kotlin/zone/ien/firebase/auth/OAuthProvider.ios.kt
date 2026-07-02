@@ -5,7 +5,6 @@ import swiftPMImport.zone.ien.firebase.firebase.auth.FIROAuthProvider
 
 @OptIn(ExperimentalForeignApi::class)
 public actual class OAuthProvider actual constructor(public actual val providerId: String) {
-
     public actual fun getCredential(idToken: String?, accessToken: String?): AuthCredential {
         val cred = FIROAuthProvider.credentialWithProviderID(
             providerID = providerId,
@@ -14,7 +13,6 @@ public actual class OAuthProvider actual constructor(public actual val providerI
         )
         return AuthCredential(cred)
     }
-
     public actual fun getCredential(idToken: String?, rawNonce: String?, accessToken: String?): AuthCredential {
         val cred = FIROAuthProvider.credentialWithProviderID(
             providerID = providerId,
