@@ -4,7 +4,7 @@ public actual class Timestamp private constructor(
     public actual val seconds: Long,
     public actual val nanos: Int
 ) {
-    private constructor() : this(0L, 0)
+    private actual constructor() : this(0L, 0)
 
     public actual companion object {
         public actual fun newBuilder(): Builder = Builder()
