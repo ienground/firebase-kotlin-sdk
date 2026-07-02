@@ -1,3 +1,6 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -5,9 +8,6 @@ plugins {
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.vanniktech.mavenPublish)
 }
-
-group = "zone.ien.firebase"
-version = libs.versions.lib.version.name.get()
 
 kotlin {
     jvmToolchain(17)
@@ -29,7 +29,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -68,12 +67,4 @@ kotlin {
             implementation(libs.kotlin.test)
         }
     }
-}
-
-mavenPublishing {
-    coordinates(
-        groupId = project.group.toString(),
-        artifactId = project.name,
-        version = project.version.toString()
-    )
 }

@@ -6,9 +6,6 @@ plugins {
     alias(libs.plugins.vanniktech.mavenPublish)
 }
 
-group = "zone.ien.firebase"
-version = libs.versions.lib.version.name.get()
-
 kotlin {
     jvmToolchain(17)
 
@@ -29,7 +26,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -57,37 +53,6 @@ kotlin {
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
-        }
-    }
-}
-
-mavenPublishing {
-    publishToMavenCentral()
-    signAllPublications()
-    coordinates(group.toString(), "firebase-appcheck-debug-testing", version.toString())
-
-    pom {
-        name = "Firebase AppCheck Debug Testing KMP"
-        description = "Kotlin Multiplatform Firebase AppCheck Debug Testing Wrapper"
-        inceptionYear = "2026"
-        url = "https://github.com/ienground/firebase-kotlin-sdk"
-        licenses {
-            license {
-                name = "The Apache Software License, Version 2.0"
-                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                distribution = "repo"
-            }
-        }
-        developers {
-            developer {
-                id = "ienground"
-                name = "IEN Ground"
-            }
-        }
-        scm {
-            url = "https://github.com/ienground/firebase-kotlin-sdk.git"
-            connection = "scm:git:https://github.com/ienground/firebase-kotlin-sdk.git"
-            developerConnection = "scm:git:https://github.com/ienground/firebase-kotlin-sdk.git"
         }
     }
 }
