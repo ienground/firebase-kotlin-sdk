@@ -52,6 +52,7 @@ kotlin {
             implementation(project(":firebase-database-collection"))
             implementation(project(":firebase-crashlytics"))
             implementation(project(":firebase-crashlytics-ndk"))
+            implementation(project(":firebase-auth"))
             implementation(project(":firebase-functions"))
             implementation(project(":firebase-datatransport"))
             implementation(project(":appcheck:firebase-appcheck"))
