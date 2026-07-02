@@ -3,6 +3,8 @@ package zone.ien.firebase.protobuf
 public actual class Timestamp private constructor(
     private val androidTimestamp: com.google.protobuf.Timestamp
 ) {
+    private constructor() : this(com.google.protobuf.Timestamp.getDefaultInstance())
+
     public actual val seconds: Long
         get() = androidTimestamp.seconds
 
