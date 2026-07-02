@@ -1,3 +1,6 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -5,9 +8,6 @@ plugins {
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.vanniktech.mavenPublish)
 }
-
-group = "zone.ien.firebase"
-version = libs.versions.lib.version.name.get()
 
 kotlin {
     jvmToolchain(17)
@@ -29,7 +29,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -66,37 +65,6 @@ kotlin {
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
-        }
-    }
-}
-
-mavenPublishing {
-    publishToMavenCentral()
-    signAllPublications()
-    coordinates(group.toString(), "firebase-appcheck", version.toString())
-
-    pom {
-        name = "Firebase AppCheck KMP"
-        description = "Kotlin Multiplatform Firebase AppCheck Wrapper"
-        inceptionYear = "2026"
-        url = "https://github.com/ienground/firebase-kotlin-sdk"
-        licenses {
-            license {
-                name = "The Apache Software License, Version 2.0"
-                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                distribution = "repo"
-            }
-        }
-        developers {
-            developer {
-                id = "ienground"
-                name = "IEN Ground"
-            }
-        }
-        scm {
-            url = "https://github.com/ienground/firebase-kotlin-sdk.git"
-            connection = "scm:git:https://github.com/ienground/firebase-kotlin-sdk.git"
-            developerConnection = "scm:git:https://github.com/ienground/firebase-kotlin-sdk.git"
         }
     }
 }
