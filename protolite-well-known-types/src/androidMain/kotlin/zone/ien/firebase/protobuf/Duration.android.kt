@@ -3,6 +3,8 @@ package zone.ien.firebase.protobuf
 public actual class Duration private constructor(
     private val androidDuration: com.google.protobuf.Duration
 ) {
+    private actual constructor() : this(com.google.protobuf.Duration.getDefaultInstance())
+
     public actual val seconds: Long
         get() = androidDuration.seconds
 
