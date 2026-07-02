@@ -5,7 +5,7 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "zone.ien.firebase.protolite"
+        namespace = "zone.ien.firebase.sessions"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
@@ -16,12 +16,12 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                // Common dependencies if any
+                implementation(project(":firebase-common"))
             }
         }
         androidMain {
             dependencies {
-                api(libs.firebase.android.protolite.well.known.types)
+                api(libs.firebase.android.sessions)
             }
         }
         iosMain {
