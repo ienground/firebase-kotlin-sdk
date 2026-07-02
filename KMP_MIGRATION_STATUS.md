@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 14
-- **Android Native Only**: 22
+- **KMP Enabled**: 15
+- **Android Native Only**: 21
 
 ---
 
@@ -51,7 +51,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-installations-interop`                      | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-installations`                              | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-ml-modeldownloader`                         | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-perf`                                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-perf`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Performance Monitoring wrapper. |
 | `firebase-sessions`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Sessions internal support. |
 | `firebase-storage`                                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `protolite-well-known-types`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Protobuf Well-Known Types wrapper. |
@@ -81,6 +81,13 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-02: `firebase-perf` KMP Module Creation & Platform SDK Wrapper
+* **KMP Module Realization**: Created the new `:firebase-perf` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform SDK Wrapping**: Designed clean `expect` classes `FirebasePerformance`, `Trace`, and `HttpMetric` inside `commonMain` to support manual trace starting/stopping, metric modification, custom attribute injection, and manual HTTP metric request/response size and status instrumentation.
+* **Platform Factory Bindings**: Delegates to Android's official `com.google.firebase:firebase-perf:21.0.3` on Android Target. Links SwiftPM `FirebasePerformance` (`FIRPerformance`, `FIRTrace`, `FIRHTTPMetric`) product on iOS with manual HTTP Method conversions and correct iOS selector alignments (`valueForIntMetric`).
+* **Interactive Verification Screen**: Added a dedicated `PerformanceScreen` under the sample app giving real-time control to start/stop custom traces, set metrics, and log simulated HTTP network metrics.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 15.
 
 ### 2026-07-02: `firebase-sessions` KMP Module Creation & Platform Wrapper
 * **KMP Module Realization**: Created the new `:firebase-sessions` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
