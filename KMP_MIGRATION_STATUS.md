@@ -6,8 +6,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 ## 📊 Migration Summary
 
-- **Total SDKs**: 35
-- **KMP Enabled**: 11
+- **Total SDKs**: 36
+- **KMP Enabled**: 12
 - **Android Native Only**: 24
 
 ---
@@ -30,6 +30,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-annotations`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common annotations.  |
 | `firebase-appdistribution`                            | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-appdistribution-api`                        | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-auth`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-common`                                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-components`                                 | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common components.   |
 | `firebase-components:firebase-dynamic-module-support` | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
@@ -80,6 +81,14 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-02: `firebase-auth` KMP Module Creation & Platform SDK Wrapper
+* **KMP Module Realization**: Created the new `:firebase-auth` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **OAuth & Social Providers Integration**: Added multiplatform support for token-based, OAuth, and dynamic credentials (including Google, GitHub, Apple). Created expect objects `GoogleAuthProvider`, `GithubAuthProvider` and expect class `OAuthProvider`.
+* **Platform SDK Wrapping**: Designed clean expect classes `FirebaseAuth`, `FirebaseUser`, `AuthResult`, and `AuthCredential` inside `commonMain` to support email/password sign-in, anonymous authentication, credential-based authentication, custom token session access, token retrieval, and account deletion.
+* **Platform Factory Bindings**: Delegates to Android's official `com.google.firebase.auth` components on Android Target (utilizing OIDC rawNonce builder alignments). Links SwiftPM `FirebaseAuth` (`FIRAuth`, `FIRUser`, `FIRAuthDataResult`, `FIRGoogleAuthProvider`, `FIRGitHubAuthProvider`, `FIROAuthProvider`) products on iOS.
+* **Asynchronous Flow Integration**: Bridged event listeners using coroutines `callbackFlow` to expose authStateFlow, allowing real-time session tracking. Wraps async tasks (Android Tasks and iOS Completion blocks) with coroutine suspensions.
+* **Interactive Verification Screen**: Added `AuthScreen` inside the Sample App to display current sessions, trigger anonymous sign-in, manage email credentials, extract ID tokens, delete profiles, and document platform-specific configurations.
 
 ### 2026-07-02: `firebase-crashlytics-ndk` KMP Module Creation & Android NDK Crash Capture support wrapper
 * **KMP Module Realization**: Created the new `:firebase-crashlytics-ndk` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
