@@ -42,7 +42,7 @@ public actual class Trace internal constructor(
     @Suppress("UNCHECKED_CAST")
     public actual val attributes: Map<String, String>
         get() {
-            val raw = iosTrace.attributes() as? Map<Any?, *> ?: return emptyMap()
+            val raw = iosTrace.attributes as? Map<Any?, *> ?: return emptyMap()
             return raw.entries.associate { it.key.toString() to it.value.toString() }
         }
 }
