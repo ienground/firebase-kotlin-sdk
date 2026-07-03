@@ -140,3 +140,21 @@ Stop and call out the issue instead of guessing if:
 - If you create new files as part of the task, stage them with `git add .`.
 - This applies especially to files newly created by the agent, such as source files, Gradle files, documentation updates, and migration status files.
 - Do not assume newly created files will be picked up later; explicitly stage them with `git add .`.
+
+## SwiftPM 추가 후 공통 규칙
+
+- iOS / Swift / SwiftPM 관련 작업에서,
+  Swift 패키지(SPM)를 새로 추가하거나 변경했으면
+  **작업을 마무리하기 전에 반드시 한 번은 터미널에서 의존성 Resolve를 실행한다.**
+
+- 구체적으로:
+  - Swift 패키지 루트(`Package.swift`가 있는 디렉터리)에서:
+    - `swift package resolve` 를 실행한다
+    - 필요하면 `swift package update` 도 함께 고려한다
+  - Xcode 프로젝트 / 워크스페이스 기준이라면:
+    - `xcodebuild -resolvePackageDependencies -project <project>.xcodeproj -scheme <scheme>`
+    - 또는 `xcodebuild -resolvePackageDependencies -workspace <workspace>.xcworkspace -scheme <scheme>`
+
+- 요점:
+  - “SPM 의존성을 추가/변경만 해놓고 Resolve는 안 한 상태”로 작업을 끝내지 말고,
+  - **최소 한 번은 터미널에서 의존성 리졸브를 실행한 뒤에 작업을 끝난 상태로 둔다.**

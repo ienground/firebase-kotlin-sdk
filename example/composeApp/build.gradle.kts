@@ -50,6 +50,7 @@ kotlin {
             implementation(project(":firebase-storage"))
             implementation(project(":firebase-sessions"))
             implementation(project(":firebase-perf"))
+            implementation(project(":firebase-installations"))
             implementation(project(":firebase-database"))
             implementation(project(":firebase-database-collection"))
             implementation(project(":firebase-crashlytics"))

@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 15
-- **Android Native Only**: 21
+- **KMP Enabled**: 16
+- **Android Native Only**: 20
 
 ---
 
@@ -49,7 +49,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-inappmessaging`                             | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-inappmessaging-display`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-installations-interop`                      | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-installations`                              | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-installations`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Installations SDK wrapper. |
 | `firebase-ml-modeldownloader`                         | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-perf`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Performance Monitoring wrapper. |
 | `firebase-sessions`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Sessions internal support. |
@@ -81,6 +81,13 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-03: `firebase-installations` KMP Module Creation & Platform SDK Wrapper
+* **KMP Module Realization**: Created the new `:firebase-installations` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform SDK Wrapping**: Designed clean `expect` class `FirebaseInstallations` and read-only token result holder `InstallationTokenResult` supporting asynchronous suspend calls for installation ID fetching, auth token querying, and GDPR-compliant installation deletion.
+* **Platform Factory Bindings**: Delegated to Android's official Maven artifact `com.google.firebase:firebase-installations:18.0.0` using `kotlinx.coroutines.tasks.await()`. Bound SwiftPM `FirebaseInstallations` products (`FIRInstallations`, `FIRInstallationsAuthTokenResult`) utilizing `suspendCancellableCoroutine` completions.
+* **Interactive Verification Screen**: Added a dedicated `InstallationsScreen` under the sample app giving real-time control to retrieve installation status and trigger GDPR deletion with safety warning alerts.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 16.
 
 ### 2026-07-02: `firebase-perf` KMP Module Creation & Platform SDK Wrapper
 * **KMP Module Realization**: Created the new `:firebase-perf` module from scratch with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
