@@ -92,7 +92,8 @@ kotlin {
             implementation(project(":appcheck:firebase-appcheck-playintegrity"))
             implementation(project(":appcheck:firebase-appcheck-recaptcha"))
             implementation(project(":appcheck:firebase-appcheck-debug-testing"))
-
+            implementation(project(":firebase-ml-modeldownloader"))
+ 
             implementation(libs.bundles.ienlab.cmp)
         }
         commonTest.dependencies {
