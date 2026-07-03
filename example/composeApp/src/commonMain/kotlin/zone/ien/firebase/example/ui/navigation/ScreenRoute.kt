@@ -27,6 +27,7 @@ sealed interface ScreenRoute: NavKey {
     @Serializable data object PlayIntegrity: ScreenRoute
     @Serializable data object Crashlytics: ScreenRoute
     @Serializable data object Auth: ScreenRoute
+    @Serializable data object Performance: ScreenRoute
 }
 
 @Composable
@@ -102,6 +103,11 @@ fun ScreenNavigationGraph(
             entry<ScreenRoute.Auth> {
                 zone.ien.firebase.example.ui.screen.auth.AuthScreen(
                     onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.Performance> {
+                zone.ien.firebase.example.ui.screen.perf.PerformanceScreen(
+                    onNavigateBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }
         }

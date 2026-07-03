@@ -161,6 +161,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.Auth) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Performance",
+                        subtitle = "Manual custom trace and HTTP metric logging.",
+                        indicatorColor = Color(0xFF673AB7),
+                        onClick = { onNavigate(ScreenRoute.Performance) }
+                    )
+                }
             }
         }
     }
