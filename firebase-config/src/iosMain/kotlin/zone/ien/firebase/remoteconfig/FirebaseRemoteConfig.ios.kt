@@ -57,8 +57,8 @@ public actual class FirebaseRemoteConfig(
 
     public actual fun getBoolean(key: String): Boolean = iosConfig.configValueForKey(key).boolValue
     public actual fun getString(key: String): String = iosConfig.configValueForKey(key).stringValue ?: ""
-    public actual fun getLong(key: String): Long = iosConfig.configValueForKey(key).numberValue.longValue
-    public actual fun getDouble(key: String): Double = iosConfig.configValueForKey(key).numberValue.doubleValue
+    public actual fun getLong(key: String): Long = iosConfig.configValueForKey(key).numberValue?.longValue ?: 0L
+    public actual fun getDouble(key: String): Double = iosConfig.configValueForKey(key).numberValue?.doubleValue ?: 0.0
 
     public actual fun getKeysByPrefix(prefix: String): Set<String> {
         val keys = iosConfig.keysWithPrefix(prefix)
