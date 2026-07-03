@@ -8,9 +8,9 @@ public actual class FirebasePerformance private constructor(
     private val iosPerformance: FIRPerformance
 ) {
     public actual var isPerformanceCollectionEnabled: Boolean
-        get() = iosPerformance.isDataCollectionEnabled()
+        get() = iosPerformance.dataCollectionEnabled
         set(value) {
-            iosPerformance.setDataCollectionEnabled(value)
+            iosPerformance.dataCollectionEnabled = value
         }
 
     public actual fun newTrace(traceName: String): Trace {

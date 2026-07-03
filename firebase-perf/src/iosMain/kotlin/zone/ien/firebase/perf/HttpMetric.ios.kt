@@ -35,19 +35,16 @@ public actual class HttpMetric {
     }
 
     public actual fun setRequestPayloadBytes(bytes: Long) {
-        iosHttpMetric.setRequestPayloadSize(bytes)
+        iosHttpMetric.requestPayloadSize = bytes
     }
-
     public actual fun setResponsePayloadBytes(bytes: Long) {
-        iosHttpMetric.setResponsePayloadSize(bytes)
+        iosHttpMetric.responsePayloadSize = bytes
     }
-
     public actual fun setHttpResponseCode(code: Int) {
-        iosHttpMetric.setResponseCode(code.toLong())
+        iosHttpMetric.responseCode = code.toLong()
     }
-
     public actual fun setResponseContentType(contentType: String?) {
-        iosHttpMetric.setResponseContentType(contentType)
+        iosHttpMetric.responseContentType = contentType
     }
 
     public actual fun putAttribute(attribute: String, value: String) {
@@ -65,7 +62,7 @@ public actual class HttpMetric {
     @Suppress("UNCHECKED_CAST")
     public actual val attributes: Map<String, String>
         get() {
-            val raw = iosHttpMetric.attributes() as? Map<Any?, *> ?: return emptyMap()
+            val raw = iosHttpMetric.attributes as? Map<Any?, *> ?: return emptyMap()
             return raw.entries.associate { it.key.toString() to it.value.toString() }
         }
 }
