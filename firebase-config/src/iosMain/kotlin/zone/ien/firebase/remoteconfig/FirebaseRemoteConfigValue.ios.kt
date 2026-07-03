@@ -15,9 +15,9 @@ public actual class FirebaseRemoteConfigValue(
 
     public actual fun asString(): String = iosValue.stringValue ?: ""
 
-    public actual fun asLong(): Long = iosValue.numberValue.longValue
+    public actual fun asLong(): Long = iosValue.numberValue?.longValue ?: 0L
 
-    public actual fun asDouble(): Double = iosValue.numberValue.doubleValue
+    public actual fun asDouble(): Double = iosValue.numberValue?.doubleValue ?: 0.0
 
     public actual fun asByteArray(): ByteArray {
         val nsData = iosValue.dataValue
