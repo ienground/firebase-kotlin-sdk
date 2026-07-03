@@ -1,4 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.nio.file.Files
+import java.nio.file.LinkOption
+import java.nio.file.Paths
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -31,6 +34,30 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
         }
+        iosTarget.binaries.all {
+            val sdkName = if (iosTarget.name.contains("Simulator")) "iphonesimulator" else "iphoneos"
+            val buildTypeName = if (buildType == org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.DEBUG) "Debug" else "Release"
+            val frameworkPath = "${layout.buildDirectory.get().asFile}/kotlin/swiftImportDd/dd_$sdkName/Build/Products/$buildTypeName-$sdkName/PackageFrameworks"
+            linkerOpts("-F$frameworkPath")
+        }
+    }
+    
+    swiftPMDependencies {
+        discoverClangModulesImplicitly.set(false)
+        swiftPackage(
+            url = url("https://github.com/firebase/firebase-ios-sdk.git"),
+            version = from(libs.versions.firebase.ios.sdk.get()),
+            products = listOf(
+                product("FirebaseCore"),
+                product("FirebaseFirestore"),
+                product("FirebaseAuth"),
+                product("FirebaseCrashlytics"),
+                product("FirebaseDatabase"),
+                product("FirebaseStorage"),
+                product("FirebaseFunctions"),
+                product("FirebaseAppCheck")
+            )
+        )
     }
     
     sourceSets {
@@ -69,5 +96,53 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+    }
+}
+
+
+tasks.register("createFirebaseFrameworkSymlinks") {
+    dependsOn(tasks.matching { it.name.startsWith("cinteropSwiftPMImport") })
+    doLast {
+        val sdkNames = listOf("iphonesimulator", "iphoneos")
+        val frameworks = listOf(
+            "FirebaseCore", "FirebaseFirestore", "FirebaseAuth", "FirebaseCrashlytics",
+            "FirebaseDatabase", "FirebaseStorage", "FirebaseFunctions", "FirebaseAppCheck",
+            "FirebaseAppCheckInterop", "FirebaseCoreExtension"
+        )
+
+        val buildTypes = listOf("Debug", "Release")
+        sdkNames.forEach { sdkName ->
+            buildTypes.forEach { buildType ->
+                val packageFrameworksPath = file("${layout.buildDirectory.get().asFile}/kotlin/swiftImportDd/dd_$sdkName/Build/Products/$buildType-$sdkName/PackageFrameworks")
+                if (packageFrameworksPath.exists()) {
+                    val dylibPath = "KotlinMultiplatformLinkedPackageDylib.framework/KotlinMultiplatformLinkedPackageDylib"
+                    frameworks.forEach { frameworkName ->
+                        val fwDir = file("$packageFrameworksPath/$frameworkName.framework")
+                        if (!fwDir.exists()) {
+                            fwDir.mkdirs()
+                        }
+                        val symlinkFile = file("$fwDir/$frameworkName")
+                        val symlinkPath = symlinkFile.toPath()
+                        if (!Files.exists(symlinkPath, LinkOption.NOFOLLOW_LINKS)) {
+                            try {
+                                Files.createSymbolicLink(
+                                    symlinkPath,
+                                    Paths.get("../$dylibPath")
+                                )
+                                println("Created symlink for $frameworkName pointing to $dylibPath")
+                            } catch (e: Exception) {
+                                println("Failed to create symlink for $frameworkName: ${e.message}")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink>().configureEach {
+    if (name.startsWith("linkDebug") || name.startsWith("linkRelease")) {
+        dependsOn("createFirebaseFrameworkSymlinks")
     }
 }
