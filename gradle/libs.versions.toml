@@ -43,6 +43,7 @@ firebase-android-sessions = { module = "com.google.firebase:firebase-sessions", 
 firebase-android-perf = { module = "com.google.firebase:firebase-perf", version = "21.0.3" }
 firebase-android-installations = { module = "com.google.firebase:firebase-installations", version = "18.0.0" }
 firebase-android-installations-interop = { module = "com.google.firebase:firebase-installations-interop", version = "17.3.0" }
+firebase-android-config-interop = { module = "com.google.firebase:firebase-config-interop", version = "16.0.1" }
 firebase-android-ml-modeldownloader = { module = "com.google.firebase:firebase-ml-modeldownloader", version = "24.0.0" }
 firebase-android-config = { module = "com.google.firebase:firebase-config" }
 firebase-android-protolite-well-known-types = { module = "com.google.firebase:protolite-well-known-types", version = "18.0.0" }

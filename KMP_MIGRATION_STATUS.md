@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 19
-- **Android Native Only**: 17
+- **KMP Enabled**: 20
+- **Android Native Only**: 16
 
 ---
 
@@ -35,7 +35,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-components`                                 | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common components.   |
 | `firebase-components:firebase-dynamic-module-support` | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-config`                                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Remote Config wrapper (iOS SwiftPM). |
-| `firebase-config-interop`                             | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-config-interop`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Remote Config interop contract. |
 | `firebase-crashlytics`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-crashlytics-ndk`                            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP NDK support wrapper.   |
 | `firebase-database`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
@@ -81,6 +81,14 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `firebase-config-interop` KMP Module Creation & Internal Interop Wrapper
+* **KMP Module Realization**: Created the new `:firebase-config-interop` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Isolation**: Created clean KMP interfaces and classes (`FirebaseRemoteConfigInterop`, `RolloutsStateSubscriber`, `RolloutsState`, `RolloutAssignment`) inside `commonMain` to establish clean separation of config interop contract.
+* **Android Delegation**: Bound implementation to Android's official Maven artifact `com.google.firebase:firebase-config-interop:16.0.1` translating and forwarding rollouts state changes callbacks seamlessly.
+* **iOS Platform Stubs**: Designed a dummy ios actual shell keeping iOS target fully compiling since iOS Apple SDK does not use individual config-interop libraries.
+* **Upstream Integration**: Integrated `:firebase-config-interop` dependency into the main `:firebase-config` module using `api` dependency configuration to expose the interop contract properly.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 20.
 
 ### 2026-07-04: `firebase-config` KMP Module Creation & Platform SDK Wrapper
 * **KMP Module Realization**: Created the new `:firebase-config` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
