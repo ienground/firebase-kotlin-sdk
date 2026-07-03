@@ -33,13 +33,12 @@ public actual class FirebaseInstallations(
                 val token = result.authToken
                 val expirationDate = result.expirationDate
                 val expirationTimestamp = (expirationDate.timeIntervalSince1970 * 1000).toLong()
-                // iOS installation auth token result does not contain a specific tokenCreationTimestamp.
-                // We default it to 0L or estimate it, returning 0L for compliance.
+                val creationTimestamp = (platform.Foundation.NSDate().timeIntervalSince1970 * 1000).toLong()
                 continuation.resume(
                     InstallationTokenResult(
                         token = token,
                         tokenExpirationTimestamp = expirationTimestamp,
-                        tokenCreationTimestamp = 0L
+                        tokenCreationTimestamp = creationTimestamp
                     )
                 )
             } else {
