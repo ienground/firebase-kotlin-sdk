@@ -44,14 +44,11 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":firebase-common"))
-            implementation(libs.kotlinx.coroutines.core)
         }
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
             api(libs.firebase.android.config.interop)
-            implementation(libs.play.services.tasks)
-            implementation(libs.kotlinx.coroutines.play.services)
         }
 
         val androidMain by getting {
