@@ -177,6 +177,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.Installations) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Model Downloader",
+                        subtitle = "Retrieve custom models and monitor status.",
+                        indicatorColor = Color(0xFF4CAF50),
+                        onClick = { onNavigate(ScreenRoute.ModelDownloader) }
+                    )
+                }
             }
         }
     }
