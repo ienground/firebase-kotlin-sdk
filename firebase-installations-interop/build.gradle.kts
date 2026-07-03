@@ -9,11 +9,14 @@ plugins {
     alias(libs.plugins.vanniktech.mavenPublish)
 }
 
+group = "zone.ien.firebase"
+version = libs.versions.lib.version.name.get()
+
 kotlin {
     jvmToolchain(17)
 
     androidLibrary {
-        namespace = "zone.ien.firebase.installations"
+        namespace = "zone.ien.firebase.installations.interop"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -33,30 +36,22 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "FirebaseInstallations"
+            baseName = "FirebaseInstallationsInterop"
             isStatic = true
         }
-    }
-
-    swiftPMDependencies {
-        swiftPackage(
-            url = url("https://github.com/firebase/firebase-ios-sdk.git"),
-            version = from(libs.versions.firebase.ios.sdk.get()),
-            products = listOf(product("FirebaseInstallations"))
-        )
     }
 
     sourceSets {
         commonMain.dependencies {
             implementation(project(":firebase-common"))
-            implementation(project(":firebase-components"))
-            api(project(":firebase-installations-interop"))
             implementation(libs.kotlinx.coroutines.core)
         }
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
-            api(libs.firebase.android.installations)
+            api(libs.firebase.android.installations.interop)
+            implementation(libs.play.services.tasks)
+            implementation(libs.kotlinx.coroutines.play.services)
         }
 
         val androidMain by getting {
@@ -68,3 +63,4 @@ kotlin {
         }
     }
 }
+

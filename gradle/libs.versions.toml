@@ -42,6 +42,7 @@ firebase-android-auth = { module = "com.google.firebase:firebase-auth", version 
 firebase-android-sessions = { module = "com.google.firebase:firebase-sessions", version = "2.0.8" }
 firebase-android-perf = { module = "com.google.firebase:firebase-perf", version = "21.0.3" }
 firebase-android-installations = { module = "com.google.firebase:firebase-installations", version = "18.0.0" }
+firebase-android-installations-interop = { module = "com.google.firebase:firebase-installations-interop", version = "17.3.0" }
 firebase-android-protolite-well-known-types = { module = "com.google.firebase:protolite-well-known-types", version = "18.0.0" }
 firebase-android-database = { module = "com.google.firebase:firebase-database", version = "21.0.0" }
 firebase-android-appcheck = { module = "com.google.firebase:firebase-appcheck", version = "19.2.0" }
@@ -54,6 +55,8 @@ androidx-annotation = { module = "androidx.annotation:annotation", version = "1.
 errorprone-annotations = { module = "com.google.errorprone:error_prone_annotations", version = "2.26.0" }
 firebase-annotations = { module = "com.google.firebase:firebase-annotations", version = "16.2.0" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "1.8.0" }
+kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version = "1.8.0" }
+play-services-tasks = { module = "com.google.android.gms:play-services-tasks", version = "18.1.0" }
 
 # ui
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
