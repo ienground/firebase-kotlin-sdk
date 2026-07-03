@@ -28,6 +28,7 @@ let package = Package(
     .package(path: "subpackages/_appcheck_firebase_appcheck_debug"),
     .package(path: "subpackages/_appcheck_firebase_appcheck"),
     .package(path: "subpackages/_appcheck_firebase_appcheck_interop"),
+    .package(path: "subpackages/_firebase_config"),
     .package(path: "subpackages/_firebase_common")
   ],
   targets: [
@@ -66,6 +67,10 @@ let package = Package(
           name: "FirebaseAppCheck",
           package: "firebase-ios-sdk"
         ),
+        .product(
+          name: "FirebaseRemoteConfig",
+          package: "firebase-ios-sdk"
+        ),
         .product(name: "_firebase_firestore", package: "_firebase_firestore"),
         .product(name: "_firebase_storage", package: "_firebase_storage"),
         .product(name: "_firebase_perf", package: "_firebase_perf"),
@@ -77,6 +82,7 @@ let package = Package(
         .product(name: "_appcheck_firebase_appcheck_debug", package: "_appcheck_firebase_appcheck_debug"),
         .product(name: "_appcheck_firebase_appcheck", package: "_appcheck_firebase_appcheck"),
         .product(name: "_appcheck_firebase_appcheck_interop", package: "_appcheck_firebase_appcheck_interop"),
+        .product(name: "_firebase_config", package: "_firebase_config"),
         .product(name: "_firebase_common", package: "_firebase_common")
       ]
     )
