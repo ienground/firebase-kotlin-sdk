@@ -98,6 +98,7 @@ kotlin {
 }
 
 tasks.register("createFirebaseFrameworkSymlinks") {
+    dependsOn(tasks.matching { it.name.startsWith("cinteropSwiftPMImport") })
     doLast {
         val sdkNames = listOf("iphonesimulator", "iphoneos")
         val frameworks = listOf(
