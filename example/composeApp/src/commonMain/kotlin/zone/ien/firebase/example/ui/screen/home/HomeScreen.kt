@@ -169,6 +169,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.Performance) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Installations",
+                        subtitle = "Query unique installation ID and auth token.",
+                        indicatorColor = Color(0xFF009688),
+                        onClick = { onNavigate(ScreenRoute.Installations) }
+                    )
+                }
             }
         }
     }
