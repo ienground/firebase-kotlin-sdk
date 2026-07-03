@@ -9,11 +9,15 @@ import swiftPMImport.zone.ien.firebase.firebase.installations.FIRInstallations
 import swiftPMImport.zone.ien.firebase.firebase.installations.FIRInstallationsAuthTokenResult
 import zone.ien.firebase.FirebaseApp
 
+import zone.ien.firebase.installations.interop.FirebaseInstallationsApi
+import zone.ien.firebase.installations.interop.FidListener
+import zone.ien.firebase.installations.interop.FidListenerHandle
+
 @OptIn(ExperimentalForeignApi::class)
 public actual class FirebaseInstallations(
     private val iosInstallations: FIRInstallations
-) {
-    public actual suspend fun getId(): String = suspendCancellableCoroutine { continuation ->
+) : FirebaseInstallationsApi {
+    actual override suspend fun getId(): String = suspendCancellableCoroutine { continuation ->
         iosInstallations.installationIDWithCompletion { id, error ->
             if (error != null) {
                 continuation.resumeWithException(Exception(error.localizedDescription))
@@ -25,7 +29,7 @@ public actual class FirebaseInstallations(
         }
     }
 
-    public actual suspend fun getToken(forceRefresh: Boolean): InstallationTokenResult = suspendCancellableCoroutine { continuation ->
+    actual override suspend fun getToken(forceRefresh: Boolean): InstallationTokenResult = suspendCancellableCoroutine { continuation ->
         iosInstallations.authTokenForcingRefresh(forceRefresh) { result, error ->
             if (error != null) {
                 continuation.resumeWithException(Exception(error.localizedDescription))
@@ -47,7 +51,7 @@ public actual class FirebaseInstallations(
         }
     }
 
-    public actual suspend fun delete(): Unit = suspendCancellableCoroutine { continuation ->
+    actual override suspend fun delete(): Unit = suspendCancellableCoroutine { continuation ->
         iosInstallations.deleteWithCompletion { error ->
             if (error != null) {
                 continuation.resumeWithException(Exception(error.localizedDescription))
@@ -55,6 +59,14 @@ public actual class FirebaseInstallations(
                 continuation.resume(Unit)
             }
         }
+    }
+
+    actual override fun clearFidCache() {
+        throw UnsupportedOperationException("clearFidCache is not supported on iOS.")
+    }
+
+    actual override fun registerFidListener(listener: FidListener): FidListenerHandle {
+        throw UnsupportedOperationException("registerFidListener is not supported on iOS.")
     }
 
     public actual companion object {

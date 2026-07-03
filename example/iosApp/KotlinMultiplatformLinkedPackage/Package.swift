@@ -13,6 +13,10 @@ let package = Package(
     )
   ],
   dependencies: [
+    .package(
+      url: "https://github.com/firebase/firebase-ios-sdk.git",
+      from: "11.3.0"
+    ),
     .package(path: "subpackages/_firebase_firestore"),
     .package(path: "subpackages/_firebase_storage"),
     .package(path: "subpackages/_firebase_perf"),
@@ -30,6 +34,38 @@ let package = Package(
     .target(
       name: "KotlinMultiplatformLinkedPackage",
       dependencies: [
+        .product(
+          name: "FirebaseCore",
+          package: "firebase-ios-sdk"
+        ),
+        .product(
+          name: "FirebaseFirestore",
+          package: "firebase-ios-sdk"
+        ),
+        .product(
+          name: "FirebaseAuth",
+          package: "firebase-ios-sdk"
+        ),
+        .product(
+          name: "FirebaseCrashlytics",
+          package: "firebase-ios-sdk"
+        ),
+        .product(
+          name: "FirebaseDatabase",
+          package: "firebase-ios-sdk"
+        ),
+        .product(
+          name: "FirebaseStorage",
+          package: "firebase-ios-sdk"
+        ),
+        .product(
+          name: "FirebaseFunctions",
+          package: "firebase-ios-sdk"
+        ),
+        .product(
+          name: "FirebaseAppCheck",
+          package: "firebase-ios-sdk"
+        ),
         .product(name: "_firebase_firestore", package: "_firebase_firestore"),
         .product(name: "_firebase_storage", package: "_firebase_storage"),
         .product(name: "_firebase_perf", package: "_firebase_perf"),
