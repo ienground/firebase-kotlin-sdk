@@ -7,11 +7,11 @@ import zone.ien.firebase.installations.interop.FidListener
 import zone.ien.firebase.installations.interop.FidListenerHandle
 
 public expect class FirebaseInstallations : FirebaseInstallationsApi {
-    override public suspend fun getId(): String
-    override public suspend fun getToken(forceRefresh: Boolean): InstallationTokenResult
-    override public suspend fun delete()
-    override public fun clearFidCache()
-    override public fun registerFidListener(listener: FidListener): FidListenerHandle
+    public override suspend fun getId(): String
+    public override suspend fun getToken(forceRefresh: Boolean): InstallationTokenResult
+    public override suspend fun delete()
+    public override fun clearFidCache()
+    public override fun registerFidListener(listener: FidListener): FidListenerHandle
 
     public companion object {
         public val instance: FirebaseInstallations
