@@ -39,13 +39,11 @@ fun ModelDownloaderScreen(
     val errorColor = MaterialTheme.colorScheme.error
 
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            try {
-                val models = FirebaseModelDownloader.instance.listDownloadedModels()
-                downloadedModelsList = models.toList()
-            } catch (e: Exception) {
-                logMessage = "Failed to list models: ${e.message}"
-            }
+        try {
+            val models = FirebaseModelDownloader.instance.listDownloadedModels()
+            downloadedModelsList = models.toList()
+        } catch (e: Exception) {
+            logMessage = "Failed to list models: ${e.message}"
         }
     }
 
