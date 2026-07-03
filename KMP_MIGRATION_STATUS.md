@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 17
-- **Android Native Only**: 19
+- **KMP Enabled**: 18
+- **Android Native Only**: 18
 
 ---
 
@@ -50,7 +50,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-inappmessaging-display`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-installations-interop`                      | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-installations`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Installations SDK wrapper. |
-| `firebase-ml-modeldownloader`                         | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-ml-modeldownloader`                         | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS Unsupported). |
 | `firebase-perf`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Performance Monitoring wrapper. |
 | `firebase-sessions`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Sessions internal support. |
 | `firebase-storage`                                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
@@ -81,6 +81,14 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `firebase-ml-modeldownloader` KMP Module Creation & Platform SDK Wrapper
+* **KMP Module Realization**: Created the new `:firebase-ml-modeldownloader` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform SDK Wrapping**: Designed clean `expect` classes `FirebaseModelDownloader`, `CustomModel`, `CustomModelDownloadConditions`, and enum `DownloadType` supporting remote custom TFLite model downloading, local file path verification, download conditions configuration, and model deletion.
+* **Android Delegation**: Bound implementation to Android's official Maven artifact `com.google.firebase:firebase-ml-modeldownloader:24.0.0` using `kotlinx.coroutines.tasks.await()` to query model download tasks.
+* **iOS Platform Stubs**: Designed a dummy ios actual shell throwing `UnsupportedOperationException` for model operations since the iOS Firebase ML Model Downloader is a pure Swift-only library without Objective-C bridging support. SwiftPM is **not** required.
+* **Interactive Verification Screen**: Added a dedicated `ModelDownloaderScreen` under the sample app giving real-time control to configure conditions, trigger downloads, list models, and delete files.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 18.
 
 ### 2026-07-03: `firebase-installations-interop` KMP Module Creation & Platform Wrapper
 * **KMP Module Realization**: Created the new `:firebase-installations-interop` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
