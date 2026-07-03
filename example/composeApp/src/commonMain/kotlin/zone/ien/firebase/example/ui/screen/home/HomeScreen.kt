@@ -185,6 +185,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.ModelDownloader) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Remote Config",
+                        subtitle = "Fetch, activate, and listen for dynamic parameters.",
+                        indicatorColor = Color(0xFFFF9800),
+                        onClick = { onNavigate(ScreenRoute.RemoteConfig) }
+                    )
+                }
             }
         }
     }
