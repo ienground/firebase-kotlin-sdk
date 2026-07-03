@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 16
-- **Android Native Only**: 20
+- **KMP Enabled**: 17
+- **Android Native Only**: 19
 
 ---
 
@@ -48,7 +48,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-messaging-directboot`                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-inappmessaging`                             | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-inappmessaging-display`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-installations-interop`                      | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-installations-interop`                      | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-installations`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Installations SDK wrapper. |
 | `firebase-ml-modeldownloader`                         | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-perf`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Performance Monitoring wrapper. |
@@ -81,6 +81,14 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-03: `firebase-installations-interop` KMP Module Creation & Platform Wrapper
+* **KMP Module Realization**: Created the new `:firebase-installations-interop` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Isolation**: Created KMP interfaces (`FirebaseInstallationsApi`, `InstallationTokenResult`, `FidListener`, `FidListenerHandle`) inside `commonMain` to establish clean separation of interop boundaries.
+* **Android Delegation**: Bound implementation to Android's official Maven artifact `com.google.firebase:firebase-installations-interop` using `kotlinx.coroutines.tasks.await()` to query IDs and tokens and handle FID callbacks.
+* **iOS Platform Stubs**: Designed a dummy ios actual shell keeping iOS target fully compiling since iOS Apple SDK does not use individual installations-interop libraries.
+* **Upstream Integration**: Integrated `:firebase-installations-interop` dependency into the main `:firebase-installations` module, aligning `FirebaseInstallations` class to implement `FirebaseInstallationsApi` and updating expect/actual overrides.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 17.
 
 ### 2026-07-03: `firebase-installations` KMP Module Creation & Platform SDK Wrapper
 * **KMP Module Realization**: Created the new `:firebase-installations` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
