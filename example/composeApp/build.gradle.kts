@@ -55,7 +55,8 @@ kotlin {
                 product("FirebaseDatabase"),
                 product("FirebaseStorage"),
                 product("FirebaseFunctions"),
-                product("FirebaseAppCheck")
+                product("FirebaseAppCheck"),
+                product("FirebaseRemoteConfig")
             )
         )
     }
@@ -93,6 +94,7 @@ kotlin {
             implementation(project(":appcheck:firebase-appcheck-recaptcha"))
             implementation(project(":appcheck:firebase-appcheck-debug-testing"))
             implementation(project(":firebase-ml-modeldownloader"))
+            implementation(project(":firebase-config"))
  
             implementation(libs.bundles.ienlab.cmp)
         }
@@ -110,7 +112,7 @@ tasks.register("createFirebaseFrameworkSymlinks") {
         val frameworks = listOf(
             "FirebaseCore", "FirebaseFirestore", "FirebaseAuth", "FirebaseCrashlytics",
             "FirebaseDatabase", "FirebaseStorage", "FirebaseFunctions", "FirebaseAppCheck",
-            "FirebaseAppCheckInterop", "FirebaseCoreExtension"
+            "FirebaseAppCheckInterop", "FirebaseCoreExtension", "FirebaseRemoteConfig"
         )
 
         val buildTypes = listOf("Debug", "Release")

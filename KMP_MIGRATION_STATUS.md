@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 18
-- **Android Native Only**: 18
+- **KMP Enabled**: 19
+- **Android Native Only**: 17
 
 ---
 
@@ -34,7 +34,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-common`                                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-components`                                 | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common components.   |
 | `firebase-components:firebase-dynamic-module-support` | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
-| `firebase-config`                                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-config`                                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Remote Config wrapper (iOS SwiftPM). |
 | `firebase-config-interop`                             | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-crashlytics`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-crashlytics-ndk`                            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP NDK support wrapper.   |
@@ -81,6 +81,14 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `firebase-config` KMP Module Creation & Platform SDK Wrapper
+* **KMP Module Realization**: Created the new `:firebase-config` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform SDK Wrapping**: Designed clean `expect` classes `FirebaseRemoteConfig`, `FirebaseRemoteConfigSettings`, `FirebaseRemoteConfigInfo`, `FirebaseRemoteConfigValue`, `ConfigUpdate`, `ConfigUpdateListenerRegistration`, `FetchStatus`, `ValueSource` supporting asynchronous suspend calls for remote fetch, activate, fetchAndActivate, defaults setting, settings modification, typed parameter querying, and real-time template updates.
+* **Android Delegation**: Bound implementation to Android's official Maven artifact `com.google.firebase:firebase-config` using `kotlinx.coroutines.tasks.await()` to query fetch/activate tasks and Coroutine Flows to query real-time updates.
+* **iOS Platform Bindings**: Linked SwiftPM `FirebaseRemoteConfig` product (`FIRRemoteConfig`, `FIRRemoteConfigSettings`, `FIRRemoteConfigValue`, `FIRConfigUpdateListenerRegistration`) utilizing completion handlers and extension attributes.
+* **Interactive Verification Screen**: Added a dedicated `RemoteConfigScreen` under the sample app giving real-time control to set defaults, tweak timeout/fetch intervals, call fetch/activate, listen for config changes in real-time, and query typed parameters dynamically.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 19.
 
 ### 2026-07-04: `firebase-ml-modeldownloader` KMP Module Creation & Platform SDK Wrapper
 * **KMP Module Realization**: Created the new `:firebase-ml-modeldownloader` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
