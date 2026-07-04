@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 36
+- **KMP Enabled**: 37
 - **Android Native Only**: 11
 
 ---
@@ -58,7 +58,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `encoders:firebase-encoders`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP foundational encoding contract (pure Kotlin). |
 | `encoders:firebase-encoders-json`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP JSON encoder implementation (pure Kotlin). |
 | `encoders:firebase-encoders-processor`                | `sdk` | 🟢 Migrated |  JVM Tooling      | JVM-only Annotation Processor compiler tool. |
-| `encoders:firebase-encoders-proto`                    | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `encoders:firebase-encoders-proto`                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Protobuf encoder implementation (pure Kotlin). |
 | `encoders:firebase-encoders-reflective`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `encoders:firebase-decoders-json`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `encoders:protoc-gen-firebase-encoders`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -81,6 +81,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `encoders:firebase-encoders-proto` KMP Module Creation & Protobuf Implementation
+* **KMP Module Realization**: Created the new `:encoders:firebase-encoders-proto` module with targets `androidTarget()`, `jvm()`, and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Protobuf Pipeline**: Implemented pure Kotlin interfaces (`Protobuf`, `ProtobufEncoder`) in `commonMain` to support varint/zigzag parsing and length prefix message encoding, ensuring wire compatibility with Android transport backend systems.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 37.
 
 ### 2026-07-04: `encoders:firebase-encoders-processor` KMP Module Creation & Tooling Setup
 * **JVM-only Tooling setup**: Created the new `:encoders:firebase-encoders-processor` module applying JVM-only plugins `kotlin("jvm")` and `java-library`, keeping compile-time codegen code separate from runtime iOS linking.
