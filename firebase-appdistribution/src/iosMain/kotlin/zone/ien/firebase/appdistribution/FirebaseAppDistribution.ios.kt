@@ -51,10 +51,7 @@ public actual class FirebaseAppDistribution private constructor(
     }
 
     public actual override fun updateIfNewReleaseAvailable(): Flow<UpdateProgress> {
-        // iOS SDK does not support granular background progress monitoring for IPA updates.
-        return flow {
-            throw UnsupportedOperationException("In-app update progress monitoring is not supported on iOS.")
-        }
+        throw UnsupportedOperationException("In-app update progress monitoring is not supported on iOS.")
     }
 
     public actual companion object {
