@@ -50,7 +50,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":encoders:firebase-encoders"))
-            implementation(libs.kotlinx.coroutines.core)
         }
 
         jvmMain.dependencies {
