@@ -99,7 +99,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Priority.values().forEach { priority ->
+                Priority.entries.forEach { priority ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
