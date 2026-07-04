@@ -16,7 +16,7 @@ kotlin {
     jvmToolchain(17)
 
     androidLibrary {
-        namespace = "zone.ien.firebase.ai.ondevice"
+        namespace = "zone.ien.firebase.ai.ondevice.interop"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -36,15 +36,13 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "FirebaseAIOnDevice"
+            baseName = "FirebaseAIOnDeviceInterop"
             isStatic = true
         }
     }
 
     sourceSets {
         commonMain.dependencies {
-            api(project(":ai-logic:firebase-ai"))
-            api(project(":ai-logic:firebase-ai-ondevice-interop"))
             implementation(project(":firebase-common"))
             implementation(project(":firebase-components"))
             implementation(libs.kotlinx.coroutines.core)
@@ -52,10 +50,9 @@ kotlin {
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
+            api(libs.firebase.android.ai)
             api(libs.firebase.android.ai.ondevice)
             api(libs.firebase.android.ai.ondevice.interop)
-            implementation(libs.play.services.tasks)
-            implementation(libs.kotlinx.coroutines.play.services)
         }
 
         val androidMain by getting {

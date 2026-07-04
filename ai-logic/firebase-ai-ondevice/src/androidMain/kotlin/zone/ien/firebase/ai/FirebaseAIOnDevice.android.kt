@@ -1,8 +1,9 @@
 package zone.ien.firebase.ai
 
-import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.InferenceMode as AndroidInferenceMode
 import com.google.firebase.ai.OnDeviceConfig as AndroidOnDeviceConfig
+import com.google.firebase.ai.type.PublicPreviewAPI
+import zone.ien.firebase.InternalFirebaseApi
 
 @OptIn(PublicPreviewAPI::class)
 public actual enum class InferenceMode(internal val androidMode: AndroidInferenceMode) {
@@ -18,7 +19,7 @@ public actual class OnDeviceConfig actual constructor(
     internal val androidConfig = AndroidOnDeviceConfig(mode.androidMode)
 }
 
-@OptIn(PublicPreviewAPI::class)
+@OptIn(PublicPreviewAPI::class, InternalFirebaseApi::class)
 public actual fun FirebaseAI.generativeModel(
     modelName: String,
     onDeviceConfig: OnDeviceConfig
