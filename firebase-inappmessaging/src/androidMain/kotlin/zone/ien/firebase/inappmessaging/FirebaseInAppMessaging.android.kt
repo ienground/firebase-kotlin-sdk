@@ -1,8 +1,12 @@
 package zone.ien.firebase.inappmessaging
 
-public actual class FirebaseInAppMessaging internal constructor(
-    private val androidInAppMessaging: com.google.firebase.inappmessaging.FirebaseInAppMessaging
-) {
+public actual class FirebaseInAppMessaging private actual constructor() {
+    private lateinit var androidInAppMessaging: com.google.firebase.inappmessaging.FirebaseInAppMessaging
+
+    internal constructor(androidInAppMessaging: com.google.firebase.inappmessaging.FirebaseInAppMessaging) : this() {
+        this.androidInAppMessaging = androidInAppMessaging
+    }
+
     public actual var isAutomaticDataCollectionEnabled: Boolean
         get() = androidInAppMessaging.isAutomaticDataCollectionEnabled
         set(value) {
@@ -20,7 +24,8 @@ public actual class FirebaseInAppMessaging internal constructor(
     }
 
     public actual companion object {
-        public actual val instance: FirebaseInAppMessaging
-            get() = FirebaseInAppMessaging(com.google.firebase.inappmessaging.FirebaseInAppMessaging.getInstance())
+        public actual val instance: FirebaseInAppMessaging by lazy {
+            FirebaseInAppMessaging(com.google.firebase.inappmessaging.FirebaseInAppMessaging.getInstance())
+        }
     }
 }
