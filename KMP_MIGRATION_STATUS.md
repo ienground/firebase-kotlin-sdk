@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 26
+- **KMP Enabled**: 27
 - **Android Native Only**: 11
 
 ---
@@ -65,7 +65,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `transport:transport-api`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport contract (iOS stub). |
 | `transport:transport-backend-cct`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport backend contract (iOS stub). |
 | `transport:transport-runtime`                         | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport core runtime contract (iOS stub). |
-| `transport:transport-runtime-testing`                 | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `transport:transport-runtime-testing`                 | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport internal testing utility stub (iOS stub). |
 
 ---
 
@@ -81,6 +81,12 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `transport:transport-runtime-testing` KMP Module Creation & Internal Support
+* **KMP Module Realization**: Created the new `:transport:transport-runtime-testing` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Pure Kotlin Mocking Setup**: Created standard testing helpers like `FakeClock`, `FakeEventStore`, `FakeBackend`, and `TestTransportEventBuilder` inside commonMain testing support namespace.
+* **iOS Platform Stubs**: Designed a dummy ios actual shell keeping iOS target compiling. SwiftPM is **not** required.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 27.
 
 ### 2026-07-04: `transport:transport-runtime` KMP Module Creation & Core Runtime Wrapper
 * **KMP Module Realization**: Created the new `:transport:transport-runtime` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
