@@ -28,7 +28,7 @@ public class FieldDescriptor private constructor(
             if (properties == null) {
                 properties = mutableMapOf()
             }
-            properties?.put(property.annotationClass, property)
+            properties?.put(property::class, property)
             return this
         }
 
