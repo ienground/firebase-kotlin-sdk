@@ -3,7 +3,7 @@ package zone.ien.firebase.dataconnect.connectors
 import zone.ien.firebase.dataconnect.ConnectorConfig
 import zone.ien.firebase.dataconnect.FirebaseDataConnect
 
-public actual class GeneratedConnector private constructor() : FirebaseDataConnectConnector {
+public actual class GeneratedConnector private actual constructor() : FirebaseDataConnectConnector {
     public actual override val dataConnect: FirebaseDataConnect = FirebaseDataConnect.getInstance(defaultConfig)
 
     public actual companion object {
