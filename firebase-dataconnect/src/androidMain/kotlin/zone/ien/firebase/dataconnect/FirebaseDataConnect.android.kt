@@ -1,10 +1,12 @@
 package zone.ien.firebase.dataconnect
 
 import com.google.firebase.dataconnect.getInstance
+import com.google.firebase.dataconnect.FirebaseDataConnect as AndroidDataConnect
+import com.google.firebase.dataconnect.ConnectorConfig as AndroidConnectorConfig
 import zone.ien.firebase.FirebaseApp
 
 public actual class FirebaseDataConnect internal constructor(
-    private val androidDataConnect: com.google.firebase.dataconnect.FirebaseDataConnect
+    private val androidDataConnect: AndroidDataConnect
 ) {
     public actual val config: ConnectorConfig
         get() = ConnectorConfig(
@@ -18,21 +20,24 @@ public actual class FirebaseDataConnect internal constructor(
     }
 
     public actual companion object {
-        private fun ConnectorConfig.toAndroid(): com.google.firebase.dataconnect.ConnectorConfig {
-            return com.google.firebase.dataconnect.ConnectorConfig(service, location, connector)
+        private fun ConnectorConfig.toAndroid(): AndroidConnectorConfig {
+            return AndroidConnectorConfig(service, location, connector)
         }
 
         public actual fun getInstance(config: ConnectorConfig): FirebaseDataConnect =
             FirebaseDataConnect(
-                com.google.firebase.dataconnect.FirebaseDataConnect.getInstance(
+                AndroidDataConnect.getInstance(
                     com.google.firebase.FirebaseApp.getInstance(),
                     config.toAndroid()
                 )
             )
 
-        public actual fun getInstance(app: FirebaseApp, config: ConnectorConfig): FirebaseDataConnect =
+        public actual fun getInstance(
+            app: FirebaseApp,
+            config: ConnectorConfig
+        ): FirebaseDataConnect =
             FirebaseDataConnect(
-                com.google.firebase.dataconnect.FirebaseDataConnect.getInstance(
+                AndroidDataConnect.getInstance(
                     app.androidApp,
                     config.toAndroid()
                 )
