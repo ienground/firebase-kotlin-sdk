@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 27
+- **KMP Enabled**: 28
 - **Android Native Only**: 11
 
 ---
@@ -28,7 +28,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `ai-logic:firebase-ai-ondevice-interop`               | `sdk` | 🟢 Migrated |  Android, iOS     | KMP interop contract (iOS stub). |
 | `firebase-abt`                                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-annotations`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common annotations.  |
-| `firebase-appdistribution`                            | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-appdistribution`                            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-appdistribution-api`                        | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-auth`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-common`                                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -81,6 +81,13 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `firebase-appdistribution` KMP Module Creation & Thin Wrapper
+* **KMP Module Realization**: Created the new `:firebase-appdistribution` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Isolation**: Created clean expect/actual contract for `FirebaseAppDistribution`, `AppDistributionRelease`, `UpdateProgress`, `UpdateStatus`, and `FirebaseAppDistributionException` under `zone.ien.firebase.appdistribution` package.
+* **Android Delegation**: Bound implementation to Android's official Maven artifact `com.google.firebase:firebase-appdistribution` using version catalog mapping. Implementing delegation wrappers to forward operations and mapping callback-based `UpdateTask` listeners to Kotlin `Flow<UpdateProgress>`.
+* **iOS Platform Stubs**: Designed a dummy ios actual shell keeping iOS target compiling. SwiftPM is **not** required.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 28.
 
 ### 2026-07-04: `transport:transport-runtime-testing` KMP Module Creation & Internal Support
 * **KMP Module Realization**: Created the new `:transport:transport-runtime-testing` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.

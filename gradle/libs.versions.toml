@@ -57,6 +57,7 @@ firebase-android-appcheck-debug = { module = "com.google.firebase:firebase-appch
 firebase-android-appcheck-debug-testing = { module = "com.google.firebase:firebase-appcheck-debug-testing", version = "19.2.0" }
 firebase-android-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity", version = "18.0.0" }
 firebase-android-functions = { module = "com.google.firebase:firebase-functions", version = "21.0.0" }
+firebase-android-appdistribution = { module = "com.google.firebase:firebase-appdistribution", version = "16.0.0-beta20" }
 androidx-annotation = { module = "androidx.annotation:annotation", version = "1.8.0" }
 errorprone-annotations = { module = "com.google.errorprone:error_prone_annotations", version = "2.26.0" }
 firebase-annotations = { module = "com.google.firebase:firebase-annotations", version = "16.2.0" }
