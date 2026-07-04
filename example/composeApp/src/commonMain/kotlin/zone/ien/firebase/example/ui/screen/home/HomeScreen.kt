@@ -209,6 +209,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.AiLogicOnDevice) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Datatransport",
+                        subtitle = "Telemetry datatransport priority & scheduling contract test.",
+                        indicatorColor = Color(0xFF3F51B5),
+                        onClick = { onNavigate(ScreenRoute.Datatransport) }
+                    )
+                }
             }
         }
     }
