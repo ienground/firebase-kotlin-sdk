@@ -241,6 +241,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.InAppMessaging) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Encoders",
+                        subtitle = "Verify foundational encoding interface serialization contract.",
+                        indicatorColor = Color(0xFF4CAF50),
+                        onClick = { onNavigate(ScreenRoute.Encoders) }
+                    )
+                }
             }
         }
     }
