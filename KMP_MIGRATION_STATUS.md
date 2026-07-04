@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 20
-- **Android Native Only**: 16
+- **KMP Enabled**: 21
+- **Android Native Only**: 15
 
 ---
 
@@ -23,7 +23,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `appcheck:firebase-appcheck-interop`                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP interop contract wrapper. |
 | `appcheck:firebase-appcheck-playintegrity`            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP play integrity provider wrapper. |
 | `appcheck:firebase-appcheck-recaptcha`                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP recaptcha provider wrapper. |
-| `ai-logic:firebase-ai`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `ai-logic:firebase-ai`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase AI (Gemini) SDK wrapper. |
 | `ai-logic:firebase-ai-ondevice`                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `ai-logic:firebase-ai-ondevice-interop`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-abt`                                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
@@ -81,6 +81,14 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `ai-logic:firebase-ai` KMP Module Creation & Platform SDK Wrapper
+* **KMP Module Realization**: Created the new `:ai-logic:firebase-ai` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform SDK Wrapping**: Designed clean `expect` classes `FirebaseAI`, `GenerativeModel`, `GenerateContentResponse` supporting text content generation workflows.
+* **Android Delegation**: Bound implementation to Android's official Maven artifact `com.google.firebase:firebase-ai:17.13.0` using version catalog mappings.
+* **iOS Platform Stubs**: Designed dummy iOS actual stubs throwing `UnsupportedOperationException` for content operations since the iOS Firebase AI SDK is a pure Swift-only library without Objective-C bridging support. SwiftPM is **not** required.
+* **Interactive Verification Screen**: Added a dedicated `AiLogicScreen` under the sample app giving real-time control to set model name, type prompts, call content generation, and monitor logs.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 21.
 
 ### 2026-07-04: `firebase-config-interop` KMP Module Creation & Internal Interop Wrapper
 * **KMP Module Realization**: Created the new `:firebase-config-interop` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
