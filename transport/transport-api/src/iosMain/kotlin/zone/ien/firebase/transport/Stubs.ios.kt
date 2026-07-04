@@ -3,6 +3,20 @@ package zone.ien.firebase.transport
 import kotlin.reflect.KClass
 
 public actual class Encoding private constructor(public actual val name: String) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Encoding) return false
+        return name == other.name
+    }
+
+    override fun hashCode(): Int {
+        return name.hashCode()
+    }
+
+    override fun toString(): String {
+        return "Encoding(name=$name)"
+    }
+
     public actual companion object {
         public actual fun of(name: String): Encoding = Encoding(name)
     }

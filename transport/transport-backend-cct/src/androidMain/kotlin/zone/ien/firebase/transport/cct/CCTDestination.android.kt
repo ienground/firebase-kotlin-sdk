@@ -17,8 +17,8 @@ public actual class CCTDestination internal constructor(
     public actual val endpoint: String
         get() = androidDestination.endPoint
 
-    public actual val supportedEncodings: Set<Encoding>
-        get() = androidDestination.supportedEncodings.map { Encoding(it) }.toSet()
+    public actual val supportedEncodings: Set<Encoding> =
+        androidDestination.supportedEncodings.map { Encoding.of(it.name) }.toSet()
 
     public actual constructor(endpoint: String, apiKey: String?) : this(
         com.google.android.datatransport.cct.CCTDestination(endpoint, apiKey)
