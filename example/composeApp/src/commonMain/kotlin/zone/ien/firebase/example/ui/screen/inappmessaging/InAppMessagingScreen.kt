@@ -35,6 +35,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import zone.ien.firebase.example.ui.theme.AppTheme
 import zone.ien.firebase.inappmessaging.FirebaseInAppMessaging
+import zone.ien.firebase.inappmessaging.display.FirebaseInAppMessagingDisplay
+import zone.ien.firebase.inappmessaging.display.InAppMessageMetadata
+import zone.ien.firebase.inappmessaging.display.InAppMessagingDisplayListener
+import zone.ien.firebase.inappmessaging.display.InAppMessageDismissType
+import zone.ien.firebase.inappmessaging.display.InAppMessagingDisplayCallbacks
 import zone.ien.utils.ui.wrapper.M3RootWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,6 +51,11 @@ fun InAppMessagingScreen(
     val iamResult = remember { runCatching { FirebaseInAppMessaging.instance } }
     val iam = iamResult.getOrNull()
     val isSupported = iam != null
+
+    // Crash-safe display manager instance retrieval
+    val displayResult = remember { runCatching { FirebaseInAppMessagingDisplay.instance } }
+    val displayManager = displayResult.getOrNull()
+    val isDisplaySupported = displayManager != null
 
     val logs = remember { 
         mutableStateListOf<String>().apply {
@@ -207,6 +217,29 @@ fun InAppMessagingScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Trigger Event")
+                    }
+
+                    Button(
+                        onClick = {
+                            try {
+                                log("Binding custom display lifecycle listener...")
+                                displayManager?.setCustomDisplayListener(object : InAppMessagingDisplayListener {
+                                    override fun displayMessage(message: InAppMessageMetadata, callbacks: InAppMessagingDisplayCallbacks) {
+                                        log("Listener callback -> displayed campaign: ID=${message.campaignId}, type=${message.messageType}")
+                                        // 실제 UI가 화면에 렌더링된 시점에 호출해야 합니다.
+                                        callbacks.impressionDetected()
+                                    }
+                                })
+                                log("Display listener successfully bound to InAppMessagingDisplay!")
+                            } catch (e: Exception) {
+                                log("Listener registration failed: ${e.message}")
+                            }
+                        },
+                        enabled = isDisplaySupported,
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Register Display Component Listener")
                     }
 
                     Text(
