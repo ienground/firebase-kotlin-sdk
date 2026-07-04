@@ -1,6 +1,7 @@
 package zone.ien.firebase.example.ui.screen.ai
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -106,11 +107,14 @@ fun AiLogicOnDeviceScreen(
                         InferenceMode.entries.forEach { mode ->
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { inferenceMode = mode }
+                                    .padding(vertical = 4.dp)
                             ) {
                                 RadioButton(
                                     selected = inferenceMode == mode,
-                                    onClick = { inferenceMode = mode }
+                                    onClick = null
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(

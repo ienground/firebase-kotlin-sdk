@@ -4,10 +4,12 @@ import com.google.firebase.ai.FirebaseAI as AndroidFirebaseAI
 import com.google.firebase.ai.GenerativeModel as AndroidGenerativeModel
 import com.google.firebase.ai.type.GenerateContentResponse as AndroidGenerateContentResponse
 import zone.ien.firebase.FirebaseApp
+import zone.ien.firebase.InternalFirebaseApi
 
-public actual class FirebaseAI public constructor(
-    public val androidAI: AndroidFirebaseAI
+public actual class FirebaseAI @InternalFirebaseApi constructor(
+    @property:InternalFirebaseApi public val androidAI: AndroidFirebaseAI
 ) {
+    @OptIn(InternalFirebaseApi::class)
     public actual fun generativeModel(modelName: String): GenerativeModel {
         val androidModel = androidAI.generativeModel(modelName)
         return GenerativeModel(androidModel)
@@ -17,6 +19,7 @@ public actual class FirebaseAI public constructor(
         public actual val instance: FirebaseAI
             get() = getInstance(FirebaseApp.instance)
 
+        @OptIn(InternalFirebaseApi::class)
         public actual fun getInstance(app: FirebaseApp): FirebaseAI {
             return FirebaseAI(AndroidFirebaseAI.getInstance(app.androidApp))
         }
