@@ -99,6 +99,7 @@ kotlin {
             implementation(project(":ai-logic:firebase-ai-ondevice"))
             implementation(project(":transport:transport-api"))
             implementation(project(":transport:transport-backend-cct"))
+            implementation(project(":transport:transport-runtime"))
  
             implementation(libs.bundles.ienlab.cmp)
         }

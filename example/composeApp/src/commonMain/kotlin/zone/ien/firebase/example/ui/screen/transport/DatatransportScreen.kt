@@ -41,6 +41,7 @@ import zone.ien.firebase.transport.Priority
 import zone.ien.firebase.transport.Transformer
 import zone.ien.firebase.transport.TransportScheduleCallback
 import zone.ien.firebase.transport.cct.CCTDestination
+import zone.ien.firebase.transport.runtime.TransportRuntime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -213,6 +214,55 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Verify CCT Destination")
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Button(
+                    onClick = {
+                        try {
+                            log("Getting TransportRuntime instance...")
+                            val runtime = TransportRuntime.getInstance()
+                            log("TransportRuntime successfully obtained!")
+
+                            log("Obtaining TransportFactory via CCTDestination...")
+                            val factory = runtime.newFactory(CCTDestination.INSTANCE)
+                            log("TransportFactory obtained successfully!")
+
+                            log("Creating Telemetry Transport instance...")
+                            val transport = factory.getTransport(
+                                "cct-test-topic",
+                                String::class,
+                                Encoding.of("proto"),
+                                object : Transformer<String, ByteArray> {
+                                    override fun apply(input: String): ByteArray {
+                                        return input.encodeToByteArray()
+                                    }
+                                }
+                            )
+
+                            log("Scheduling test telemetry event...")
+                            val event = Event.ofTelemetry(payload)
+                            transport.schedule(event, object : TransportScheduleCallback {
+                                override fun onSchedule(error: Exception?) {
+                                    if (error != null) {
+                                        log("Telemetry scheduler finished with error: ${error.message}")
+                                    } else {
+                                        log("Telemetry scheduler completed event routing successfully!")
+                                    }
+                                }
+                            })
+                        } catch (e: Exception) {
+                            log("TransportRuntime verification failed: ${e.message}")
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Verify Transport Runtime Pipeline")
                 }
             }
 

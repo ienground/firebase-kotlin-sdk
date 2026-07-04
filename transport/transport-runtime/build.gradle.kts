@@ -16,7 +16,7 @@ kotlin {
     jvmToolchain(17)
 
     androidLibrary {
-        namespace = "zone.ien.firebase.transport.cct"
+        namespace = "zone.ien.firebase.transport.runtime"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -36,7 +36,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "TransportBackendCct"
+            baseName = "TransportRuntime"
             isStatic = true
         }
     }
@@ -44,13 +44,11 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":transport:transport-api"))
-            implementation(project(":transport:transport-runtime"))
             implementation(libs.kotlinx.coroutines.core)
         }
 
         androidMain.dependencies {
-            implementation(project.dependencies.platform(libs.firebase.android.bom))
-            api(libs.android.datatransport.backend.cct)
+            api(libs.android.datatransport.runtime)
         }
 
         val androidMain by getting {
