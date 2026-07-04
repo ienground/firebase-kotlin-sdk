@@ -37,6 +37,7 @@ sealed interface ScreenRoute: NavKey {
     @Serializable data object AppDistribution: ScreenRoute
     @Serializable data object DataConnect: ScreenRoute
     @Serializable data object InAppMessaging: ScreenRoute
+    @Serializable data object Encoders: ScreenRoute
 }
 
 @Composable
@@ -162,6 +163,11 @@ fun ScreenNavigationGraph(
             }
             entry<ScreenRoute.InAppMessaging> {
                 zone.ien.firebase.example.ui.screen.inappmessaging.InAppMessagingScreen(
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.Encoders> {
+                zone.ien.firebase.example.ui.screen.encoders.EncodersScreen(
                     onBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }
