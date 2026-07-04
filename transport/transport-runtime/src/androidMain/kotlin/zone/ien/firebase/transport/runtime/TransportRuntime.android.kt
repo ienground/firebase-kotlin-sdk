@@ -22,17 +22,23 @@ public actual class TransportRuntime internal constructor(
             val appCtx = when {
                 context is Context -> context.applicationContext
                 context.javaClass.name == "zone.ien.firebase.FirebasePlatformContext" -> {
-                    try {
-                        val getAndroidContext = context.javaClass.getMethod("getAndroidContext")
-                        val androidContext = getAndroidContext.invoke(context) as Context
-                        androidContext.applicationContext
+                    val androidContext = try {
+                        context.javaClass.methods.firstOrNull { method ->
+                            Context::class.java.isAssignableFrom(method.returnType) && method.parameterTypes.isEmpty()
+                        }?.invoke(context) as? Context
                     } catch (e: Exception) {
-                        // fallback to field reflection if getter is not present
-                        val field = context.javaClass.getDeclaredField("androidContext")
-                        field.isAccessible = true
-                        val androidContext = field.get(context) as Context
-                        androidContext.applicationContext
+                        null
+                    } ?: try {
+                        context.javaClass.declaredFields.firstOrNull { field ->
+                            Context::class.java.isAssignableFrom(field.type)
+                        }?.let { field ->
+                            field.isAccessible = true
+                            field.get(context) as? Context
+                        }
+                    } catch (e: Exception) {
+                        null
                     }
+                    androidContext?.applicationContext ?: throw IllegalArgumentException("Failed to extract Android Context from FirebasePlatformContext.")
                 }
                 else -> throw IllegalArgumentException("Android Context or FirebasePlatformContext is required to initialize TransportRuntime.")
             }

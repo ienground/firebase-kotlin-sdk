@@ -48,7 +48,6 @@ kotlin {
         }
 
         androidMain.dependencies {
-            implementation(project.dependencies.platform(libs.firebase.android.bom))
             api(libs.android.datatransport.runtime)
         }
 
