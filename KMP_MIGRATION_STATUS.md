@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 30
+- **KMP Enabled**: 31
 - **Android Native Only**: 11
 
 ---
@@ -41,7 +41,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-database`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-database-collection`                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP sorted collections helper. |
 | `firebase-dataconnect`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only cinterop constraint). |
-| `firebase-dataconnect:connectors`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-dataconnect:connectors`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only runtime constraint). |
 | `firebase-datatransport`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP internal support shell. |
 | `firebase-functions`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `firebase-messaging`                                  | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -81,6 +81,12 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `firebase-dataconnect:connectors` KMP Module Creation & Support Wrapper
+* **KMP Module Realization**: Created the new `:firebase-dataconnect:connectors` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Isolation**: Created the common facade interface `FirebaseDataConnectConnector` and `GeneratedConnector` expect/actual mocks to support generated connector wiring in compile environments.
+* **iOS SDK CInterop Constraint Legacy**: Linked iOS target as a stub throwing `UnsupportedOperationException`, inheriting the Swift-only compilation constraints of the core runtime wrapper.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 31.
 
 ### 2026-07-04: `firebase-dataconnect` KMP Module Creation & Core Runtime Wrapper
 * **KMP Module Realization**: Created the new `:firebase-dataconnect` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.

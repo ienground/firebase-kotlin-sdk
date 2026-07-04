@@ -102,6 +102,7 @@ kotlin {
             implementation(project(":transport:transport-runtime"))
             implementation(project(":firebase-appdistribution"))
             implementation(project(":firebase-dataconnect"))
+            implementation(project(":firebase-dataconnect:connectors"))
  
             implementation(libs.bundles.ienlab.cmp)
         }
