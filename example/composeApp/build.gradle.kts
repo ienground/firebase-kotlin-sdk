@@ -106,6 +106,7 @@ kotlin {
             implementation(project(":firebase-inappmessaging"))
             implementation(project(":firebase-inappmessaging-display"))
             implementation(project(":encoders:firebase-encoders"))
+            implementation(project(":encoders:firebase-encoders-json"))
  
             implementation(libs.bundles.ienlab.cmp)
         }

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import zone.ien.firebase.encoders.FieldDescriptor
 import zone.ien.firebase.encoders.ObjectEncoder
 import zone.ien.firebase.encoders.ObjectEncoderContext
+import zone.ien.firebase.encoders.json.JsonDataEncoderBuilder
 import zone.ien.firebase.example.ui.theme.AppTheme
 import zone.ien.utils.ui.wrapper.M3RootWrapper
 
@@ -49,7 +50,7 @@ fun EncodersScreen(
     }
 
     // Mock Payload Model to test serialization contract
-    data class UserProfile(val username: String, val age: Int, val isPremium: Boolean)
+    data class UserProfile(val username: String, val age: Int, val isPremium: Boolean, val hobby: String?)
 
     // Standard ObjectEncoder implementation
     val userProfileEncoder = remember {
@@ -58,6 +59,7 @@ fun EncodersScreen(
                 context.add("username", value.username)
                 context.add("age", value.age)
                 context.add("isPremium", value.isPremium)
+                context.add("hobby", value.hobby)
             }
         }
     }
@@ -89,75 +91,53 @@ fun EncodersScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        text = "Core API Contract Simulation",
+                        text = "JSON Serialization Verification",
                         style = MaterialTheme.typography.titleMedium
                     )
 
                     Text(
-                        text = "This screen verifies that foundational serialization models (FieldDescriptor, ObjectEncoder, and Contexts) compile and execute correctly across shared Kotlin Multiplatform targets.",
+                        text = "This screen executes the newly created 'firebase-encoders-json' KMP module. It registers a custom object encoder, builds the JSON DataEncoder, and materializes real outputs dynamically.",
                         style = MaterialTheme.typography.bodyMedium
                     )
 
                     Button(
                         onClick = {
                             try {
-                                log("--- Starting Encoder Sim ---")
-                                log("1. Constructing FieldDescriptor schema metadata...")
-                                
+                                log("--- Initiating JSON Serialization ---")
+                                log("1. Creating FieldDescriptor with metadata tag...")
                                 val desc = FieldDescriptor.builder("profile")
-                                    .withProperty(ProtoDescriptor(tag = 42))
+                                    .withProperty(ProtoDescriptor(tag = 77))
                                     .build()
-                                    
                                 val tagVal = desc.getProperty(ProtoDescriptor::class)?.tag
-                                log("Descriptor tag created: ID=${desc.name}, ProtoTag=$tagVal")
+                                log("Schema tag resolved successfully: Tag=$tagVal")
 
-                                val profile = UserProfile("kmp_developer", 25, true)
-                                log("2. Initializing mock encoder context...")
+                                val profile = UserProfile("kmp_developer", 25, true, null)
+                                log("2. Payload setup: $profile")
+
+                                log("3. Building JsonDataEncoder (keeping null fields)...")
+                                val encoderWithNull = JsonDataEncoderBuilder()
+                                    .registerEncoder(UserProfile::class, userProfileEncoder)
+                                    .ignoreNullValues(false)
+                                    .build()
+                                val jsonResult1 = encoderWithNull.encode(profile)
+                                log("Result 1 (Standard): $jsonResult1")
+
+                                log("4. Building JsonDataEncoder (ignoring null fields)...")
+                                val encoderIgnoreNull = JsonDataEncoderBuilder()
+                                    .registerEncoder(UserProfile::class, userProfileEncoder)
+                                    .ignoreNullValues(true)
+                                    .build()
+                                val jsonResult2 = encoderIgnoreNull.encode(profile)
+                                log("Result 2 (IgnoreNull): $jsonResult2")
                                 
-                                val mockContext = object : ObjectEncoderContext {
-                                    override fun add(name: String, value: Any?): ObjectEncoderContext {
-                                        log("Context -> Add Object [key=$name, value=$value]")
-                                        return this
-                                    }
-                                    override fun add(name: String, value: Double): ObjectEncoderContext = add(name, value)
-                                    override fun add(name: String, value: Int): ObjectEncoderContext = add(name, value)
-                                    override fun add(name: String, value: Long): ObjectEncoderContext = add(name, value)
-                                    override fun add(name: String, value: Boolean): ObjectEncoderContext = add(name, value)
-                                    override fun add(name: String, value: Float): ObjectEncoderContext = add(name, value)
-
-                                    override fun add(field: FieldDescriptor, value: Any?): ObjectEncoderContext = add(field.name, value)
-                                    override fun add(field: FieldDescriptor, value: Double): ObjectEncoderContext = add(field.name, value)
-                                    override fun add(field: FieldDescriptor, value: Int): ObjectEncoderContext = add(field.name, value)
-                                    override fun add(field: FieldDescriptor, value: Long): ObjectEncoderContext = add(field.name, value)
-                                    override fun add(field: FieldDescriptor, value: Boolean): ObjectEncoderContext = add(field.name, value)
-                                    override fun add(field: FieldDescriptor, value: Float): ObjectEncoderContext = add(field.name, value)
-
-                                    override fun inline(value: Any?): ObjectEncoderContext {
-                                        log("Context -> Inline Object [value=$value]")
-                                        return this
-                                    }
-
-                                    override fun nested(name: String): ObjectEncoderContext {
-                                        log("Context -> Nested Object by name: $name")
-                                        return this
-                                    }
-
-                                    override fun nested(field: FieldDescriptor): ObjectEncoderContext {
-                                        log("Context -> Nested Object by field: ${field.name}")
-                                        return this
-                                    }
-                                }
-
-                                log("3. Dispatched UserProfile structure to Encoder...")
-                                userProfileEncoder.encode(profile, mockContext)
-                                log("--- Simulation successfully finished ---")
+                                log("--- Verification finished successfully ---")
                             } catch (e: Exception) {
-                                log("Simulation failed: ${e.message}")
+                                log("Serialization failed: ${e.message}")
                             }
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Run Serialization Sim")
+                        Text("Run JSON Encoder Test")
                     }
 
                     Text(
@@ -175,7 +155,7 @@ fun EncodersScreen(
                             .verticalScroll(rememberScrollState())
                     ) {
                         if (logs.isEmpty()) {
-                            Text("Press Run to initiate simulation.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+                            Text("Press Run to initiate JSON output simulation.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
                         } else {
                             logs.forEach { logLine ->
                                 Text("> $logLine", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
