@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 37
+- **KMP Enabled**: 38
 - **Android Native Only**: 11
 
 ---
@@ -59,7 +59,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `encoders:firebase-encoders-json`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP JSON encoder implementation (pure Kotlin). |
 | `encoders:firebase-encoders-processor`                | `sdk` | 🟢 Migrated |  JVM Tooling      | JVM-only Annotation Processor compiler tool. |
 | `encoders:firebase-encoders-proto`                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Protobuf encoder implementation (pure Kotlin). |
-| `encoders:firebase-encoders-reflective`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `encoders:firebase-encoders-reflective`               | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Reflective encoder helper (capability differentiated). |
 | `encoders:firebase-decoders-json`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `encoders:protoc-gen-firebase-encoders`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `transport:transport-api`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport contract (iOS stub). |
@@ -81,6 +81,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `encoders:firebase-encoders-reflective` KMP Module Creation & Capability Split
+* **KMP Module Realization**: Created the new `:encoders:firebase-encoders-reflective` module with targets `androidTarget()`, `jvm()`, and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Reflection Capability Split**: Implemented expect class `ReflectiveObjectEncoder` in `commonMain`. Enabled Java reflection on JVM/Android actual to scan fields dynamically, while using an explicit fallback registration map on iOS/Native target actual to prevent runtime crashes caused by Native reflection limits.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 38.
 
 ### 2026-07-04: `encoders:firebase-encoders-proto` KMP Module Creation & Protobuf Implementation
 * **KMP Module Realization**: Created the new `:encoders:firebase-encoders-proto` module with targets `androidTarget()`, `jvm()`, and native `iosSimulatorArm64()`, `iosArm64()`.
