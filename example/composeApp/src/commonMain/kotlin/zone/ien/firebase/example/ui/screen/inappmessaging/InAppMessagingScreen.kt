@@ -39,6 +39,7 @@ import zone.ien.firebase.inappmessaging.display.FirebaseInAppMessagingDisplay
 import zone.ien.firebase.inappmessaging.display.InAppMessageMetadata
 import zone.ien.firebase.inappmessaging.display.InAppMessagingDisplayListener
 import zone.ien.firebase.inappmessaging.display.InAppMessageDismissType
+import zone.ien.firebase.inappmessaging.display.InAppMessagingDisplayCallbacks
 import zone.ien.utils.ui.wrapper.M3RootWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -223,17 +224,10 @@ fun InAppMessagingScreen(
                             try {
                                 log("Binding custom display lifecycle listener...")
                                 displayManager?.setCustomDisplayListener(object : InAppMessagingDisplayListener {
-                                    override fun onMessageDisplayed(message: InAppMessageMetadata) {
+                                    override fun displayMessage(message: InAppMessageMetadata, callbacks: InAppMessagingDisplayCallbacks) {
                                         log("Listener callback -> displayed campaign: ID=${message.campaignId}, type=${message.messageType}")
-                                    }
-                                    override fun onMessageClicked(message: InAppMessageMetadata) {
-                                        log("Listener callback -> message clicked: name=${message.campaignName}")
-                                    }
-                                    override fun onMessageDismissed(message: InAppMessageMetadata, dismissType: InAppMessageDismissType) {
-                                        log("Listener callback -> dismissed by type: $dismissType")
-                                    }
-                                    override fun onMessageError(message: InAppMessageMetadata, exception: Exception) {
-                                        log("Listener callback -> displaying error: ${exception.message}")
+                                        // 실제 UI가 화면에 렌더링된 시점에 호출해야 합니다.
+                                        callbacks.impressionDetected()
                                     }
                                 })
                                 log("Display listener successfully bound to InAppMessagingDisplay!")
