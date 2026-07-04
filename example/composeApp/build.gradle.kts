@@ -111,6 +111,7 @@ kotlin {
             implementation(project(":encoders:firebase-encoders"))
             implementation(project(":encoders:firebase-encoders-json"))
             implementation(project(":encoders:firebase-encoders-proto"))
+            implementation(project(":encoders:firebase-encoders-reflective"))
  
             implementation(libs.bundles.ienlab.cmp)
         }
