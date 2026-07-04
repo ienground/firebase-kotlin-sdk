@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 32
+- **KMP Enabled**: 33
 - **Android Native Only**: 11
 
 ---
@@ -47,7 +47,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-messaging`                                  | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-messaging-directboot`                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-inappmessaging`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only cinterop constraint). |
-| `firebase-inappmessaging-display`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-inappmessaging-display`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only runtime constraint). |
 | `firebase-installations-interop`                      | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-installations`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Installations SDK wrapper. |
 | `firebase-ml-modeldownloader`                         | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS Unsupported). |
@@ -81,6 +81,12 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `firebase-inappmessaging-display` KMP Module Creation & Display Support Wrapper
+* **KMP Module Realization**: Created the new `:firebase-inappmessaging-display` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Isolation**: Created the common listener interface `InAppMessagingDisplayListener` and expect/actual `FirebaseInAppMessagingDisplay` wrapper mapping to Android custom display components.
+* **iOS SDK CInterop Constraint Legacy**: Linked iOS target as a stub throwing `UnsupportedOperationException`, inheriting the Swift-only cinterop compilation constraints of the core runtime module.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 33.
 
 ### 2026-07-04: `firebase-inappmessaging` KMP Module Creation & Feature Wrapper
 * **KMP Module Realization**: Created the new `:firebase-inappmessaging` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
