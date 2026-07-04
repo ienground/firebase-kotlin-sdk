@@ -142,14 +142,14 @@ private class ProtobufDataEncoderContext(
             is Double -> {
                 // fixed 64-bit double encoding
                 val bits = value.toRawBits()
-                sink.writeByte((bits and 0xFF).toByte())
-                sink.writeByte(((bits ushr 8) and 0xFF).toByte())
-                sink.writeByte(((bits ushr 16) and 0xFF).toByte())
-                sink.writeByte(((bits ushr 24) and 0xFF).toByte())
-                sink.writeByte(((bits ushr 32) and 0xFF).toByte())
-                sink.writeByte(((bits ushr 40) and 0xFF).toByte())
-                sink.writeByte(((bits ushr 48) and 0xFF).toByte())
-                sink.writeByte(((bits ushr 56) and 0xFF).toByte())
+                sink.writeByte((bits and 0xFFL).toByte())
+                sink.writeByte(((bits ushr 8) and 0xFFL).toByte())
+                sink.writeByte(((bits ushr 16) and 0xFFL).toByte())
+                sink.writeByte(((bits ushr 24) and 0xFFL).toByte())
+                sink.writeByte(((bits ushr 32) and 0xFFL).toByte())
+                sink.writeByte(((bits ushr 40) and 0xFFL).toByte())
+                sink.writeByte(((bits ushr 48) and 0xFFL).toByte())
+                sink.writeByte(((bits ushr 56) and 0xFFL).toByte())
             }
             is ByteArray -> {
                 sink.writeVarint32(value.size)
@@ -158,15 +158,11 @@ private class ProtobufDataEncoderContext(
             is Collection<*> -> {
                 // Encode collection items as repeated fields
                 val savedTag = currentFieldTag
-                val savedEnc = currentFieldEncoding
                 for (item in value) {
                     if (item == null) continue
                     // Write field header tag for each item
                     writeTagHeader(savedTag, getWireType(item))
-                    val subContext = ProtobufDataEncoderContext(sink, objectEncoders, valueEncoders, fallbackEncoder)
-                    subContext.currentFieldTag = savedTag
-                    subContext.currentFieldEncoding = savedEnc
-                    subContext.internalEncode(item)
+                    internalEncode(item)
                 }
             }
             else -> {
