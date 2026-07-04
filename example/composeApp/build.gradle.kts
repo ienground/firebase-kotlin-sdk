@@ -97,6 +97,7 @@ kotlin {
             implementation(project(":firebase-config"))
             implementation(project(":ai-logic:firebase-ai"))
             implementation(project(":ai-logic:firebase-ai-ondevice"))
+            implementation(project(":transport:transport-api"))
  
             implementation(libs.bundles.ienlab.cmp)
         }
