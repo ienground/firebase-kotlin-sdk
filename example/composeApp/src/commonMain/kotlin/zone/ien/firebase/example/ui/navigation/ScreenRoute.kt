@@ -31,6 +31,7 @@ sealed interface ScreenRoute: NavKey {
     @Serializable data object Installations: ScreenRoute
     @Serializable data object ModelDownloader: ScreenRoute
     @Serializable data object RemoteConfig: ScreenRoute
+    @Serializable data object AiLogic: ScreenRoute
 }
 
 @Composable
@@ -125,6 +126,11 @@ fun ScreenNavigationGraph(
             }
             entry<ScreenRoute.RemoteConfig> {
                 zone.ien.firebase.example.ui.screen.config.RemoteConfigScreen(
+                    onNavigateBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.AiLogic> {
+                zone.ien.firebase.example.ui.screen.ai.AiLogicScreen(
                     onNavigateBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }
