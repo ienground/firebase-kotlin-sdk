@@ -16,7 +16,7 @@ kotlin {
     jvmToolchain(17)
 
     androidLibrary {
-        namespace = "zone.ien.firebase.remoteconfig"
+        namespace = "zone.ien.firebase.remoteconfig.interop"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -36,32 +36,19 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "FirebaseRemoteConfig"
+            baseName = "FirebaseRemoteConfigInterop"
             isStatic = true
         }
-    }
-
-    swiftPMDependencies {
-        swiftPackage(
-            url = url("https://github.com/firebase/firebase-ios-sdk.git"),
-            version = from(libs.versions.firebase.ios.sdk.get()),
-            products = listOf(product("FirebaseRemoteConfig"))
-        )
     }
 
     sourceSets {
         commonMain.dependencies {
             implementation(project(":firebase-common"))
-            implementation(project(":firebase-components"))
-            api(project(":firebase-config-interop"))
-            implementation(libs.kotlinx.coroutines.core)
         }
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
-            api(libs.firebase.android.config)
-            implementation(libs.play.services.tasks)
-            implementation(libs.kotlinx.coroutines.play.services)
+            api(libs.firebase.android.config.interop)
         }
 
         val androidMain by getting {
