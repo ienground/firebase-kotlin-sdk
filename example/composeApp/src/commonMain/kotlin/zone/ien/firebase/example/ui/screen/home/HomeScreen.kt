@@ -217,6 +217,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.Datatransport) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "App Distribution",
+                        subtitle = "Check prerelease availability and trigger in-app updates.",
+                        indicatorColor = Color(0xFFF58220),
+                        onClick = { onNavigate(ScreenRoute.AppDistribution) }
+                    )
+                }
             }
         }
     }

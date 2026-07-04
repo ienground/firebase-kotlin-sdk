@@ -29,6 +29,7 @@ let package = Package(
     .package(path: "subpackages/_appcheck_firebase_appcheck"),
     .package(path: "subpackages/_appcheck_firebase_appcheck_interop"),
     .package(path: "subpackages/_firebase_config"),
+    .package(path: "subpackages/_firebase_appdistribution"),
     .package(path: "subpackages/_firebase_common")
   ],
   targets: [
@@ -83,6 +84,7 @@ let package = Package(
         .product(name: "_appcheck_firebase_appcheck", package: "_appcheck_firebase_appcheck"),
         .product(name: "_appcheck_firebase_appcheck_interop", package: "_appcheck_firebase_appcheck_interop"),
         .product(name: "_firebase_config", package: "_firebase_config"),
+        .product(name: "_firebase_appdistribution", package: "_firebase_appdistribution"),
         .product(name: "_firebase_common", package: "_firebase_common")
       ]
     )
