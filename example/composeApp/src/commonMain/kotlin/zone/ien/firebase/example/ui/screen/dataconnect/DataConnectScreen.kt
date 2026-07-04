@@ -42,7 +42,17 @@ import zone.ien.utils.ui.wrapper.M3RootWrapper
 fun DataConnectScreen(
     onBack: () -> Unit
 ) {
-    val logs = remember { mutableStateListOf<String>() }
+    // Check dynamic platform support via safe instantiation probes
+    val dynamicProbe = remember { runCatching { FirebaseDataConnect.getInstance(ConnectorConfig("movies", "us-central1", "movie-connector")) } }
+    val isSupported = dynamicProbe.isSuccess
+
+    val logs = remember { 
+        mutableStateListOf<String>().apply {
+            if (dynamicProbe.isFailure) {
+                add("Data Connect is NOT supported on this platform: ${dynamicProbe.exceptionOrNull()?.message}")
+            }
+        }
+    }
 
     var serviceName by remember { mutableStateOf("movies") }
     var locationName by remember { mutableStateOf("us-central1") }
@@ -84,13 +94,37 @@ fun DataConnectScreen(
                         .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
+                    if (!isSupported) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(Color.Red.copy(alpha = 0.1f))
+                                .padding(12.dp)
+                        ) {
+                            Text(
+                                text = "⚠️ Platform Not Supported",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = Color.Red
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "Data Connect operations are unavailable on this target due to Swift-only cinterop compilation constraints.",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Red
+                            )
+                        }
+                    }
+
                     Text(
                         text = "Connector Configuration",
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        color = if (isSupported) Color.Unspecified else Color.Gray
                     )
 
                     OutlinedTextField(
                         value = serviceName,
+                        enabled = isSupported,
                         onValueChange = { serviceName = it },
                         label = { Text("Service Name") },
                         modifier = Modifier.fillMaxWidth()
@@ -98,6 +132,7 @@ fun DataConnectScreen(
 
                     OutlinedTextField(
                         value = locationName,
+                        enabled = isSupported,
                         onValueChange = { locationName = it },
                         label = { Text("Location") },
                         modifier = Modifier.fillMaxWidth()
@@ -105,6 +140,7 @@ fun DataConnectScreen(
 
                     OutlinedTextField(
                         value = connectorName,
+                        enabled = isSupported,
                         onValueChange = { connectorName = it },
                         label = { Text("Connector Name") },
                         modifier = Modifier.fillMaxWidth()
@@ -128,6 +164,7 @@ fun DataConnectScreen(
                                 log("Initialization failed: ${e.message}")
                             }
                         },
+                        enabled = isSupported,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Get Core Runtime Instance")
@@ -145,6 +182,7 @@ fun DataConnectScreen(
                             }
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        enabled = isSupported,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Verify Generated Connector Interface")
@@ -154,7 +192,8 @@ fun DataConnectScreen(
 
                     Text(
                         text = "Local Emulator Setup",
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        color = if (isSupported && dataConnectInstance != null) Color.Unspecified else Color.Gray
                     )
 
                     Row(
@@ -163,6 +202,7 @@ fun DataConnectScreen(
                     ) {
                         OutlinedTextField(
                             value = emulatorHost,
+                            enabled = isSupported && dataConnectInstance != null,
                             onValueChange = { emulatorHost = it },
                             label = { Text("Emulator Host") },
                             modifier = Modifier.weight(2f)
@@ -170,6 +210,7 @@ fun DataConnectScreen(
 
                         OutlinedTextField(
                             value = emulatorPort,
+                            enabled = isSupported && dataConnectInstance != null,
                             onValueChange = { emulatorPort = it },
                             label = { Text("Port") },
                             modifier = Modifier.weight(1f)
@@ -193,7 +234,7 @@ fun DataConnectScreen(
                                 log("Emulator configuration failed: ${e.message}")
                             }
                         },
-                        enabled = dataConnectInstance != null,
+                        enabled = isSupported && dataConnectInstance != null,
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
                         modifier = Modifier.fillMaxWidth()
                     ) {
