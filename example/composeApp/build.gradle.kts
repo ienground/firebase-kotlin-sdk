@@ -103,6 +103,7 @@ kotlin {
             implementation(project(":firebase-appdistribution"))
             implementation(project(":firebase-dataconnect"))
             implementation(project(":firebase-dataconnect:connectors"))
+            implementation(project(":firebase-inappmessaging"))
  
             implementation(libs.bundles.ienlab.cmp)
         }

@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 31
+- **KMP Enabled**: 32
 - **Android Native Only**: 11
 
 ---
@@ -46,7 +46,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-functions`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `firebase-messaging`                                  | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-messaging-directboot`                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `firebase-inappmessaging`                             | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-inappmessaging`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only cinterop constraint). |
 | `firebase-inappmessaging-display`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-installations-interop`                      | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-installations`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Installations SDK wrapper. |
@@ -81,6 +81,12 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `firebase-inappmessaging` KMP Module Creation & Feature Wrapper
+* **KMP Module Realization**: Created the new `:firebase-inappmessaging` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Isolation**: Created clean expect/actual binding wrapper for `FirebaseInAppMessaging` exposing properties for automatic data collection controls and display suppression states.
+* **iOS SDK Swift-only CInterop Constraint**: Linked iOS SDK targets as a temporary stub. Google's native iOS In-App Messaging SDK is Swift-only and lacks an Objective-C compatibility interface, causing Kotlin/Native's cinterop pipeline (`convertSyntheticImportProjectIntoDefFile`) to fail with exit code 74. Linked package has been rolled back, and iosMain was configured to throw `UnsupportedOperationException`.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 32.
 
 ### 2026-07-04: `firebase-dataconnect:connectors` KMP Module Creation & Support Wrapper
 * **KMP Module Realization**: Created the new `:firebase-dataconnect:connectors` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
