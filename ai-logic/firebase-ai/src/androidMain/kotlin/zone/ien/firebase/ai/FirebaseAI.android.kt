@@ -15,7 +15,7 @@ public actual class FirebaseAI internal constructor(
 
     public actual companion object {
         public actual val instance: FirebaseAI
-            get() = FirebaseAI(AndroidFirebaseAI.getInstance(com.google.firebase.FirebaseApp.getInstance()))
+            get() = getInstance(FirebaseApp.instance)
 
         public actual fun getInstance(app: FirebaseApp): FirebaseAI {
             return FirebaseAI(AndroidFirebaseAI.getInstance(app.androidApp))

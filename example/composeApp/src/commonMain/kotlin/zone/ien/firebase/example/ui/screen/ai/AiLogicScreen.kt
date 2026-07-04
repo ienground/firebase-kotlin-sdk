@@ -28,6 +28,10 @@ fun AiLogicScreen(
     var prompt by remember { mutableStateOf("Explain Kotlin Multiplatform in one sentence.") }
     var consoleLogs by remember { mutableStateOf("Console initialized.\n") }
     var isLoading by remember { mutableStateOf(false) }
+    val consoleScrollState = rememberScrollState()
+    LaunchedEffect(consoleLogs) {
+        consoleScrollState.animateScrollTo(consoleScrollState.maxValue)
+    }
 
     fun log(message: String) {
         consoleLogs += "${message}\n"
@@ -107,7 +111,11 @@ fun AiLogicScreen(
                             val response = model.generateContent(prompt)
                             val textResult = response.text
                             log(">> Response received successfully!")
-                            log(">> Result:\n$textResult")
+                            if (!textResult.isNullOrBlank()) {
+                                log(">> Result:\n$textResult")
+                            } else {
+                                log(">> Result: [Empty or Null Text]")
+                            }
                         } catch (e: UnsupportedOperationException) {
                             log(">> ERROR [Platform Unsupported]: ${e.message}")
                             log(">> NOTE: Firebase AI Logic is Stubbed on iOS because Swift-only framework linking is not supported via Kotlin Native cinterop.")
@@ -150,7 +158,7 @@ fun AiLogicScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(consoleScrollState)
                 ) {
                     Text(
                         text = consoleLogs,
