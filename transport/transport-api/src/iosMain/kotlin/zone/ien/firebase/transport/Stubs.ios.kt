@@ -2,6 +2,12 @@ package zone.ien.firebase.transport
 
 import kotlin.reflect.KClass
 
+public actual class Encoding private constructor(public actual val name: String) {
+    public actual companion object {
+        public actual fun of(name: String): Encoding = Encoding(name)
+    }
+}
+
 public actual enum class Priority {
     DEFAULT,
     VERY_LOW,

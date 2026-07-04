@@ -2,6 +2,16 @@ package zone.ien.firebase.transport
 
 import kotlin.reflect.KClass
 
+public actual class Encoding(internal val androidEncoding: com.google.android.datatransport.Encoding) {
+    public actual val name: String
+        get() = androidEncoding.name
+
+    public actual companion object {
+        public actual fun of(name: String): Encoding =
+            Encoding(com.google.android.datatransport.Encoding.of(name))
+    }
+}
+
 public actual enum class Priority(internal val androidPriority: com.google.android.datatransport.Priority) {
     DEFAULT(com.google.android.datatransport.Priority.DEFAULT),
     VERY_LOW(com.google.android.datatransport.Priority.VERY_LOW),
