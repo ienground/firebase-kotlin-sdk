@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 34
+- **KMP Enabled**: 35
 - **Android Native Only**: 11
 
 ---
@@ -56,7 +56,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-storage`                                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `protolite-well-known-types`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Protobuf Well-Known Types wrapper. |
 | `encoders:firebase-encoders`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP foundational encoding contract (pure Kotlin). |
-| `encoders:firebase-encoders-json`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `encoders:firebase-encoders-json`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP JSON encoder implementation (pure Kotlin). |
 | `encoders:firebase-encoders-processor`                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `encoders:firebase-encoders-proto`                    | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `encoders:firebase-encoders-reflective`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -81,6 +81,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `encoders:firebase-encoders-json` KMP Module Creation & JSON Implementation
+* **KMP Module Realization**: Created the new `:encoders:firebase-encoders-json` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & JSON Pipeline**: Implemented pure Kotlin interfaces (`DataEncoder`, `JsonDataEncoderBuilder`) in `commonMain` to support nested object/primitive serialization onto shared `Appendable` context writers, ensuring direct availability to iOS/Android consumers without expect/actual layers.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 35.
 
 ### 2026-07-04: `encoders:firebase-encoders` KMP Module Creation & Core Contract
 * **KMP Module Realization**: Created the new `:encoders:firebase-encoders` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.

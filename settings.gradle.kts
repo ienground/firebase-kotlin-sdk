@@ -62,3 +62,6 @@ include(":example:composeApp")
 include(":example:iosApp")
 
 project(":encoders:firebase-encoders").projectDir = file("encoders/firebase-encoders")
+
+include(":encoders:firebase-encoders-json")
+project(":encoders:firebase-encoders-json").projectDir = file("encoders/firebase-encoders-json")
