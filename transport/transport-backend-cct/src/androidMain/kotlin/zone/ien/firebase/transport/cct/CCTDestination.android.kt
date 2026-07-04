@@ -3,29 +3,33 @@ package zone.ien.firebase.transport.cct
 import zone.ien.firebase.transport.Encoding
 
 public actual class CCTDestination internal constructor(
-    internal val androidDestination: com.google.android.datatransport.cct.CCTDestination
-) {
-    public actual val name: String
-        get() = androidDestination.name
+    private val nativeDestination: com.google.android.datatransport.cct.CCTDestination
+) : zone.ien.firebase.transport.runtime.Destination, zone.ien.firebase.transport.runtime.AndroidDestinationProvider {
 
-    public actual val extras: ByteArray?
-        get() = androidDestination.extras
+    override val androidDestination: com.google.android.datatransport.runtime.Destination
+        get() = nativeDestination
+
+    public actual override val name: String
+        get() = nativeDestination.name
+
+    public actual override val extras: ByteArray?
+        get() = nativeDestination.extras
 
     public actual val apiKey: String?
-        get() = androidDestination.apiKey
+        get() = nativeDestination.apiKey
 
     public actual val endpoint: String
-        get() = androidDestination.endPoint
+        get() = nativeDestination.endPoint
 
     public actual val supportedEncodings: Set<Encoding> =
-        androidDestination.supportedEncodings.map { Encoding.of(it.name) }.toSet()
+        nativeDestination.supportedEncodings.map { Encoding.of(it.name) }.toSet()
 
     public actual constructor(endpoint: String, apiKey: String?) : this(
         com.google.android.datatransport.cct.CCTDestination(endpoint, apiKey)
     )
 
     public actual fun asByteArray(): ByteArray? {
-        return androidDestination.asByteArray()
+        return nativeDestination.asByteArray()
     }
 
     public actual companion object {
