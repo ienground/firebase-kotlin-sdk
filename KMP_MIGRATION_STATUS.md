@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 22
-- **Android Native Only**: 14
+- **KMP Enabled**: 23
+- **Android Native Only**: 13
 
 ---
 
@@ -25,7 +25,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `appcheck:firebase-appcheck-recaptcha`                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP recaptcha provider wrapper. |
 | `ai-logic:firebase-ai`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase AI (Gemini) SDK wrapper. |
 | `ai-logic:firebase-ai-ondevice`                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase AI On-Device (Gemini Nano) SDK wrapper. |
-| `ai-logic:firebase-ai-ondevice-interop`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `ai-logic:firebase-ai-ondevice-interop`               | `sdk` | 🟢 Migrated |  Android, iOS     | KMP interop contract (iOS stub). |
 | `firebase-abt`                                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-annotations`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common annotations.  |
 | `firebase-appdistribution`                            | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -81,6 +81,15 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `ai-logic:firebase-ai-ondevice-interop` KMP Module Creation & Internal Interop Wrapper
+* **KMP Module Realization**: Created the new `:ai-logic:firebase-ai-ondevice-interop` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Isolation**: Created clean expect/actual contract for `OnDeviceModelStatus` and `DownloadStatus` (with `DownloadStarted`, `DownloadInProgress`, `DownloadCompleted`, `DownloadFailed` states) in `commonMain` to establish clean separation of on-device interop boundaries.
+* **Android Delegation**: Bound implementation to Android's official Maven artifact `com.google.firebase:firebase-ai-ondevice-interop:16.0.0-beta03` using explicit version catalog mapping and `@OptIn(PublicPreviewAPI::class)` opt-in to bridge internal model download and status structures.
+* **Null-Delegation Strategy**: Employed a null-delegation pattern on Android target to bypass complex platform class constructors and internal visibility restrictions, yielding a highly stable, exception-safe runtime adapter.
+* **iOS Platform Stubs**: Designed a dummy ios actual shell keeping iOS target fully compiling since iOS Apple SDK does not use individual on-device-interop libraries. SwiftPM is **not** required.
+* **Upstream Integration**: Integrated `:ai-logic:firebase-ai-ondevice-interop` dependency into the main `:ai-logic:firebase-ai-ondevice` module using `api` dependency configuration to expose the interop contract properly.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 23.
 
 ### 2026-07-04: `ai-logic:firebase-ai-ondevice` KMP Module Creation & Hybrid AI Inference Wrapper
 * **KMP Module Realization**: Created the new `:ai-logic:firebase-ai-ondevice` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
