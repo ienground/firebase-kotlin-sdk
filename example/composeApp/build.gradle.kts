@@ -96,6 +96,7 @@ kotlin {
             implementation(project(":firebase-ml-modeldownloader"))
             implementation(project(":firebase-config"))
             implementation(project(":ai-logic:firebase-ai"))
+            implementation(project(":ai-logic:firebase-ai-ondevice"))
  
             implementation(libs.bundles.ienlab.cmp)
         }
