@@ -35,8 +35,13 @@ import zone.ien.firebase.encoders.json.JsonDataEncoderBuilder
 import zone.ien.firebase.example.ui.theme.AppTheme
 import zone.ien.utils.ui.wrapper.M3RootWrapper
 
+import zone.ien.firebase.encoders.annotations.Encodable
+
 // Mock Annotation to verify FieldDescriptor property generic constraint
 annotation class ProtoDescriptor(val tag: Int)
+
+@Encodable
+data class UserProfile(val username: String, val age: Int, val isPremium: Boolean, val hobby: String?)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,9 +53,6 @@ fun EncodersScreen(
     fun log(msg: String) {
         logs.add(msg)
     }
-
-    // Mock Payload Model to test serialization contract
-    data class UserProfile(val username: String, val age: Int, val isPremium: Boolean, val hobby: String?)
 
     // Standard ObjectEncoder implementation
     val userProfileEncoder = remember {

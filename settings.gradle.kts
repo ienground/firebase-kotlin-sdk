@@ -65,3 +65,6 @@ project(":encoders:firebase-encoders").projectDir = file("encoders/firebase-enco
 
 include(":encoders:firebase-encoders-json")
 project(":encoders:firebase-encoders-json").projectDir = file("encoders/firebase-encoders-json")
+
+include(":encoders:firebase-encoders-processor")
+project(":encoders:firebase-encoders-processor").projectDir = file("encoders/firebase-encoders-processor")
