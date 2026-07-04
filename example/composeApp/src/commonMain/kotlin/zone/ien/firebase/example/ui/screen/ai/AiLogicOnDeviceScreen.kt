@@ -22,7 +22,7 @@ import zone.ien.firebase.ai.OnDeviceConfig
 import zone.ien.firebase.ai.ai
 import zone.ien.firebase.ai.generativeModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, zone.ien.firebase.InternalFirebaseApi::class)
 @Composable
 fun AiLogicOnDeviceScreen(
     onNavigateBack: () -> Unit

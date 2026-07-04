@@ -47,6 +47,7 @@ firebase-android-config-interop = { module = "com.google.firebase:firebase-confi
 firebase-android-ml-modeldownloader = { module = "com.google.firebase:firebase-ml-modeldownloader", version = "24.0.0" }
 firebase-android-ai = { module = "com.google.firebase:firebase-ai", version = "17.13.0" }
 firebase-android-ai-ondevice = { module = "com.google.firebase:firebase-ai-ondevice", version = "16.0.0-beta03" }
+firebase-android-ai-ondevice-interop = { module = "com.google.firebase:firebase-ai-ondevice-interop", version = "16.0.0-beta03" }
 firebase-android-config = { module = "com.google.firebase:firebase-config" }
 firebase-android-protolite-well-known-types = { module = "com.google.firebase:protolite-well-known-types", version = "18.0.0" }
 firebase-android-database = { module = "com.google.firebase:firebase-database", version = "21.0.0" }
