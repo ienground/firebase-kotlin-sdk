@@ -2,9 +2,9 @@ package zone.ien.firebase.transport.cct
 
 import zone.ien.firebase.transport.Encoding
 
-public actual class CCTDestination {
-    public actual val name: String
-    public actual val extras: ByteArray?
+public actual class CCTDestination : zone.ien.firebase.transport.runtime.Destination {
+    public actual override val name: String
+    public actual override val extras: ByteArray?
     public actual val apiKey: String?
     public actual val endpoint: String
     public actual val supportedEncodings: Set<Encoding>

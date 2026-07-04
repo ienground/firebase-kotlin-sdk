@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 25
+- **KMP Enabled**: 26
 - **Android Native Only**: 11
 
 ---
@@ -64,7 +64,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `encoders:protoc-gen-firebase-encoders`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `transport:transport-api`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport contract (iOS stub). |
 | `transport:transport-backend-cct`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport backend contract (iOS stub). |
-| `transport:transport-runtime`                         | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `transport:transport-runtime`                         | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport core runtime contract (iOS stub). |
 | `transport:transport-runtime-testing`                 | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 
 ---
@@ -81,6 +81,15 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `transport:transport-runtime` KMP Module Creation & Core Runtime Wrapper
+* **KMP Module Realization**: Created the new `:transport:transport-runtime` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Isolation**: Created clean expect/actual contract for `TransportRuntime` and `Destination` under `zone.ien.firebase.transport.runtime` package.
+* **Android Delegation**: Bound implementation to Android's official Maven artifact `com.google.android.datatransport:transport-runtime:4.0.0` using explicit version catalog mapping. Implementing delegation wrappers to forward operations safely to Java classes.
+* **Acyclic Architecture Design**: Avoided circular dependency by adopting the dynamic reflection-based `FirebasePlatformContext` initializer extraction and introducing `AndroidDestinationProvider` polymorphic mappings.
+* **Android Manifest Integration**: Added `<service>` metadata declaration for `JobInfoSchedulerService` with `BIND_JOB_SERVICE` permission to guarantee proper background scheduling on Android.
+* **iOS Platform Stubs**: Designed a dummy ios actual shell keeping iOS target compiling. SwiftPM is **not** required.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 26.
 
 ### 2026-07-04: `transport:transport-backend-cct` KMP Module Creation & Destination Contract
 * **KMP Module Realization**: Created the new `:transport:transport-backend-cct` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.

@@ -65,6 +65,7 @@ kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-cor
 play-services-tasks = { module = "com.google.android.gms:play-services-tasks", version = "18.1.0" }
 android-datatransport-api = { module = "com.google.android.datatransport:transport-api", version = "4.0.0" }
 android-datatransport-backend-cct = { module = "com.google.android.datatransport:transport-backend-cct", version = "4.0.0" }
+android-datatransport-runtime = { module = "com.google.android.datatransport:transport-runtime", version = "4.0.0" }
 
 # ui
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
