@@ -7,46 +7,41 @@ import com.google.firebase.ai.DownloadStatus as AndroidDownloadStatus
 public actual sealed class DownloadStatus(internal val androidStatus: AndroidDownloadStatus?)
 
 @OptIn(PublicPreviewAPI::class)
-public actual class DownloadStarted(internal val androidStarted: AndroidDownloadStatus.DownloadStarted?) : DownloadStatus(androidStarted) {
+public actual class DownloadStarted internal constructor(
+    internal val androidStarted: AndroidDownloadStatus.DownloadStarted?,
+    private val fallbackBytes: Long = 0L
+) : DownloadStatus(androidStarted) {
     public actual val totalBytesToDownload: Long
-        get() = androidStarted?.bytesToDownload ?: _totalBytesToDownload
+        get() = androidStarted?.bytesToDownload ?: fallbackBytes
 
-    private var _totalBytesToDownload: Long = 0
-
-    public actual constructor(
-        totalBytesToDownload: Long
-    ) : this(null) {
-        this._totalBytesToDownload = totalBytesToDownload
-    }
+    public actual constructor(totalBytesToDownload: Long) : this(null, totalBytesToDownload)
 }
 
 @OptIn(PublicPreviewAPI::class)
-public actual class DownloadInProgress(internal val androidInProgress: AndroidDownloadStatus.DownloadInProgress?) : DownloadStatus(androidInProgress) {
+public actual class DownloadInProgress internal constructor(
+    internal val androidInProgress: AndroidDownloadStatus.DownloadInProgress?,
+    private val fallbackBytes: Long = 0L
+) : DownloadStatus(androidInProgress) {
     public actual val totalBytesDownloaded: Long
-        get() = androidInProgress?.totalBytesDownloaded ?: _totalBytesDownloaded
+        get() = androidInProgress?.totalBytesDownloaded ?: fallbackBytes
 
-    private var _totalBytesDownloaded: Long = 0
-
-    public actual constructor(
-        totalBytesDownloaded: Long
-    ) : this(null) {
-        this._totalBytesDownloaded = totalBytesDownloaded
-    }
+    public actual constructor(totalBytesDownloaded: Long) : this(null, totalBytesDownloaded)
 }
 
 @OptIn(PublicPreviewAPI::class)
-public actual class DownloadCompleted(internal val androidCompleted: AndroidDownloadStatus.DownloadCompleted?) : DownloadStatus(androidCompleted) {
+public actual class DownloadCompleted internal constructor(
+    internal val androidCompleted: AndroidDownloadStatus.DownloadCompleted?
+) : DownloadStatus(androidCompleted) {
     public actual constructor() : this(null)
 }
 
 @OptIn(PublicPreviewAPI::class)
-public actual class DownloadFailed(internal val androidFailed: AndroidDownloadStatus.DownloadFailed?) : DownloadStatus(androidFailed) {
+public actual class DownloadFailed internal constructor(
+    internal val androidFailed: AndroidDownloadStatus.DownloadFailed?,
+    private val fallbackException: Exception? = null
+) : DownloadStatus(androidFailed) {
     public actual val exception: Exception
-        get() = androidFailed?.exception ?: _exception!!
+        get() = androidFailed?.exception ?: fallbackException ?: IllegalStateException("Exception is not initialized")
 
-    private var _exception: Exception? = null
-
-    public actual constructor(exception: Exception) : this(null) {
-        this._exception = exception
-    }
+    public actual constructor(exception: Exception) : this(null, exception)
 }
