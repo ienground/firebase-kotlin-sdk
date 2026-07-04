@@ -125,6 +125,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                                 Priority.DEFAULT -> Event.ofTelemetry(payload)
                                 Priority.HIGHEST -> Event.ofUrgent(payload)
                                 Priority.VERY_LOW -> Event.ofTelemetry(100, payload)
+                                else -> Event.ofTelemetry(payload)
                             }
                             log("Event created successfully! Priority: ${event.getPriority()}")
                             log("Event Payload: ${event.getPayload()}")
