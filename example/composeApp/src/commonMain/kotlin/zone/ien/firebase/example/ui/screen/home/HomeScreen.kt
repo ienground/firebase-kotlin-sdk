@@ -225,6 +225,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.AppDistribution) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "Data Connect",
+                        subtitle = "Configure Postgres database GraphQL query connector bootstrap.",
+                        indicatorColor = Color(0xFF673AB7),
+                        onClick = { onNavigate(ScreenRoute.DataConnect) }
+                    )
+                }
             }
         }
     }
