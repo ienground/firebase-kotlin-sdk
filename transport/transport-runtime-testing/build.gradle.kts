@@ -52,10 +52,6 @@ kotlin {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
         }
 
-        val androidMain by getting {
-            kotlin.setSrcDirs(listOf("src/androidMain/kotlin"))
-        }
-
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
