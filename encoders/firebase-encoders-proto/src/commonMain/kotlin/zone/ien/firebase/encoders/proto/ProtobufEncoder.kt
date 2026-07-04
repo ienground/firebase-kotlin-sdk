@@ -46,16 +46,18 @@ public class ProtobufEncoder : EncoderConfig<ProtobufEncoder> {
 }
 
 public class BinarySink {
-    private val buffer = mutableListOf<Byte>()
+    private var buffer = ByteArray(32)
+    private var size = 0
 
     public fun writeByte(b: Byte) {
-        buffer.add(b)
+        ensureCapacity(1)
+        buffer[size++] = b
     }
 
     public fun writeBytes(bytes: ByteArray) {
-        for (b in bytes) {
-            buffer.add(b)
-        }
+        ensureCapacity(bytes.size)
+        bytes.copyInto(buffer, size)
+        size += bytes.size
     }
 
     public fun writeVarint32(value: Int) {
@@ -88,7 +90,17 @@ public class BinarySink {
         }
     }
 
-    public fun toByteArray(): ByteArray = buffer.toByteArray()
+    private fun ensureCapacity(additional: Int) {
+        if (size + additional > buffer.size) {
+            var newCapacity = buffer.size * 2
+            while (newCapacity < size + additional) {
+                newCapacity *= 2
+            }
+            buffer = buffer.copyOf(newCapacity)
+        }
+    }
+
+    public fun toByteArray(): ByteArray = buffer.copyOf(size)
 }
 
 private class ProtobufDataEncoderContext(
@@ -228,15 +240,20 @@ private class ProtobufDataEncoderContext(
         val tag = tagAnno.tag
         val enc = tagAnno.intEncoding
 
+        val savedTag = currentFieldTag
+        val savedEnc = currentFieldEncoding
+        currentFieldTag = tag
+        currentFieldEncoding = enc
+
         // Collection manages tag header formatting internally on sub-elements
         if (value !is Collection<*>) {
             writeTagHeader(tag, getWireType(value))
         }
 
-        val subContext = ProtobufDataEncoderContext(sink, objectEncoders, valueEncoders, fallbackEncoder)
-        subContext.currentFieldTag = tag
-        subContext.currentFieldEncoding = enc
-        subContext.internalEncode(value)
+        internalEncode(value)
+
+        currentFieldTag = savedTag
+        currentFieldEncoding = savedEnc
         return this
     }
 
