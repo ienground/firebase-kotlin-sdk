@@ -16,7 +16,7 @@ kotlin {
     jvmToolchain(17)
 
     androidLibrary {
-        namespace = "com.google.android.datatransport"
+        namespace = "zone.ien.firebase.transport"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
