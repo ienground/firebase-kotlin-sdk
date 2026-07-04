@@ -22,7 +22,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -34,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import zone.ien.firebase.FirebasePlatformContext
 import zone.ien.firebase.example.ui.theme.AppTheme
 import zone.ien.firebase.inappmessaging.FirebaseInAppMessaging
 import zone.ien.utils.ui.wrapper.M3RootWrapper
@@ -42,7 +40,6 @@ import zone.ien.utils.ui.wrapper.M3RootWrapper
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InAppMessagingScreen(
-    context: FirebasePlatformContext,
     onBack: () -> Unit
 ) {
     // Crash-safe instance retrieval

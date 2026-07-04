@@ -162,7 +162,6 @@ fun ScreenNavigationGraph(
             }
             entry<ScreenRoute.InAppMessaging> {
                 zone.ien.firebase.example.ui.screen.inappmessaging.InAppMessagingScreen(
-                    context = context,
                     onBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }
