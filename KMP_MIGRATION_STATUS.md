@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 38
+- **KMP Enabled**: 39
 - **Android Native Only**: 11
 
 ---
@@ -60,7 +60,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `encoders:firebase-encoders-processor`                | `sdk` | 🟢 Migrated |  JVM Tooling      | JVM-only Annotation Processor compiler tool. |
 | `encoders:firebase-encoders-proto`                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Protobuf encoder implementation (pure Kotlin). |
 | `encoders:firebase-encoders-reflective`               | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Reflective encoder helper (capability differentiated). |
-| `encoders:firebase-decoders-json`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `encoders:firebase-decoders-json`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP JSON decoder implementation (pure Kotlin). |
 | `encoders:protoc-gen-firebase-encoders`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `transport:transport-api`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport contract (iOS stub). |
 | `transport:transport-backend-cct`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport backend contract (iOS stub). |
@@ -81,6 +81,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `encoders:firebase-decoders-json` KMP Module Creation & Decoder Implementation
+* **KMP Module Realization**: Created the new `:encoders:firebase-decoders-json` module with targets `androidTarget()`, `jvm()`, and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Pure Kotlin JSON Parser & ObjectDecoder**: Implemented `DataDecoder` and `JsonDataDecoderBuilder` utilizing a recursive-descent token parser in `commonMain` to support reflection-free mapping from parsed maps to custom domain models.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 39.
 
 ### 2026-07-04: `encoders:firebase-encoders-reflective` KMP Module Creation & Capability Split
 * **KMP Module Realization**: Created the new `:encoders:firebase-encoders-reflective` module with targets `androidTarget()`, `jvm()`, and native `iosSimulatorArm64()`, `iosArm64()`.
