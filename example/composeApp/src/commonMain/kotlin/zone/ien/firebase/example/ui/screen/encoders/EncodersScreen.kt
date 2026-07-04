@@ -126,11 +126,11 @@ fun EncodersScreen(
                                     override fun add(name: String, value: Float): ObjectEncoderContext = add(name, value)
 
                                     override fun add(field: FieldDescriptor, value: Any?): ObjectEncoderContext = add(field.name, value)
-                                    override fun add(field: FieldDescriptor, value: Double): ObjectEncoderContext = add(field.name, value as Any?)
-                                    override fun add(field: FieldDescriptor, value: Int): ObjectEncoderContext = add(field.name, value as Any?)
-                                    override fun add(field: FieldDescriptor, value: Long): ObjectEncoderContext = add(field.name, value as Any?)
-                                    override fun add(field: FieldDescriptor, value: Boolean): ObjectEncoderContext = add(field.name, value as Any?)
-                                    override fun add(field: FieldDescriptor, value: Float): ObjectEncoderContext = add(field.name, value as Any?)
+                                    override fun add(field: FieldDescriptor, value: Double): ObjectEncoderContext = add(field.name, value)
+                                    override fun add(field: FieldDescriptor, value: Int): ObjectEncoderContext = add(field.name, value)
+                                    override fun add(field: FieldDescriptor, value: Long): ObjectEncoderContext = add(field.name, value)
+                                    override fun add(field: FieldDescriptor, value: Boolean): ObjectEncoderContext = add(field.name, value)
+                                    override fun add(field: FieldDescriptor, value: Float): ObjectEncoderContext = add(field.name, value)
 
                                     override fun inline(value: Any?): ObjectEncoderContext {
                                         log("Context -> Inline Object [value=$value]")
