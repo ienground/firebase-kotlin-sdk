@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 33
+- **KMP Enabled**: 34
 - **Android Native Only**: 11
 
 ---
@@ -55,7 +55,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-sessions`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Sessions internal support. |
 | `firebase-storage`                                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `protolite-well-known-types`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Protobuf Well-Known Types wrapper. |
-| `encoders:firebase-encoders`                          | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `encoders:firebase-encoders`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP foundational encoding contract (pure Kotlin). |
 | `encoders:firebase-encoders-json`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `encoders:firebase-encoders-processor`                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `encoders:firebase-encoders-proto`                    | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -81,6 +81,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `encoders:firebase-encoders` KMP Module Creation & Core Contract
+* **KMP Module Realization**: Created the new `:encoders:firebase-encoders` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Foundational Contracts**: Implemented pure Kotlin interfaces (`Encoder`, `ObjectEncoder`, `ValueEncoder`, `ObjectEncoderContext`, `ValueEncoderContext`, `EncoderConfig`, `Configurator`) and schema `FieldDescriptor` configuration builders in `commonMain` to guarantee shared usage by iOS consume targets.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 34.
 
 ### 2026-07-04: `firebase-inappmessaging-display` KMP Module Creation & Display Support Wrapper
 * **KMP Module Realization**: Created the new `:firebase-inappmessaging-display` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
