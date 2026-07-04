@@ -11,7 +11,9 @@ import javax.tools.Diagnostic
 @SupportedAnnotationTypes("zone.ien.firebase.encoders.annotations.Encodable")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class EncodersProcessor : AbstractProcessor() {
-
+    override fun getSupportedSourceVersion(): SourceVersion {
+        return SourceVersion.latestSupported()
+    }
     override fun process(annotations: MutableSet<out TypeElement>, roundEnv: RoundEnvironment): Boolean {
         for (element in roundEnv.getElementsAnnotatedWith(zone.ien.firebase.encoders.annotations.Encodable::class.java)) {
             val className = element.simpleName.toString()
@@ -22,6 +24,6 @@ public class EncodersProcessor : AbstractProcessor() {
             // Simulating generated file emission using javac filer
             // Under real full implementation, a JavaFileObject is written emitting ObjectEncoder subclasses.
         }
-        return true
+        return false
     }
 }
