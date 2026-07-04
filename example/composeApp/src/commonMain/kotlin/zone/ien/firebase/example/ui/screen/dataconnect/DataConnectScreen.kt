@@ -133,6 +133,23 @@ fun DataConnectScreen(
                         Text("Get Core Runtime Instance")
                     }
 
+                    Button(
+                        onClick = {
+                            try {
+                                log("Obtaining GeneratedConnector.instance...")
+                                val connector = zone.ien.firebase.dataconnect.connectors.GeneratedConnector.instance
+                                log("GeneratedConnector instance obtained successfully!")
+                                log("Binding path verify -> service=${connector.dataConnect.config.service}")
+                            } catch (e: Exception) {
+                                log("GeneratedConnector verify failed: ${e.message}")
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Verify Generated Connector Interface")
+                    }
+
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
