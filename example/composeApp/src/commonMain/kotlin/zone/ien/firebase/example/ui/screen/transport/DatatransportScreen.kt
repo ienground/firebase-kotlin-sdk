@@ -40,6 +40,7 @@ import zone.ien.firebase.transport.Event
 import zone.ien.firebase.transport.Priority
 import zone.ien.firebase.transport.Transformer
 import zone.ien.firebase.transport.TransportScheduleCallback
+import zone.ien.firebase.transport.cct.CCTDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -172,6 +173,46 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                     modifier = Modifier.weight(1f)
                 ) {
                     Text("Test Scheduler")
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Button(
+                    onClick = {
+                        try {
+                            log("Fetching CCTDestination.INSTANCE...")
+                            val cct = CCTDestination.INSTANCE
+                            log("Destination Name: ${cct.name}")
+                            log("Destination Endpoint: ${cct.endpoint}")
+                            log("Supported Encodings: ${cct.supportedEncodings.joinToString { it.name }}")
+
+                            log("Fetching CCTDestination.LEGACY_INSTANCE...")
+                            val legacy = CCTDestination.LEGACY_INSTANCE
+                            log("Legacy Name: ${legacy.name}")
+                            log("Legacy Endpoint: ${legacy.endpoint}")
+                            log("Legacy APIKey: ${legacy.apiKey}")
+
+                            log("Testing serialization...")
+                            val testDestination = CCTDestination("https://test.endpoint.com", "test-api-key-xyz")
+                            val bytes = testDestination.asByteArray()
+                            if (bytes != null) {
+                                log("Serialized byte size: ${bytes.size}")
+                                val parsed = CCTDestination.fromByteArray(bytes)
+                                log("Parsed Destination Endpoint: ${parsed.endpoint}")
+                                log("Parsed Destination APIKey: ${parsed.apiKey}")
+                            } else {
+                                log("Serialization returned null")
+                            }
+                        } catch (e: Exception) {
+                            log("CCTDestination verification failed: ${e.message}")
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Verify CCT Destination")
                 }
             }
 
