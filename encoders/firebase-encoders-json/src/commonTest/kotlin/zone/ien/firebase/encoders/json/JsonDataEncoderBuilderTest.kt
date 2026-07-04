@@ -51,13 +51,18 @@ class JsonDataEncoderBuilderTest {
         )
 
         val json = encoder.encode(message)
-        
+
         // Assert keys and escaped characters exist in JSON string
         assertTrue(json.contains("\"title\":\"hello\\\\kmp\""))
         assertTrue(json.contains("\"number\":101"))
         assertTrue(json.contains("\"flag\":true"))
         assertTrue(json.contains("\"details\":{\"extra\":\"nested_value\"}"))
         assertTrue(json.contains("\"tags\":[\"dev\",\"test\"]"))
+
+        // ✅ Appendable overload도 동일한 결과를 내는지 검증
+        val builder = StringBuilder()
+        encoder.encode(message, builder)
+        assertEquals(json, builder.toString())
     }
 
     @Test
