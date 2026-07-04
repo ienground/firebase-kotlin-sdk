@@ -1,6 +1,6 @@
 package zone.ien.firebase.inappmessaging
 
-public actual class FirebaseInAppMessaging private constructor() {
+public actual class FirebaseInAppMessaging private actual constructor() {
     public actual var isAutomaticDataCollectionEnabled: Boolean
         get() = throw UnsupportedOperationException("Firebase In-App Messaging is not supported on iOS due to Swift-only cinterop compilation constraints.")
         set(value) {

@@ -105,6 +105,7 @@ kotlin {
             implementation(project(":firebase-dataconnect:connectors"))
             implementation(project(":firebase-inappmessaging"))
             implementation(project(":firebase-inappmessaging-display"))
+            implementation(project(":encoders:firebase-encoders"))
  
             implementation(libs.bundles.ienlab.cmp)
         }
