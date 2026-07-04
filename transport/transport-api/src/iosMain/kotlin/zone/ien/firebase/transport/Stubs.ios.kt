@@ -1,6 +1,6 @@
 package zone.ien.firebase.transport
 
-public actual class Class<T>
+import kotlin.reflect.KClass
 
 public actual enum class Priority {
     DEFAULT,
@@ -8,13 +8,7 @@ public actual enum class Priority {
     HIGHEST
 }
 
-public actual class Encoding private constructor(public actual val name: String) {
-    public actual companion object {
-        public actual fun of(name: String): Encoding = Encoding(name)
-    }
-}
-
-public actual abstract class Event<T> {
+public actual abstract class Event<T> protected actual constructor() {
     public actual abstract fun getPayload(): T
     public actual abstract fun getCode(): Int?
     public actual abstract fun getPriority(): Priority
@@ -41,15 +35,15 @@ public actual interface Transport<T> {
 }
 
 public actual interface TransportFactory {
-    public actual fun <T> getTransport(
+    public actual fun <T : Any> getTransport(
         name: String,
-        payloadType: Class<T>,
+        payloadType: KClass<T>,
         transformer: Transformer<T, ByteArray>
     ): Transport<T>
 
-    public actual fun <T> getTransport(
+    public actual fun <T : Any> getTransport(
         name: String,
-        payloadType: Class<T>,
+        payloadType: KClass<T>,
         encoding: Encoding,
         transformer: Transformer<T, ByteArray>
     ): Transport<T>
