@@ -12,11 +12,11 @@ import kotlin.coroutines.resumeWithException
 @OptIn(ExperimentalForeignApi::class)
 public actual class FirebaseAppDistribution private constructor(
     private val iosAppDistribution: FIRAppDistribution
-) {
-    public actual val isTesterSignedIn: Boolean
+) : FirebaseAppDistributionApi {
+    public actual override val isTesterSignedIn: Boolean
         get() = iosAppDistribution.isTesterSignedIn()
 
-    public actual suspend fun signInTester(): Unit = suspendCancellableCoroutine { continuation ->
+    public actual override suspend fun signInTester(): Unit = suspendCancellableCoroutine { continuation ->
         iosAppDistribution.signInTesterWithCompletion { error ->
             if (error != null) {
                 continuation.resumeWithException(Exception(error.localizedDescription))
@@ -26,11 +26,11 @@ public actual class FirebaseAppDistribution private constructor(
         }
     }
 
-    public actual fun signOutTester() {
+    public actual override fun signOutTester() {
         iosAppDistribution.signOutTester()
     }
 
-    public actual suspend fun checkForNewRelease(): AppDistributionRelease? = suspendCancellableCoroutine { continuation ->
+    public actual override suspend fun checkForNewRelease(): AppDistributionRelease? = suspendCancellableCoroutine { continuation ->
         iosAppDistribution.checkForUpdateWithCompletion { release, error ->
             if (error != null) {
                 continuation.resumeWithException(Exception(error.localizedDescription))
@@ -50,7 +50,7 @@ public actual class FirebaseAppDistribution private constructor(
         }
     }
 
-    public actual fun updateIfNewReleaseAvailable(): Flow<UpdateProgress> {
+    public actual override fun updateIfNewReleaseAvailable(): Flow<UpdateProgress> {
         // iOS SDK does not support granular background progress monitoring for IPA updates.
         return flow {
             throw UnsupportedOperationException("In-app update progress monitoring is not supported on iOS.")
