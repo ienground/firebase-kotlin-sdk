@@ -201,6 +201,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.AiLogic) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "AI On-Device",
+                        subtitle = "Hybrid on-device Gemini inference and fallback.",
+                        indicatorColor = Color(0xFFE040FB),
+                        onClick = { onNavigate(ScreenRoute.AiLogicOnDevice) }
+                    )
+                }
             }
         }
     }
