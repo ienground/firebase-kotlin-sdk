@@ -119,11 +119,11 @@ fun EncodersScreen(
                                         log("Context -> Add Object [key=$name, value=$value]")
                                         return this
                                     }
-                                    override fun add(name: String, value: Double): ObjectEncoderContext = add(name, value as Any?)
-                                    override fun add(name: String, value: Int): ObjectEncoderContext = add(name, value as Any?)
-                                    override fun add(name: String, value: Long): ObjectEncoderContext = add(name, value as Any?)
-                                    override fun add(name: String, value: Boolean): ObjectEncoderContext = add(name, value as Any?)
-                                    override fun add(name: String, value: Float): ObjectEncoderContext = add(name, value as Any?)
+                                    override fun add(name: String, value: Double): ObjectEncoderContext = add(name, value)
+                                    override fun add(name: String, value: Int): ObjectEncoderContext = add(name, value)
+                                    override fun add(name: String, value: Long): ObjectEncoderContext = add(name, value)
+                                    override fun add(name: String, value: Boolean): ObjectEncoderContext = add(name, value)
+                                    override fun add(name: String, value: Float): ObjectEncoderContext = add(name, value)
 
                                     override fun add(field: FieldDescriptor, value: Any?): ObjectEncoderContext = add(field.name, value)
                                     override fun add(field: FieldDescriptor, value: Double): ObjectEncoderContext = add(field.name, value as Any?)
