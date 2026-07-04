@@ -5,8 +5,8 @@ import com.google.firebase.ai.GenerativeModel as AndroidGenerativeModel
 import com.google.firebase.ai.type.GenerateContentResponse as AndroidGenerateContentResponse
 import zone.ien.firebase.FirebaseApp
 
-public actual class FirebaseAI internal constructor(
-    internal val androidAI: AndroidFirebaseAI
+public actual class FirebaseAI public constructor(
+    public val androidAI: AndroidFirebaseAI
 ) {
     public actual fun generativeModel(modelName: String): GenerativeModel {
         val androidModel = androidAI.generativeModel(modelName)
@@ -26,8 +26,8 @@ public actual class FirebaseAI internal constructor(
 public actual val FirebaseApp.ai: FirebaseAI
     get() = FirebaseAI.getInstance(this)
 
-public actual class GenerativeModel internal constructor(
-    internal val androidModel: AndroidGenerativeModel
+public actual class GenerativeModel public constructor(
+    public val androidModel: AndroidGenerativeModel
 ) {
     public actual suspend fun generateContent(prompt: String): GenerateContentResponse {
         val androidResponse = androidModel.generateContent(prompt)
@@ -35,8 +35,8 @@ public actual class GenerativeModel internal constructor(
     }
 }
 
-public actual class GenerateContentResponse internal constructor(
-    internal val androidResponse: AndroidGenerateContentResponse
+public actual class GenerateContentResponse public constructor(
+    public val androidResponse: AndroidGenerateContentResponse
 ) {
     public actual val text: String?
         get() = androidResponse.text

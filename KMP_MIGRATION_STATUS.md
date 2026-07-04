@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 21
-- **Android Native Only**: 15
+- **KMP Enabled**: 22
+- **Android Native Only**: 14
 
 ---
 
@@ -24,7 +24,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `appcheck:firebase-appcheck-playintegrity`            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP play integrity provider wrapper. |
 | `appcheck:firebase-appcheck-recaptcha`                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP recaptcha provider wrapper. |
 | `ai-logic:firebase-ai`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase AI (Gemini) SDK wrapper. |
-| `ai-logic:firebase-ai-ondevice`                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `ai-logic:firebase-ai-ondevice`                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase AI On-Device (Gemini Nano) SDK wrapper. |
 | `ai-logic:firebase-ai-ondevice-interop`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-abt`                                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-annotations`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common annotations.  |
@@ -81,6 +81,14 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `ai-logic:firebase-ai-ondevice` KMP Module Creation & Hybrid AI Inference Wrapper
+* **KMP Module Realization**: Created the new `:ai-logic:firebase-ai-ondevice` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Reusability**: Reused the core `:ai-logic:firebase-ai` infrastructure (`FirebaseAI`, `GenerativeModel`) by adding it as an api dependency. Designed expect/actual contract for `InferenceMode` (supporting PREFER_ON_DEVICE, PREFER_IN_CLOUD, ONLY_ON_DEVICE) and `OnDeviceConfig`.
+* **Android Delegation**: Bound implementation to Android's official Maven artifact `com.google.firebase:firebase-ai-ondevice:16.0.0-beta03` using explicit version catalog mapping and `@OptIn(PublicPreviewAPI::class)` opt-in to bridge internal hybrid model initialization.
+* **iOS Platform Stubs**: Designed dummy iOS actual stubs throwing `UnsupportedOperationException` for hybrid model operations since the iOS Firebase AI logic hybrid/on-device SDK lacks Objective-C compatibility bridging support. SwiftPM is **not** required.
+* **Interactive Verification Screen**: Added a dedicated `AiLogicOnDeviceScreen` under the sample app giving real-time control to select inference mode (radio buttons), set model name, type prompts, call content generation, and monitor logs (including iOS Stub fallback behaviors).
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 22.
 
 ### 2026-07-04: `ai-logic:firebase-ai` KMP Module Creation & Platform SDK Wrapper
 * **KMP Module Realization**: Created the new `:ai-logic:firebase-ai` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
