@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 23
-- **Android Native Only**: 13
+- **KMP Enabled**: 24
+- **Android Native Only**: 12
 
 ---
 
@@ -62,7 +62,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `encoders:firebase-encoders-reflective`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `encoders:firebase-decoders-json`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `encoders:protoc-gen-firebase-encoders`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
-| `transport:transport-api`                             | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `transport:transport-api`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport contract (iOS stub). |
 | `transport:transport-backend-cct`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `transport:transport-runtime`                         | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `transport:transport-runtime-testing`                 | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
@@ -81,6 +81,13 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `transport:transport-api` KMP Module Creation & Thin Wrapper
+* **KMP Module Realization**: Created the new `:transport:transport-api` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Isolation**: Created clean expect/actual contract for `Priority`, `Encoding`, `Event`, `Transformer`, `TransportScheduleCallback`, `Transport`, and `TransportFactory` under `zone.ien.firebase.transport` package to avoid naming conflict with upstream SDK.
+* **Android Delegation**: Bound implementation to Android's official Maven artifact `com.google.android.datatransport:transport-api:4.0.0` using explicit version catalog mapping. Implementing delegation wrappers to forward operations safely to Java classes.
+* **iOS Platform Stubs**: Designed a dummy ios actual shell keeping iOS target fully compiling. SwiftPM is **not** required.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 24.
 
 ### 2026-07-04: `ai-logic:firebase-ai-ondevice-interop` KMP Module Creation & Internal Interop Wrapper
 * **KMP Module Realization**: Created the new `:ai-logic:firebase-ai-ondevice-interop` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.

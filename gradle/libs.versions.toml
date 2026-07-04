@@ -63,6 +63,7 @@ firebase-annotations = { module = "com.google.firebase:firebase-annotations", ve
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "1.8.0" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version = "1.8.0" }
 play-services-tasks = { module = "com.google.android.gms:play-services-tasks", version = "18.1.0" }
+android-datatransport-api = { module = "com.google.android.datatransport:transport-api", version = "4.0.0" }
 
 # ui
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
