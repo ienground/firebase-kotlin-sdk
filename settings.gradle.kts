@@ -71,3 +71,6 @@ project(":encoders:firebase-encoders-processor").projectDir = file("encoders/fir
 
 include(":encoders:firebase-encoders-proto")
 project(":encoders:firebase-encoders-proto").projectDir = file("encoders/firebase-encoders-proto")
+
+include(":encoders:firebase-encoders-reflective")
+project(":encoders:firebase-encoders-reflective").projectDir = file("encoders/firebase-encoders-reflective")

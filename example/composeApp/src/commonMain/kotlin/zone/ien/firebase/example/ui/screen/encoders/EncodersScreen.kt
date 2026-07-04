@@ -31,11 +31,11 @@ import androidx.compose.ui.unit.dp
 import zone.ien.firebase.encoders.FieldDescriptor
 import zone.ien.firebase.encoders.ObjectEncoder
 import zone.ien.firebase.encoders.ObjectEncoderContext
+import zone.ien.firebase.encoders.annotations.Encodable
 import zone.ien.firebase.encoders.json.JsonDataEncoderBuilder
+import zone.ien.firebase.encoders.reflective.ReflectiveObjectEncoder
 import zone.ien.firebase.example.ui.theme.AppTheme
 import zone.ien.utils.ui.wrapper.M3RootWrapper
-
-import zone.ien.firebase.encoders.annotations.Encodable
 
 // Mock Annotation to verify FieldDescriptor property generic constraint
 annotation class ProtoDescriptor(val tag: Int)
@@ -93,19 +93,19 @@ fun EncodersScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        text = "JSON Serialization Verification",
+                        text = "JSON & Reflective Serialization Verification",
                         style = MaterialTheme.typography.titleMedium
                     )
 
                     Text(
-                        text = "This screen executes the newly created 'firebase-encoders-json' KMP module. It registers a custom object encoder, builds the JSON DataEncoder, and materializes real outputs dynamically.",
+                        text = "This screen executes the newly created KMP modules. It registers standard builders, verifies reflective field discovery on JVM, and tests explicit registration fallback on iOS.",
                         style = MaterialTheme.typography.bodyMedium
                     )
 
                     Button(
                         onClick = {
                             try {
-                                log("--- Initiating JSON Serialization ---")
+                                log("--- Initiating Serialization Tests ---")
                                 log("1. Creating FieldDescriptor with metadata tag...")
                                 val desc = FieldDescriptor.builder("profile")
                                     .withProperty(ProtoDescriptor(tag = 77))
@@ -131,6 +131,18 @@ fun EncodersScreen(
                                     .build()
                                 val jsonResult2 = encoderIgnoreNull.encode(profile)
                                 log("Result 2 (IgnoreNull): $jsonResult2")
+
+                                log("5. Executing ReflectiveObjectEncoder with explicit fallback registration...")
+                                // Registering manual encoder for iOS capability limits fallback
+                                ReflectiveObjectEncoder.registerEncoderExplicit(UserProfile::class, userProfileEncoder)
+
+                                val reflectiveEncoder = ReflectiveObjectEncoder<UserProfile>()
+                                val reflectiveJsonEncoder = JsonDataEncoderBuilder()
+                                    .registerEncoder(UserProfile::class, reflectiveEncoder)
+                                    .build()
+                                
+                                val reflectiveJsonResult = reflectiveJsonEncoder.encode(profile)
+                                log("Result 3 (Reflective Auto/Fallback): $reflectiveJsonResult")
                                 
                                 log("--- Verification finished successfully ---")
                             } catch (e: Exception) {
@@ -139,7 +151,7 @@ fun EncodersScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Run JSON Encoder Test")
+                        Text("Run Serialization Sim")
                     }
 
                     Text(
