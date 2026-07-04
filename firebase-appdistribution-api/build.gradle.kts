@@ -16,7 +16,7 @@ kotlin {
     jvmToolchain(17)
 
     androidLibrary {
-        namespace = "zone.ien.firebase.appdistribution"
+        namespace = "zone.ien.firebase.appdistribution.api"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -36,30 +36,18 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "FirebaseAppDistribution"
+            baseName = "FirebaseAppDistributionApi"
             isStatic = true
         }
     }
 
-    // Kotlin 2.4.0 SwiftPM Integration Configuration
-    swiftPMDependencies {
-        swiftPackage(
-            url = url("https://github.com/firebase/firebase-ios-sdk.git"),
-            version = from(libs.versions.firebase.ios.sdk.get()),
-            products = listOf(product("FirebaseAppDistribution-Beta"))
-        )
-    }
-
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":firebase-common"))
-            implementation(project(":firebase-components"))
-            api(project(":firebase-appdistribution-api"))
+            api(libs.kotlinx.coroutines.core)
         }
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
-            api(libs.firebase.android.appdistribution)
         }
 
         val androidMain by getting {

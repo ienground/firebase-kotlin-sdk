@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 28
+- **KMP Enabled**: 29
 - **Android Native Only**: 11
 
 ---
@@ -29,7 +29,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-abt`                                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-annotations`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common annotations.  |
 | `firebase-appdistribution`                            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
-| `firebase-appdistribution-api`                        | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-appdistribution-api`                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP interface contract (iOS stub). |
 | `firebase-auth`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-common`                                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-components`                                 | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common components.   |
@@ -81,6 +81,12 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `firebase-appdistribution-api` KMP Module Creation & Interface Segregation
+* **KMP Module Realization**: Created the new `:firebase-appdistribution-api` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Interface Segregation**: Relocated `AppDistributionRelease`, `UpdateProgress`, `UpdateStatus`, and `FirebaseAppDistributionException` data models to the api module commonMain source set. Established the core interface `FirebaseAppDistribution` to declare checking/updating capabilities.
+* **Runtime Implementations Overrides**: Refactored `:firebase-appdistribution` Android and iOS actual subclasses to implement and override the interface defined in `:firebase-appdistribution-api`.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 29.
 
 ### 2026-07-04: `firebase-appdistribution` KMP Module Creation & Thin Wrapper
 * **KMP Module Realization**: Created the new `:firebase-appdistribution` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
