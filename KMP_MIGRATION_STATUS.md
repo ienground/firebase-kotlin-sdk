@@ -7,8 +7,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 24
-- **Android Native Only**: 12
+- **KMP Enabled**: 25
+- **Android Native Only**: 11
 
 ---
 
@@ -63,7 +63,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `encoders:firebase-decoders-json`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `encoders:protoc-gen-firebase-encoders`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `transport:transport-api`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport contract (iOS stub). |
-| `transport:transport-backend-cct`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `transport:transport-backend-cct`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport backend contract (iOS stub). |
 | `transport:transport-runtime`                         | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `transport:transport-runtime-testing`                 | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 
@@ -81,6 +81,14 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `transport:transport-backend-cct` KMP Module Creation & Destination Contract
+* **KMP Module Realization**: Created the new `:transport:transport-backend-cct` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Isolation**: Created clean expect/actual contract for `CCTDestination` under `zone.ien.firebase.transport.cct` package, mapping encodings set to KMP `Encoding` wrapper models.
+* **Android Delegation**: Bound implementation to Android's official Maven artifact `com.google.android.datatransport:transport-backend-cct:4.0.0` using explicit version catalog mapping. Implementing delegation wrappers to forward properties safely to Java classes.
+* **Android Manifest Integration**: Added `<service>` metadata declaration for `TransportBackendDiscovery` to ensure CCT backend resolver discovery works transparently.
+* **iOS Platform Stubs**: Designed a dummy ios actual shell keeping iOS target compiling. SwiftPM is **not** required.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 25.
 
 ### 2026-07-04: `transport:transport-api` KMP Module Creation & Thin Wrapper
 * **KMP Module Realization**: Created the new `:transport:transport-api` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
