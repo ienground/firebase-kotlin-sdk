@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 29
+- **KMP Enabled**: 30
 - **Android Native Only**: 11
 
 ---
@@ -40,7 +40,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-crashlytics-ndk`                            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP NDK support wrapper.   |
 | `firebase-database`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-database-collection`                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP sorted collections helper. |
-| `firebase-dataconnect`                                | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-dataconnect`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only cinterop constraint). |
 | `firebase-dataconnect:connectors`                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-datatransport`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP internal support shell. |
 | `firebase-functions`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
@@ -81,6 +81,12 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `firebase-dataconnect` KMP Module Creation & Core Runtime Wrapper
+* **KMP Module Realization**: Created the new `:firebase-dataconnect` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper & Isolation**: Created expect/actual binding wrapper for `FirebaseDataConnect` and `ConnectorConfig` exposing bootstrap properties and emulator controls.
+* **iOS SDK Swift-only CInterop Constraint**: Linked iOS SDK targets as a temporary stub. Google's native iOS Data Connect SDK is Swift-only and lacks an Objective-C compatibility interface, causing Kotlin/Native's cinterop pipeline (`convertSyntheticImportProjectIntoDefFile`) to fail with exit code 74. Linked package has been rolled back, and iosMain was configured to throw `UnsupportedOperationException`.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 30.
 
 ### 2026-07-04: `firebase-appdistribution-api` KMP Module Creation & Interface Segregation
 * **KMP Module Realization**: Created the new `:firebase-appdistribution-api` module with targets `androidTarget()` and native `iosSimulatorArm64()`, `iosArm64()`.
