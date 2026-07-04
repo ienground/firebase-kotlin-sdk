@@ -156,7 +156,6 @@ fun ScreenNavigationGraph(
             }
             entry<ScreenRoute.DataConnect> {
                 zone.ien.firebase.example.ui.screen.dataconnect.DataConnectScreen(
-                    context = context,
                     onBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }

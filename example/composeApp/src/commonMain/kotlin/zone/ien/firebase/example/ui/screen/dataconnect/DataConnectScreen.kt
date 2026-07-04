@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -22,7 +21,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -34,8 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import zone.ien.firebase.FirebaseApp
-import zone.ien.firebase.FirebasePlatformContext
 import zone.ien.firebase.dataconnect.ConnectorConfig
 import zone.ien.firebase.dataconnect.FirebaseDataConnect
 import zone.ien.firebase.example.ui.theme.AppTheme
@@ -44,7 +40,6 @@ import zone.ien.utils.ui.wrapper.M3RootWrapper
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DataConnectScreen(
-    context: FirebasePlatformContext,
     onBack: () -> Unit
 ) {
     val logs = remember { mutableStateListOf<String>() }
