@@ -107,4 +107,55 @@ class JsonDataEncoderBuilderTest {
         val json = encoder.encode(99.9)
         assertEquals("\"FALLBACK_99.9\"", json)
     }
+
+    // Wrapper types so that encoding is routed through the registered ValueEncoder
+    // instead of the built-in Number/Boolean fast path.
+    data class DoubleBox(val value: Double)
+    data class IntBox(val value: Int)
+    data class LongBox(val value: Long)
+    data class BooleanBox(val value: Boolean)
+
+    @Test
+    fun testValueEncoderWithPrimitiveOverloads() {
+        // Regression test: ValueEncoderContext.add(Double/Int/Long/Boolean) must delegate
+        // to the underlying encoding logic instead of recursing into themselves
+        // (which previously caused a StackOverflowError).
+        val doubleEncoder = object : ValueEncoder<DoubleBox> {
+            override fun encode(value: DoubleBox, context: ValueEncoderContext) {
+                context.add(value.value)
+            }
+        }
+        val intEncoder = object : ValueEncoder<IntBox> {
+            override fun encode(value: IntBox, context: ValueEncoderContext) {
+                context.add(value.value)
+            }
+        }
+        val longEncoder = object : ValueEncoder<LongBox> {
+            override fun encode(value: LongBox, context: ValueEncoderContext) {
+                context.add(value.value)
+            }
+        }
+        val booleanEncoder = object : ValueEncoder<BooleanBox> {
+            override fun encode(value: BooleanBox, context: ValueEncoderContext) {
+                context.add(value.value)
+            }
+        }
+
+        assertEquals(
+            "3.14",
+            JsonDataEncoderBuilder().registerEncoder(DoubleBox::class, doubleEncoder).build().encode(DoubleBox(3.14))
+        )
+        assertEquals(
+            "42",
+            JsonDataEncoderBuilder().registerEncoder(IntBox::class, intEncoder).build().encode(IntBox(42))
+        )
+        assertEquals(
+            "9000000000",
+            JsonDataEncoderBuilder().registerEncoder(LongBox::class, longEncoder).build().encode(LongBox(9000000000L))
+        )
+        assertEquals(
+            "true",
+            JsonDataEncoderBuilder().registerEncoder(BooleanBox::class, booleanEncoder).build().encode(BooleanBox(true))
+        )
+    }
 }

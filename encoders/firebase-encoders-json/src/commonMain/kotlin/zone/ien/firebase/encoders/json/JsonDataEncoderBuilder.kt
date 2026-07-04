@@ -1,6 +1,5 @@
 package zone.ien.firebase.encoders.json
 
-import zone.ien.firebase.encoders.Encoder
 import zone.ien.firebase.encoders.FieldDescriptor
 import zone.ien.firebase.encoders.ObjectEncoder
 import zone.ien.firebase.encoders.ObjectEncoderContext
@@ -181,10 +180,26 @@ private class JsonValueObjectEncoderContext(
         return this
     }
 
-    override fun add(value: Double): ValueEncoderContext = add(value)
-    override fun add(value: Int): ValueEncoderContext = add(value)
-    override fun add(value: Long): ValueEncoderContext = add(value)
-    override fun add(value: Boolean): ValueEncoderContext = add(value)
+    override fun add(value: Double): ValueEncoderContext {
+        encode(value)
+        return this
+    }
+
+    override fun add(value: Int): ValueEncoderContext {
+        encode(value)
+        return this
+    }
+
+    override fun add(value: Long): ValueEncoderContext {
+        encode(value)
+        return this
+    }
+
+    override fun add(value: Boolean): ValueEncoderContext {
+        encode(value)
+        return this
+    }
+
     override fun add(value: ByteArray): ValueEncoderContext {
         encode(value)
         return this
