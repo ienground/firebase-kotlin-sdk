@@ -77,7 +77,22 @@ private class JsonValueObjectEncoderContext(
             is String -> {
                 appendable.append("\"").append(escape(value)).append("\"")
             }
-            is Number, is Boolean -> {
+            is Boolean -> {
+                appendable.append(value.toString())
+            }
+            is Double -> {
+                require(value.isFinite()) {
+                    "NaN and Infinity are not valid JSON numbers: $value"
+                }
+                appendable.append(value.toString())
+            }
+            is Float -> {
+                require(value.isFinite()) {
+                    "NaN and Infinity are not valid JSON numbers: $value"
+                }
+                appendable.append(value.toString())
+            }
+            is Number -> {
                 appendable.append(value.toString())
             }
             is Collection<*> -> {
@@ -181,14 +196,11 @@ private class JsonValueObjectEncoderContext(
         return this
     }
 
-    override fun add(value: Double): ValueEncoderContext = add(value)
-    override fun add(value: Int): ValueEncoderContext = add(value)
-    override fun add(value: Long): ValueEncoderContext = add(value)
-    override fun add(value: Boolean): ValueEncoderContext = add(value)
-    override fun add(value: ByteArray): ValueEncoderContext {
-        encode(value)
-        return this
-    }
+    override fun add(value: Double): ValueEncoderContext { encode(value); return this }
+    override fun add(value: Int): ValueEncoderContext { encode(value); return this }
+    override fun add(value: Long): ValueEncoderContext { encode(value); return this }
+    override fun add(value: Boolean): ValueEncoderContext { encode(value); return this }
+    override fun add(value: ByteArray): ValueEncoderContext { encode(value); return this }
 
     private fun writeKey(name: String) {
         if (!first) appendable.append(",")
