@@ -233,6 +233,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.DataConnect) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "In-App Messaging",
+                        subtitle = "Trigger contextual campaigns and control display suppression.",
+                        indicatorColor = Color(0xFFE91E63),
+                        onClick = { onNavigate(ScreenRoute.InAppMessaging) }
+                    )
+                }
             }
         }
     }
