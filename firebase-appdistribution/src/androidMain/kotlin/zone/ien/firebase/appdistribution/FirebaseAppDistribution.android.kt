@@ -39,19 +39,19 @@ internal suspend fun <T> Task<T>.await(): T = suspendCancellableCoroutine { cont
 
 public actual class FirebaseAppDistribution internal constructor(
     private val androidAppDistribution: com.google.firebase.appdistribution.FirebaseAppDistribution
-) {
-    public actual val isTesterSignedIn: Boolean
+) : FirebaseAppDistributionApi {
+    public actual override val isTesterSignedIn: Boolean
         get() = androidAppDistribution.isTesterSignedIn
 
-    public actual suspend fun signInTester() {
+    public actual override suspend fun signInTester() {
         androidAppDistribution.signInTester().await()
     }
 
-    public actual fun signOutTester() {
+    public actual override fun signOutTester() {
         androidAppDistribution.signOutTester()
     }
 
-    public actual suspend fun checkForNewRelease(): AppDistributionRelease? {
+    public actual override suspend fun checkForNewRelease(): AppDistributionRelease? {
         val nativeRelease = androidAppDistribution.checkForNewRelease().await() ?: return null
         return AppDistributionRelease(
             displayVersion = nativeRelease.displayVersion,
@@ -61,7 +61,7 @@ public actual class FirebaseAppDistribution internal constructor(
         )
     }
 
-    public actual fun updateIfNewReleaseAvailable(): Flow<UpdateProgress> = callbackFlow {
+    public actual override fun updateIfNewReleaseAvailable(): Flow<UpdateProgress> = callbackFlow {
         val updateTask = androidAppDistribution.updateIfNewReleaseAvailable()
         val listener = OnProgressListener { progress ->
             val kmpStatus = when (progress.updateStatus) {
