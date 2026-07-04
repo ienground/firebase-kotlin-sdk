@@ -2,7 +2,7 @@ package zone.ien.firebase.dataconnect
 
 import zone.ien.firebase.FirebaseApp
 
-public expect class FirebaseDataConnect {
+public expect class FirebaseDataConnect private constructor() {
     public val config: ConnectorConfig
     public fun useEmulator(host: String, port: Int)
 
