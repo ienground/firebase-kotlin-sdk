@@ -15,6 +15,14 @@ class TransportTestingTest {
     }
 
     @Test
+    fun testFakeClockNegativeAdvance() {
+        val clock = FakeClock(1000L)
+        kotlin.test.assertFailsWith<IllegalArgumentException> {
+            clock.advanceBy(-500L)
+        }
+    }
+
+    @Test
     fun testFakeEventStore() {
         val store = FakeEventStore()
         assertEquals(0, store.getCount())
