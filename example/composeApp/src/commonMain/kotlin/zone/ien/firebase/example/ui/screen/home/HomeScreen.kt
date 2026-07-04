@@ -193,6 +193,14 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                         onClick = { onNavigate(ScreenRoute.RemoteConfig) }
                     )
                 }
+                item {
+                    DemoCard(
+                        title = "AI Logic",
+                        subtitle = "Generate content using Gemini model prompts.",
+                        indicatorColor = Color(0xFF9C27B0),
+                        onClick = { onNavigate(ScreenRoute.AiLogic) }
+                    )
+                }
             }
         }
     }

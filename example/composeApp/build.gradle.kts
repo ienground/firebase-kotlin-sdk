@@ -95,6 +95,7 @@ kotlin {
             implementation(project(":appcheck:firebase-appcheck-debug-testing"))
             implementation(project(":firebase-ml-modeldownloader"))
             implementation(project(":firebase-config"))
+            implementation(project(":ai-logic:firebase-ai"))
  
             implementation(libs.bundles.ienlab.cmp)
         }
