@@ -59,6 +59,7 @@ firebase-android-appcheck-playintegrity = { module = "com.google.firebase:fireba
 firebase-android-functions = { module = "com.google.firebase:firebase-functions", version = "21.0.0" }
 firebase-android-appdistribution = { module = "com.google.firebase:firebase-appdistribution", version = "16.0.0-beta20" }
 firebase-android-messaging = { module = "com.google.firebase:firebase-messaging", version = "24.1.0" }
+firebase-android-messaging-directboot = { module = "com.google.firebase:firebase-messaging-directboot", version = "24.1.0" }
 firebase-android-dataconnect = { module = "com.google.firebase:firebase-dataconnect", version = "17.3.1" }
 firebase-android-inappmessaging = { module = "com.google.firebase:firebase-inappmessaging", version = "21.0.0" }
 firebase-android-inappmessaging-display = { module = "com.google.firebase:firebase-inappmessaging-display", version = "21.0.0" }

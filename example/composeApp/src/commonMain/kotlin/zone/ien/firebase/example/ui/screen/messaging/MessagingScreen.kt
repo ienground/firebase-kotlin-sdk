@@ -139,6 +139,29 @@ fun MessagingScreen(
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
+                    Text("Android Direct Boot Capability Status", style = MaterialTheme.typography.titleSmall)
+                    
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .padding(12.dp)
+                    ) {
+                        val isDbSupported = remember { zone.ien.firebase.messaging.directboot.FirebaseMessagingDirectBoot.getInstance().isSupported }
+                        Text(
+                            text = "Direct Boot Supported: ${if (isDbSupported) "🟢 ENABLED (Android Only)" else "🔴 UNAVAILABLE (iOS/No-op)"}",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Direct Boot Aware components allow device protected storage access prior to user decryption.",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text("Topic Operations", style = MaterialTheme.typography.titleSmall)
 
                     Row(
