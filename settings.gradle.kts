@@ -83,3 +83,6 @@ project(":encoders:protoc-gen-firebase-encoders").projectDir = file("encoders/pr
 
 include(":firebase-messaging")
 project(":firebase-messaging").projectDir = file("firebase-messaging")
+
+include(":firebase-messaging-directboot")
+project(":firebase-messaging-directboot").projectDir = file("firebase-messaging-directboot")
