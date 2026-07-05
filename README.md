@@ -39,7 +39,7 @@ A Kotlin Multiplatform (KMP) wrapper around Firebase platform SDKs, designed to 
 | **Sessions** (`firebase-sessions`) | 🟢 Yes | 🟢 Yes | **95%** | Native GMS / iOS SwiftPM SDK (Background session telemetry auto-runs) |
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 Yes | 🟢 Yes | **95%** | Pure Kotlin Serialization Pipeline |
 | **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Memory-based custom model simulation (no live native model downloading) |
-| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 Yes | 🔴 Stub | **15%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
+| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Memory-based custom Gemini content simulation (no live native AI model dispatching) |
 | **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 Yes | 🔴 Stub | **15%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
 | **App Distribution** (`firebase-appdistribution`) | 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Tester sign-in and update checks (no in-app progress monitoring) |
 | **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Memory-based metadata container (no live native query linking) |
@@ -183,6 +183,15 @@ Since Kotlin/Native's cinterop pipeline cannot generate bindings directly for Sw
    To prevent compilation failure and runtime crashes, the iOS actual implementation for Model Downloader operates in **"Memory-only container mode"**. Requesting a model (`getModel`), listing downloaded models (`listDownloadedModels`), and deleting models (`deleteDownloadedModel`) store and verify states safely inside a local memory registry.
 3. **Live Model Downloads**:
    To physically download custom TFLite model files on iOS, you must call the Firebase ML Swift SDK directly from your native iOS Swift codebase, rather than KMP common code.
+
+### AI Logic iOS Integration Constraints
+
+1. **Swift-only Library Limitation**:
+   The official iOS `FirebaseAILogic` SDK is written strictly in Swift and lacks Objective-C compatibility headers. Consequently, Kotlin/Native cinterop cannot parse the headers or link the binary target.
+2. **KMP Memory-based Actual**:
+   To prevent compilation failure and runtime crashes, the iOS actual implementation for AI Logic operates in **"Memory-only container mode"**. Requesting a model (`generativeModel`) and dispatching content generation (`generateContent`) simulate a 1.5s network delay and return a simulated reply including prompt parameters safely.
+3. **Live AI Requests**:
+   To connect to live Vertex AI backend services on iOS, you must call the official Firebase AI Swift SDK directly from your native iOS Swift codebase, rather than KMP common code.
 
 **Action Needed**: Guard your UI entry points or calls to these services on iOS:
 ```kotlin
