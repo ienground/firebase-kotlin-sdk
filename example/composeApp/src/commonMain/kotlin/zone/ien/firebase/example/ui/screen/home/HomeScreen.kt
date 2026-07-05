@@ -170,7 +170,7 @@ public fun HomeScreen(
             subtitle = "Configure Postgres database GraphQL query connector bootstrap.",
             indicatorColor = Color(0xFF673AB7),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.DataConnect
         ),
         HomeFeatureItem(
