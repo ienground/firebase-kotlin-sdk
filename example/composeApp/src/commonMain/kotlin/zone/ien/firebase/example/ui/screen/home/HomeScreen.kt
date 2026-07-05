@@ -100,7 +100,7 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                 item {
                     DemoCard(
                         title = "Messaging",
-                        subtitle = "Placeholder feature.",
+                        subtitle = "FCM token, topic subscribe & client delegation.",
                         indicatorColor = Color(0xFF80CBC4),
                         onClick = { onNavigate(ScreenRoute.MessagingPlaceholder) }
                     )

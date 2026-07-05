@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 40
+- **KMP Enabled**: 41
 - **Android Native Only**: 11
 
 ---
@@ -44,7 +44,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-dataconnect:connectors`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only runtime constraint). |
 | `firebase-datatransport`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP internal support shell. |
 | `firebase-functions`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
-| `firebase-messaging`                                  | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-messaging`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Cloud Messaging (FCM) wrapper. |
 | `firebase-messaging-directboot`                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
 | `firebase-inappmessaging`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only cinterop constraint). |
 | `firebase-inappmessaging-display`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only runtime constraint). |
@@ -81,6 +81,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `firebase-messaging` KMP Module Creation & Platform Wrappers
+* **KMP Module Realization**: Created the new `:firebase-messaging` module with targets `androidTarget()`, and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Wrapper Integration**: Implemented expect class `FirebaseMessaging` in `commonMain` mapping `getToken`, `deleteToken`, and `subscribeToTopic` to Android GMS Tasks (coroutine awaiting) and iOS FIRMessaging native delegation with SwiftPM package dependency configuration.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 41.
 
 ### 2026-07-04: `encoders:protoc-gen-firebase-encoders` KMP Module Creation & Tooling Setup
 * **KMP Module Realization**: Created the new `:encoders:protoc-gen-firebase-encoders` module applying KMP with JVM-only target `jvm()` and `application` configuration.
