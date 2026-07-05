@@ -36,7 +36,7 @@
 | **Installations** (`firebase-installations`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
 | **App Check** (`firebase-appcheck`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
 | **A/B Testing** (`firebase-abt`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Sessions** (`firebase-sessions`) | 🟢 지원 | 🔴 Stub | **20%** (iOS Stub) | KMP wrapper (iOS stub) |
+| **Sessions** (`firebase-sessions`) | 🟢 지원 | 🟢 지원 | **95%** | iOS SwiftPM SDK 링킹 완료 (백그라운드 세션 텔레메트리 자동 동작) |
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 지원 | 🟢 지원 | **95%** | Pure Kotlin 직렬화 파이프라인 |
 | **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 | **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
@@ -166,6 +166,13 @@ val userName = snapshot.get<String>("name")
    KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. 인스턴스 생성(`getInstance`), 설정 조회(`config`), 에뮬레이터 세팅(`useEmulator`) 등의 기능은 iOS 상에서도 안전하게 상태값을 메모리에 보존하며 정상 실행됩니다.
 3. **실제 GraphQL 네트워크 통신 처리**:
    iOS 실제 디바이스 및 시뮬레이터에서 서버 또는 로컬 에뮬레이터와 통신하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase CLI로 자동 생성된 Swift SDK를 직접 가져와 데이터를 교환하고 화면에 렌더링해야 합니다.
+
+### Sessions iOS 연동 및 세션 자동 추적
+
+1. **바이너리 연동 및 인프라 구동**:
+   Firebase Sessions SDK는 개발자가 코드에서 직접 제어하는 public API를 거의 노출하지 않는 내부 백그라운드 인프라(Internal-only telemetry SDK)입니다. 이번 마이그레이션을 통해 `FirebaseSessions` SwiftPM 제품이 iOS 타겟에 빌드 타임에 정상 링크되도록 구성되었습니다.
+2. **KMP 역할 및 자동 연계**:
+   `FirebaseSessions` expect/actual 매핑을 통해 공통 코드 단에서의 클래스패스 가시성을 보장하며, 세션 ID 및 라이프사이클 이벤트는 iOS 앱 백그라운드 구동 시 SDK 내부에서 자동으로 추적되어 Crashlytics 및 Performance Monitoring SDK와 자동 연동되어 동작합니다.
 
 **대처 가이드**: 공통 소스셋이나 프리젠테이션 레이어에서 플랫폼 구별 플래그를 통해 호출 코드를 안전하게 보호해 주십시오:
 ```kotlin
