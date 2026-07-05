@@ -23,7 +23,7 @@ public actual class FirebaseAI private constructor() {
 public actual val FirebaseApp.ai: FirebaseAI
     get() = FirebaseAI.getInstance(this)
 
-public actual class GenerativeModel(private val modelName: String) {
+public actual class GenerativeModel(private val modelName: String = "") {
     public actual suspend fun generateContent(prompt: String): GenerateContentResponse {
         delay(1500)
         val reply = """
@@ -38,5 +38,5 @@ public actual class GenerativeModel(private val modelName: String) {
 }
 
 public actual class GenerateContentResponse(
-    public actual val text: String?
+    public actual val text: String? = null
 )
