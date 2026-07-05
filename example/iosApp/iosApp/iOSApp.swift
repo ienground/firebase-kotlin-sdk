@@ -51,6 +51,17 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
         print("FCM Debug: failed to register for remote notifications: \(error.localizedDescription)")
     }
 
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        // Forward remote notification payload to Firebase Messaging
+        Messaging.messaging().appDidReceiveMessage(userInfo)
+        completionHandler(.newData)
+    }
+
+
     // MessagingDelegate method to receive registration tokens from FCM
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("FCM Debug: successfully received FCM registration token = \(fcmToken ?? "nil")")
