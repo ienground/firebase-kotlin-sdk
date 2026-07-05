@@ -84,9 +84,7 @@ fun ScreenNavigationGraph(
                 )
             }
             entry<ScreenRoute.MessagingPlaceholder> {
-                PlaceholderScreen(
-                    title = "Cloud Messaging",
-                    description = "Firebase Cloud Messaging (FCM) push notification handler wrapper is coming soon to KMP SDK.",
+                zone.ien.firebase.example.ui.screen.messaging.MessagingScreen(
                     onBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }

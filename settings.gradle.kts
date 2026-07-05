@@ -80,3 +80,6 @@ project(":encoders:firebase-decoders-json").projectDir = file("encoders/firebase
 
 include(":encoders:protoc-gen-firebase-encoders")
 project(":encoders:protoc-gen-firebase-encoders").projectDir = file("encoders/protoc-gen-firebase-encoders")
+
+include(":firebase-messaging")
+project(":firebase-messaging").projectDir = file("firebase-messaging")
