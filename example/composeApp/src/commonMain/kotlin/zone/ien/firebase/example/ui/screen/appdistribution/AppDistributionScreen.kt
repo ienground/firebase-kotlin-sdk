@@ -48,7 +48,8 @@ fun AppDistributionScreen(
     context: FirebasePlatformContext,
     onBack: () -> Unit
 ) {
-    val isSupported = !isIos
+    val isSupported = true
+    val isUpdateProgressSupported = !isIos
     val appDistribution = remember {
         if (isSupported) {
             runCatching { FirebaseAppDistribution.instance }.getOrNull()
@@ -60,8 +61,8 @@ fun AppDistributionScreen(
     val coroutineScope = rememberCoroutineScope()
     val logs = remember { 
         mutableStateListOf<String>().apply {
-            if (!isSupported) {
-                add("App Distribution is NOT supported on this platform.")
+            if (isIos) {
+                add("iOS Notice: In-app update progress monitoring is not supported. Check for updates will prompt the native SDK alert.")
             }
         }
     }
@@ -101,24 +102,24 @@ fun AppDistributionScreen(
                         .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    if (!isSupported) {
+                    if (isIos) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(8.dp))
-                                .background(Color.Red.copy(alpha = 0.1f))
+                                .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f))
                                 .padding(12.dp)
                         ) {
                             Text(
-                                text = "⚠️ Platform Not Supported",
+                                text = "ℹ️ iOS Platform Notice",
                                 style = MaterialTheme.typography.titleMedium,
-                                color = Color.Red
+                                color = MaterialTheme.colorScheme.primary
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = "App Distribution and tester sign-in is unavailable on this target due to stub platform migration constraints.",
+                                text = "In-app update progress tracking is unsupported on iOS. Checking for releases will automatically prompt the native SDK update flow if a release is available.",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = Color.Red
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         }
                         Spacer(modifier = Modifier.height(8.dp))
@@ -216,10 +217,10 @@ fun AppDistributionScreen(
                                 }
                             }
                         },
-                        enabled = isSupported && latestRelease != null,
+                        enabled = isSupported && latestRelease != null && isUpdateProgressSupported,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Update App")
+                        Text(if (isIos) "Update App (Android Only)" else "Update App")
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
