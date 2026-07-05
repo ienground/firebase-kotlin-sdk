@@ -1,4 +1,4 @@
-TEAM_ID=
+TEAM_ID=M8ZHHMB2AV
 
 PRODUCT_NAME=FirebaseKMP
 PRODUCT_BUNDLE_IDENTIFIER=zone.ien.firebase.example.Example$(TEAM_ID)
