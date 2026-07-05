@@ -73,6 +73,10 @@ let package = Package(
           name: "FirebaseRemoteConfig",
           package: "firebase-ios-sdk"
         ),
+        .product(
+          name: "FirebaseMessaging",
+          package: "firebase-ios-sdk"
+        ),
         .product(name: "_firebase_firestore", package: "_firebase_firestore"),
         .product(name: "_firebase_storage", package: "_firebase_storage"),
         .product(name: "_firebase_perf", package: "_firebase_perf"),
