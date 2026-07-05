@@ -197,14 +197,15 @@ kotlin.sourceSets.configureEach {
 
 // Forcefully delete the package resolved lock file during the configuration phase 
 // to ensure Gradle's Task Execution graph evaluates resolveSyntheticPackageDependencies as out-of-date!
-val resolvedLockFile = file("build/kotlin/swiftImport/Package.resolved")
-if (resolvedLockFile.exists()) {
-    resolvedLockFile.delete()
-    println("Configuration phase: Forcefully deleted swiftImport/Package.resolved to guarantee clean SPM package resolve graph!")
-}
-
 tasks.configureEach {
     if (name.startsWith("resolveSyntheticPackageDependencies") || name.startsWith("fetchSyntheticImportProjectPackages")) {
         outputs.upToDateWhen { false }
+        doFirst {
+            val resolvedLockFile = file("build/kotlin/swiftImport/Package.resolved")
+            if (resolvedLockFile.exists()) {
+                resolvedLockFile.delete()
+                logger.lifecycle("Deleted swiftImport/Package.resolved before executing task: $name")
+            }
+        }
     }
 }
