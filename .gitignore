@@ -29,3 +29,4 @@ example/iosApp/iosApp/GoogleService-Info.plist
 .build/
 example/iosApp/KotlinMultiplatformLinkedPackage/.build/
 /example/androidApp/release/
+example/iosApp/Configuration/LocalConfig.xcconfig
