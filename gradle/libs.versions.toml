@@ -15,12 +15,11 @@ firebase-android-ai-ondevice = "16.0.0-beta03"
 firebase-android-inappmessaging = "22.0.3"
 firebase-firestore = "26.4.0"
 firebase-components = "19.0.1"
-# TODO: 16.0.0-beta04 -> stable/16.0.0 존재 시 전환 가능하지만 dynamic feature 모듈 전용 beta 릴리스 고정이므로 유지
-firebase-dynamic-module-support = "16.0.0-beta04"
+firebase-dynamic-module-support = "16.0.0-beta04" # TODO: 16.0.0-beta04 -> stable/16.0.0 존재 시 전환 가능하지만 dynamic feature 모듈 전용 beta 릴리스 고정이므로 유지
 firebase-abt = "23.0.1"
 firebase-storage = "22.0.1"
 firebase-auth = "24.1.0"
-firebase-sessions = "2.0.8"
+firebase-sessions = "3.0.6"
 firebase-perf = "22.0.5"
 firebase-installations = "19.1.1"
 firebase-installations-interop = "17.3.0"
@@ -31,17 +30,15 @@ firebase-protolite-well-known-types = "18.0.0"
 firebase-database = "22.0.1"
 firebase-dataconnect = "17.3.1"
 androidx-annotation-ver = "1.10.0"
-errorprone-annotations-ver = "2.26.0"
+errorprone-annotations-ver = "2.50.0"
 firebase-annotations-ver = "17.0.0"
 play-services-tasks-ver = "18.4.1"
 firebase-appcheck-recaptcha = "19.0.0"
 firebase-appcheck-playintegrity = "19.2.0"
 firebase-functions = "22.1.1"
-# TODO: 16.0.0-beta20 -> stable/16.0.0 존재 시 전환 가능하지만 App Distribution 전용 beta 고정이므로 유지
-firebase-appdistribution = "16.0.0-beta20"
+firebase-appdistribution = "16.0.0-beta20" # TODO: 16.0.0-beta20 -> stable/16.0.0 존재 시 전환 가능하지만 App Distribution 전용 beta 고정이므로 유지
 firebase-appcheck-interop = "17.1.0"
-# TODO: 11.3.0 -> 12.15.0/11.15.0 가능하지만 iOS actual cinterop 바인딩 및 API 호환성 마이그레이션 검토 필요
-firebase-ios-sdk = "11.3.0"
+firebase-ios-sdk = "11.3.0" # TODO: 11.3.0 -> 12.15.0/11.15.0 가능하지만 iOS actual cinterop 바인딩 및 API 호환성 마이그레이션 검토 필요
 google-services = "4.5.0"
 
 # plugin
