@@ -155,7 +155,7 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
-                enabled = !isInitializing,
+                enabled = !isInitializing && !isInitialized,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (isInitialized) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
