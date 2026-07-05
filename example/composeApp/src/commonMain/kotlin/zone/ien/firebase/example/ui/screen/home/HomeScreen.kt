@@ -122,7 +122,7 @@ public fun HomeScreen(
             subtitle = "Retrieve custom models and monitor status.",
             indicatorColor = Color(0xFF4CAF50),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.ModelDownloader
         ),
         HomeFeatureItem(
