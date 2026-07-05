@@ -6,6 +6,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import zone.ien.firebase.FirebaseApp
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlinx.coroutines.tasks.await
 
 public actual class FirebaseMessaging(private val delegate: AndroidFirebaseMessaging) {
 
@@ -15,18 +16,18 @@ public actual class FirebaseMessaging(private val delegate: AndroidFirebaseMessa
             delegate.isAutoInitEnabled = value
         }
 
-    public actual suspend fun getToken(): String? = delegate.token.awaitTask()
+    public actual suspend fun getToken(): String? = delegate.token.await()
 
     public actual suspend fun deleteToken() {
-        delegate.deleteToken().awaitTask()
+        delegate.deleteToken().await()
     }
 
     public actual suspend fun subscribeToTopic(topic: String) {
-        delegate.subscribeToTopic(topic).awaitTask()
+        delegate.subscribeToTopic(topic).await()
     }
 
     public actual suspend fun unsubscribeFromTopic(topic: String) {
-        delegate.unsubscribeFromTopic(topic).awaitTask()
+        delegate.unsubscribeFromTopic(topic).await()
     }
 
     public actual companion object {
