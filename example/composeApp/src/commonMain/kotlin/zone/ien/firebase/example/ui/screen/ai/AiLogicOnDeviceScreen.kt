@@ -3,6 +3,7 @@ package zone.ien.firebase.example.ui.screen.ai
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,13 +11,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -25,7 +29,6 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebaseApp
@@ -44,31 +48,23 @@ import zone.ien.firebase.ai.InferenceMode
 import zone.ien.firebase.ai.OnDeviceConfig
 import zone.ien.firebase.ai.ai
 import zone.ien.firebase.ai.generativeModel
+import zone.ien.firebase.example.util.isIos
 
 @OptIn(ExperimentalMaterial3Api::class, zone.ien.firebase.InternalFirebaseApi::class)
 @Composable
 fun AiLogicOnDeviceScreen(
     onNavigateBack: () -> Unit
 ) {
-    // Detect iOS stub runtime exception or missing instance
-    val aiResult = remember {
-        if (FirebaseApp.isInitialized) {
-            runCatching { FirebaseApp.instance.ai }
-        } else {
-            Result.failure(Exception("Firebase not initialized"))
-        }
-    }
-    val isSupported = aiResult.isSuccess && aiResult.getOrNull() != null
-
+    val isSupported = !isIos
     val coroutineScope = rememberCoroutineScope()
     var modelName by remember { mutableStateOf("gemini-3.5-flash") }
     var prompt by remember { mutableStateOf("Write a 3-word slogan for KMP.") }
     var inferenceMode by remember { mutableStateOf(InferenceMode.PREFER_ON_DEVICE) }
     var consoleLogs by remember { 
         mutableStateOf(
-            if (!isSupported) "AI On-Device is NOT supported on this platform: ${aiResult.exceptionOrNull()?.message}\n"
+            if (!isSupported) "AI On-Device is NOT supported on this platform.\n"
             else "Console initialized for Hybrid AI.\n"
-        ) 
+        )
     }
     var isLoading by remember { mutableStateOf(false) }
 
@@ -151,11 +147,13 @@ fun AiLogicOnDeviceScreen(
                     )
 
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        InferenceMode.values().forEach { mode ->
+                        InferenceMode.entries.forEach { mode ->
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
-                                    .clickable(enabled = isSupported) { inferenceMode = mode }
+                                    .clickable(enabled = isSupported) {
+                                        if (isSupported) inferenceMode = mode
+                                    }
                                     .padding(vertical = 4.dp)
                             ) {
                                 RadioButton(
@@ -199,14 +197,12 @@ fun AiLogicOnDeviceScreen(
 
                     Button(
                         onClick = {
-                            if (!FirebaseApp.isInitialized) {
-                                log("Error: Firebase Core not initialized.")
-                                return@Button
-                            }
                             coroutineScope.launch {
                                 try {
                                     isLoading = true
-                                    log("Dispatching prompt to hybrid pipeline...")
+                                    log(">> Starting content generation request...")
+                                    log(">> Mode: $inferenceMode")
+                                    log(">> Prompt: \"$prompt\"")
                                     val fallbackModel = FirebaseApp.instance.ai.generativeModel(
                                         modelName = modelName,
                                         onDeviceConfig = OnDeviceConfig(
@@ -214,9 +210,13 @@ fun AiLogicOnDeviceScreen(
                                         )
                                     )
                                     val response = fallbackModel.generateContent(prompt)
-                                    log("Hybrid Response:\n${response.text}")
+                                    log(">> Response received successfully!")
+                                    log(">> Result:\n${response.text}")
+                                } catch (e: UnsupportedOperationException) {
+                                    log(">> ERROR [Platform Unsupported]: ${e.message}")
+                                    log(">> NOTE: AI On-Device is stubbed on iOS because Swift-only framework dependencies cannot be linked.")
                                 } catch (e: Exception) {
-                                    log("Hybrid execution failed: ${e.message}")
+                                    log(">> ERROR [Inference Failed]: ${e.message}")
                                 } finally {
                                     isLoading = false
                                 }
@@ -225,7 +225,15 @@ fun AiLogicOnDeviceScreen(
                         enabled = isSupported && !isLoading,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(if (isLoading) "Running Inference..." else "Run Inference")
+                        if (isLoading) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(24.dp),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                strokeWidth = 2.dp
+                            )
+                        } else {
+                            Text("Run Inference")
+                        }
                     }
                 }
             }

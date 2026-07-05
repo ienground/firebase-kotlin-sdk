@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -39,7 +40,9 @@ import zone.ien.firebase.example.icon.AndroidFill
 import zone.ien.firebase.example.icon.AppleFill
 import zone.ien.firebase.example.icon.Icons
 import zone.ien.firebase.example.ui.navigation.ScreenRoute
+import zone.ien.firebase.example.util.isIos
 
+@OptIn(ExperimentalMaterial3Api::class)
 @PreviewApi
 @Composable
 public fun HomeScreen(

@@ -39,6 +39,7 @@ import zone.ien.firebase.appdistribution.AppDistributionRelease
 import zone.ien.firebase.appdistribution.FirebaseAppDistribution
 import zone.ien.firebase.appdistribution.UpdateProgress
 import zone.ien.firebase.example.ui.theme.AppTheme
+import zone.ien.firebase.example.util.isIos
 import zone.ien.utils.ui.wrapper.M3RootWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,16 +48,20 @@ fun AppDistributionScreen(
     context: FirebasePlatformContext,
     onBack: () -> Unit
 ) {
-    // Detect iOS stub runtime exception or missing instance
-    val appDistResult = remember { runCatching { FirebaseAppDistribution.instance } }
-    val isSupported = appDistResult.isSuccess && appDistResult.getOrNull() != null
-    val appDistribution = appDistResult.getOrNull()
+    val isSupported = !isIos
+    val appDistribution = remember {
+        if (isSupported) {
+            runCatching { FirebaseAppDistribution.instance }.getOrNull()
+        } else {
+            null
+        }
+    }
 
     val coroutineScope = rememberCoroutineScope()
     val logs = remember { 
         mutableStateListOf<String>().apply {
-            if (appDistResult.isFailure) {
-                add("App Distribution is NOT supported on this platform: ${appDistResult.exceptionOrNull()?.message}")
+            if (!isSupported) {
+                add("App Distribution is NOT supported on this platform.")
             }
         }
     }
