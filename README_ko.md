@@ -18,24 +18,24 @@
 
 ### 서비스 지원 현황 매트릭스
 
-| Firebase 기능 명칭 | Android 지원 | iOS 지원 | 내부 구현 메커니즘 |
-| :--- | :---: | :---: | :--- |
-| **Authentication** (`firebase-auth`) | 🟢 지원 | 🟢 지원 | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Firestore** (`firebase-firestore`) | 🟢 지원 | 🟢 지원 | Native GMS / iOS SwiftPM SDK 위임 |
-| **Realtime Database** (`firebase-database`) | 🟢 지원 | 🟢 지원 | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Storage** (`firebase-storage`) | 🟢 지원 | 🟢 지원 | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Functions** (`firebase-functions`) | 🟢 지원 | 🟢 지원 | Native GMS / iOS SwiftPM SDK 위임 |
-| **Remote Config** (`firebase-config`) | 🟢 지원 | 🟢 지원 | Native GMS / iOS SwiftPM SDK 위임 |
-| **Crashlytics** (`firebase-crashlytics`) | 🟢 지원 | 🟢 지원 | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Messaging** (`firebase-messaging`) | 🟢 지원 | 🟢 지원 | Native GMS / iOS SwiftPM SDK 위임 |
-| **Performance Monitoring** (`firebase-perf`) | 🟢 지원 | 🟢 지원 | Native GMS / iOS SwiftPM SDK 위임 |
-| **Installations** (`firebase-installations`) | 🟢 지원 | 🟢 지원 | Native GMS / iOS SwiftPM SDK 위임 |
-| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | 🔴 Stub | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
-| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🔴 Stub | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
-| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🔴 Stub | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
-| **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🔴 Stub | iOS 플랫폼 제한으로 Stub 대체 |
-| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | 🔴 Stub | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
-| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | 🔴 Stub | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
+| Firebase 기능 명칭 | Android 지원 | iOS 지원 | 완성도 | 내부 구현 메커니즘 |
+| :--- | :---: | :---: | :---: | :--- |
+| **Authentication** (`firebase-auth`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Firestore** (`firebase-firestore`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Realtime Database** (`firebase-database`) | 🟢 지원 | 🟢 지원 | **85%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Storage** (`firebase-storage`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Functions** (`firebase-functions`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Remote Config** (`firebase-config`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Crashlytics** (`firebase-crashlytics`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Messaging** (`firebase-messaging`) | 🟢 지원 | 🟢 지원 | **85%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Performance Monitoring** (`firebase-perf`) | 🟢 지원 | 🟢 지원 | **80%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Installations** (`firebase-installations`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
+| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
+| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
+| **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🔴 Stub | **20%** (iOS Stub) | iOS 플랫폼 제한으로 Stub 대체 |
+| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
+| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 
 ---
 

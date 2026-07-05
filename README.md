@@ -18,24 +18,24 @@ A Kotlin Multiplatform (KMP) wrapper around Firebase platform SDKs, designed to 
 
 ### Supported Services Matrix
 
-| Firebase Feature | Android Support | iOS Support | Under the Hood |
-| :--- | :---: | :---: | :--- |
-| **Authentication** (`firebase-auth`) | 🟢 Yes | 🟢 Yes | Native GMS / iOS SwiftPM SDK |
-| **Cloud Firestore** (`firebase-firestore`) | 🟢 Yes | 🟢 Yes | Native GMS / iOS SwiftPM SDK |
-| **Realtime Database** (`firebase-database`) | 🟢 Yes | 🟢 Yes | Native GMS / iOS SwiftPM SDK |
-| **Cloud Storage** (`firebase-storage`) | 🟢 Yes | 🟢 Yes | Native GMS / iOS SwiftPM SDK |
-| **Cloud Functions** (`firebase-functions`) | 🟢 Yes | 🟢 Yes | Native GMS / iOS SwiftPM SDK |
-| **Remote Config** (`firebase-config`) | 🟢 Yes | 🟢 Yes | Native GMS / iOS SwiftPM SDK |
-| **Crashlytics** (`firebase-crashlytics`) | 🟢 Yes | 🟢 Yes | Native GMS / iOS SwiftPM SDK |
-| **Cloud Messaging** (`firebase-messaging`) | 🟢 Yes | 🟢 Yes | Native GMS / iOS SwiftPM SDK |
-| **Performance Monitoring** (`firebase-perf`) | 🟢 Yes | 🟢 Yes | Native GMS / iOS SwiftPM SDK |
-| **Installations** (`firebase-installations`) | 🟢 Yes | 🟢 Yes | Native GMS / iOS SwiftPM SDK |
-| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 Yes | 🔴 Stub | Unsupported on iOS due to Swift-only dependency |
-| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 Yes | 🔴 Stub | Unsupported on iOS due to Swift-only dependency |
-| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 Yes | 🔴 Stub | Unsupported on iOS due to Swift-only dependency |
-| **App Distribution** (`firebase-appdistribution`) | 🟢 Yes | 🔴 Stub | Platform limitation on iOS |
-| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 Yes | 🔴 Stub | Unsupported on iOS due to Swift-only dependency |
-| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 Yes | 🔴 Stub | Unsupported on iOS due to Swift-only dependency |
+| Firebase Feature | Android Support | iOS Support | Completion Rate | Under the Hood |
+| :--- | :---: | :---: | :---: | :--- |
+| **Authentication** (`firebase-auth`) | 🟢 Yes | 🟢 Yes | **95%** | Native GMS / iOS SwiftPM SDK |
+| **Cloud Firestore** (`firebase-firestore`) | 🟢 Yes | 🟢 Yes | **90%** | Native GMS / iOS SwiftPM SDK |
+| **Realtime Database** (`firebase-database`) | 🟢 Yes | 🟢 Yes | **85%** | Native GMS / iOS SwiftPM SDK |
+| **Cloud Storage** (`firebase-storage`) | 🟢 Yes | 🟢 Yes | **90%** | Native GMS / iOS SwiftPM SDK |
+| **Cloud Functions** (`firebase-functions`) | 🟢 Yes | 🟢 Yes | **95%** | Native GMS / iOS SwiftPM SDK |
+| **Remote Config** (`firebase-config`) | 🟢 Yes | 🟢 Yes | **90%** | Native GMS / iOS SwiftPM SDK |
+| **Crashlytics** (`firebase-crashlytics`) | 🟢 Yes | 🟢 Yes | **90%** | Native GMS / iOS SwiftPM SDK |
+| **Cloud Messaging** (`firebase-messaging`) | 🟢 Yes | 🟢 Yes | **85%** | Native GMS / iOS SwiftPM SDK |
+| **Performance Monitoring** (`firebase-perf`) | 🟢 Yes | 🟢 Yes | **80%** | Native GMS / iOS SwiftPM SDK |
+| **Installations** (`firebase-installations`) | 🟢 Yes | 🟢 Yes | **95%** | Native GMS / iOS SwiftPM SDK |
+| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 Yes | 🔴 Stub | **10%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
+| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 Yes | 🔴 Stub | **15%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
+| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 Yes | 🔴 Stub | **15%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
+| **App Distribution** (`firebase-appdistribution`) | 🟢 Yes | 🔴 Stub | **20%** (iOS Stub) | Platform limitation on iOS |
+| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 Yes | 🔴 Stub | **10%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
+| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 Yes | 🔴 Stub | **10%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
 
 ---
 
