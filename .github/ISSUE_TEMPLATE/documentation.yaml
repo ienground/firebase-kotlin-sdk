@@ -1,23 +1,23 @@
-name: 📚 문서 개선
-description: 문서 개선 요청입니다.
+name: 📚 Documentation
+description: Suggest improvements to the documentation.
 title: '[DOCS] '
 labels: ['documentation']
 body:
   - type: dropdown
     id: target
     attributes:
-      label: "📖 개선 대상"
+      label: "📖 Target Documentation"
       options:
         - "README.md"
-        - "API 문서"
-        - "코드 주석"
-        - "튜토리얼"
+        - "API Documentation"
+        - "Code Comments / KDoc"
+        - "Tutorials / Guides"
     validations:
       required: true
   - type: textarea
     id: suggestion
     attributes:
-      label: "💡 개선 제안"
-      placeholder: "어떻게 개선할까요?"
+      label: "💡 Suggestion"
+      placeholder: "Describe the improvements you'd like to propose."
     validations:
       required: true

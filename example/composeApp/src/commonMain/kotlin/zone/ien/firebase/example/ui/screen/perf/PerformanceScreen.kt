@@ -49,9 +49,7 @@ fun PerformanceScreen(
                         Text("←")
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
+
             )
         }
     ) { innerPadding ->

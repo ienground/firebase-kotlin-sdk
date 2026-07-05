@@ -226,7 +226,7 @@ fun InAppMessagingScreen(
                                 displayManager?.setCustomDisplayListener(object : InAppMessagingDisplayListener {
                                     override fun displayMessage(message: InAppMessageMetadata, callbacks: InAppMessagingDisplayCallbacks) {
                                         log("Listener callback -> displayed campaign: ID=${message.campaignId}, type=${message.messageType}")
-                                        // 실제 UI가 화면에 렌더링된 시점에 호출해야 합니다.
+                                        // Must be called when the actual UI is rendered on the screen.
                                         callbacks.impressionDetected()
                                     }
                                 })

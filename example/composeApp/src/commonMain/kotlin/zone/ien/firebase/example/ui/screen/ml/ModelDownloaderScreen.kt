@@ -1,26 +1,58 @@
 package zone.ien.firebase.example.ui.screen.ml
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
-import zone.ien.firebase.ml.modeldownloader.FirebaseModelDownloader
-import zone.ien.firebase.ml.modeldownloader.DownloadType
-import zone.ien.firebase.ml.modeldownloader.CustomModelDownloadConditions
+import zone.ien.firebase.example.util.isIos
 import zone.ien.firebase.ml.modeldownloader.CustomModel
+import zone.ien.firebase.ml.modeldownloader.CustomModelDownloadConditions
+import zone.ien.firebase.ml.modeldownloader.DownloadType
+import zone.ien.firebase.ml.modeldownloader.FirebaseModelDownloader
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModelDownloaderScreen(
     onNavigateBack: () -> Unit
 ) {
+    val isSupported = !isIos
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
@@ -30,7 +62,12 @@ fun ModelDownloaderScreen(
     var requireDeviceIdle by remember { mutableStateOf(false) }
     var requireCharging by remember { mutableStateOf(false) }
 
-    var logMessage by remember { mutableStateOf("Ready to download Firebase Custom Models.") }
+    var logMessage by remember { 
+        mutableStateOf(
+            if (!isSupported) "Model Downloader is NOT supported on this platform."
+            else "Ready to download Firebase Custom Models."
+        ) 
+    }
     var downloadedModelsList by remember { mutableStateOf<List<CustomModel>>(emptyList()) }
 
     var latestDownloadedModel by remember { mutableStateOf<CustomModel?>(null) }
@@ -38,12 +75,14 @@ fun ModelDownloaderScreen(
     val primaryColor = MaterialTheme.colorScheme.primary
     val errorColor = MaterialTheme.colorScheme.error
 
-    LaunchedEffect(Unit) {
-        try {
-            val models = FirebaseModelDownloader.instance.listDownloadedModels()
-            downloadedModelsList = models.toList()
-        } catch (e: Exception) {
-            logMessage = "Failed to list models: ${e.message}"
+    LaunchedEffect(isSupported) {
+        if (isSupported) {
+            try {
+                val models = FirebaseModelDownloader.instance.listDownloadedModels()
+                downloadedModelsList = models.toList()
+            } catch (e: Exception) {
+                logMessage = "Failed to list models: ${e.message}"
+            }
         }
     }
 
@@ -55,10 +94,7 @@ fun ModelDownloaderScreen(
                     IconButton(onClick = onNavigateBack) {
                         Text("←")
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
+                }
             )
         }
     ) { innerPadding ->
@@ -70,11 +106,34 @@ fun ModelDownloaderScreen(
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            if (!isSupported) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color.Red.copy(alpha = 0.1f))
+                        .padding(12.dp)
+                ) {
+                    Text(
+                        text = "⚠️ Platform Not Supported",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Red
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Firebase Custom Model Downloader is unavailable on this target due to stub platform migration constraints.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Red
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+
             Text(
-                text = "Firebase Remote Model Downloader 데모",
+                text = "Firebase Remote Model Downloader Demo",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = primaryColor
+                color = if (isSupported) primaryColor else Color.Gray
             )
 
             // Alert Box
@@ -84,15 +143,15 @@ fun ModelDownloaderScreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        "⚠️ 주의 사항 및 지침",
+                        "⚠️ Warnings and Guidelines",
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onErrorContainer
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        "1. 실제 모델 다운로드를 실행하기 위해서는 Firebase Console의 'Machine Learning' 탭에 해당 모델 이름(\"$modelName\")의 Custom TFLite 모델 파일이 업로드되어 있어야 합니다.\n" +
-                        "2. iOS의 경우 다운로드 조건 중 Wi-Fi 제한 여부만 동작에 반영되며, 충전 필수 및 기기 대기 조건은 no-op으로 취급됩니다.\n" +
-                        "3. TFLite 인터프리터를 통한 추론(Inference) 실행은 이 모듈의 책임 범위가 아니므로 경로 확인용으로만 모델 파일에 접근합니다.",
+                        "1. A custom TFLite model file with name \"$modelName\" must be uploaded to the Machine Learning tab in the Firebase Console.\n" +
+                        "2. On iOS, only the Wi-Fi constraint is respected, charging and idle conditions are treated as no-op.\n" +
+                        "3. Model inference using TFLite interpreter is not handled by this module; we only access the model path for validation.",
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onErrorContainer
                     )
@@ -102,51 +161,64 @@ fun ModelDownloaderScreen(
             // Input fields
             OutlinedTextField(
                 value = modelName,
+                enabled = isSupported,
                 onValueChange = { modelName = it },
                 label = { Text("Custom Model Name") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             // Download Type Selection
-            Text("Download Type", fontWeight = FontWeight.Bold)
+            Text("Download Type", fontWeight = FontWeight.Bold, color = if (isSupported) primaryColor else Color.Gray)
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = downloadType == DownloadType.LOCAL_MODEL,
+                        enabled = isSupported,
                         onClick = { downloadType = DownloadType.LOCAL_MODEL }
                     )
-                    Text("LOCAL_MODEL (로컬 우선, 필요 시 다운로드)")
+                    Text("LOCAL_MODEL (Local first, download if needed)", color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = downloadType == DownloadType.LOCAL_MODEL_UPDATE_IN_BACKGROUND,
+                        enabled = isSupported,
                         onClick = { downloadType = DownloadType.LOCAL_MODEL_UPDATE_IN_BACKGROUND }
                     )
-                    Text("LOCAL_MODEL_UPDATE_IN_BACKGROUND (백그라운드 업데이트)")
+                    Text("LOCAL_MODEL_UPDATE_IN_BACKGROUND (Background update)", color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = downloadType == DownloadType.LATEST_MODEL,
+                        enabled = isSupported,
                         onClick = { downloadType = DownloadType.LATEST_MODEL }
                     )
-                    Text("LATEST_MODEL (항상 최신 버전 다운로드 대기)")
+                    Text("LATEST_MODEL (Always fetch latest version)", color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray)
                 }
             }
 
             // Conditions Selection
-            Text("Download Conditions", fontWeight = FontWeight.Bold)
+            Text("Download Conditions", fontWeight = FontWeight.Bold, color = if (isSupported) primaryColor else Color.Gray)
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(checked = requireWifi, onCheckedChange = { requireWifi = it })
-                    Text("Wi-Fi 필수 (allowsCellularAccess = false)")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable(enabled = isSupported) { requireWifi = !requireWifi }
+                ) {
+                    Checkbox(checked = requireWifi, enabled = isSupported, onCheckedChange = null)
+                    Text("Require Wi-Fi (allowsCellularAccess = false)", color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray)
                 }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(checked = requireCharging, onCheckedChange = { requireCharging = it })
-                    Text("충전 중 필수 (Android 전용)")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable(enabled = isSupported) { requireCharging = !requireCharging }
+                ) {
+                    Checkbox(checked = requireCharging, enabled = isSupported, onCheckedChange = null)
+                    Text("Require Charging (Android Only)", color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray)
                 }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(checked = requireDeviceIdle, onCheckedChange = { requireDeviceIdle = it })
-                    Text("기기 대기 중 필수 (Android 전용)")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable(enabled = isSupported) { requireDeviceIdle = !requireDeviceIdle }
+                ) {
+                    Checkbox(checked = requireDeviceIdle, enabled = isSupported, onCheckedChange = null)
+                    Text("Require Device Idle (Android Only)", color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray)
                 }
             }
 
@@ -176,6 +248,7 @@ fun ModelDownloaderScreen(
                             }
                         }
                     },
+                    enabled = isSupported,
                     modifier = Modifier.weight(1f)
                 ) {
                     Text("Download")
@@ -198,6 +271,7 @@ fun ModelDownloaderScreen(
                             }
                         }
                     },
+                    enabled = isSupported,
                     colors = ButtonDefaults.buttonColors(containerColor = errorColor),
                     modifier = Modifier.weight(1f)
                 ) {
@@ -218,7 +292,7 @@ fun ModelDownloaderScreen(
             }
 
             // Downloaded Models List
-            Text("🗂️ Downloaded Local Models", fontWeight = FontWeight.Bold)
+            Text("🗂️ Downloaded Local Models", fontWeight = FontWeight.Bold, color = if (isSupported) primaryColor else Color.Gray)
             if (downloadedModelsList.isEmpty()) {
                 Text("No models registered locally.", fontSize = 14.sp)
             } else {
