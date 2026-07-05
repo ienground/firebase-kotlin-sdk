@@ -178,7 +178,7 @@ public fun HomeScreen(
             subtitle = "Trigger contextual campaigns and control display suppression.",
             indicatorColor = Color(0xFFE91E63),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.InAppMessaging
         ),
         HomeFeatureItem(
@@ -188,6 +188,14 @@ public fun HomeScreen(
             supportsAndroid = true,
             supportsIos = true,
             route = ScreenRoute.Encoders
+        ),
+        HomeFeatureItem(
+            title = "A/B Testing",
+            subtitle = "Verify experiment controllers and lifecycle events.",
+            indicatorColor = Color(0xFF9C27B0),
+            supportsAndroid = true,
+            supportsIos = true,
+            route = ScreenRoute.Abt
         )
     )
 

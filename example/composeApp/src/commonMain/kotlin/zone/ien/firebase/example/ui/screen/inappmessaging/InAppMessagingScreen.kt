@@ -114,7 +114,7 @@ fun InAppMessagingScreen(
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = "In-App Messaging is unavailable on this target due to Swift-only cinterop compilation constraints.",
+                                text = "In-App Messaging is unavailable on this target or failed to initialize native dependencies.",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = Color.Red
                             )
