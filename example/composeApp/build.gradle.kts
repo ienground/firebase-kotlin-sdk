@@ -115,6 +115,7 @@ kotlin {
             implementation(project(":encoders:firebase-encoders-reflective"))
             implementation(project(":encoders:firebase-decoders-json"))
             implementation(project(":firebase-messaging"))
+            implementation(project(":firebase-messaging-directboot"))
  
             implementation(libs.bundles.ienlab.cmp)
         }
