@@ -40,7 +40,7 @@
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 지원 | 🟢 지원 | **95%** | Pure Kotlin 직렬화 파이프라인 |
 | **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 모델 조회/삭제 시뮬레이션 지원 (네이티브 링킹 미지원) |
 | **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 가상 Gemini 응답 시뮬레이터 지원 (네이티브 링킹 미지원) |
-| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
+| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 가상 온디바이스/하이브리드 AI 추론 시뮬레이션 지원 (네이티브 링킹 미지원) |
 | **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원 (진행률 추적 미지원) |
 | **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 메타데이터 Actual 지원 (네이티브 링킹 미지원) |
 | **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 (Core 기능 실제 구현) |
@@ -191,6 +191,15 @@ val userName = snapshot.get<String>("name")
    KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. `generativeModel` 획득 및 `generateContent(prompt)` 호출은 iOS 상에서도 안전하게 1.5초 지연(delay) 후 프롬프트를 담아낸 가상의 답변 텍스트를 돌려주는 모의 엔진(Mock Engine)으로 정상 실행됩니다.
 3. **실제 Gemini Cloud 및 Vertex AI API 통신 처리**:
    iOS 실제 디바이스 및 시뮬레이터에서 Vertex AI 클라우드 백엔드와 통신하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase AI Swift SDK를 직접 호출하여 사용해야 합니다.
+
+### AI On-Device iOS 연동 제약사항
+
+1. **Swift 전용 라이브러리 및 cinterop 제약**:
+   Google 공식 iOS 온디바이스/하이브리드 AI SDK(Apple Intelligence 기반)는 Swift로만 구현되어 있으며, Objective-C 호환 헤더가 존재하지 않습니다. 이로 인해 Kotlin/Native의 cinterop 컴파일 도구가 이를 해석하지 못해 네이티브 바이너리 직접 링킹이 불가능합니다.
+2. **KMP 내부 동작 (메모리 보존 모드)**:
+   KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. `OnDeviceConfig` 와 함께 `generativeModel`을 획득하고 `generateContent(prompt)`를 호출하면, iOS 상에서도 안전하게 추론 모드(PREFER_ON_DEVICE, PREFER_IN_CLOUD, ONLY_ON_DEVICE) 설정을 분석하여 가상의 시뮬레이션 결과를 돌려줍니다.
+3. **실제 온디바이스(Apple Intelligence) AI 추론 처리**:
+   iOS 실제 디바이스 및 시뮬레이터에서 Apple Intelligence 기반 온디바이스 추론 및 하이브리드 기능을 완전히 활용하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase AI Swift SDK를 직접 호출하여 사용해야 합니다.
 
 **대처 가이드**: 공통 소스셋이나 프리젠테이션 레이어에서 플랫폼 구별 플래그를 통해 호출 코드를 안전하게 보호해 주십시오:
 ```kotlin

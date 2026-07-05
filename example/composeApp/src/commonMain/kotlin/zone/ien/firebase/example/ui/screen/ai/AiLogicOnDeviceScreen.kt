@@ -55,14 +55,14 @@ import zone.ien.firebase.example.util.isIos
 fun AiLogicOnDeviceScreen(
     onNavigateBack: () -> Unit
 ) {
-    val isSupported = !isIos
+    val isSupported = true
     val coroutineScope = rememberCoroutineScope()
     var modelName by remember { mutableStateOf("gemini-3.5-flash") }
     var prompt by remember { mutableStateOf("Write a 3-word slogan for KMP.") }
     var inferenceMode by remember { mutableStateOf(InferenceMode.PREFER_ON_DEVICE) }
     var consoleLogs by remember { 
         mutableStateOf(
-            if (!isSupported) "AI On-Device is NOT supported on this platform.\n"
+            if (isIos) "iOS Notice: Running in on-device/hybrid memory simulation mode due to Swift-only cinterop constraints.\n"
             else "Console initialized for Hybrid AI.\n"
         )
     }
@@ -92,24 +92,24 @@ fun AiLogicOnDeviceScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            if (!isSupported) {
+            if (isIos) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
-                        .background(Color.Red.copy(alpha = 0.1f))
+                        .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f))
                         .padding(12.dp)
                 ) {
                     Text(
-                        text = "⚠️ Platform Not Supported",
+                        text = "ℹ️ iOS cinterop Bridge Notice",
                         style = MaterialTheme.typography.titleMedium,
-                        color = Color.Red
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Gemini Nano and hybrid on-device inference is unavailable on this target due to stub platform migration constraints.",
+                        text = "Firebase AI On-Device iOS SDK is Swift-only and cannot be linked directly into KMP via cinterop. This KMP wrapper runs in memory-only mode on iOS (acting as a hybrid simulation engine). To run live on-device inference utilizing Apple Intelligence, integrate the native Swift SDK inside your native iOS target codebase.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.Red
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
