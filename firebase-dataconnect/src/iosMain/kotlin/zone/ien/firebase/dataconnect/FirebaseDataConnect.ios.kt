@@ -5,8 +5,10 @@ import zone.ien.firebase.FirebaseApp
 public actual class FirebaseDataConnect private constructor(
     public actual val config: ConnectorConfig
 ) {
-    private var emulatorHost: String? = null
-    private var emulatorPort: Int? = null
+    public var emulatorHost: String? = null
+        private set
+    public var emulatorPort: Int? = null
+        private set
 
     public actual fun useEmulator(host: String, port: Int) {
         this.emulatorHost = host
@@ -14,12 +16,20 @@ public actual class FirebaseDataConnect private constructor(
     }
 
     public actual companion object {
+        private val lock = platform.Foundation.NSLock()
+        private val instances = mutableMapOf<ConnectorConfig, FirebaseDataConnect>()
+
         public actual fun getInstance(config: ConnectorConfig): FirebaseDataConnect {
-            return FirebaseDataConnect(config)
+            lock.lock()
+            try {
+                return instances.getOrPut(config) { FirebaseDataConnect(config) }
+            } finally {
+                lock.unlock()
+            }
         }
 
         public actual fun getInstance(app: FirebaseApp, config: ConnectorConfig): FirebaseDataConnect {
-            return FirebaseDataConnect(config)
+            return getInstance(config)
         }
     }
 }
