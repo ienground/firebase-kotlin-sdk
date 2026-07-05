@@ -19,9 +19,11 @@ import zone.ien.firebase.example.data.FirebaseInitState
 
 @Composable
 fun App(context: FirebasePlatformContext) {
-    AppStateManager.context = context
-    if (FirebaseApp.isInitialized) {
-        AppStateManager.initState = FirebaseInitState.Initialized
+    remember(context) {
+        AppStateManager.context = context
+        if (FirebaseApp.isInitialized) {
+            AppStateManager.initState = FirebaseInitState.Initialized
+        }
     }
 
     // Initialize Datatransport Runtime using unified context
