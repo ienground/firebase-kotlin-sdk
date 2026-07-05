@@ -159,7 +159,7 @@ fun AiLogicOnDeviceScreen(
                                 RadioButton(
                                     selected = inferenceMode == mode,
                                     enabled = isSupported,
-                                    onClick = { inferenceMode = mode }
+                                    onClick = null
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(

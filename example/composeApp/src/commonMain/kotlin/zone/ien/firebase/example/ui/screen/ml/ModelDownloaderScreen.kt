@@ -203,21 +203,21 @@ fun ModelDownloaderScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.clickable(enabled = isSupported) { requireWifi = !requireWifi }
                 ) {
-                    Checkbox(checked = requireWifi, enabled = isSupported, onCheckedChange = { requireWifi = it })
+                    Checkbox(checked = requireWifi, enabled = isSupported, onCheckedChange = null)
                     Text("Require Wi-Fi (allowsCellularAccess = false)", color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray)
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.clickable(enabled = isSupported) { requireCharging = !requireCharging }
                 ) {
-                    Checkbox(checked = requireCharging, enabled = isSupported, onCheckedChange = { requireCharging = it })
+                    Checkbox(checked = requireCharging, enabled = isSupported, onCheckedChange = null)
                     Text("Require Charging (Android Only)", color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray)
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.clickable(enabled = isSupported) { requireDeviceIdle = !requireDeviceIdle }
                 ) {
-                    Checkbox(checked = requireDeviceIdle, enabled = isSupported, onCheckedChange = { requireDeviceIdle = it })
+                    Checkbox(checked = requireDeviceIdle, enabled = isSupported, onCheckedChange = null)
                     Text("Require Device Idle (Android Only)", color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray)
                 }
             }
