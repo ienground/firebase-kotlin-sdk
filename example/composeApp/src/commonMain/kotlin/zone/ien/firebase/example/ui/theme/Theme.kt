@@ -5,28 +5,81 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 
-private val DarkColors = darkColorScheme(
-    primary = Color(0xFFFFB300),
-    secondary = Color(0xFFFFD54F),
-    background = Color(0xFF121212),
-    surface = Color(0xFF1E1E1E),
-    onPrimary = Color(0xFF000000),
-    onBackground = Color(0xFFE0E0E0),
-    onSurface = Color(0xFFFFFFFF),
-    error = Color(0xFFCF6679)
+private val lightScheme = lightColorScheme(
+    primary = primaryLight,
+    onPrimary = onPrimaryLight,
+    primaryContainer = primaryContainerLight,
+    onPrimaryContainer = onPrimaryContainerLight,
+    secondary = secondaryLight,
+    onSecondary = onSecondaryLight,
+    secondaryContainer = secondaryContainerLight,
+    onSecondaryContainer = onSecondaryContainerLight,
+    tertiary = tertiaryLight,
+    onTertiary = onTertiaryLight,
+    tertiaryContainer = tertiaryContainerLight,
+    onTertiaryContainer = onTertiaryContainerLight,
+    error = errorLight,
+    onError = onErrorLight,
+    errorContainer = errorContainerLight,
+    onErrorContainer = onErrorContainerLight,
+    background = backgroundLight,
+    onBackground = onBackgroundLight,
+    surface = surfaceLight,
+    onSurface = onSurfaceLight,
+    surfaceVariant = surfaceVariantLight,
+    onSurfaceVariant = onSurfaceVariantLight,
+    outline = outlineLight,
+    outlineVariant = outlineVariantLight,
+    scrim = scrimLight,
+    inverseSurface = inverseSurfaceLight,
+    inverseOnSurface = inverseOnSurfaceLight,
+    inversePrimary = inversePrimaryLight,
+    surfaceDim = surfaceDimLight,
+    surfaceBright = surfaceBrightLight,
+    surfaceContainerLowest = surfaceContainerLowestLight,
+    surfaceContainerLow = surfaceContainerLowLight,
+    surfaceContainer = surfaceContainerLight,
+    surfaceContainerHigh = surfaceContainerHighLight,
+    surfaceContainerHighest = surfaceContainerHighestLight,
 )
 
-private val LightColors = lightColorScheme(
-    primary = Color(0xFFF58220),
-    secondary = Color(0xFFFFCA28),
-    background = Color(0xFFF5F5F5),
-    surface = Color(0xFFFFFFFF),
-    onPrimary = Color(0xFFFFFFFF),
-    onBackground = Color(0xFF212121),
-    onSurface = Color(0xFF212121),
-    error = Color(0xFFB00020)
+private val darkScheme = darkColorScheme(
+    primary = primaryDark,
+    onPrimary = onPrimaryDark,
+    primaryContainer = primaryContainerDark,
+    onPrimaryContainer = onPrimaryContainerDark,
+    secondary = secondaryDark,
+    onSecondary = onSecondaryDark,
+    secondaryContainer = secondaryContainerDark,
+    onSecondaryContainer = onSecondaryContainerDark,
+    tertiary = tertiaryDark,
+    onTertiary = onTertiaryDark,
+    tertiaryContainer = tertiaryContainerDark,
+    onTertiaryContainer = onTertiaryContainerDark,
+    error = errorDark,
+    onError = onErrorDark,
+    errorContainer = errorContainerDark,
+    onErrorContainer = onErrorContainerDark,
+    background = backgroundDark,
+    onBackground = onBackgroundDark,
+    surface = surfaceDark,
+    onSurface = onSurfaceDark,
+    surfaceVariant = surfaceVariantDark,
+    onSurfaceVariant = onSurfaceVariantDark,
+    outline = outlineDark,
+    outlineVariant = outlineVariantDark,
+    scrim = scrimDark,
+    inverseSurface = inverseSurfaceDark,
+    inverseOnSurface = inverseOnSurfaceDark,
+    inversePrimary = inversePrimaryDark,
+    surfaceDim = surfaceDimDark,
+    surfaceBright = surfaceBrightDark,
+    surfaceContainerLowest = surfaceContainerLowestDark,
+    surfaceContainerLow = surfaceContainerLowDark,
+    surfaceContainer = surfaceContainerDark,
+    surfaceContainerHigh = surfaceContainerHighDark,
+    surfaceContainerHighest = surfaceContainerHighestDark,
 )
 
 @Composable
@@ -34,7 +87,7 @@ fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) DarkColors else LightColors
+    val colors = if (darkTheme) darkScheme else lightScheme
     MaterialTheme(
         colorScheme = colors,
         content = content

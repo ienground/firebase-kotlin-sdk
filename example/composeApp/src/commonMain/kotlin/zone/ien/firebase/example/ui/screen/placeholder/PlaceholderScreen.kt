@@ -32,7 +32,7 @@ fun PlaceholderScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+
                 navigationIcon = {
                     IconButton(
                         onClick = onBack

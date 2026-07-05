@@ -2,21 +2,44 @@ package zone.ien.firebase.example.ui.screen.ai
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebaseApp
-import zone.ien.firebase.ai.FirebaseAI
 import zone.ien.firebase.ai.InferenceMode
 import zone.ien.firebase.ai.OnDeviceConfig
 import zone.ien.firebase.ai.ai
@@ -27,11 +50,26 @@ import zone.ien.firebase.ai.generativeModel
 fun AiLogicOnDeviceScreen(
     onNavigateBack: () -> Unit
 ) {
+    // Detect iOS stub runtime exception or missing instance
+    val aiResult = remember {
+        if (FirebaseApp.isInitialized) {
+            runCatching { FirebaseApp.instance.ai }
+        } else {
+            Result.failure(Exception("Firebase not initialized"))
+        }
+    }
+    val isSupported = aiResult.isSuccess && aiResult.getOrNull() != null
+
     val coroutineScope = rememberCoroutineScope()
     var modelName by remember { mutableStateOf("gemini-3.5-flash") }
     var prompt by remember { mutableStateOf("Write a 3-word slogan for KMP.") }
     var inferenceMode by remember { mutableStateOf(InferenceMode.PREFER_ON_DEVICE) }
-    var consoleLogs by remember { mutableStateOf("Console initialized for Hybrid AI.\n") }
+    var consoleLogs by remember { 
+        mutableStateOf(
+            if (!isSupported) "AI On-Device is NOT supported on this platform: ${aiResult.exceptionOrNull()?.message}\n"
+            else "Console initialized for Hybrid AI.\n"
+        ) 
+    }
     var isLoading by remember { mutableStateOf(false) }
 
     fun log(message: String) {
@@ -46,11 +84,7 @@ fun AiLogicOnDeviceScreen(
                     IconButton(onClick = onNavigateBack) {
                         Text("←")
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+                }
             )
         }
     ) { paddingValues ->
@@ -62,6 +96,29 @@ fun AiLogicOnDeviceScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            if (!isSupported) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color.Red.copy(alpha = 0.1f))
+                        .padding(12.dp)
+                ) {
+                    Text(
+                        text = "⚠️ Platform Not Supported",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Red
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Gemini Nano and hybrid on-device inference is unavailable on this target due to stub platform migration constraints.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Red
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+
             // Configuration Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -76,50 +133,40 @@ fun AiLogicOnDeviceScreen(
                     Text(
                         text = "Hybrid Settings",
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = if (isSupported) MaterialTheme.colorScheme.onSurfaceVariant else Color.Gray
                     )
 
                     OutlinedTextField(
                         value = modelName,
+                        enabled = isSupported,
                         onValueChange = { modelName = it },
-                        label = { Text("Model Name") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
-                    )
-
-                    OutlinedTextField(
-                        value = prompt,
-                        onValueChange = { prompt = it },
-                        label = { Text("Prompt") },
-                        modifier = Modifier.fillMaxWidth(),
-                        minLines = 2
+                        label = { Text("Fallback Cloud Model ID") },
+                        modifier = Modifier.fillMaxWidth()
                     )
 
                     Text(
                         text = "Inference Mode",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = if (isSupported) MaterialTheme.colorScheme.onSurfaceVariant else Color.Gray
                     )
 
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        InferenceMode.entries.forEach { mode ->
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        InferenceMode.values().forEach { mode ->
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable { inferenceMode = mode }
+                                    .clickable(enabled = isSupported) { inferenceMode = mode }
                                     .padding(vertical = 4.dp)
                             ) {
                                 RadioButton(
                                     selected = inferenceMode == mode,
-                                    onClick = null
+                                    enabled = isSupported,
+                                    onClick = { inferenceMode = mode }
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     text = mode.name,
-                                    style = MaterialTheme.typography.bodySmall
+                                    color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray
                                 )
                             }
                         }
@@ -127,75 +174,81 @@ fun AiLogicOnDeviceScreen(
                 }
             }
 
-            // Action Button
-            Button(
-                onClick = {
-                    coroutineScope.launch {
-                        isLoading = true
-                        log(">> Initiating Hybrid content generation...")
-                        log(">> Model: $modelName")
-                        log(">> Mode: $inferenceMode")
-                        log(">> Prompt: \"$prompt\"")
-                        try {
-                            val firebaseAI = FirebaseApp.instance.ai
-                            val onDeviceConfig = OnDeviceConfig(inferenceMode)
-                            log(">> Configured with hybrid mode. Instantiating model...")
-                            val model = firebaseAI.generativeModel(modelName, onDeviceConfig)
-                            log(">> Model instantiated. Sending generateContent call...")
-                            val response = model.generateContent(prompt)
-                            val textResult = response.text
-                            log(">> Response received successfully!")
-                            log(">> Result:\n$textResult")
-                        } catch (e: UnsupportedOperationException) {
-                            log(">> ERROR [Platform Unsupported]: ${e.message}")
-                            log(">> NOTE: On-Device / Hybrid AI is Stubbed on iOS due to Swift-only framework limitations.")
-                        } catch (e: Exception) {
-                            log(">> ERROR [Inference Failed]: ${e.message}")
-                            log(">> On-device AI (Gemini Nano) requires AICore service availability. Cloud fallback will trigger if network is reachable and backend config is wired.")
-                        } finally {
-                            isLoading = false
-                        }
-                    }
-                },
-                enabled = !isLoading && modelName.isNotEmpty() && prompt.isNotEmpty(),
+            // Prompt Input Card
+            Card(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                if (isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        strokeWidth = 2.dp
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Text(
+                        text = "Prompt Input",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray
                     )
-                } else {
-                    Text("Generate (Hybrid)")
+
+                    OutlinedTextField(
+                        value = prompt,
+                        enabled = isSupported,
+                        onValueChange = { prompt = it },
+                        label = { Text("Prompt Text") },
+                        modifier = Modifier.fillMaxWidth(),
+                        minLines = 3
+                    )
+
+                    Button(
+                        onClick = {
+                            if (!FirebaseApp.isInitialized) {
+                                log("Error: Firebase Core not initialized.")
+                                return@Button
+                            }
+                            coroutineScope.launch {
+                                try {
+                                    isLoading = true
+                                    log("Dispatching prompt to hybrid pipeline...")
+                                    val fallbackModel = FirebaseApp.instance.ai.generativeModel(
+                                        modelName = modelName,
+                                        onDeviceConfig = OnDeviceConfig(
+                                            mode = inferenceMode
+                                        )
+                                    )
+                                    val response = fallbackModel.generateContent(prompt)
+                                    log("Hybrid Response:\n${response.text}")
+                                } catch (e: Exception) {
+                                    log("Hybrid execution failed: ${e.message}")
+                                } finally {
+                                    isLoading = false
+                                }
+                            }
+                        },
+                        enabled = isSupported && !isLoading,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(if (isLoading) "Running Inference..." else "Run Inference")
+                    }
                 }
             }
 
-            // Output Console Card
-            Text(
-                text = "Console Output",
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            Box(
+            // Console Logs Card
+            Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(Color.Black)
-                    .padding(12.dp)
+                    .height(200.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                )
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(12.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
                     Text(
                         text = consoleLogs,
-                        color = Color.Green,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontFamily = FontFamily.Monospace
-                        )
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }

@@ -23,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,232 +42,171 @@ import zone.ien.firebase.example.ui.navigation.ScreenRoute
 
 @PreviewApi
 @Composable
-public fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
+public fun HomeScreen(
+    onNavigate: (ScreenRoute) -> Unit
+) {
     val items = listOf(
         HomeFeatureItem(
             title = "Firebase Init",
-            subtitle = "Setup and check core configuration status.",
-            indicatorColor = Color(0xFFF58220),
-            route = ScreenRoute.FirebaseInit,
+            subtitle = "Initialize core Firebase SDK configuration.",
+            indicatorColor = Color(0xFFFFC107),
             supportsAndroid = true,
             supportsIos = true,
-            requiresInitialization = false
+            route = ScreenRoute.FirebaseInit
         ),
         HomeFeatureItem(
-            title = "Firestore DB",
-            subtitle = "Real-time read/write collection stream.",
-            indicatorColor = Color(0xFFFFCA28),
-            route = ScreenRoute.Firestore,
-            supportsAndroid = true,
-            supportsIos = true
-        ),
-        HomeFeatureItem(
-            title = "Analytics",
-            subtitle = "Placeholder feature.",
-            indicatorColor = Color(0xFF039BE5),
-            route = ScreenRoute.AnalyticsPlaceholder,
-            supportsAndroid = true,
-            supportsIos = true
-        ),
-        HomeFeatureItem(
-            title = "Messaging",
-            subtitle = "FCM token, topic subscribe & client delegation.",
-            indicatorColor = Color(0xFF80CBC4),
-            route = ScreenRoute.MessagingPlaceholder,
-            supportsAndroid = true,
-            supportsIos = true
-        ),
-        HomeFeatureItem(
-            title = "Cloud Storage",
-            subtitle = "Upload, download, delete and retrieve URLs.",
-            indicatorColor = Color(0xFF00B0FF),
-            route = ScreenRoute.Storage,
-            supportsAndroid = true,
-            supportsIos = true
-        ),
-        HomeFeatureItem(
-            title = "Cloud Functions",
-            subtitle = "Invoke serverless HTTPS callable trigger function.",
-            indicatorColor = Color(0xFFFF5722),
-            route = ScreenRoute.Functions,
-            supportsAndroid = true,
-            supportsIos = true
-        ),
-        HomeFeatureItem(
-            title = "Realtime Database",
-            subtitle = "Write, push, remove and update database nodes.",
-            indicatorColor = Color(0xFFFFCA28),
-            route = ScreenRoute.Database,
-            supportsAndroid = true,
-            supportsIos = true
-        ),
-        HomeFeatureItem(
-            title = "Database Collection",
-            subtitle = "Test local ImmutableSortedMap insertion, sorting and removal.",
+            title = "Auth",
+            subtitle = "Authentication using Google, Email/Password, etc.",
             indicatorColor = Color(0xFF4CAF50),
-            route = ScreenRoute.DatabaseCollection,
             supportsAndroid = true,
             supportsIos = true,
-            requiresInitialization = false
+            route = ScreenRoute.Auth
         ),
         HomeFeatureItem(
-            title = "Play Integrity",
-            subtitle = "Android Play Integrity App Check provider verification.",
+            title = "Firestore",
+            subtitle = "Real-time document storage and queries.",
+            indicatorColor = Color(0xFFFF9800),
+            supportsAndroid = true,
+            supportsIos = true,
+            route = ScreenRoute.Firestore
+        ),
+        HomeFeatureItem(
+            title = "Storage",
+            subtitle = "Upload and download binary large objects.",
+            indicatorColor = Color(0xFF03A9F4),
+            supportsAndroid = true,
+            supportsIos = true,
+            route = ScreenRoute.Storage
+        ),
+        HomeFeatureItem(
+            title = "Functions",
+            subtitle = "Invoke secure, serverless cloud functions.",
             indicatorColor = Color(0xFFE91E63),
-            route = ScreenRoute.PlayIntegrity,
             supportsAndroid = true,
-            supportsIos = false
-        ),
-        HomeFeatureItem(
-            title = "Crashlytics",
-            subtitle = "Log, set metadata, non-fatal and test fatal app crashes.",
-            indicatorColor = Color(0xFFFF5722),
-            route = ScreenRoute.Crashlytics,
-            supportsAndroid = true,
-            supportsIos = true
-        ),
-        HomeFeatureItem(
-            title = "Authentication",
-            subtitle = "Anonymous & Email/Password session management.",
-            indicatorColor = Color(0xFF00BCD4),
-            route = ScreenRoute.Auth,
-            supportsAndroid = true,
-            supportsIos = true
+            supportsIos = true,
+            route = ScreenRoute.Functions
         ),
         HomeFeatureItem(
             title = "Performance",
             subtitle = "Manual custom trace and HTTP metric logging.",
             indicatorColor = Color(0xFF673AB7),
-            route = ScreenRoute.Performance,
             supportsAndroid = true,
-            supportsIos = true
+            supportsIos = true,
+            route = ScreenRoute.Performance
         ),
         HomeFeatureItem(
             title = "Installations",
             subtitle = "Query unique installation ID and auth token.",
             indicatorColor = Color(0xFF009688),
-            route = ScreenRoute.Installations,
             supportsAndroid = true,
-            supportsIos = true
+            supportsIos = true,
+            route = ScreenRoute.Installations
         ),
         HomeFeatureItem(
             title = "Model Downloader",
             subtitle = "Retrieve custom models and monitor status.",
             indicatorColor = Color(0xFF4CAF50),
-            route = ScreenRoute.ModelDownloader,
             supportsAndroid = true,
-            supportsIos = true
+            supportsIos = false,
+            route = ScreenRoute.ModelDownloader
         ),
         HomeFeatureItem(
             title = "Remote Config",
             subtitle = "Fetch, activate, and listen for dynamic parameters.",
             indicatorColor = Color(0xFFFF9800),
-            route = ScreenRoute.RemoteConfig,
             supportsAndroid = true,
-            supportsIos = true
+            supportsIos = true,
+            route = ScreenRoute.RemoteConfig
         ),
         HomeFeatureItem(
             title = "AI Logic",
             subtitle = "Generate content using Gemini model prompts.",
             indicatorColor = Color(0xFF9C27B0),
-            route = ScreenRoute.AiLogic,
             supportsAndroid = true,
-            supportsIos = true
+            supportsIos = false,
+            route = ScreenRoute.AiLogic
         ),
         HomeFeatureItem(
             title = "AI On-Device",
             subtitle = "Hybrid on-device Gemini inference and fallback.",
             indicatorColor = Color(0xFFE040FB),
-            route = ScreenRoute.AiLogicOnDevice,
             supportsAndroid = true,
-            supportsIos = true
+            supportsIos = false,
+            route = ScreenRoute.AiLogicOnDevice
         ),
         HomeFeatureItem(
             title = "Datatransport",
             subtitle = "Telemetry datatransport priority & scheduling contract test.",
             indicatorColor = Color(0xFF3F51B5),
-            route = ScreenRoute.Datatransport,
             supportsAndroid = true,
-            supportsIos = true,
-            requiresInitialization = false
+            supportsIos = false,
+            route = ScreenRoute.Datatransport
         ),
         HomeFeatureItem(
             title = "App Distribution",
             subtitle = "Check prerelease availability and trigger in-app updates.",
             indicatorColor = Color(0xFFF58220),
-            route = ScreenRoute.AppDistribution,
             supportsAndroid = true,
-            supportsIos = true
+            supportsIos = false,
+            route = ScreenRoute.AppDistribution
         ),
         HomeFeatureItem(
             title = "Data Connect",
             subtitle = "Configure Postgres database GraphQL query connector bootstrap.",
             indicatorColor = Color(0xFF673AB7),
-            route = ScreenRoute.DataConnect,
             supportsAndroid = true,
-            supportsIos = true
+            supportsIos = false,
+            route = ScreenRoute.DataConnect
         ),
         HomeFeatureItem(
             title = "In-App Messaging",
             subtitle = "Trigger contextual campaigns and control display suppression.",
             indicatorColor = Color(0xFFE91E63),
-            route = ScreenRoute.InAppMessaging,
             supportsAndroid = true,
-            supportsIos = true
+            supportsIos = false,
+            route = ScreenRoute.InAppMessaging
         ),
         HomeFeatureItem(
             title = "Encoders",
             subtitle = "Verify foundational encoding interface serialization contract.",
             indicatorColor = Color(0xFF4CAF50),
-            route = ScreenRoute.Encoders,
             supportsAndroid = true,
             supportsIos = true,
-            requiresInitialization = false
+            route = ScreenRoute.Encoders
         )
     )
 
     Scaffold(
         topBar = {
             TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                ),
                 title = {
-                    Column(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "Firebase KMP Hub",
-                            style = MaterialTheme.typography.headlineLarge,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                        Text(
-                            text = "Compose Multiplatform Demo Framework",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                        )
-                    }
+                    Text(
+                        text = "Firebase KMP Examples",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                 }
             )
-        },
-        modifier = Modifier.fillMaxSize()
-    ) {
+        }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
-                .padding(it)
-                .padding(horizontal = 24.dp)
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(horizontal = 16.dp)
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 items(items) { item ->
                     DemoCard(
                         item = item,
-                        onClick = { AppStateManager.handleFeatureNavigation(item, onNavigate) }
+                        onClick = {
+                            AppStateManager.handleFeatureNavigation(item, onNavigate)
+                        }
                     )
                 }
             }
@@ -284,7 +222,7 @@ public fun DemoCard(
     Card(
         onClick = onClick,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier
@@ -321,14 +259,9 @@ public fun DemoCard(
                 ) {
                     Icon(
                         imageVector = Icons.AndroidFill,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .background(
-                                color = if (item.supportsAndroid) Color(0xFFE8F5E9) else Color.Transparent,
-                                shape = RoundedCornerShape(4.dp)
-                            )
-                            .padding(horizontal = 4.dp, vertical = 2.dp)
-                            .size(14.dp)
+                        contentDescription = "Android supported",
+                        modifier = Modifier.size(18.dp),
+                        tint = if (item.supportsAndroid) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
                     )
                 }
 
@@ -342,14 +275,9 @@ public fun DemoCard(
                 ) {
                     Icon(
                         imageVector = Icons.AppleFill,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .background(
-                                color = if (item.supportsIos) Color(0xFFECEFF1) else Color.Transparent,
-                                shape = RoundedCornerShape(4.dp)
-                            )
-                            .padding(horizontal = 4.dp, vertical = 2.dp)
-                            .size(14.dp)
+                        contentDescription = "iOS supported",
+                        modifier = Modifier.size(18.dp),
+                        tint = if (item.supportsIos) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
                     )
                 }
             }
