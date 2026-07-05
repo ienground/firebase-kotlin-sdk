@@ -34,7 +34,7 @@ public object AppStateManager {
         onNavigate: (ScreenRoute) -> Unit
     ) {
         if (item.requiresInitialization && initState != FirebaseInitState.Initialized) {
-            showToast("먼저 Firebase를 초기화하세요.")
+            showToast("Please initialize Firebase first.")
         } else {
             onNavigate(item.route)
         }

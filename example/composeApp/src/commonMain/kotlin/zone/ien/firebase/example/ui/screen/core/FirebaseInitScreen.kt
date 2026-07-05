@@ -59,7 +59,6 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Text(
@@ -128,11 +127,11 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
             Button(
                 onClick = {
                     if (isInitialized) {
-                        showToast("이미 Firebase가 초기화되었습니다.")
+                        showToast("Firebase is already initialized.")
                         return@Button
                     }
                     if (isInitializing) {
-                        showToast("초기화가 진행 중입니다.")
+                        showToast("Firebase initialization is in progress.")
                         return@Button
                     }
                     scope.launch {
@@ -144,12 +143,12 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
                             val sessionsValid = zone.ien.firebase.example.ui.test.SessionsTest.verifyCompilation()
                             statusText = "Firebase Initialized Successfully!"
                             detailMessage = "App: ${FirebaseApp.instance.getName()} (WellKnownTypes: $wellKnownValid, Sessions: $sessionsValid)"
-                            showToast("Firebase 초기화 완료")
+                            showToast("Firebase initialized successfully.")
                         } catch (e: Exception) {
                             AppStateManager.initState = FirebaseInitState.InitializationFailed
                             statusText = "Initialization Failed"
                             detailMessage = e.message ?: "Unknown initial configuration error occurred."
-                            showToast("초기화 실패: ${e.message}")
+                            showToast("Initialization failed: ${e.message}")
                         }
                     }
                 },

@@ -63,9 +63,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                         Text("←")
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                )
+
             )
         }
     ) { padding ->
