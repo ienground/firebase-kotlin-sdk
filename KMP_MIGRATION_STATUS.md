@@ -8,8 +8,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 - **Total Modules**: 50
 - **KMP Support State**:
-  - 🟢 **Fully Migrated**: 31 (Android & iOS fully linked)
-  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 19 (iOS actual implemented as stubs)
+  - 🟢 **Fully Migrated**: 32 (Android & iOS fully linked)
+  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 18 (iOS actual implemented as stubs)
   - 🔴 **Android Native Only**: 0 (All modules compiled via KMP target)
 
 ---
@@ -28,7 +28,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `ai-logic:firebase-ai`                                | `sdk` | 🟡 Partially|  Android, iOS     | KMP Firebase AI (Gemini) SDK wrapper (iOS stub). |
 | `ai-logic:firebase-ai-ondevice`                       | `sdk` | 🟡 Partially|  Android, iOS     | KMP Firebase AI On-Device (Gemini Nano) SDK wrapper (iOS stub). |
 | `ai-logic:firebase-ai-ondevice-interop`               | `sdk` | 🟡 Partially|  Android, iOS     | KMP interop contract (iOS stub). |
-| `firebase-abt`                                        | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub).  |
+| `firebase-abt`                                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-annotations`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common annotations.  |
 | `firebase-appdistribution`                            | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-appdistribution-api`                    | `sdk` | 🟡 Partially|  Android, iOS     | KMP interface contract (iOS stub). |
@@ -83,6 +83,14 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-05: `firebase-ios-sdk` 12.15.0 Upgrade & `firebase-abt` Fully Migrated
+* **Firebase iOS SDK 12.15.0 Upgrade**: Upgraded core Firebase Apple SDK from `11.3.0` to `12.15.0` across all module targets, main Package.swift and Version Catalog. 
+* **Swift 6.0 Bridge Compiler Fix**: Cleared stale compiler derived caches to resolve Swift 6.0 internal bridge (`ExprBridge` etc.) compilation errors and establish fresh linkage.
+* **SPM Dependency Sync Hook**: Implemented configuration-phase lock file deletion and disabled upToDateWhen checks for Gradle SPM synthetic import/fetch tasks to prevent build cache corruption.
+* **Firebase A/B Testing (`firebase-abt`) Integration**: 
+  - Fully migrated A/B Testing module to KMP. Since `firebase-ios-sdk` does not expose `FirebaseABTesting` as a standalone product, transitively linked it via `FirebaseRemoteConfig` product dependency configuration.
+  - Linked `_firebase_abt` wrapper local subpackage in the main Package.swift and generated standard dummy C source structures to properly bridge `FIRExperimentInfo` and `FIRABTesting` Clang bindings on iOS arm64 targets.
 
 ### 2026-07-05: `firebase-firestore` & `firebase-common` KMP Status Synchronization
 * **KMP Realization Sync**: Corrected and synchronized the migration status of `firebase-firestore` and `firebase-common` modules to `🟢 Migrated` supporting both Android and iOS targets.
