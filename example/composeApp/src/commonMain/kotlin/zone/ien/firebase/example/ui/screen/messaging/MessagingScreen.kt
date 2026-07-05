@@ -31,8 +31,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import zone.ien.firebase.messaging.FirebaseMessaging
 import zone.ien.firebase.example.ui.theme.AppTheme
+import zone.ien.firebase.messaging.FirebaseMessaging
+import zone.ien.firebase.messaging.directboot.FirebaseMessagingDirectBoot
 import zone.ien.utils.ui.wrapper.M3RootWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
