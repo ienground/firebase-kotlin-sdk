@@ -18,6 +18,7 @@ let package = Package(
       from: "12.15.0"
     ),
     .package(path: "subpackages/_firebase_firestore"),
+    .package(path: "subpackages/_firebase_abt"),
     .package(path: "subpackages/_firebase_storage"),
     .package(path: "subpackages/_firebase_perf"),
     .package(path: "subpackages/_firebase_installations"),
@@ -78,6 +79,7 @@ let package = Package(
           package: "firebase-ios-sdk"
         ),
         .product(name: "_firebase_firestore", package: "_firebase_firestore"),
+        .product(name: "_firebase_abt", package: "_firebase_abt"),
         .product(name: "_firebase_storage", package: "_firebase_storage"),
         .product(name: "_firebase_perf", package: "_firebase_perf"),
         .product(name: "_firebase_installations", package: "_firebase_installations"),
