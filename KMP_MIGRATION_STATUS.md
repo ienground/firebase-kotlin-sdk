@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 39
+- **KMP Enabled**: 40
 - **Android Native Only**: 11
 
 ---
@@ -61,7 +61,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `encoders:firebase-encoders-proto`                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Protobuf encoder implementation (pure Kotlin). |
 | `encoders:firebase-encoders-reflective`               | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Reflective encoder helper (capability differentiated). |
 | `encoders:firebase-decoders-json`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP JSON decoder implementation (pure Kotlin). |
-| `encoders:protoc-gen-firebase-encoders`               | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `encoders:protoc-gen-firebase-encoders`               | `sdk` | 🟢 Migrated |  JVM Tooling      | JVM-only protoc generator tooling compiler plugin. |
 | `transport:transport-api`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport contract (iOS stub). |
 | `transport:transport-backend-cct`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport backend contract (iOS stub). |
 | `transport:transport-runtime`                         | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport core runtime contract (iOS stub). |
@@ -81,6 +81,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `encoders:protoc-gen-firebase-encoders` KMP Module Creation & Tooling Setup
+* **KMP Module Realization**: Created the new `:encoders:protoc-gen-firebase-encoders` module applying KMP with JVM-only target `jvm()` and `application` configuration.
+* **Protoc Executable Plugin**: Implemented `ProtocGenFirebaseEncoders` in `jvmMain` resolving standard stdin/stdout pipeline, reading `CodeGeneratorRequest` to emit wire-format ready `ObjectEncoder` source code files.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 40.
 
 ### 2026-07-04: `encoders:firebase-decoders-json` KMP Module Creation & Decoder Implementation
 * **KMP Module Realization**: Created the new `:encoders:firebase-decoders-json` module with targets `androidTarget()`, `jvm()`, and native `iosSimulatorArm64()`, `iosArm64()`.
