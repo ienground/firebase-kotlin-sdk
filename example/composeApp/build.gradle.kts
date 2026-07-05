@@ -59,7 +59,8 @@ kotlin {
                 product("FirebaseStorage"),
                 product("FirebaseFunctions"),
                 product("FirebaseAppCheck"),
-                product("FirebaseRemoteConfig")
+                product("FirebaseRemoteConfig"),
+                product("FirebaseMessaging")
             )
         )
     }
@@ -131,7 +132,7 @@ tasks.register("createFirebaseFrameworkSymlinks") {
         val frameworks = listOf(
             "FirebaseCore", "FirebaseFirestore", "FirebaseAuth", "FirebaseCrashlytics",
             "FirebaseDatabase", "FirebaseStorage", "FirebaseFunctions", "FirebaseAppCheck",
-            "FirebaseAppCheckInterop", "FirebaseCoreExtension", "FirebaseRemoteConfig"
+            "FirebaseAppCheckInterop", "FirebaseCoreExtension", "FirebaseRemoteConfig", "FirebaseMessaging"
         )
 
         val buildTypes = listOf("Debug", "Release")
