@@ -8,7 +8,7 @@ lib-version-name = "0.9.0"
 firebase-android-bom = "34.15.0"
 firebase-android-messaging = "25.1.0"
 android-datatransport = "4.1.1"
-kotlinx-coroutines = "1.10.1"
+kotlinx-coroutines = "1.11.0"
 firebase-android-appcheck = "19.2.0"
 firebase-android-crashlytics = "20.0.6"
 firebase-android-ai-ondevice = "16.0.0-beta03"
@@ -46,14 +46,12 @@ google-services = "4.5.0"
 
 # plugin
 compose-plugin = "1.11.1"
-# TODO: 1.11.0-alpha07 -> 1.11.0 stable (또는 1.10.0 stable)로 하향/상향 시 일부 alpha 실험적 UI API 사용 중인 코드 마이그레이션 변경이 수반되어 보류
 compose-material3 = "1.11.0-alpha07"
 firebase-crashlytics = "3.0.7"
 
 # ui
 activity-compose = "1.13.0"
-lifecycle = "2.11.0"
-# TODO: 1.1.1 -> 1.2.0-alpha01 존재하지만 alpha 프리릴리스 버전이므로 도입 보류 및 1.1.1 유지
+lifecycle = "2.10.0"
 compose-navigation3 = "1.1.1"
 
 # backend
