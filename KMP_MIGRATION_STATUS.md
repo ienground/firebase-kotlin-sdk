@@ -8,8 +8,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 - **Total Modules**: 50
 - **KMP Support State**:
-  - 🟢 **Fully Migrated**: 37 (Android & iOS fully linked)
-  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 13 (iOS actual implemented as stubs)
+  - 🟢 **Fully Migrated**: 38 (Android & iOS fully linked)
+  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 12 (iOS actual implemented as stubs)
   - 🔴 **Android Native Only**: 0 (All modules compiled via KMP target)
 
 ---
@@ -54,7 +54,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-installations`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Installations SDK wrapper. |
 | `firebase-ml-modeldownloader`                         | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS Unsupported). |
 | `firebase-perf`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Performance Monitoring wrapper. |
-| `firebase-sessions`                                   | `sdk` | 🟡 Partially|  Android, iOS     | KMP Sessions internal support (iOS stub). |
+| `firebase-sessions`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Sessions internal support (iOS Linked). |
 | `firebase-storage`                                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `protolite-well-known-types`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Protobuf Well-Known Types wrapper. |
 | `encoders:firebase-encoders`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP foundational encoding contract (pure Kotlin). |
@@ -83,6 +83,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-06: `firebase-sessions` Migrated & iOS Linked
+* **Sessions Actual Migration**: Replaced the iOS stub implementation with a fully linked iOS target binding. Added the native `FirebaseSessions` SwiftPM dependency and cinterop mapped to `"FirebaseSessionsObjC"` for Clang module parsing.
+* **Internal-Only Telemetry Logic**: Documented that `FirebaseSessions` serves as an internal-only telemetry SDK and maintains empty KMP signatures for classpath safety. The native sessions system now runs in the background of iOS apps automatically.
+* **Sample App Integration**: Registered `Sessions` feature card inside `HomeScreen.kt` routing to the init screen verifying path classpath visibility.
 
 ### 2026-07-06: `firebase-dataconnect` Migrated & iOS Memory-based Actual
 * **Data Connect Memory-based actual**: Replaced the iOS stub implementation in `FirebaseDataConnect.ios.kt` and `GeneratedConnector.ios.kt` with a memory-based implementation that retains `ConnectorConfig` metadata and emulator settings on iOS.

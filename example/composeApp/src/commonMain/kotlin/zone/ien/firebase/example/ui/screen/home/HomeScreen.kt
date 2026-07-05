@@ -196,6 +196,14 @@ public fun HomeScreen(
             supportsAndroid = true,
             supportsIos = true,
             route = ScreenRoute.Abt
+        ),
+        HomeFeatureItem(
+            title = "Sessions",
+            subtitle = "Track background session telemetry automatically (Internal-only).",
+            indicatorColor = Color(0xFF607D8B),
+            supportsAndroid = true,
+            supportsIos = true,
+            route = ScreenRoute.FirebaseInit
         )
     )
 
