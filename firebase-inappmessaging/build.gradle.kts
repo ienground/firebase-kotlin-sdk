@@ -28,6 +28,7 @@ kotlin {
 
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 
