@@ -146,7 +146,7 @@ public fun HomeScreen(
             subtitle = "Hybrid on-device Gemini inference and fallback.",
             indicatorColor = Color(0xFFE040FB),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.AiLogicOnDevice
         ),
         HomeFeatureItem(

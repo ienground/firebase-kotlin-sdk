@@ -14,5 +14,5 @@ public actual fun FirebaseAI.generativeModel(
     modelName: String,
     onDeviceConfig: OnDeviceConfig
 ): GenerativeModel {
-    throw UnsupportedOperationException("Firebase AI On-Device is not supported on iOS yet.")
+    return GenerativeModel(modelName, extraConfig = "on-device-mode:${onDeviceConfig.mode.name}")
 }
