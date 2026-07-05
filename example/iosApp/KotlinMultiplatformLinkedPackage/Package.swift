@@ -15,7 +15,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/firebase/firebase-ios-sdk.git",
-      from: "11.3.0"
+      from: "12.15.0"
     ),
     .package(path: "subpackages/_firebase_firestore"),
     .package(path: "subpackages/_firebase_storage"),
