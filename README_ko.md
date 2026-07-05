@@ -30,6 +30,10 @@
 | **Cloud Messaging** (`firebase-messaging`) | 🟢 지원 | 🟢 지원 | **85%** | Native GMS / iOS SwiftPM SDK 위임 |
 | **Performance Monitoring** (`firebase-perf`) | 🟢 지원 | 🟢 지원 | **80%** | Native GMS / iOS SwiftPM SDK 위임 |
 | **Installations** (`firebase-installations`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **App Check** (`firebase-appcheck`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **A/B Testing** (`firebase-abt`) | 🟢 지원 | 🔴 Stub | **20%** (iOS Stub) | KMP wrapper (iOS stub) |
+| **Sessions** (`firebase-sessions`) | 🟢 지원 | 🔴 Stub | **20%** (iOS Stub) | KMP wrapper (iOS stub) |
+| **Encoders & Decoders** (`firebase-encoders`) | 🟢 지원 | 🟢 지원 | **95%** | Pure Kotlin 직렬화 파이프라인 |
 | **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 | **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 | **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
