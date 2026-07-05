@@ -31,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -39,28 +40,20 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebaseApp
 import zone.ien.firebase.ai.ai
+import zone.ien.firebase.example.util.isIos
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AiLogicScreen(
     onNavigateBack: () -> Unit
 ) {
-    // Detect iOS stub runtime exception or missing instance
-    val aiResult = remember {
-        if (FirebaseApp.isInitialized) {
-            runCatching { FirebaseApp.instance.ai }
-        } else {
-            Result.failure(Exception("Firebase not initialized"))
-        }
-    }
-    val isSupported = aiResult.isSuccess && aiResult.getOrNull() != null
-
+    val isSupported = !isIos
     val coroutineScope = rememberCoroutineScope()
     var modelName by remember { mutableStateOf("gemini-3.5-flash") }
     var prompt by remember { mutableStateOf("Explain Kotlin Multiplatform in one sentence.") }
     var consoleLogs by remember { 
         mutableStateOf(
-            if (!isSupported) "AI Logic is NOT supported on this platform: ${aiResult.exceptionOrNull()?.message}\n"
+            if (!isSupported) "AI Logic is NOT supported on this platform.\n"
             else "Console initialized.\n"
         )
     }

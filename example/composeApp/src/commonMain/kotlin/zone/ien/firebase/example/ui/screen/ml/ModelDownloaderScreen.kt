@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -42,7 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
-import zone.ien.firebase.FirebaseApp
+import zone.ien.firebase.example.util.isIos
 import zone.ien.firebase.ml.modeldownloader.CustomModel
 import zone.ien.firebase.ml.modeldownloader.CustomModelDownloadConditions
 import zone.ien.firebase.ml.modeldownloader.DownloadType
@@ -53,16 +52,7 @@ import zone.ien.firebase.ml.modeldownloader.FirebaseModelDownloader
 fun ModelDownloaderScreen(
     onNavigateBack: () -> Unit
 ) {
-    // Detect iOS stub runtime exception or missing instance
-    val modelResult = remember {
-        if (FirebaseApp.isInitialized) {
-            runCatching { FirebaseModelDownloader.instance }
-        } else {
-            Result.failure(Exception("Firebase not initialized"))
-        }
-    }
-    val isSupported = modelResult.isSuccess && modelResult.getOrNull() != null
-
+    val isSupported = !isIos
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
@@ -74,7 +64,7 @@ fun ModelDownloaderScreen(
 
     var logMessage by remember { 
         mutableStateOf(
-            if (!isSupported) "Model Downloader is NOT supported on this platform: ${modelResult.exceptionOrNull()?.message}"
+            if (!isSupported) "Model Downloader is NOT supported on this platform."
             else "Ready to download Firebase Custom Models."
         ) 
     }
