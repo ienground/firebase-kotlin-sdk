@@ -40,7 +40,7 @@ A Kotlin Multiplatform (KMP) wrapper around Firebase platform SDKs, designed to 
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 Yes | 🟢 Yes | **95%** | Pure Kotlin Serialization Pipeline |
 | **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Memory-based custom model simulation (no live native model downloading) |
 | **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Memory-based custom Gemini content simulation (no live native AI model dispatching) |
-| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 Yes | 🔴 Stub | **15%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
+| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Memory-based on-device custom Gemini content simulation (no live native on-device model dispatching) |
 | **App Distribution** (`firebase-appdistribution`) | 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Tester sign-in and update checks (no in-app progress monitoring) |
 | **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Memory-based metadata container (no live native query linking) |
 | **In-App Messaging** (`firebase-inappmessaging`) | 🟢 Yes | 🟢 Yes | **90%** | Native GMS / iOS SwiftPM SDK (Core API delegate) |
@@ -192,6 +192,15 @@ Since Kotlin/Native's cinterop pipeline cannot generate bindings directly for Sw
    To prevent compilation failure and runtime crashes, the iOS actual implementation for AI Logic operates in **"Memory-only container mode"**. Requesting a model (`generativeModel`) and dispatching content generation (`generateContent`) simulate a 1.5s network delay and return a simulated reply including prompt parameters safely.
 3. **Live AI Requests**:
    To connect to live Vertex AI backend services on iOS, you must call the official Firebase AI Swift SDK directly from your native iOS Swift codebase, rather than KMP common code.
+
+### AI On-Device iOS Integration Constraints
+
+1. **Swift-only Library Limitation**:
+   The official iOS on-device/hybrid AI SDK (supporting Apple Intelligence) is written strictly in Swift and lacks Objective-C compatibility headers. Consequently, Kotlin/Native cinterop cannot parse the headers or link the binary target.
+2. **KMP Memory-based Actual**:
+   To prevent compilation failure and runtime crashes, the iOS actual implementation for AI On-Device operates in **"Memory-only container mode"**. Instantiating `generativeModel` with `OnDeviceConfig` and calling `generateContent(prompt)` parse the local `InferenceMode` (PREFER_ON_DEVICE, PREFER_IN_CLOUD, ONLY_ON_DEVICE) configuration safely inside a local memory simulation.
+3. **Live On-Device AI Requests**:
+   To utilize live Apple Intelligence on-device inference or hybrid fallbacks on iOS, you must call the official Firebase AI Swift SDK directly from your native iOS Swift codebase, rather than KMP common code.
 
 **Action Needed**: Guard your UI entry points or calls to these services on iOS:
 ```kotlin
