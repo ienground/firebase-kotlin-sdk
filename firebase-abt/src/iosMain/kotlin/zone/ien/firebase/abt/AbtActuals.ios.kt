@@ -1,7 +1,12 @@
 package zone.ien.firebase.abt
 
-actual class AbtException : Exception("A/B Testing is unsupported on iOS target.")
+import kotlinx.cinterop.ExperimentalForeignApi
+
+actual class AbtException(message: String?, cause: Throwable?) : Exception(message, cause) {
+    constructor(message: String?) : this(message, null)
+}
 
 actual class AbtExperimentInfo
 
-actual class FirebaseABTesting
+@OptIn(ExperimentalForeignApi::class)
+actual typealias FirebaseABTesting = swiftPMImport.zone.ien.firebase.firebase.abt.FIRExperimentController

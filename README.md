@@ -31,7 +31,7 @@ A Kotlin Multiplatform (KMP) wrapper around Firebase platform SDKs, designed to 
 | **Performance Monitoring** (`firebase-perf`) | 🟢 Yes | 🟢 Yes | **80%** | Native GMS / iOS SwiftPM SDK |
 | **Installations** (`firebase-installations`) | 🟢 Yes | 🟢 Yes | **95%** | Native GMS / iOS SwiftPM SDK |
 | **App Check** (`firebase-appcheck`) | 🟢 Yes | 🟢 Yes | **90%** | Native GMS / iOS SwiftPM SDK |
-| **A/B Testing** (`firebase-abt`) | 🟢 Yes | 🔴 Stub | **20%** (iOS Stub) | KMP wrapper (iOS stub) |
+| **A/B Testing** (`firebase-abt`) | 🟢 Yes | 🟢 Yes | **95%** | Native GMS / iOS SwiftPM SDK |
 | **Sessions** (`firebase-sessions`) | 🟢 Yes | 🔴 Stub | **20%** (iOS Stub) | KMP wrapper (iOS stub) |
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 Yes | 🟢 Yes | **95%** | Pure Kotlin Serialization Pipeline |
 | **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 Yes | 🔴 Stub | **10%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |

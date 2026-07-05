@@ -188,6 +188,14 @@ public fun HomeScreen(
             supportsAndroid = true,
             supportsIos = true,
             route = ScreenRoute.Encoders
+        ),
+        HomeFeatureItem(
+            title = "A/B Testing",
+            subtitle = "Verify experiment controllers and lifecycle events.",
+            indicatorColor = Color(0xFF9C27B0),
+            supportsAndroid = true,
+            supportsIos = true,
+            route = ScreenRoute.Abt
         )
     )
 
