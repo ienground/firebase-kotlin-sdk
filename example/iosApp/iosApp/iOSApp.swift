@@ -1,9 +1,24 @@
 import SwiftUI
 import FirebaseCore
 import FirebaseMessaging
+import FirebaseAppDistribution
 import UserNotifications
 
 class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+    ) -> Bool {
+        let stringOptions = options.reduce(into: [String: Any]()) { result, element in
+            result[element.key.rawValue] = element.value
+        }
+        if AppDistribution.appDistribution().application(app, open: url, options: stringOptions) {
+            return true
+        }
+        return false
+    }
+
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil

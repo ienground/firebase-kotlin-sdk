@@ -162,7 +162,7 @@ public fun HomeScreen(
             subtitle = "Check prerelease availability and trigger in-app updates.",
             indicatorColor = Color(0xFFF58220),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.AppDistribution
         ),
         HomeFeatureItem(
