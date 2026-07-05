@@ -2,6 +2,7 @@ package zone.ien.firebase.ai
 
 import kotlinx.coroutines.delay
 import zone.ien.firebase.FirebaseApp
+import zone.ien.firebase.InternalFirebaseApi
 
 public actual class FirebaseAI private constructor() {
     public actual fun generativeModel(modelName: String): GenerativeModel {
@@ -23,10 +24,11 @@ public actual class FirebaseAI private constructor() {
 public actual val FirebaseApp.ai: FirebaseAI
     get() = FirebaseAI.getInstance(this)
 
-public actual class GenerativeModel(
-    private val modelName: String = "",
-    private val extraConfig: String? = null
-) {
+public actual class GenerativeModel(private val modelName: String = "") {
+    @InternalFirebaseApi
+    public var extraConfig: String? = null
+
+    @OptIn(InternalFirebaseApi::class)
     public actual suspend fun generateContent(prompt: String): GenerateContentResponse {
         delay(1500)
         val isOnDevice = extraConfig?.startsWith("on-device-mode:") == true
