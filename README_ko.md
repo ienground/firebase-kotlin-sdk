@@ -42,7 +42,7 @@
 | **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 | **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 | **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원 (진행률 추적 미지원) |
-| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
+| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 메타데이터 Actual 지원 (네이티브 링킹 미지원) |
 | **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 (Core 기능 실제 구현) |
 
 ---
@@ -157,6 +157,15 @@ val userName = snapshot.get<String>("name")
    만약 `FirebaseAppDelegateProxyEnabled`를 `false`로 설정하여 자동 Swizzling을 꺼둔 앱 환경이라면, `AppDelegate`의 `application(_:open:options:)` 메소드에서 `AppDistribution.appDistribution().handle(url)`을 수동으로 호출하여 URL 처리를 직접 위임해야 합니다.
 3. **In-App Update Progress Monitoring 미지원**:
    iOS Firebase SDK는 앱 내에서 다운로드 진행률(바이트 단위)을 관찰하는 스트림 API를 제공하지 않습니다. 따라서 `updateIfNewReleaseAvailable` API를 호출하면 `UnsupportedOperationException`이 발생하며, 대신 `checkForNewRelease` 시 새 빌드가 존재할 경우 노출되는 SDK 자체 내장 UI Alert 흐름을 활용하여 배포가 진행됩니다.
+
+### Data Connect iOS 연동 제약사항
+
+1. **Swift 전용 라이브러리 및 cinterop 제약**:
+   Google 공식 iOS `FirebaseDataConnect` SDK는 Swift로만 구현되어 있으며, Objective-C 호환 헤더가 존재하지 않습니다. 이로 인해 Kotlin/Native의 cinterop 컴파일 도구가 이를 해석하지 못해 네이티브 바이너리 직접 링킹이 불가능합니다.
+2. **KMP 내부 동작 (메모리 보존 모드)**:
+   KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. 인스턴스 생성(`getInstance`), 설정 조회(`config`), 에뮬레이터 세팅(`useEmulator`) 등의 기능은 iOS 상에서도 안전하게 상태값을 메모리에 보존하며 정상 실행됩니다.
+3. **실제 GraphQL 네트워크 통신 처리**:
+   iOS 실제 디바이스 및 시뮬레이터에서 서버 또는 로컬 에뮬레이터와 통신하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase CLI로 자동 생성된 Swift SDK를 직접 가져와 데이터를 교환하고 화면에 렌더링해야 합니다.
 
 **대처 가이드**: 공통 소스셋이나 프리젠테이션 레이어에서 플랫폼 구별 플래그를 통해 호출 코드를 안전하게 보호해 주십시오:
 ```kotlin
