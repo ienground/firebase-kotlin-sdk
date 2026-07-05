@@ -2,7 +2,7 @@ package zone.ien.firebase.messaging.directboot
 
 import zone.ien.firebase.FirebaseApp
 
-public expect class FirebaseMessagingDirectBoot {
+public expect class FirebaseMessagingDirectBoot private constructor() {
     public val isSupported: Boolean
     public fun getDeviceProtectedStorageContext(): Any?
 
