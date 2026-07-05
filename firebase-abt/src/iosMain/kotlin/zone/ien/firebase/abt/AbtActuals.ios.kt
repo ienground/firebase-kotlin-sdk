@@ -3,6 +3,7 @@ package zone.ien.firebase.abt
 import kotlinx.cinterop.ExperimentalForeignApi
 
 actual class AbtException(message: String?, cause: Throwable?) : Exception(message, cause) {
+    constructor() : this(null, null)
     constructor(message: String?) : this(message, null)
 }
 
