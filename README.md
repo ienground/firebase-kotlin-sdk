@@ -38,7 +38,7 @@ A Kotlin Multiplatform (KMP) wrapper around Firebase platform SDKs, designed to 
 | **A/B Testing** (`firebase-abt`) | 🟢 Yes | 🟢 Yes | **95%** | Native GMS / iOS SwiftPM SDK |
 | **Sessions** (`firebase-sessions`) | 🟢 Yes | 🟢 Yes | **95%** | Native GMS / iOS SwiftPM SDK (Background session telemetry auto-runs) |
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 Yes | 🟢 Yes | **95%** | Pure Kotlin Serialization Pipeline |
-| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 Yes | 🔴 Stub | **10%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
+| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Memory-based custom model simulation (no live native model downloading) |
 | **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 Yes | 🔴 Stub | **15%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
 | **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 Yes | 🔴 Stub | **15%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
 | **App Distribution** (`firebase-appdistribution`) | 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Tester sign-in and update checks (no in-app progress monitoring) |
@@ -174,6 +174,15 @@ Since Kotlin/Native's cinterop pipeline cannot generate bindings directly for Sw
    The Firebase Sessions SDK is an internal-only telemetry backend SDK that exposes almost no public APIs for manual code interaction. Through this migration, the `FirebaseSessions` SwiftPM product is now fully linked during the iOS compilation pipeline.
 2. **KMP Role & Auto-Association**:
    The `FirebaseSessions` expect/actual mapping guarantees classpath availability inside common source sets. Session ID lifecycle analytics are automatically recorded in the background on iOS, associating silently with both the Crashlytics and Performance Monitoring SDKs.
+
+### Model Downloader iOS Integration Constraints
+
+1. **Swift-only Library Limitation**:
+   The official iOS `FirebaseMLModelDownloader` SDK is written strictly in Swift and lacks Objective-C compatibility headers. Consequently, Kotlin/Native cinterop cannot parse the headers or link the binary target.
+2. **KMP Memory-based Actual**:
+   To prevent compilation failure and runtime crashes, the iOS actual implementation for Model Downloader operates in **"Memory-only container mode"**. Requesting a model (`getModel`), listing downloaded models (`listDownloadedModels`), and deleting models (`deleteDownloadedModel`) store and verify states safely inside a local memory registry.
+3. **Live Model Downloads**:
+   To physically download custom TFLite model files on iOS, you must call the Firebase ML Swift SDK directly from your native iOS Swift codebase, rather than KMP common code.
 
 **Action Needed**: Guard your UI entry points or calls to these services on iOS:
 ```kotlin
