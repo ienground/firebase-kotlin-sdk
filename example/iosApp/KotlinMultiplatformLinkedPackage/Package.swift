@@ -79,6 +79,10 @@ let package = Package(
           name: "FirebaseMessaging",
           package: "firebase-ios-sdk"
         ),
+        .product(
+          name: "FirebaseAppDistribution-Beta",
+          package: "firebase-ios-sdk"
+        ),
         .product(name: "_firebase_firestore", package: "_firebase_firestore"),
         .product(name: "_firebase_abt", package: "_firebase_abt"),
         .product(name: "_firebase_storage", package: "_firebase_storage"),
