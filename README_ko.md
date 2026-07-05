@@ -39,7 +39,7 @@
 | **Sessions** (`firebase-sessions`) | 🟢 지원 | 🟢 지원 | **95%** | iOS SwiftPM SDK 링킹 완료 (백그라운드 세션 텔레메트리 자동 동작) |
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 지원 | 🟢 지원 | **95%** | Pure Kotlin 직렬화 파이프라인 |
 | **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 모델 조회/삭제 시뮬레이션 지원 (네이티브 링킹 미지원) |
-| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
+| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 가상 Gemini 응답 시뮬레이터 지원 (네이티브 링킹 미지원) |
 | **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 | **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원 (진행률 추적 미지원) |
 | **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 메타데이터 Actual 지원 (네이티브 링킹 미지원) |
@@ -182,6 +182,15 @@ val userName = snapshot.get<String>("name")
    KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. 모델 요청(`getModel`), 모델 목록 조회(`listDownloadedModels`), 모델 제거(`deleteDownloadedModel`) 기능은 iOS 상에서도 안전하게 로컬 메모리 리스트에 가상 모델을 보존하며 정상 실행됩니다.
 3. **실제 모델 파일 다운로드 처리**:
    iOS 실제 디바이스 및 시뮬레이터에서 서버로부터 TFLite 모델 파일을 물리적으로 다운로드하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase ML Swift SDK를 직접 호출하여 사용해야 합니다.
+
+### AI Logic iOS 연동 제약사항
+
+1. **Swift 전용 라이브러리 및 cinterop 제약**:
+   Google 공식 iOS `FirebaseAILogic` SDK는 Swift로만 구현되어 있으며, Objective-C 호환 헤더가 존재하지 않습니다. 이로 인해 Kotlin/Native의 cinterop 컴파일 도구가 이를 해석하지 못해 네이티브 바이너리 직접 링킹이 불가능합니다.
+2. **KMP 내부 동작 (메모리 보존 모드)**:
+   KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. `generativeModel` 획득 및 `generateContent(prompt)` 호출은 iOS 상에서도 안전하게 1.5초 지연(delay) 후 프롬프트를 담아낸 가상의 답변 텍스트를 돌려주는 모의 엔진(Mock Engine)으로 정상 실행됩니다.
+3. **실제 Gemini Cloud 및 Vertex AI API 통신 처리**:
+   iOS 실제 디바이스 및 시뮬레이터에서 Vertex AI 클라우드 백엔드와 통신하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase AI Swift SDK를 직접 호출하여 사용해야 합니다.
 
 **대처 가이드**: 공통 소스셋이나 프리젠테이션 레이어에서 플랫폼 구별 플래그를 통해 호출 코드를 안전하게 보호해 주십시오:
 ```kotlin

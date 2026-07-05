@@ -138,7 +138,7 @@ public fun HomeScreen(
             subtitle = "Generate content using Gemini model prompts.",
             indicatorColor = Color(0xFF9C27B0),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.AiLogic
         ),
         HomeFeatureItem(
