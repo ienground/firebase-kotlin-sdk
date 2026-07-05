@@ -1,4 +1,4 @@
-TEAM_ID=
+#include? "LocalConfig.xcconfig"
 
 PRODUCT_NAME=FirebaseKMP
 PRODUCT_BUNDLE_IDENTIFIER=zone.ien.firebase.example.Example$(TEAM_ID)

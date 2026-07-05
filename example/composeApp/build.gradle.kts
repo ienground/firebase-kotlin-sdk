@@ -59,7 +59,8 @@ kotlin {
                 product("FirebaseStorage"),
                 product("FirebaseFunctions"),
                 product("FirebaseAppCheck"),
-                product("FirebaseRemoteConfig")
+                product("FirebaseRemoteConfig"),
+                product("FirebaseMessaging")
             )
         )
     }
@@ -113,6 +114,7 @@ kotlin {
             implementation(project(":encoders:firebase-encoders-proto"))
             implementation(project(":encoders:firebase-encoders-reflective"))
             implementation(project(":encoders:firebase-decoders-json"))
+            implementation(project(":firebase-messaging"))
  
             implementation(libs.bundles.ienlab.cmp)
         }
@@ -130,7 +132,7 @@ tasks.register("createFirebaseFrameworkSymlinks") {
         val frameworks = listOf(
             "FirebaseCore", "FirebaseFirestore", "FirebaseAuth", "FirebaseCrashlytics",
             "FirebaseDatabase", "FirebaseStorage", "FirebaseFunctions", "FirebaseAppCheck",
-            "FirebaseAppCheckInterop", "FirebaseCoreExtension", "FirebaseRemoteConfig"
+            "FirebaseAppCheckInterop", "FirebaseCoreExtension", "FirebaseRemoteConfig", "FirebaseMessaging"
         )
 
         val buildTypes = listOf("Debug", "Release")
