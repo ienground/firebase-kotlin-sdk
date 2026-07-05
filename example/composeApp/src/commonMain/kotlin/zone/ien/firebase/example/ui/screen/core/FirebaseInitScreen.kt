@@ -34,11 +34,25 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebaseApp
 import zone.ien.firebase.FirebasePlatformContext
+import zone.ien.firebase.example.data.AppStateManager
+import zone.ien.firebase.example.data.FirebaseInitState
+import zone.ien.firebase.example.ui.toast.showToast
 
 @Composable
 fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
-    var checkIsInitialized by remember { mutableStateOf(FirebaseApp.isInitialized) }
-    var statusText by remember { mutableStateOf(if (checkIsInitialized) "Firebase Initialized" else "Firebase Not Initialized") }
+    val isInitialized = AppStateManager.initState == FirebaseInitState.Initialized
+    val isInitializing = AppStateManager.initState == FirebaseInitState.Initializing
+    
+    var statusText by remember(AppStateManager.initState) {
+        mutableStateOf(
+            when (AppStateManager.initState) {
+                FirebaseInitState.NotInitialized -> "Firebase Not Initialized"
+                FirebaseInitState.Initializing -> "Firebase Initializing..."
+                FirebaseInitState.Initialized -> "Firebase Initialized"
+                FirebaseInitState.InitializationFailed -> "Initialization Failed"
+            }
+        )
+    }
     var detailMessage by remember { mutableStateOf("Ready to trigger initialization check.") }
     val scope = rememberCoroutineScope()
 
@@ -47,9 +61,7 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
                 navigationIcon = {
-                    IconButton(
-                        onClick = onBack
-                    ) {
+                    IconButton(onClick = onBack) {
                         Text(
                             text = "←",
                             style = MaterialTheme.typography.headlineMedium,
@@ -76,10 +88,11 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = if (checkIsInitialized) {
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
-                    } else {
-                        MaterialTheme.colorScheme.error.copy(alpha = 0.15f)
+                    containerColor = when (AppStateManager.initState) {
+                        FirebaseInitState.Initialized -> MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
+                        FirebaseInitState.Initializing -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f)
+                        FirebaseInitState.InitializationFailed -> MaterialTheme.colorScheme.error.copy(alpha = 0.15f)
+                        FirebaseInitState.NotInitialized -> MaterialTheme.colorScheme.surfaceVariant
                     }
                 ),
                 shape = RoundedCornerShape(16.dp)
@@ -94,10 +107,11 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
                     Text(
                         text = statusText,
                         style = MaterialTheme.typography.headlineSmall,
-                        color = if (checkIsInitialized) {
-                            if (isSystemInDarkTheme()) Color(0xFF81C784) else Color(0xFF2E7D32)
-                        } else {
-                            MaterialTheme.colorScheme.error
+                        color = when (AppStateManager.initState) {
+                            FirebaseInitState.Initialized -> if (isSystemInDarkTheme()) Color(0xFF81C784) else Color(0xFF2E7D32)
+                            FirebaseInitState.Initializing -> MaterialTheme.colorScheme.primary
+                            FirebaseInitState.InitializationFailed -> MaterialTheme.colorScheme.error
+                            FirebaseInitState.NotInitialized -> MaterialTheme.colorScheme.onSurfaceVariant
                         }
                     )
                     Spacer(modifier = Modifier.height(10.dp))
@@ -113,31 +127,49 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
 
             Button(
                 onClick = {
+                    if (isInitialized) {
+                        showToast("이미 Firebase가 초기화되었습니다.")
+                        return@Button
+                    }
+                    if (isInitializing) {
+                        showToast("초기화가 진행 중입니다.")
+                        return@Button
+                    }
                     scope.launch {
                         try {
+                            AppStateManager.initState = FirebaseInitState.Initializing
                             FirebaseApp.initialize(context)
-                            checkIsInitialized = FirebaseApp.isInitialized
+                            AppStateManager.initState = FirebaseInitState.Initialized
                             val wellKnownValid = zone.ien.firebase.example.ui.test.WellKnownTypesTest.verifyCompilation()
                             val sessionsValid = zone.ien.firebase.example.ui.test.SessionsTest.verifyCompilation()
                             statusText = "Firebase Initialized Successfully!"
                             detailMessage = "App: ${FirebaseApp.instance.getName()} (WellKnownTypes: $wellKnownValid, Sessions: $sessionsValid)"
+                            showToast("Firebase 초기화 완료")
                         } catch (e: Exception) {
-                            checkIsInitialized = FirebaseApp.isInitialized
+                            AppStateManager.initState = FirebaseInitState.InitializationFailed
                             statusText = "Initialization Failed"
                             detailMessage = e.message ?: "Unknown initial configuration error occurred."
+                            showToast("초기화 실패: ${e.message}")
                         }
                     }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
+                enabled = !isInitializing,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
+                    containerColor = if (isInitialized) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Initialize Firebase")
+                Text(
+                    text = when {
+                        isInitializing -> "Initializing..."
+                        isInitialized -> "Initialized (Double Tap Prevented)"
+                        else -> "Initialize Firebase"
+                    }
+                )
             }
 
             Spacer(modifier = Modifier.height(32.dp))
