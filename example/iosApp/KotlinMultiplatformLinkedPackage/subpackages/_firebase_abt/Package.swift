@@ -1,15 +1,15 @@
 // swift-tools-version: 5.9
 import PackageDescription
 let package = Package(
-  name: "_appcheck_firebase_appcheck",
+  name: "_firebase_abt",
   platforms: [
     .iOS("15.0")
   ],
   products: [
     .library(
-      name: "_appcheck_firebase_appcheck",
+      name: "_firebase_abt",
       type: .none,
-      targets: ["_appcheck_firebase_appcheck"]
+      targets: ["_firebase_abt"]
     )
   ],
   dependencies: [
@@ -20,10 +20,10 @@ let package = Package(
   ],
   targets: [
     .target(
-      name: "_appcheck_firebase_appcheck",
+      name: "_firebase_abt",
       dependencies: [
         .product(
-          name: "FirebaseAppCheck",
+          name: "FirebaseRemoteConfig",
           package: "firebase-ios-sdk"
         )
       ]
