@@ -28,12 +28,14 @@ kotlin {
 
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 
     jvm {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 
@@ -52,13 +54,16 @@ kotlin {
             api(project(":encoders:firebase-encoders"))
         }
 
-        jvmMain.dependencies {
-            implementation(kotlin("reflect"))
+        val jvmCommonMain by creating {
+            dependsOn(commonMain.get())
+            dependencies {
+                implementation(kotlin("reflect"))
+            }
         }
 
-        val androidMain by getting {
-            dependsOn(jvmMain.get())
-        }
+        jvmMain.get().dependsOn(jvmCommonMain)
+        androidMain.get().dependsOn(jvmCommonMain)
+
 
         val iosMain by creating {
             dependsOn(commonMain.get())
