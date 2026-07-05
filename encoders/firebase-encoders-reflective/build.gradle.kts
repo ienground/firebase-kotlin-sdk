@@ -54,13 +54,21 @@ kotlin {
             api(project(":encoders:firebase-encoders"))
         }
 
-        jvmMain.dependencies {
-            implementation(kotlin("reflect"))
+        val jvmCommonMain by creating {
+            dependsOn(commonMain.get())
+            dependencies {
+                implementation(kotlin("reflect"))
+            }
+        }
+
+        val jvmMain by getting {
+            dependsOn(jvmCommonMain)
         }
 
         val androidMain by getting {
-            dependsOn(jvmMain.get())
+            dependsOn(jvmCommonMain)
         }
+
 
         val iosMain by creating {
             dependsOn(commonMain.get())
