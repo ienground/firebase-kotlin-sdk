@@ -5,8 +5,7 @@ import swiftPMImport.zone.ien.firebase.firebase.inappmessaging.FIRInAppMessaging
 
 public actual class FirebaseInAppMessaging private actual constructor() {
     @OptIn(ExperimentalForeignApi::class)
-    private val delegate: FIRInAppMessaging
-        get() = FIRInAppMessaging.inAppMessaging()
+    private val delegate: FIRInAppMessaging = FIRInAppMessaging.inAppMessaging()
 
     @OptIn(ExperimentalForeignApi::class)
     public actual var isAutomaticDataCollectionEnabled: Boolean
