@@ -53,17 +53,7 @@ kotlin {
             api(libs.firebase.android.messaging.directboot)
         }
 
-        val iosMain by creating {
-            dependsOn(commonMain.get())
-        }
 
-        val iosArm64Main by getting {
-            dependsOn(iosMain)
-        }
-
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
 
         commonTest.dependencies {
             implementation(libs.kotlin.test)
