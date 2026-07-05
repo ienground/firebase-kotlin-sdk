@@ -1,5 +1,6 @@
 package zone.ien.firebase.example.ui.screen.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,9 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,17 +33,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import firebase_kotlin_sdk.example.composeapp.generated.resources.Res
+import firebase_kotlin_sdk.example.composeapp.generated.resources.firebase_kmp
+import org.jetbrains.compose.resources.painterResource
 import zone.ien.firebase.annotations.PreviewApi
 import zone.ien.firebase.example.data.AppStateManager
 import zone.ien.firebase.example.data.HomeFeatureItem
 import zone.ien.firebase.example.icon.AndroidFill
 import zone.ien.firebase.example.icon.AppleFill
+import zone.ien.firebase.example.icon.GithubFill
 import zone.ien.firebase.example.icon.Icons
 import zone.ien.firebase.example.ui.navigation.ScreenRoute
 import zone.ien.firebase.example.util.isIos
+import zone.ien.firebase.example.util.libraryVersion
 
 @OptIn(ExperimentalMaterial3Api::class)
 @PreviewApi
@@ -48,6 +58,8 @@ import zone.ien.firebase.example.util.isIos
 public fun HomeScreen(
     onNavigate: (ScreenRoute) -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
+
     val items = listOf(
         HomeFeatureItem(
             title = "Firebase Init",
@@ -204,6 +216,60 @@ public fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
+                // 1. Library Info Card spanning across 2 columns
+                item(span = { GridItemSpan(2) }) {
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainer
+                        ),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(24.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Image(
+                                painter = painterResource(Res.drawable.firebase_kmp),
+                                contentDescription = "Firebase KMP Logo",
+                                modifier = Modifier.size(100.dp)
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                text = "Firebase Kotlin SDK",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                             Text(
+                                text = "v$libraryVersion",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = {
+                                    uriHandler.openUri("https://github.com/ienground/firebase-kotlin-sdk")
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.GithubFill,
+                                    contentDescription = "Github Logo",
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Github")
+                            }
+                        }
+                    }
+                }
+
+                // 2. Grid Items
                 items(items) { item ->
                     DemoCard(
                         item = item,
