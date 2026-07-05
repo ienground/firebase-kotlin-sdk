@@ -8,8 +8,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 - **Total Modules**: 50
 - **KMP Support State**:
-  - 🟢 **Fully Migrated**: 33 (Android & iOS fully linked)
-  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 17 (iOS actual implemented as stubs)
+  - 🟢 **Fully Migrated**: 35 (Android & iOS fully linked)
+  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 15 (iOS actual implemented as stubs)
   - 🔴 **Android Native Only**: 0 (All modules compiled via KMP target)
 
 ---
@@ -30,8 +30,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `ai-logic:firebase-ai-ondevice-interop`               | `sdk` | 🟡 Partially|  Android, iOS     | KMP interop contract (iOS stub). |
 | `firebase-abt`                                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-annotations`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common annotations.  |
-| `firebase-appdistribution`                            | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub).  |
-| `firebase-appdistribution-api`                    | `sdk` | 🟡 Partially|  Android, iOS     | KMP interface contract (iOS stub). |
+| `firebase-appdistribution`                            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM - Partial). |
+| `firebase-appdistribution-api`                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP interface contract. |
 | `firebase-auth`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-common`                                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common core modules. |
 | `firebase-components`                                 | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common components.   |
@@ -83,6 +83,12 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-06: `firebase-appdistribution` Migrated & iOS Actual Implementation
+* **App Distribution Actual Migration**: Replaced the iOS stub implementation in `FirebaseAppDistribution.ios.kt` with actual `FIRAppDistribution` API bindings from the SwiftPM target.
+* **Redirection & OAuth Setup**: Integrated `application(_:open:options:)` in the Swift AppDelegate to handle OAuth redirected URLs back to the App Distribution SDK, and configured custom URL schemes using reversed client ID inside Info.plist.
+* **iOS Platform Constraints Documentation**: Addressed that iOS does not support in-app update progress monitoring (UpdateProgress Flow) via SDK; updates are triggered directly via native alert views. UI adjusted to reflect this limitation (disabled progress-based update button for iOS).
+* **Sample App Integration**: Updated `HomeScreen.kt` to mark iOS as supported, and modified `AppDistributionScreen.kt` to permit iOS execution while warning about platform-specific UI behaviors.
 
 ### 2026-07-06: `firebase-inappmessaging` Fully Migrated & Stub Eliminated
 * **In-App Messaging Actual Migration**: Removed previous `UnsupportedOperationException` stubs in `FirebaseInAppMessaging.ios.kt` and transitioned them to actual Objective-C `FIRInAppMessaging` delegate calls.

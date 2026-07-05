@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="images/firebase-kmp.png" alt="Firebase Kotlin SDK Logo" width="150" />
+</p>
+
 # Firebase Kotlin SDK (한국어)
 
 [English](README.md) | **한국어**
@@ -37,7 +41,7 @@
 | **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 | **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 | **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
-| **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🔴 Stub | **20%** (iOS Stub) | iOS 플랫폼 제한으로 Stub 대체 |
+| **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원 (진행률 추적 미지원) |
 | **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 | **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 (Core 기능 실제 구현) |
 
@@ -144,6 +148,15 @@ val userName = snapshot.get<String>("name")
 구글 공식 iOS SDK의 Gemini AI, Data Connect 모듈은 Objective-C 호환 헤더가 없는 순수 Swift로 구현되어 있어 Kotlin/Native의 cinterop 도구(`convertSyntheticImportProjectIntoDefFile`)로 직접 결합할 수 없는 한계가 존재합니다.
 따라서 본 래퍼 라이브러리 상에서도 해당 기능의 iOS 타겟은 동작 시 `UnsupportedOperationException` 예외가 발생하므로 사용 시 주의가 필요합니다.
 (※ In-App Messaging 모듈의 경우 Core 제어 API는 iOS 상에서 정상 작동하나, 네이티브 디스플레이 카드 UI 레이아웃의 직접 커스터마이징 제약은 존재합니다.)
+
+### App Distribution iOS 연동 주의사항
+
+1. **테스터 인증 리다이렉션 (URL Scheme 설정 필수)**:
+   iOS에서 App Distribution을 통한 테스터 로그인을 성공적으로 마친 후 앱으로 복귀하기 위해서는, `GoogleService-Info.plist`의 `REVERSED_CLIENT_ID` (예: `com.googleusercontent.apps.628868686373-kg0v5qsu2ucsfdablu1k2gdi15o529em`) 값을 `Info.plist` 내 URL Schemes로 필수 등록해 주어야 합니다.
+2. **App Delegate Swizzling 비활성화 대응**:
+   만약 `FirebaseAppDelegateProxyEnabled`를 `false`로 설정하여 자동 Swizzling을 꺼둔 앱 환경이라면, `AppDelegate`의 `application(_:open:options:)` 메소드에서 `AppDistribution.appDistribution().handle(url)`을 수동으로 호출하여 URL 처리를 직접 위임해야 합니다.
+3. **In-App Update Progress Monitoring 미지원**:
+   iOS Firebase SDK는 앱 내에서 다운로드 진행률(바이트 단위)을 관찰하는 스트림 API를 제공하지 않습니다. 따라서 `updateIfNewReleaseAvailable` API를 호출하면 `UnsupportedOperationException`이 발생하며, 대신 `checkForNewRelease` 시 새 빌드가 존재할 경우 노출되는 SDK 자체 내장 UI Alert 흐름을 활용하여 배포가 진행됩니다.
 
 **대처 가이드**: 공통 소스셋이나 프리젠테이션 레이어에서 플랫폼 구별 플래그를 통해 호출 코드를 안전하게 보호해 주십시오:
 ```kotlin

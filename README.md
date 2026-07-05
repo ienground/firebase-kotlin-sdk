@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="images/firebase-kmp.png" alt="Firebase Kotlin SDK Logo" width="150" />
+</p>
+
 # Firebase Kotlin SDK
 
 **English** | [한국어](README_ko.md)
