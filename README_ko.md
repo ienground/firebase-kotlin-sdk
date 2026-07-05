@@ -38,7 +38,7 @@
 | **A/B Testing** (`firebase-abt`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
 | **Sessions** (`firebase-sessions`) | 🟢 지원 | 🟢 지원 | **95%** | iOS SwiftPM SDK 링킹 완료 (백그라운드 세션 텔레메트리 자동 동작) |
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 지원 | 🟢 지원 | **95%** | Pure Kotlin 직렬화 파이프라인 |
-| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
+| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 모델 조회/삭제 시뮬레이션 지원 (네이티브 링킹 미지원) |
 | **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 | **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 | **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원 (진행률 추적 미지원) |
@@ -173,6 +173,15 @@ val userName = snapshot.get<String>("name")
    Firebase Sessions SDK는 개발자가 코드에서 직접 제어하는 public API를 거의 노출하지 않는 내부 백그라운드 인프라(Internal-only telemetry SDK)입니다. 이번 마이그레이션을 통해 `FirebaseSessions` SwiftPM 제품이 iOS 타겟에 빌드 타임에 정상 링크되도록 구성되었습니다.
 2. **KMP 역할 및 자동 연계**:
    `FirebaseSessions` expect/actual 매핑을 통해 공통 코드 단에서의 클래스패스 가시성을 보장하며, 세션 ID 및 라이프사이클 이벤트는 iOS 앱 백그라운드 구동 시 SDK 내부에서 자동으로 추적되어 Crashlytics 및 Performance Monitoring SDK와 자동 연동되어 동작합니다.
+
+### Model Downloader iOS 연동 제약사항
+
+1. **Swift 전용 라이브러리 및 cinterop 제약**:
+   Google 공식 iOS `FirebaseMLModelDownloader` SDK는 Swift로만 구현되어 있으며, Objective-C 호환 헤더가 존재하지 않습니다. 이로 인해 Kotlin/Native의 cinterop 컴파일 도구가 이를 해석하지 못해 네이티브 바이너리 직접 링킹이 불가능합니다.
+2. **KMP 내부 동작 (메모리 보존 모드)**:
+   KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. 모델 요청(`getModel`), 모델 목록 조회(`listDownloadedModels`), 모델 제거(`deleteDownloadedModel`) 기능은 iOS 상에서도 안전하게 로컬 메모리 리스트에 가상 모델을 보존하며 정상 실행됩니다.
+3. **실제 모델 파일 다운로드 처리**:
+   iOS 실제 디바이스 및 시뮬레이터에서 서버로부터 TFLite 모델 파일을 물리적으로 다운로드하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase ML Swift SDK를 직접 호출하여 사용해야 합니다.
 
 **대처 가이드**: 공통 소스셋이나 프리젠테이션 레이어에서 플랫폼 구별 플래그를 통해 호출 코드를 안전하게 보호해 주십시오:
 ```kotlin
