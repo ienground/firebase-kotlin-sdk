@@ -40,10 +40,16 @@ kotlin {
             baseName = "FirebaseInAppMessaging"
             isStatic = true
         }
+    }    // Kotlin 2.4.0 SwiftPM Integration Configuration for In-App Messaging ObjC wrapper
+    swiftPMDependencies {
+        discoverClangModulesImplicitly.set(false)
+        swiftPackage(
+            url = url("https://github.com/firebase/firebase-ios-sdk.git"),
+            version = from(libs.versions.firebase.ios.sdk.get()),
+            products = listOf(product("FirebaseInAppMessaging-Beta")),
+            importedClangModules = listOf("FirebaseInAppMessagingInternal")
+        )
     }
-
-
-
     sourceSets {
         commonMain.dependencies {
             implementation(project(":firebase-common"))

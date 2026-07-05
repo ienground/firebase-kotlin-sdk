@@ -39,7 +39,7 @@
 | **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
 | **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🔴 Stub | **20%** (iOS Stub) | iOS 플랫폼 제한으로 Stub 대체 |
 | **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
-| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
+| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 (Core 기능 실제 구현) |
 
 ---
 
@@ -141,8 +141,9 @@ val userName = snapshot.get<String>("name")
 ## 플랫폼 제약사항 및 주의사항
 
 ### iOS 내 Swift 전용 모듈 컴파일 이슈
-구글 공식 iOS SDK의 인앱 메시지, Gemini AI, Data Connect 모듈은 Objective-C 호환 헤더가 없는 순수 Swift로 구현되어 있어 Kotlin/Native의 cinterop 도구(`convertSyntheticImportProjectIntoDefFile`)로 직접 결합할 수 없는 한계가 존재합니다.
+구글 공식 iOS SDK의 Gemini AI, Data Connect 모듈은 Objective-C 호환 헤더가 없는 순수 Swift로 구현되어 있어 Kotlin/Native의 cinterop 도구(`convertSyntheticImportProjectIntoDefFile`)로 직접 결합할 수 없는 한계가 존재합니다.
 따라서 본 래퍼 라이브러리 상에서도 해당 기능의 iOS 타겟은 동작 시 `UnsupportedOperationException` 예외가 발생하므로 사용 시 주의가 필요합니다.
+(※ In-App Messaging 모듈의 경우 Core 제어 API는 iOS 상에서 정상 작동하나, 네이티브 디스플레이 카드 UI 레이아웃의 직접 커스터마이징 제약은 존재합니다.)
 
 **대처 가이드**: 공통 소스셋이나 프리젠테이션 레이어에서 플랫폼 구별 플래그를 통해 호출 코드를 안전하게 보호해 주십시오:
 ```kotlin
