@@ -4,36 +4,229 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import zone.ien.firebase.abt.FirebaseABTesting
 import zone.ien.firebase.annotations.PreviewApi
+import zone.ien.firebase.example.data.AppStateManager
+import zone.ien.firebase.example.data.HomeFeatureItem
+import zone.ien.firebase.example.icon.AndroidFill
+import zone.ien.firebase.example.icon.AppleFill
+import zone.ien.firebase.example.icon.Icons
 import zone.ien.firebase.example.ui.navigation.ScreenRoute
-import zone.ien.firebase.storage.FirebaseStorage
 
 @PreviewApi
 @Composable
-fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
-    val verifyAbtImport: FirebaseABTesting? = null
+public fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
+    val items = listOf(
+        HomeFeatureItem(
+            title = "Firebase Init",
+            subtitle = "Setup and check core configuration status.",
+            indicatorColor = Color(0xFFF58220),
+            route = ScreenRoute.FirebaseInit,
+            supportsAndroid = true,
+            supportsIos = true,
+            requiresInitialization = false
+        ),
+        HomeFeatureItem(
+            title = "Firestore DB",
+            subtitle = "Real-time read/write collection stream.",
+            indicatorColor = Color(0xFFFFCA28),
+            route = ScreenRoute.Firestore,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Analytics",
+            subtitle = "Placeholder feature.",
+            indicatorColor = Color(0xFF039BE5),
+            route = ScreenRoute.AnalyticsPlaceholder,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Messaging",
+            subtitle = "FCM token, topic subscribe & client delegation.",
+            indicatorColor = Color(0xFF80CBC4),
+            route = ScreenRoute.MessagingPlaceholder,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Cloud Storage",
+            subtitle = "Upload, download, delete and retrieve URLs.",
+            indicatorColor = Color(0xFF00B0FF),
+            route = ScreenRoute.Storage,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Cloud Functions",
+            subtitle = "Invoke serverless HTTPS callable trigger function.",
+            indicatorColor = Color(0xFFFF5722),
+            route = ScreenRoute.Functions,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Realtime Database",
+            subtitle = "Write, push, remove and update database nodes.",
+            indicatorColor = Color(0xFFFFCA28),
+            route = ScreenRoute.Database,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Database Collection",
+            subtitle = "Test local ImmutableSortedMap insertion, sorting and removal.",
+            indicatorColor = Color(0xFF4CAF50),
+            route = ScreenRoute.DatabaseCollection,
+            supportsAndroid = true,
+            supportsIos = true,
+            requiresInitialization = false
+        ),
+        HomeFeatureItem(
+            title = "Play Integrity",
+            subtitle = "Android Play Integrity App Check provider verification.",
+            indicatorColor = Color(0xFFE91E63),
+            route = ScreenRoute.PlayIntegrity,
+            supportsAndroid = true,
+            supportsIos = false
+        ),
+        HomeFeatureItem(
+            title = "Crashlytics",
+            subtitle = "Log, set metadata, non-fatal and test fatal app crashes.",
+            indicatorColor = Color(0xFFFF5722),
+            route = ScreenRoute.Crashlytics,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Authentication",
+            subtitle = "Anonymous & Email/Password session management.",
+            indicatorColor = Color(0xFF00BCD4),
+            route = ScreenRoute.Auth,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Performance",
+            subtitle = "Manual custom trace and HTTP metric logging.",
+            indicatorColor = Color(0xFF673AB7),
+            route = ScreenRoute.Performance,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Installations",
+            subtitle = "Query unique installation ID and auth token.",
+            indicatorColor = Color(0xFF009688),
+            route = ScreenRoute.Installations,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Model Downloader",
+            subtitle = "Retrieve custom models and monitor status.",
+            indicatorColor = Color(0xFF4CAF50),
+            route = ScreenRoute.ModelDownloader,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Remote Config",
+            subtitle = "Fetch, activate, and listen for dynamic parameters.",
+            indicatorColor = Color(0xFFFF9800),
+            route = ScreenRoute.RemoteConfig,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "AI Logic",
+            subtitle = "Generate content using Gemini model prompts.",
+            indicatorColor = Color(0xFF9C27B0),
+            route = ScreenRoute.AiLogic,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "AI On-Device",
+            subtitle = "Hybrid on-device Gemini inference and fallback.",
+            indicatorColor = Color(0xFFE040FB),
+            route = ScreenRoute.AiLogicOnDevice,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Datatransport",
+            subtitle = "Telemetry datatransport priority & scheduling contract test.",
+            indicatorColor = Color(0xFF3F51B5),
+            route = ScreenRoute.Datatransport,
+            supportsAndroid = true,
+            supportsIos = true,
+            requiresInitialization = false
+        ),
+        HomeFeatureItem(
+            title = "App Distribution",
+            subtitle = "Check prerelease availability and trigger in-app updates.",
+            indicatorColor = Color(0xFFF58220),
+            route = ScreenRoute.AppDistribution,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Data Connect",
+            subtitle = "Configure Postgres database GraphQL query connector bootstrap.",
+            indicatorColor = Color(0xFF673AB7),
+            route = ScreenRoute.DataConnect,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "In-App Messaging",
+            subtitle = "Trigger contextual campaigns and control display suppression.",
+            indicatorColor = Color(0xFFE91E63),
+            route = ScreenRoute.InAppMessaging,
+            supportsAndroid = true,
+            supportsIos = true
+        ),
+        HomeFeatureItem(
+            title = "Encoders",
+            subtitle = "Verify foundational encoding interface serialization contract.",
+            indicatorColor = Color(0xFF4CAF50),
+            route = ScreenRoute.Encoders,
+            supportsAndroid = true,
+            supportsIos = true,
+            requiresInitialization = false
+        )
+    )
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -58,8 +251,7 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                 }
             )
         },
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier
@@ -73,180 +265,10 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                item {
+                items(items) { item ->
                     DemoCard(
-                        title = "Firebase Init",
-                        subtitle = "Setup and check core configuration status.",
-                        indicatorColor = Color(0xFFF58220),
-                        onClick = { onNavigate(ScreenRoute.FirebaseInit) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Firestore DB",
-                        subtitle = "Real-time read/write collection stream.",
-                        indicatorColor = Color(0xFFFFCA28),
-                        onClick = { onNavigate(ScreenRoute.Firestore) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Analytics",
-                        subtitle = "Placeholder feature.",
-                        indicatorColor = Color(0xFF039BE5),
-                        onClick = { onNavigate(ScreenRoute.AnalyticsPlaceholder) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Messaging",
-                        subtitle = "FCM token, topic subscribe & client delegation.",
-                        indicatorColor = Color(0xFF80CBC4),
-                        onClick = { onNavigate(ScreenRoute.MessagingPlaceholder) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Cloud Storage",
-                        subtitle = "Upload, download, delete and retrieve URLs.",
-                        indicatorColor = Color(0xFF00B0FF),
-                        onClick = { onNavigate(ScreenRoute.Storage) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Cloud Functions",
-                        subtitle = "Invoke serverless HTTPS callable trigger function.",
-                        indicatorColor = Color(0xFFFF5722),
-                        onClick = { onNavigate(ScreenRoute.Functions) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Realtime Database",
-                        subtitle = "Write, push, remove and update database nodes.",
-                        indicatorColor = Color(0xFFFFCA28),
-                        onClick = { onNavigate(ScreenRoute.Database) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Database Collection",
-                        subtitle = "Test local ImmutableSortedMap insertion, sorting and removal.",
-                        indicatorColor = Color(0xFF4CAF50),
-                        onClick = { onNavigate(ScreenRoute.DatabaseCollection) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Play Integrity",
-                        subtitle = "Android Play Integrity App Check provider verification.",
-                        indicatorColor = Color(0xFFE91E63),
-                        onClick = { onNavigate(ScreenRoute.PlayIntegrity) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Crashlytics",
-                        subtitle = "Log, set metadata, non-fatal and test fatal app crashes.",
-                        indicatorColor = Color(0xFFFF5722),
-                        onClick = { onNavigate(ScreenRoute.Crashlytics) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Authentication",
-                        subtitle = "Anonymous & Email/Password session management.",
-                        indicatorColor = Color(0xFF00BCD4),
-                        onClick = { onNavigate(ScreenRoute.Auth) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Performance",
-                        subtitle = "Manual custom trace and HTTP metric logging.",
-                        indicatorColor = Color(0xFF673AB7),
-                        onClick = { onNavigate(ScreenRoute.Performance) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Installations",
-                        subtitle = "Query unique installation ID and auth token.",
-                        indicatorColor = Color(0xFF009688),
-                        onClick = { onNavigate(ScreenRoute.Installations) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Model Downloader",
-                        subtitle = "Retrieve custom models and monitor status.",
-                        indicatorColor = Color(0xFF4CAF50),
-                        onClick = { onNavigate(ScreenRoute.ModelDownloader) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Remote Config",
-                        subtitle = "Fetch, activate, and listen for dynamic parameters.",
-                        indicatorColor = Color(0xFFFF9800),
-                        onClick = { onNavigate(ScreenRoute.RemoteConfig) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "AI Logic",
-                        subtitle = "Generate content using Gemini model prompts.",
-                        indicatorColor = Color(0xFF9C27B0),
-                        onClick = { onNavigate(ScreenRoute.AiLogic) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "AI On-Device",
-                        subtitle = "Hybrid on-device Gemini inference and fallback.",
-                        indicatorColor = Color(0xFFE040FB),
-                        onClick = { onNavigate(ScreenRoute.AiLogicOnDevice) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Datatransport",
-                        subtitle = "Telemetry datatransport priority & scheduling contract test.",
-                        indicatorColor = Color(0xFF3F51B5),
-                        onClick = { onNavigate(ScreenRoute.Datatransport) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "App Distribution",
-                        subtitle = "Check prerelease availability and trigger in-app updates.",
-                        indicatorColor = Color(0xFFF58220),
-                        onClick = { onNavigate(ScreenRoute.AppDistribution) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Data Connect",
-                        subtitle = "Configure Postgres database GraphQL query connector bootstrap.",
-                        indicatorColor = Color(0xFF673AB7),
-                        onClick = { onNavigate(ScreenRoute.DataConnect) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "In-App Messaging",
-                        subtitle = "Trigger contextual campaigns and control display suppression.",
-                        indicatorColor = Color(0xFFE91E63),
-                        onClick = { onNavigate(ScreenRoute.InAppMessaging) }
-                    )
-                }
-                item {
-                    DemoCard(
-                        title = "Encoders",
-                        subtitle = "Verify foundational encoding interface serialization contract.",
-                        indicatorColor = Color(0xFF4CAF50),
-                        onClick = { onNavigate(ScreenRoute.Encoders) }
+                        item = item,
+                        onClick = { AppStateManager.handleFeatureNavigation(item, onNavigate) }
                     )
                 }
             }
@@ -255,10 +277,8 @@ fun HomeScreen(onNavigate: (ScreenRoute) -> Unit) {
 }
 
 @Composable
-fun DemoCard(
-    title: String,
-    subtitle: String,
-    indicatorColor: Color,
+public fun DemoCard(
+    item: HomeFeatureItem,
     onClick: () -> Unit
 ) {
     Card(
@@ -272,27 +292,80 @@ fun DemoCard(
             .height(150.dp)
             .clip(RoundedCornerShape(16.dp))
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.SpaceBetween
+                .padding(16.dp)
         ) {
+            // Main left/bottom metadata indicator color
             Box(
                 modifier = Modifier
                     .size(14.dp)
                     .clip(RoundedCornerShape(7.dp))
-                    .background(indicatorColor)
+                    .background(item.indicatorColor)
+                    .align(Alignment.TopStart)
             )
-            Column {
+
+            // Platform Availability Badges (Top Right corner)
+            Row(
+                modifier = Modifier.align(Alignment.TopEnd),
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                // Android badge
+                Box(
+                    modifier = Modifier
+                        .alpha(if (item.supportsAndroid) 1.0f else 0.2f)
+                        .semantics {
+                            contentDescription = if (item.supportsAndroid) "Android supported" else "Android not supported"
+                        }
+                ) {
+                    Icon(
+                        imageVector = Icons.AndroidFill,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .background(
+                                color = if (item.supportsAndroid) Color(0xFFE8F5E9) else Color.Transparent,
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .padding(horizontal = 4.dp, vertical = 2.dp)
+                            .size(14.dp)
+                    )
+                }
+
+                // Apple/iOS badge
+                Box(
+                    modifier = Modifier
+                        .alpha(if (item.supportsIos) 1.0f else 0.2f)
+                        .semantics {
+                            contentDescription = if (item.supportsIos) "iOS supported" else "iOS not supported"
+                        }
+                ) {
+                    Icon(
+                        imageVector = Icons.AppleFill,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .background(
+                                color = if (item.supportsIos) Color(0xFFECEFF1) else Color.Transparent,
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .padding(horizontal = 4.dp, vertical = 2.dp)
+                            .size(14.dp)
+                    )
+                }
+            }
+
+            // Bottom titles layout
+            Column(
+                modifier = Modifier.align(Alignment.BottomStart)
+            ) {
                 Text(
-                    text = title,
+                    text = item.title,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = subtitle,
+                    text = item.subtitle,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
