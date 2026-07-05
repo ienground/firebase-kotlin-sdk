@@ -1,24 +1,33 @@
 package zone.ien.firebase.inappmessaging
 
+import kotlinx.cinterop.ExperimentalForeignApi
+import swiftPMImport.zone.ien.firebase.firebase.inappmessaging.FIRInAppMessaging
+
 public actual class FirebaseInAppMessaging private actual constructor() {
+    @OptIn(ExperimentalForeignApi::class)
+    private val delegate: FIRInAppMessaging
+        get() = FIRInAppMessaging.inAppMessaging()
+
+    @OptIn(ExperimentalForeignApi::class)
     public actual var isAutomaticDataCollectionEnabled: Boolean
-        get() = throw UnsupportedOperationException("Firebase In-App Messaging is not supported on iOS due to Swift-only cinterop compilation constraints.")
+        get() = delegate.automaticDataCollectionEnabled
         set(value) {
-            throw UnsupportedOperationException("Firebase In-App Messaging is not supported on iOS due to Swift-only cinterop compilation constraints.")
+            delegate.automaticDataCollectionEnabled = value
         }
 
+    @OptIn(ExperimentalForeignApi::class)
     public actual var areMessagesSuppressed: Boolean
-        get() = throw UnsupportedOperationException("Firebase In-App Messaging is not supported on iOS due to Swift-only cinterop compilation constraints.")
+        get() = delegate.messageDisplaySuppressed
         set(value) {
-            throw UnsupportedOperationException("Firebase In-App Messaging is not supported on iOS due to Swift-only cinterop compilation constraints.")
+            delegate.messageDisplaySuppressed = value
         }
 
+    @OptIn(ExperimentalForeignApi::class)
     public actual fun triggerEvent(eventName: String) {
-        throw UnsupportedOperationException("Firebase In-App Messaging is not supported on iOS due to Swift-only cinterop compilation constraints.")
+        delegate.triggerEvent(eventName)
     }
 
     public actual companion object {
-        public actual val instance: FirebaseInAppMessaging
-            get() = throw UnsupportedOperationException("Firebase In-App Messaging is not supported on iOS due to Swift-only cinterop compilation constraints.")
+        public actual val instance: FirebaseInAppMessaging by lazy { FirebaseInAppMessaging() }
     }
 }

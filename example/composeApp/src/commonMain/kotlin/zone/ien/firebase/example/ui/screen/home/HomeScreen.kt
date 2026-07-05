@@ -178,7 +178,7 @@ public fun HomeScreen(
             subtitle = "Trigger contextual campaigns and control display suppression.",
             indicatorColor = Color(0xFFE91E63),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.InAppMessaging
         ),
         HomeFeatureItem(
