@@ -210,7 +210,9 @@ fun AppDistributionScreen(
                             coroutineScope.launch {
                                 try {
                                     log("Starting update...")
-                                    appDistribution?.updateIfNewReleaseAvailable()
+                                    appDistribution?.updateIfNewReleaseAvailable()?.collect { progress ->
+                                        log("Update Progress: ${progress.apkBytesDownloaded} / ${progress.apkFileTotalBytes} (${progress.updateStatus})")
+                                    }
                                     log("Update check finished.")
                                 } catch (e: Exception) {
                                     log("Update failed: ${e.message}")
