@@ -148,7 +148,7 @@ fun MessagingScreen(
                             .background(MaterialTheme.colorScheme.surfaceVariant)
                             .padding(12.dp)
                     ) {
-                        val isDbSupported = remember { zone.ien.firebase.messaging.directboot.FirebaseMessagingDirectBoot.getInstance().isSupported }
+                        val isDbSupported = remember { FirebaseMessagingDirectBoot.getInstance().isSupported }
                         Text(
                             text = "Direct Boot Supported: ${if (isDbSupported) "🟢 ENABLED (Android Only)" else "🔴 UNAVAILABLE (iOS/No-op)"}",
                             style = MaterialTheme.typography.bodySmall
