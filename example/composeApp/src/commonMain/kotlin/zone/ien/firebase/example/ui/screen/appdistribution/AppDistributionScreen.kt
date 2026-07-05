@@ -9,15 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,18 +29,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebasePlatformContext
 import zone.ien.firebase.appdistribution.AppDistributionRelease
 import zone.ien.firebase.appdistribution.FirebaseAppDistribution
 import zone.ien.firebase.appdistribution.UpdateProgress
 import zone.ien.firebase.example.ui.theme.AppTheme
+import zone.ien.firebase.example.util.isIos
 import zone.ien.utils.ui.wrapper.M3RootWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,11 +48,25 @@ fun AppDistributionScreen(
     context: FirebasePlatformContext,
     onBack: () -> Unit
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    val appDistribution = remember { FirebaseAppDistribution.instance }
-    val logs = remember { mutableStateListOf<String>() }
+    val isSupported = !isIos
+    val appDistribution = remember {
+        if (isSupported) {
+            runCatching { FirebaseAppDistribution.instance }.getOrNull()
+        } else {
+            null
+        }
+    }
 
-    var isTesterSignedIn by remember { mutableStateOf(appDistribution.isTesterSignedIn) }
+    val coroutineScope = rememberCoroutineScope()
+    val logs = remember { 
+        mutableStateListOf<String>().apply {
+            if (!isSupported) {
+                add("App Distribution is NOT supported on this platform.")
+            }
+        }
+    }
+
+    var isTesterSignedIn by remember(appDistribution) { mutableStateOf(appDistribution?.isTesterSignedIn ?: false) }
     var latestRelease by remember { mutableStateOf<AppDistributionRelease?>(null) }
     var updateProgress by remember { mutableStateOf<UpdateProgress?>(null) }
     var isChecking by remember { mutableStateOf(false) }
@@ -89,9 +101,33 @@ fun AppDistributionScreen(
                         .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
+                    if (!isSupported) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(Color.Red.copy(alpha = 0.1f))
+                                .padding(12.dp)
+                        ) {
+                            Text(
+                                text = "⚠️ Platform Not Supported",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = Color.Red
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "App Distribution and tester sign-in is unavailable on this target due to stub platform migration constraints.",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Red
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+
                     Text(
                         text = "Tester Authentication",
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        color = if (isSupported) MaterialTheme.colorScheme.onBackground else Color.Gray
                     )
 
                     Row(
@@ -103,15 +139,15 @@ fun AppDistributionScreen(
                                 coroutineScope.launch {
                                     try {
                                         log("Initiating tester sign in...")
-                                        appDistribution.signInTester()
-                                        isTesterSignedIn = appDistribution.isTesterSignedIn
+                                        appDistribution?.signInTester()
+                                        isTesterSignedIn = appDistribution?.isTesterSignedIn ?: false
                                         log("Tester signed in successfully: $isTesterSignedIn")
                                     } catch (e: Exception) {
                                         log("Sign in failed: ${e.message}")
                                     }
                                 }
                             },
-                            enabled = !isTesterSignedIn,
+                            enabled = isSupported && !isTesterSignedIn,
                             modifier = Modifier.weight(1f)
                         ) {
                             Text("Sign In Tester")
@@ -120,33 +156,26 @@ fun AppDistributionScreen(
                         Button(
                             onClick = {
                                 try {
-                                    log("Signing out tester...")
-                                    appDistribution.signOutTester()
-                                    isTesterSignedIn = appDistribution.isTesterSignedIn
-                                    log("Tester signed out. Status: $isTesterSignedIn")
+                                    appDistribution?.signOutTester()
+                                    isTesterSignedIn = appDistribution?.isTesterSignedIn ?: false
+                                    log("Signed out tester successfully.")
                                 } catch (e: Exception) {
                                     log("Sign out failed: ${e.message}")
                                 }
                             },
-                            enabled = isTesterSignedIn,
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                            enabled = isSupported && isTesterSignedIn,
                             modifier = Modifier.weight(1f)
                         ) {
                             Text("Sign Out")
                         }
                     }
 
-                    Text(
-                        text = "Tester Signed In Status: $isTesterSignedIn",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = if (isTesterSignedIn) Color(0xFF2E7D32) else Color.Red
-                    )
-
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "Prerelease Build Management",
-                        style = MaterialTheme.typography.titleMedium
+                        text = "Prerelease Updates",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = if (isSupported) MaterialTheme.colorScheme.onBackground else Color.Gray
                     )
 
                     Button(
@@ -154,115 +183,84 @@ fun AppDistributionScreen(
                             coroutineScope.launch {
                                 try {
                                     isChecking = true
-                                    log("Checking for new release...")
-                                    val release = appDistribution.checkForNewRelease()
+                                    log("Checking for updates...")
+                                    val release = appDistribution?.checkForNewRelease()
                                     latestRelease = release
                                     if (release != null) {
-                                        log("Release Available! version: ${release.displayVersion} (${release.versionCode})")
+                                        log("Latest release found: ${release.displayVersion} (${release.versionCode})")
                                     } else {
-                                        log("No new release available.")
+                                        log("No updates found.")
                                     }
                                 } catch (e: Exception) {
-                                    log("Check for release failed: ${e.message}")
+                                    log("Check failed: ${e.message}")
                                 } finally {
                                     isChecking = false
                                 }
                             }
                         },
+                        enabled = isSupported && !isChecking,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(if (isChecking) "Checking..." else "Check for Release")
-                    }
-
-                    latestRelease?.let { release ->
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(MaterialTheme.colorScheme.surfaceVariant)
-                                .padding(12.dp),
-                            verticalArrangement = Arrangement.spacedBy(6.dp)
-                        ) {
-                            Text("Version: ${release.displayVersion}", style = MaterialTheme.typography.bodyMedium)
-                            Text("Version Code: ${release.versionCode}", style = MaterialTheme.typography.bodyMedium)
-                            Text("Release Notes: ${release.releaseNotes ?: "None"}", style = MaterialTheme.typography.bodyMedium)
-                            Text("Binary Type: ${release.binaryType}", style = MaterialTheme.typography.bodyMedium)
-                        }
-
-                        Button(
-                            onClick = {
-                                coroutineScope.launch {
-                                    log("Starting in-app update task flow...")
-                                    appDistribution.updateIfNewReleaseAvailable()
-                                        .catch { error ->
-                                            log("In-app update failed: ${error.message}")
-                                        }
-                                        .collect { progress ->
-                                            updateProgress = progress
-                                            log("Progress: ${progress.updateStatus} (${progress.apkBytesDownloaded}/${progress.apkFileTotalBytes} bytes)")
-                                        }
-                                }
-                            },
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Start Update")
-                        }
-                    }
-
-                    updateProgress?.let { progress ->
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            Text("Status: ${progress.updateStatus.name}", style = MaterialTheme.typography.bodyMedium)
-                            if (progress.apkFileTotalBytes > 0) {
-                                val ratio = progress.apkBytesDownloaded.toFloat() / progress.apkFileTotalBytes.toFloat()
-                                LinearProgressIndicator(
-                                    progress = { ratio },
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                                Text("${(ratio * 100).toInt()}% downloaded", style = MaterialTheme.typography.bodySmall)
-                            }
-                        }
-                    }
-
-                    Text(
-                        text = "Verification Output Log",
-                        style = MaterialTheme.typography.titleSmall
-                    )
-
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(Color.Black.copy(alpha = 0.05f))
-                            .padding(12.dp)
-                            .verticalScroll(rememberScrollState())
-                    ) {
-                        if (logs.isEmpty()) {
-                            Text("No actions performed yet.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
-                        } else {
-                            logs.forEach { logLine ->
-                                Text("> $logLine", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
-                            }
-                        }
+                        Text("Check For New Release")
                     }
 
                     Button(
-                        onClick = { logs.clear() },
-                        colors = ButtonDefaults.textButtonColors(),
-                        modifier = Modifier.align(Alignment.End)
+                        onClick = {
+                            coroutineScope.launch {
+                                try {
+                                    log("Starting update...")
+                                    appDistribution?.updateIfNewReleaseAvailable()
+                                    log("Update check finished.")
+                                } catch (e: Exception) {
+                                    log("Update failed: ${e.message}")
+                                }
+                            }
+                        },
+                        enabled = isSupported && latestRelease != null,
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Clear Log")
+                        Text("Update App")
                     }
 
+                    Spacer(modifier = Modifier.height(16.dp))
+
                     Text(
-                        text = "* Note: App Distribution in-app updates require the app to be registered in Firebase, tester account invited, and run on a physical device/simulator linked to the Firebase app project.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
+                        text = "Execution Log",
+                        style = MaterialTheme.typography.titleMedium
                     )
+
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(12.dp)
+                                .verticalScroll(rememberScrollState()),
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            if (logs.isEmpty()) {
+                                Text(
+                                    "No events logged yet.",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color.Gray
+                                )
+                            } else {
+                                logs.forEach { msg ->
+                                    Text(
+                                        text = msg,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -13,8 +13,19 @@ import zone.ien.firebase.example.ui.theme.AppTheme
 import zone.ien.utils.navigation.rememberNavBackStack
 import zone.ien.utils.ui.wrapper.M3RootWrapper
 
+import zone.ien.firebase.FirebaseApp
+import zone.ien.firebase.example.data.AppStateManager
+import zone.ien.firebase.example.data.FirebaseInitState
+
 @Composable
 fun App(context: FirebasePlatformContext) {
+    remember(context) {
+        AppStateManager.context = context
+        if (FirebaseApp.isInitialized) {
+            AppStateManager.initState = FirebaseInitState.Initialized
+        }
+    }
+
     // Initialize Datatransport Runtime using unified context
     remember(context) {
         TransportRuntime.initialize(context)

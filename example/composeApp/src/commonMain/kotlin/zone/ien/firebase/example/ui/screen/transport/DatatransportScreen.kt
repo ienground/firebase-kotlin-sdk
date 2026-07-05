@@ -1,6 +1,7 @@
 package zone.ien.firebase.example.ui.screen.transport
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,7 +36,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import zone.ien.firebase.example.util.isIos
 import zone.ien.firebase.transport.Encoding
 import zone.ien.firebase.transport.Event
 import zone.ien.firebase.transport.Priority
@@ -46,9 +50,16 @@ import zone.ien.firebase.transport.runtime.TransportRuntime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatatransportScreen(onNavigateBack: () -> Unit) {
+    val isSupported = !isIos
     var payload by remember { mutableStateOf("Hello Datatransport KMP!") }
     var selectedPriority by remember { mutableStateOf(Priority.DEFAULT) }
-    val logs = remember { mutableStateListOf<String>() }
+    val logs = remember { 
+        mutableStateListOf<String>().apply {
+            if (!isSupported) {
+                add("Datatransport is NOT supported on this platform.")
+            }
+        }
+    }
 
     fun log(message: String) {
         logs.add(message)
@@ -62,10 +73,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                     IconButton(onClick = onNavigateBack) {
                         Text("←")
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                )
+                }
             )
         }
     ) { padding ->
@@ -77,14 +85,37 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            if (!isSupported) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color.Red.copy(alpha = 0.1f))
+                        .padding(12.dp)
+                ) {
+                    Text(
+                        text = "⚠️ Platform Not Supported",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Red
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Datatransport is unavailable on this target due to Swift-only cinterop compilation constraints.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Red
+                    )
+                }
+            }
+
             Text(
                 text = "Configure Telemetry Event",
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground
+                color = if (isSupported) Color.Unspecified else Color.Gray
             )
 
             OutlinedTextField(
                 value = payload,
+                enabled = isSupported,
                 onValueChange = { payload = it },
                 label = { Text("Payload String") },
                 modifier = Modifier.fillMaxWidth()
@@ -93,7 +124,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
             Text(
                 text = "Priority Level",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground
+                color = if (isSupported) Color.Unspecified else Color.Gray
             )
 
             Row(
@@ -103,14 +134,22 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
             ) {
                 Priority.entries.forEach { priority ->
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable(enabled = isSupported) {
+                            if (isSupported) selectedPriority = priority
+                        }
                     ) {
                         RadioButton(
                             selected = (selectedPriority == priority),
+                            enabled = isSupported,
                             onClick = { selectedPriority = priority }
                         )
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = priority.name, style = MaterialTheme.typography.bodySmall)
+                        Text(
+                            text = priority.name, 
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (isSupported) Color.Unspecified else Color.Gray
+                        )
                     }
                 }
             }
@@ -140,6 +179,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                             log("Error during Event/Encoding test: ${e.message}")
                         }
                     },
+                    enabled = isSupported,
                     modifier = Modifier.weight(1f)
                 ) {
                     Text("Verify Event API")
@@ -150,70 +190,78 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                         try {
                             log("Simulating mock Transport scheduler...")
                             val mockTransformer = object : Transformer<String, ByteArray> {
-                                override fun apply(input: String): ByteArray = input.encodeToByteArray()
-                            }
+                                                    override fun apply(input: String): ByteArray = input.encodeToByteArray()
+                                                }
                             val processed = mockTransformer.apply(payload)
                             log("Transformer applied. Byte size: ${processed.size}")
 
                             val callback = object : TransportScheduleCallback {
-                                override fun onSchedule(error: Exception?) {
-                                    if (error != null) {
-                                        log("Scheduled callback fired with error: ${error.message}")
-                                    } else {
-                                        log("Scheduled callback fired successfully with no error.")
-                                    }
-                                }
-                            }
+                                                    override fun onSchedule(error: Exception?) {
+                                                        if (error != null) {
+                                                            log("Scheduled callback fired with error: ${error.message}")
+                                                        } else {
+                                                            log("Scheduled callback completed successfully!")
+                                                        }
+                                                    }
+                                                }
                             callback.onSchedule(null)
-                            log("Transport schedule mock run complete.")
                         } catch (e: Exception) {
-                            log("Error during Mock scheduling: ${e.message}")
+                            log("Error during Transport callback test: ${e.message}")
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                    enabled = isSupported,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Test Scheduler")
+                    Text("Verify Callback API")
                 }
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Button(
-                    onClick = {
-                        try {
-                            log("Fetching CCTDestination.INSTANCE...")
-                            val cct = CCTDestination.INSTANCE
-                            log("Destination Name: ${cct.name}")
-                            log("Destination Endpoint: ${cct.endpoint}")
-                            log("Supported Encodings: ${cct.supportedEncodings.joinToString { it.name }}")
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = "CCT Destination Verification", 
+                        fontWeight = FontWeight.Bold,
+                        color = if (isSupported) Color.Unspecified else Color.Gray
+                    )
+                    Button(
+                        onClick = {
+                            try {
+                                log("Fetching CCTDestination.INSTANCE...")
+                                val cct = CCTDestination.INSTANCE
+                                log("Destination Name: ${cct.name}")
+                                log("Destination Endpoint: ${cct.endpoint}")
+                                log("Supported Encodings: ${cct.supportedEncodings.joinToString { it.name }}")
 
-                            log("Fetching CCTDestination.LEGACY_INSTANCE...")
-                            val legacy = CCTDestination.LEGACY_INSTANCE
-                            log("Legacy Name: ${legacy.name}")
-                            log("Legacy Endpoint: ${legacy.endpoint}")
-                            log("Legacy APIKey: ${legacy.apiKey}")
+                                log("Fetching CCTDestination.LEGACY_INSTANCE...")
+                                val legacy = CCTDestination.LEGACY_INSTANCE
+                                log("Legacy Name: ${legacy.name}")
+                                log("Legacy Endpoint: ${legacy.endpoint}")
+                                log("Legacy APIKey: ${legacy.apiKey}")
 
-                            log("Testing serialization...")
-                            val testDestination = CCTDestination("https://test.endpoint.com", "test-api-key-xyz")
-                            val bytes = testDestination.asByteArray()
-                            if (bytes != null) {
-                                log("Serialized byte size: ${bytes.size}")
-                                val parsed = CCTDestination.fromByteArray(bytes)
-                                log("Parsed Destination Endpoint: ${parsed.endpoint}")
-                                log("Parsed Destination APIKey: ${parsed.apiKey}")
-                            } else {
-                                log("Serialization returned null")
+                                log("Testing serialization...")
+                                val testDestination = CCTDestination("https://test.endpoint.com", "test-api-key-xyz")
+                                val bytes = testDestination.asByteArray()
+                                if (bytes != null) {
+                                    log("Serialized byte size: ${bytes.size}")
+                                    val parsed = CCTDestination.fromByteArray(bytes)
+                                    log("Parsed Destination Endpoint: ${parsed.endpoint}")
+                                    log("Parsed Destination APIKey: ${parsed.apiKey}")
+                                } else {
+                                    log("Serialization returned null")
+                                }
+                            } catch (e: Exception) {
+                                log("CCTDestination verification failed: ${e.message}")
                             }
-                        } catch (e: Exception) {
-                            log("CCTDestination verification failed: ${e.message}")
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Verify CCT Destination")
+                        },
+                        enabled = isSupported,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Verify CCT Destination")
+                    }
                 }
             }
 
@@ -259,6 +307,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                             log("TransportRuntime verification failed: ${e.message}")
                         }
                     },
+                    enabled = isSupported,
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -270,8 +319,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
 
             Text(
                 text = "Verification Output Log",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground
+                style = MaterialTheme.typography.titleMedium
             )
 
             Column(

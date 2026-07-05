@@ -1,34 +1,54 @@
-name: 🐛 버그 리포트
-description: 발견된 버그를 작성해 주세요.
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior.
 title: '[BUG] '
 labels: ['bug']
 body:
   - type: checkboxes
     id: platform
     attributes:
-      label: "📱 발생 플랫폼"
+      label: "📱 Affected Platform"
       options:
         - label: "Android"
         - label: "iOS"
         - label: "Common (Shared)"
-  - type: checkboxes
-    id: theme
+  - type: dropdown
+    id: module
     attributes:
-      label: "🎨 발생 테마"
+      label: "💻 Affected Module"
       options:
-        - label: "Material3"
-        - label: "Cupertino"
+        - "firebase-common"
+        - "firebase-auth"
+        - "firebase-firestore"
+        - "firebase-database"
+        - "firebase-storage"
+        - "firebase-messaging"
+        - "firebase-crashlytics"
+        - "firebase-config"
+        - "firebase-functions"
+        - "firebase-perf"
+        - "firebase-inappmessaging"
+        - "firebase-appcheck"
+        - "firebase-appdistribution"
+        - "firebase-dataconnect"
+        - "firebase-installations"
+        - "firebase-abt"
+        - "firebase-ai"
+        - "encoders"
+        - "transport"
+        - "example (Sample App)"
+    validations:
+      required: true
   - type: textarea
     id: description
     attributes:
-      label: "📝 버그 설명"
-      placeholder: "발생한 버그에 대해 설명해 주세요."
+      label: "📝 Description"
+      placeholder: "Provide a clear and concise description of the bug."
     validations:
       required: true
   - type: textarea
     id: reproduce
     attributes:
-      label: "🚀 재현 절차"
+      label: "🚀 Steps to Reproduce"
       placeholder: |
         1. 
         2. 
@@ -38,12 +58,12 @@ body:
   - type: textarea
     id: expected
     attributes:
-      label: "🎯 기대 결과"
-      placeholder: "정상적인 동작은 무엇인가요?"
+      label: "🎯 Expected Behavior"
+      placeholder: "Describe what you expected to happen."
     validations:
       required: true
   - type: textarea
     id: logs
     attributes:
-      label: "📸 로그 / 스크린샷"
-      placeholder: "```kotlin\n// 로그 붙여넣기\n```"
+      label: "📸 Logs / Screenshots"
+      placeholder: "```kotlin\n// Paste logs or code here\n```"

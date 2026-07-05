@@ -1,12 +1,34 @@
 package zone.ien.firebase.example.ui.screen.config
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -27,7 +49,8 @@ fun RemoteConfigScreen(
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
-    var testKey by remember { mutableStateOf("welcome_message") }
+    var logMessage by remember { mutableStateOf("Ready to execute Remote Config operations.") }
+
     var fetchedStringValue by remember { mutableStateOf("N/A") }
     var fetchedBooleanValue by remember { mutableStateOf("N/A") }
     var fetchedLongValue by remember { mutableStateOf("N/A") }
@@ -40,22 +63,23 @@ fun RemoteConfigScreen(
     var minimumFetchInterval by remember { mutableStateOf("60") }
     var fetchTimeout by remember { mutableStateOf("15") }
 
-    var logMessage by remember { mutableStateOf("Welcome to Firebase Remote Config console.") }
-    var updatedKeysLog by remember { mutableStateOf("") }
-
     var isListening by remember { mutableStateOf(false) }
+    var updatedKeysLog by remember { mutableStateOf("") }
     var listenerJob by remember { mutableStateOf<Job?>(null) }
+
+    var testKey by remember { mutableStateOf("welcome_message") }
 
     val primaryColor = MaterialTheme.colorScheme.primary
     val errorColor = MaterialTheme.colorScheme.error
 
     fun updateConfigInfo() {
         try {
-            val info = FirebaseRemoteConfig.instance.getInfo()
+            val config = FirebaseRemoteConfig.instance
+            val info = config.getInfo()
             lastFetchStatus = info.lastFetchStatus.name
-            lastFetchTime = if (info.fetchTimeMillis == 0L) "Never" else "${info.fetchTimeMillis}"
+            lastFetchTime = "${info.fetchTimeMillis} ms"
         } catch (e: Exception) {
-            logMessage = "Failed to load config info: ${e.message}"
+            logMessage = "Failed to update configuration info: ${e.message}"
         }
     }
 
@@ -71,10 +95,7 @@ fun RemoteConfigScreen(
                     IconButton(onClick = onNavigateBack) {
                         Text("←")
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
+                }
             )
         }
     ) { innerPadding ->
@@ -87,7 +108,7 @@ fun RemoteConfigScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Firebase Remote Config 데모",
+                text = "Firebase Remote Config Demo",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = primaryColor
@@ -100,15 +121,15 @@ fun RemoteConfigScreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        "⚠️ 주의 사항 및 사용 지침",
+                        "⚠️ Warnings and Usage Instructions",
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onErrorContainer
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        "1. 실시간 업데이트(Real-time Config Update) 기능을 로컬에서 테스트하려면 Firebase Console의 Remote Config 템플릿에 변경사항을 입력하고 '게시'해야 합니다.\n" +
-                        "2. Firebase 초기화가 정상적으로 완료되어 있어야 하며, 네트워크 연결 상태에 따라 Fetch 및 Activate 시간이 다를 수 있습니다.\n" +
-                        "3. 설정한 최소 Fetch 간격(minimumFetchInterval)보다 잦은 Fetch 호출은 서버로부터 THROTTLED 예외를 발생시킬 수 있습니다.",
+                        "1. To test the Real-time Config Update feature locally, change template configurations in the Firebase Console and 'Publish' them.\n" +
+                        "2. Firebase Core must be initialized beforehand. Fetch and Activate latency may vary depending on network connectivity.\n" +
+                        "3. Calling Fetch more frequently than the minimumFetchInterval can cause THROTTLED exceptions from the server.",
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.onErrorContainer
                     )
@@ -120,8 +141,8 @@ fun RemoteConfigScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("1. 기본값(Defaults) 설정", fontWeight = FontWeight.Bold)
-                    Text("코드 기반으로 로컬 Fallback 기본값을 설정합니다.", fontSize = 12.sp)
+                    Text("1. Local Defaults Configuration", fontWeight = FontWeight.Bold)
+                    Text("Sets local fallback defaults based on code.", fontSize = 12.sp)
                     Button(
                         onClick = {
                             coroutineScope.launch {
@@ -149,7 +170,7 @@ fun RemoteConfigScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("2. Config Settings 변경", fontWeight = FontWeight.Bold)
+                    Text("2. Config Settings Modification", fontWeight = FontWeight.Bold)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -194,8 +215,8 @@ fun RemoteConfigScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("3. Fetch & Activate 제어", fontWeight = FontWeight.Bold)
-                    Text("서버의 최신 원격 구성을 호출하고 로컬 템플릿에 활성화합니다.", fontSize = 12.sp)
+                    Text("3. Fetch & Activate Control", fontWeight = FontWeight.Bold)
+                    Text("Fetch the latest remote configuration from server and activate to local template.", fontSize = 12.sp)
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -257,8 +278,8 @@ fun RemoteConfigScreen(
                     }
 
                     Divider(modifier = Modifier.padding(vertical = 4.dp))
-                    Text("마지막 Fetch 상태: $lastFetchStatus", fontSize = 12.sp)
-                    Text("마지막 Fetch 시각: $lastFetchTime", fontSize = 12.sp)
+                    Text("Last Fetch Status: $lastFetchStatus", fontSize = 12.sp)
+                    Text("Last Fetch Time: $lastFetchTime", fontSize = 12.sp)
                 }
             }
 
@@ -267,8 +288,8 @@ fun RemoteConfigScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("4. 실시간 Config 업데이트 리스너", fontWeight = FontWeight.Bold)
-                    Text("원격 백엔드의 실시간 템플릿 변경 이벤트를 감지합니다.", fontSize = 12.sp)
+                    Text("4. Real-time Config Update Listener", fontWeight = FontWeight.Bold)
+                    Text("Detect real-time template update events from the remote backend.", fontSize = 12.sp)
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -321,7 +342,7 @@ fun RemoteConfigScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("5. Config Value 조회 (Typed Accessor)", fontWeight = FontWeight.Bold)
+                    Text("5. Config Value Query (Typed Accessors)", fontWeight = FontWeight.Bold)
 
                     OutlinedTextField(
                         value = testKey,

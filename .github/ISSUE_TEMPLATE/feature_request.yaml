@@ -1,56 +1,60 @@
-name: ✨ 기능 추가
-description: 새로운 기능이나 개선 사항을 제안합니다.
+name: ✨ Feature Request
+description: Suggest a new feature or improvement.
 title: '[FEATURE] '
 labels: ['enhancement']
 body:
   - type: textarea
     id: background
     attributes:
-      label: "💡 제안 배경"
-      placeholder: "왜 필요한 기능인가요?"
+      label: "💡 Background"
+      placeholder: "Why is this feature needed? Describe the problem you are trying to solve."
     validations:
       required: true
   - type: textarea
     id: details
     attributes:
-      label: "🧩 제안 내용"
-      placeholder: "구체적인 기능 설명"
+      label: "🧩 Proposal"
+      placeholder: "Describe the feature you would like to see added."
     validations:
       required: true
   - type: textarea
     id: expected
     attributes:
-      label: "🚀 기대 동작"
-      placeholder: "추가 후 기대 효과"
+      label: "🚀 Expected Behavior"
+      placeholder: "Describe the expected behavior or outcomes."
   - type: checkboxes
     id: platforms
     attributes:
-      label: "📱 적용 대상"
+      label: "📱 Target Platform"
       options:
         - label: "Android"
         - label: "iOS"
         - label: "Common (Shared)"
-  - type: checkboxes
-    id: theme
-    attributes:
-      label: "🎨 적용 테마"
-      options:
-        - label: "Material3"
-        - label: "Cupertino"
-  - type: checkboxes
+  - type: dropdown
     id: module
     attributes:
-      label: "💻 모듈"
+      label: "💻 Target Module"
+      multiple: true
       options:
-        - label: "Common"
-        - label: "Utilities"
-        - label: "UI"
-        - label: "Adaptive UI"
-        - label: "Preferences"
-        - label: "Navigation3"
-        - label: "Firebase"
-        - label: "DateTime"
-        - label: "FileKit"
-        - label: "Icons"
-        - label: "Coil"
-        - label: "Example"
+        - "firebase-common"
+        - "firebase-auth"
+        - "firebase-firestore"
+        - "firebase-database"
+        - "firebase-storage"
+        - "firebase-messaging"
+        - "firebase-crashlytics"
+        - "firebase-config"
+        - "firebase-functions"
+        - "firebase-perf"
+        - "firebase-inappmessaging"
+        - "firebase-appcheck"
+        - "firebase-appdistribution"
+        - "firebase-dataconnect"
+        - "firebase-installations"
+        - "firebase-abt"
+        - "firebase-ai"
+        - "encoders"
+        - "transport"
+        - "example (Sample App)"
+    validations:
+      required: true

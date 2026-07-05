@@ -172,3 +172,25 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink>().configureEa
         dependsOn("createFirebaseFrameworkSymlinks")
     }
 }
+
+val generateVersionInfo = tasks.register("generateVersionInfo") {
+    val outputDir = file("$projectDir/build/generated/sources/version/commonMain/kotlin")
+    inputs.property("version", libs.versions.lib.version.name.get())
+    outputs.dir(outputDir)
+    
+    doLast {
+        val versionFile = file("$outputDir/zone/ien/firebase/example/util/Version.kt")
+        versionFile.parentFile.mkdirs()
+        versionFile.writeText("""
+            package zone.ien.firebase.example.util
+            
+            public val libraryVersion: String = "${libs.versions.lib.version.name.get()}"
+        """.trimIndent())
+    }
+}
+
+kotlin.sourceSets.configureEach {
+    if (name == "commonMain") {
+        kotlin.srcDirs(generateVersionInfo)
+    }
+}
