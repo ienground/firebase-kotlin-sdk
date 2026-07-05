@@ -8,8 +8,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 - **Total Modules**: 50
 - **KMP Support State**:
-  - 🟢 **Fully Migrated**: 32 (Android & iOS fully linked)
-  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 18 (iOS actual implemented as stubs)
+  - 🟢 **Fully Migrated**: 33 (Android & iOS fully linked)
+  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 17 (iOS actual implemented as stubs)
   - 🔴 **Android Native Only**: 0 (All modules compiled via KMP target)
 
 ---
@@ -48,7 +48,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-functions`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `firebase-messaging`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Cloud Messaging (FCM) wrapper. |
 | `firebase-messaging-directboot`                       | `sdk` | 🟢 Migrated |  Android, iOS     | Android Direct Boot compatibility support. |
-| `firebase-inappmessaging`                             | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub due to Swift-only cinterop constraint). |
+| `firebase-inappmessaging`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-inappmessaging-display`                     | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub due to Swift-only runtime constraint). |
 | `firebase-installations-interop`                      | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-installations`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Installations SDK wrapper. |
@@ -83,6 +83,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-06: `firebase-inappmessaging` Fully Migrated & Stub Eliminated
+* **In-App Messaging Actual Migration**: Removed previous `UnsupportedOperationException` stubs in `FirebaseInAppMessaging.ios.kt` and transitioned them to actual Objective-C `FIRInAppMessaging` delegate calls.
+* **SPM Beta Naming & Target Mapping Resolution**: Addressed `product not found` errors by linking `FirebaseInAppMessaging-Beta` (the official SPM product name) and pointing the Kotlin compiler target to parse the `FirebaseInAppMessagingInternal` Clang module map, successfully resolving the hidden umbrella header path of `FIRInAppMessaging`.
+* **Local Package Integration**: Configured `_firebase_inappmessaging` subpackage within the workspace, generating standard dummy files and linking target dependencies inside the main Package.swift definition files.
 
 ### 2026-07-05: `firebase-ios-sdk` 12.15.0 Upgrade & `firebase-abt` Fully Migrated
 * **Firebase iOS SDK 12.15.0 Upgrade**: Upgraded core Firebase Apple SDK from `11.3.0` to `12.15.0` across all module targets, main Package.swift and Version Catalog. 

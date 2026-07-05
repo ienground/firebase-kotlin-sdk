@@ -31,7 +31,7 @@ A Kotlin Multiplatform (KMP) wrapper around Firebase platform SDKs, designed to 
 | **Performance Monitoring** (`firebase-perf`) | 🟢 Yes | 🟢 Yes | **80%** | Native GMS / iOS SwiftPM SDK |
 | **Installations** (`firebase-installations`) | 🟢 Yes | 🟢 Yes | **95%** | Native GMS / iOS SwiftPM SDK |
 | **App Check** (`firebase-appcheck`) | 🟢 Yes | 🟢 Yes | **90%** | Native GMS / iOS SwiftPM SDK |
-| **A/B Testing** (`firebase-abt`) | 🟢 Yes | 🔴 Stub | **20%** (iOS Stub) | KMP wrapper (iOS stub) |
+| **A/B Testing** (`firebase-abt`) | 🟢 Yes | 🟢 Yes | **95%** | Native GMS / iOS SwiftPM SDK |
 | **Sessions** (`firebase-sessions`) | 🟢 Yes | 🔴 Stub | **20%** (iOS Stub) | KMP wrapper (iOS stub) |
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 Yes | 🟢 Yes | **95%** | Pure Kotlin Serialization Pipeline |
 | **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 Yes | 🔴 Stub | **10%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
@@ -39,7 +39,7 @@ A Kotlin Multiplatform (KMP) wrapper around Firebase platform SDKs, designed to 
 | **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 Yes | 🔴 Stub | **15%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
 | **App Distribution** (`firebase-appdistribution`) | 🟢 Yes | 🔴 Stub | **20%** (iOS Stub) | Platform limitation on iOS |
 | **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 Yes | 🔴 Stub | **10%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
-| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 Yes | 🔴 Stub | **10%** (iOS Stub) | Unsupported on iOS due to Swift-only dependency |
+| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 Yes | 🟢 Yes | **90%** | Native GMS / iOS SwiftPM SDK (Core API delegate) |
 
 ---
 
@@ -141,8 +141,9 @@ Rename your packaging imports to adapt to this SDK's namespaces:
 ## Platform Limitations & Breaking Changes
 
 ### Swift-only cinterop compilation constraints (iOS)
-Google's native iOS SDKs for In-App Messaging, Gemini AI, and Data Connect are written purely in Swift without Objective-C bridge headers. 
+Google's native iOS SDKs for Gemini AI and Data Connect are written purely in Swift without Objective-C bridge headers. 
 Since Kotlin/Native's cinterop pipeline cannot generate bindings directly for Swift-only frameworks, the iOS source set implementations for these features throw `UnsupportedOperationException`.
+(※ Note: In-App Messaging Core APIs are fully operational on iOS, though customizing the layout/styles of native display dialog layouts remains restricted in KMP common UI layer.)
 
 **Action Needed**: Guard your UI entry points or calls to these services on iOS:
 ```kotlin
