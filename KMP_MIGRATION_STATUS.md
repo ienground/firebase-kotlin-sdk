@@ -7,7 +7,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 ## 📊 Migration Summary
 
 - **Total SDKs**: 36
-- **KMP Enabled**: 41
+- **KMP Enabled**: 42
 - **Android Native Only**: 11
 
 ---
@@ -45,7 +45,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-datatransport`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP internal support shell. |
 | `firebase-functions`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP SwiftPM wrapper.     |
 | `firebase-messaging`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Cloud Messaging (FCM) wrapper. |
-| `firebase-messaging-directboot`                       | `sdk` | 🔴 Pending  |   Android Only    | Native Android SDK only. |
+| `firebase-messaging-directboot`                       | `sdk` | 🟢 Migrated |  Android, iOS     | Android Direct Boot compatibility support. |
 | `firebase-inappmessaging`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only cinterop constraint). |
 | `firebase-inappmessaging-display`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub due to Swift-only runtime constraint). |
 | `firebase-installations-interop`                      | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS stub).  |
@@ -81,6 +81,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-04: `firebase-messaging-directboot` KMP Module Creation & Platform Wrappers
+* **KMP Module Realization**: Created the new `:firebase-messaging-directboot` support module with targets `androidTarget()`, and native `iosSimulatorArm64()`, `iosArm64()`.
+* **Platform Capability Integration**: Implemented expect class `FirebaseMessagingDirectBoot` wrapping `isSupported` check and protected storage context acquisition. Behavior mapped to Android's `createDeviceProtectedStorageContext` (returns true) and iOS fallback (returns false, no-op).
+* **KMP Enabled counts update**: Incremented KMP Enabled module counter to 42.
 
 ### 2026-07-04: `firebase-messaging` KMP Module Creation & Platform Wrappers
 * **KMP Module Realization**: Created the new `:firebase-messaging` module with targets `androidTarget()`, and native `iosSimulatorArm64()`, `iosArm64()`.

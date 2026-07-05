@@ -31,8 +31,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import zone.ien.firebase.messaging.FirebaseMessaging
 import zone.ien.firebase.example.ui.theme.AppTheme
+import zone.ien.firebase.messaging.FirebaseMessaging
+import zone.ien.firebase.messaging.directboot.FirebaseMessagingDirectBoot
 import zone.ien.utils.ui.wrapper.M3RootWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -136,6 +137,29 @@ fun MessagingScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Delete FCM Token")
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("Android Direct Boot Capability Status", style = MaterialTheme.typography.titleSmall)
+                    
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .padding(12.dp)
+                    ) {
+                        val isDbSupported = remember { FirebaseMessagingDirectBoot.getInstance().isSupported }
+                        Text(
+                            text = "Direct Boot Supported: ${if (isDbSupported) "🟢 ENABLED (Android Only)" else "🔴 UNAVAILABLE (iOS/No-op)"}",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Direct Boot Aware components allow device protected storage access prior to user decryption.",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
