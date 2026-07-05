@@ -61,13 +61,8 @@ kotlin {
             }
         }
 
-        val jvmMain by getting {
-            dependsOn(jvmCommonMain)
-        }
-
-        val androidMain by getting {
-            dependsOn(jvmCommonMain)
-        }
+        jvmMain.get().dependsOn(jvmCommonMain)
+        androidMain.get().dependsOn(jvmCommonMain)
 
 
         val iosMain by creating {
