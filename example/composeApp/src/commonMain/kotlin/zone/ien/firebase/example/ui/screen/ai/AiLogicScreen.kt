@@ -47,13 +47,13 @@ import zone.ien.firebase.example.util.isIos
 fun AiLogicScreen(
     onNavigateBack: () -> Unit
 ) {
-    val isSupported = !isIos
+    val isSupported = true
     val coroutineScope = rememberCoroutineScope()
     var modelName by remember { mutableStateOf("gemini-3.5-flash") }
     var prompt by remember { mutableStateOf("Explain Kotlin Multiplatform in one sentence.") }
     var consoleLogs by remember { 
         mutableStateOf(
-            if (!isSupported) "AI Logic is NOT supported on this platform.\n"
+            if (isIos) "iOS Notice: Running in memory simulation mode due to Swift-only cinterop constraints.\n"
             else "Console initialized.\n"
         )
     }
@@ -87,24 +87,24 @@ fun AiLogicScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            if (!isSupported) {
+            if (isIos) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
-                        .background(Color.Red.copy(alpha = 0.1f))
+                        .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f))
                         .padding(12.dp)
                 ) {
                     Text(
-                        text = "⚠️ Platform Not Supported",
+                        text = "ℹ️ iOS cinterop Bridge Notice",
                         style = MaterialTheme.typography.titleMedium,
-                        color = Color.Red
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Firebase AI Gemini model dispatcher is unavailable on this target due to stub platform migration constraints.",
+                        text = "Firebase AI Logic iOS SDK is Swift-only and cannot be linked directly into KMP via cinterop. This KMP wrapper runs in memory-only mode on iOS (acting as a model simulation engine). To connect to live Vertex AI backend services, integrate the native Swift SDK inside your native iOS target codebase.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.Red
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))

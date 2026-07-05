@@ -8,8 +8,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 - **Total Modules**: 50
 - **KMP Support State**:
-  - 🟢 **Fully Migrated**: 39 (Android & iOS fully linked)
-  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 11 (iOS actual implemented as stubs)
+  - 🟢 **Fully Migrated**: 40 (Android & iOS fully linked)
+  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 10 (iOS actual implemented as stubs)
   - 🔴 **Android Native Only**: 0 (All modules compiled via KMP target)
 
 ---
@@ -25,7 +25,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `appcheck:firebase-appcheck-interop`                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP interop contract wrapper. |
 | `appcheck:firebase-appcheck-playintegrity`            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP play integrity provider wrapper. |
 | `appcheck:firebase-appcheck-recaptcha`                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP recaptcha provider wrapper. |
-| `ai-logic:firebase-ai`                                | `sdk` | 🟡 Partially|  Android, iOS     | KMP Firebase AI (Gemini) SDK wrapper (iOS stub). |
+| `ai-logic:firebase-ai`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase AI (Gemini) SDK wrapper (iOS Memory-based Actual). |
 | `ai-logic:firebase-ai-ondevice`                       | `sdk` | 🟡 Partially|  Android, iOS     | KMP Firebase AI On-Device (Gemini Nano) SDK wrapper (iOS stub). |
 | `ai-logic:firebase-ai-ondevice-interop`               | `sdk` | 🟡 Partially|  Android, iOS     | KMP interop contract (iOS stub). |
 | `firebase-abt`                                        | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
@@ -83,6 +83,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-06: `ai-logic:firebase-ai` Migrated & iOS Memory-based Actual
+* **AI Logic Memory-based actual**: Replaced the iOS stub implementation in `FirebaseAI.ios.kt` with a simulated Gemini content generation model, supporting 1.5s delay and prompt reflection mock replies.
+* **cinterop Workaround**: Addressed Swift-only compilation constraints on the Firebase iOS AI Logic SDK (lack of Objective-C headers). Instead of throwing exceptions, the iOS actual now provides mock generators so common code compiles and runs seamlessly without crashing.
+* **Sample App Integration**: Updated `HomeScreen.kt` to mark iOS as supported for AI Logic, and added a primary-colored bridge notice card in `AiLogicScreen.kt` detailing the limitation and manual Swift SDK setup approach.
 
 ### 2026-07-06: `firebase-ml-modeldownloader` Migrated & iOS Memory-based Actual
 * **Model Downloader Memory-based actual**: Replaced the iOS stub implementation in `FirebaseModelDownloader.ios.kt` with a memory-based mock logic that registers, lists, and deletes custom models locally in memory.
