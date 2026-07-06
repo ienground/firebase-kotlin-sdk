@@ -1,5 +1,6 @@
 package zone.ien.firebase.auth
 
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.FirebaseUser as AndroidFirebaseUser
 import kotlinx.coroutines.tasks.await
 
@@ -34,6 +35,15 @@ public actual class FirebaseUser private actual constructor() {
 
     public actual suspend fun updatePassword(password: String) {
         androidUser.updatePassword(password).await()
+    }
+
+    public actual suspend fun unlink(provider: String): FirebaseUser {
+        val result = androidUser.unlink(provider).await()
+        return FirebaseUser(result.user!!)
+    }
+
+    public actual suspend fun sendEmailVerification() {
+        androidUser.sendEmailVerification().await()
     }
 
     public actual suspend fun delete() {
