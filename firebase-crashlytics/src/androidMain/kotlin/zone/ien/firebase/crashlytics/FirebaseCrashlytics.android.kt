@@ -1,6 +1,7 @@
 package zone.ien.firebase.crashlytics
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics as AndroidFirebaseCrashlytics
+import kotlinx.coroutines.tasks.await
 
 public actual class FirebaseCrashlytics private constructor(
     private val androidCrashlytics: AndroidFirebaseCrashlytics
@@ -43,6 +44,22 @@ public actual class FirebaseCrashlytics private constructor(
 
     public actual fun setCrashlyticsCollectionEnabled(enabled: Boolean) {
         androidCrashlytics.setCrashlyticsCollectionEnabled(enabled)
+    }
+
+    public actual fun deleteUnsentReports() {
+        androidCrashlytics.deleteUnsentReports()
+    }
+
+    public actual fun sendUnsentReports() {
+        androidCrashlytics.sendUnsentReports()
+    }
+
+    public actual suspend fun checkForUnsentReports(): Boolean {
+        return androidCrashlytics.checkForUnsentReports().await()
+    }
+
+    public actual fun didCrashOnPreviousExecution(): Boolean {
+        return androidCrashlytics.didCrashOnPreviousExecution()
     }
 
     public actual companion object {

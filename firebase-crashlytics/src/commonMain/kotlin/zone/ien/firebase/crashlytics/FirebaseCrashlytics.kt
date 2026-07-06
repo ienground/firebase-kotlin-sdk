@@ -11,7 +11,11 @@ public expect class FirebaseCrashlytics {
     public fun setCustomKey(key: String, value: Long)
     public fun setUserId(identifier: String)
     public fun setCrashlyticsCollectionEnabled(enabled: Boolean)
-
+    public fun deleteUnsentReports()
+    public fun sendUnsentReports()
+    public suspend fun checkForUnsentReports(): Boolean
+    public fun didCrashOnPreviousExecution(): Boolean
+ 
     public companion object {
         public fun getInstance(): FirebaseCrashlytics
     }
