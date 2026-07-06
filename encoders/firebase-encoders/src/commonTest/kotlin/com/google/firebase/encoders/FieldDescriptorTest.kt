@@ -8,6 +8,8 @@ import kotlin.test.assertNull
 annotation class ProtoTag(val id: Int)
 annotation class RequiredDescriptor(val isRequired: Boolean)
 
+annotation class NonExistentAnnotation
+
 class FieldDescriptorTest {
 
     @Test
@@ -33,7 +35,7 @@ class FieldDescriptorTest {
         assertNotNull(required)
         assertEquals(true, required.isRequired)
 
-        val nonExistent = descriptor.getProperty(SuppressWarnings::class)
+        val nonExistent = descriptor.getProperty(NonExistentAnnotation::class)
         assertNull(nonExistent)
     }
 }

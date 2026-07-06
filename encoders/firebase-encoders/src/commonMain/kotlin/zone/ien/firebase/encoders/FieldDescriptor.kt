@@ -4,11 +4,12 @@ import kotlin.reflect.KClass
 
 public class FieldDescriptor private constructor(
     public val name: String,
-    private val properties: Map<KClass<out Annotation>, Annotation>
+    private val properties: Map<String, Annotation>
 ) {
     public fun <T : Annotation> getProperty(clazz: KClass<T>): T? {
+        val key = clazz.qualifiedName ?: return null
         @Suppress("UNCHECKED_CAST")
-        return properties[clazz] as? T
+        return properties[key] as? T
     }
 
     public companion object {
@@ -22,7 +23,7 @@ public class FieldDescriptor private constructor(
     }
 
     public class Builder(private val name: String) {
-        private var properties: MutableMap<KClass<out Annotation>, Annotation>? = null
+        private var properties: MutableMap<String, Annotation>? = null
 
         public fun <T : Annotation> withProperty(property: T): Builder {
             if (properties == null) {
@@ -41,4 +42,4 @@ public class FieldDescriptor private constructor(
     }
 }
 
-internal expect fun <T : Annotation> T.annotationKey(): KClass<out Annotation>
+internal expect fun <T : Annotation> T.annotationKey(): String
