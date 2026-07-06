@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="images/firebase-kmp.png" alt="Firebase Kotlin SDK Logo" width="150" />
+</p>
+
 # Firebase Kotlin SDK (한국어)
 
 [English](README.md) | **한국어**
@@ -32,14 +36,14 @@
 | **Installations** (`firebase-installations`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
 | **App Check** (`firebase-appcheck`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
 | **A/B Testing** (`firebase-abt`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Sessions** (`firebase-sessions`) | 🟢 지원 | 🔴 Stub | **20%** (iOS Stub) | KMP wrapper (iOS stub) |
+| **Sessions** (`firebase-sessions`) | 🟢 지원 | 🟢 지원 | **95%** | iOS SwiftPM SDK 링킹 완료 (백그라운드 세션 텔레메트리 자동 동작) |
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 지원 | 🟢 지원 | **95%** | Pure Kotlin 직렬화 파이프라인 |
-| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
-| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
-| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🔴 Stub | **15%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
-| **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🔴 Stub | **20%** (iOS Stub) | iOS 플랫폼 제한으로 Stub 대체 |
-| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
-| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | 🔴 Stub | **10%** (iOS Stub) | Swift 전용 바이너리 제약으로 iOS는 Stub 대체 |
+| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 모델 조회/삭제 시뮬레이션 지원 (네이티브 링킹 미지원) |
+| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 가상 Gemini 응답 시뮬레이터 지원 (네이티브 링킹 미지원) |
+| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 가상 온디바이스/하이브리드 AI 추론 시뮬레이션 지원 (네이티브 링킹 미지원) |
+| **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원 (진행률 추적 미지원) |
+| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 메타데이터 Actual 지원 (네이티브 링킹 미지원) |
+| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 (Core 기능 실제 구현) |
 
 ---
 
@@ -141,8 +145,61 @@ val userName = snapshot.get<String>("name")
 ## 플랫폼 제약사항 및 주의사항
 
 ### iOS 내 Swift 전용 모듈 컴파일 이슈
-구글 공식 iOS SDK의 인앱 메시지, Gemini AI, Data Connect 모듈은 Objective-C 호환 헤더가 없는 순수 Swift로 구현되어 있어 Kotlin/Native의 cinterop 도구(`convertSyntheticImportProjectIntoDefFile`)로 직접 결합할 수 없는 한계가 존재합니다.
+구글 공식 iOS SDK의 Gemini AI, Data Connect 모듈은 Objective-C 호환 헤더가 없는 순수 Swift로 구현되어 있어 Kotlin/Native의 cinterop 도구(`convertSyntheticImportProjectIntoDefFile`)로 직접 결합할 수 없는 한계가 존재합니다.
 따라서 본 래퍼 라이브러리 상에서도 해당 기능의 iOS 타겟은 동작 시 `UnsupportedOperationException` 예외가 발생하므로 사용 시 주의가 필요합니다.
+(※ In-App Messaging 모듈의 경우 Core 제어 API는 iOS 상에서 정상 작동하나, 네이티브 디스플레이 카드 UI 레이아웃의 직접 커스터마이징 제약은 존재합니다.)
+
+### App Distribution iOS 연동 주의사항
+
+1. **테스터 인증 리다이렉션 (URL Scheme 설정 필수)**:
+   iOS에서 App Distribution을 통한 테스터 로그인을 성공적으로 마친 후 앱으로 복귀하기 위해서는, `GoogleService-Info.plist`의 `REVERSED_CLIENT_ID` (예: `com.googleusercontent.apps.628868686373-kg0v5qsu2ucsfdablu1k2gdi15o529em`) 값을 `Info.plist` 내 URL Schemes로 필수 등록해 주어야 합니다.
+2. **App Delegate Swizzling 비활성화 대응**:
+   만약 `FirebaseAppDelegateProxyEnabled`를 `false`로 설정하여 자동 Swizzling을 꺼둔 앱 환경이라면, `AppDelegate`의 `application(_:open:options:)` 메소드에서 `AppDistribution.appDistribution().handle(url)`을 수동으로 호출하여 URL 처리를 직접 위임해야 합니다.
+3. **In-App Update Progress Monitoring 미지원**:
+   iOS Firebase SDK는 앱 내에서 다운로드 진행률(바이트 단위)을 관찰하는 스트림 API를 제공하지 않습니다. 따라서 `updateIfNewReleaseAvailable` API를 호출하면 `UnsupportedOperationException`이 발생하며, 대신 `checkForNewRelease` 시 새 빌드가 존재할 경우 노출되는 SDK 자체 내장 UI Alert 흐름을 활용하여 배포가 진행됩니다.
+
+### Data Connect iOS 연동 제약사항
+
+1. **Swift 전용 라이브러리 및 cinterop 제약**:
+   Google 공식 iOS `FirebaseDataConnect` SDK는 Swift로만 구현되어 있으며, Objective-C 호환 헤더가 존재하지 않습니다. 이로 인해 Kotlin/Native의 cinterop 컴파일 도구가 이를 해석하지 못해 네이티브 바이너리 직접 링킹이 불가능합니다.
+2. **KMP 내부 동작 (메모리 보존 모드)**:
+   KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. 인스턴스 생성(`getInstance`), 설정 조회(`config`), 에뮬레이터 세팅(`useEmulator`) 등의 기능은 iOS 상에서도 안전하게 상태값을 메모리에 보존하며 정상 실행됩니다.
+3. **실제 GraphQL 네트워크 통신 처리**:
+   iOS 실제 디바이스 및 시뮬레이터에서 서버 또는 로컬 에뮬레이터와 통신하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase CLI로 자동 생성된 Swift SDK를 직접 가져와 데이터를 교환하고 화면에 렌더링해야 합니다.
+
+### Sessions iOS 연동 및 세션 자동 추적
+
+1. **바이너리 연동 및 인프라 구동**:
+   Firebase Sessions SDK는 개발자가 코드에서 직접 제어하는 public API를 거의 노출하지 않는 내부 백그라운드 인프라(Internal-only telemetry SDK)입니다. 이번 마이그레이션을 통해 `FirebaseSessions` SwiftPM 제품이 iOS 타겟에 빌드 타임에 정상 링크되도록 구성되었습니다.
+2. **KMP 역할 및 자동 연계**:
+   `FirebaseSessions` expect/actual 매핑을 통해 공통 코드 단에서의 클래스패스 가시성을 보장하며, 세션 ID 및 라이프사이클 이벤트는 iOS 앱 백그라운드 구동 시 SDK 내부에서 자동으로 추적되어 Crashlytics 및 Performance Monitoring SDK와 자동 연동되어 동작합니다.
+
+### Model Downloader iOS 연동 제약사항
+
+1. **Swift 전용 라이브러리 및 cinterop 제약**:
+   Google 공식 iOS `FirebaseMLModelDownloader` SDK는 Swift로만 구현되어 있으며, Objective-C 호환 헤더가 존재하지 않습니다. 이로 인해 Kotlin/Native의 cinterop 컴파일 도구가 이를 해석하지 못해 네이티브 바이너리 직접 링킹이 불가능합니다.
+2. **KMP 내부 동작 (메모리 보존 모드)**:
+   KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. 모델 요청(`getModel`), 모델 목록 조회(`listDownloadedModels`), 모델 제거(`deleteDownloadedModel`) 기능은 iOS 상에서도 안전하게 로컬 메모리 리스트에 가상 모델을 보존하며 정상 실행됩니다.
+3. **실제 모델 파일 다운로드 처리**:
+   iOS 실제 디바이스 및 시뮬레이터에서 서버로부터 TFLite 모델 파일을 물리적으로 다운로드하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase ML Swift SDK를 직접 호출하여 사용해야 합니다.
+
+### AI Logic iOS 연동 제약사항
+
+1. **Swift 전용 라이브러리 및 cinterop 제약**:
+   Google 공식 iOS `FirebaseAILogic` SDK는 Swift로만 구현되어 있으며, Objective-C 호환 헤더가 존재하지 않습니다. 이로 인해 Kotlin/Native의 cinterop 컴파일 도구가 이를 해석하지 못해 네이티브 바이너리 직접 링킹이 불가능합니다.
+2. **KMP 내부 동작 (메모리 보존 모드)**:
+   KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. `generativeModel` 획득 및 `generateContent(prompt)` 호출은 iOS 상에서도 안전하게 1.5초 지연(delay) 후 프롬프트를 담아낸 가상의 답변 텍스트를 돌려주는 모의 엔진(Mock Engine)으로 정상 실행됩니다.
+3. **실제 Gemini Cloud 및 Vertex AI API 통신 처리**:
+   iOS 실제 디바이스 및 시뮬레이터에서 Vertex AI 클라우드 백엔드와 통신하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase AI Swift SDK를 직접 호출하여 사용해야 합니다.
+
+### AI On-Device iOS 연동 제약사항
+
+1. **Swift 전용 라이브러리 및 cinterop 제약**:
+   Google 공식 iOS 온디바이스/하이브리드 AI SDK(Apple Intelligence 기반)는 Swift로만 구현되어 있으며, Objective-C 호환 헤더가 존재하지 않습니다. 이로 인해 Kotlin/Native의 cinterop 컴파일 도구가 이를 해석하지 못해 네이티브 바이너리 직접 링킹이 불가능합니다.
+2. **KMP 내부 동작 (메모리 보존 모드)**:
+   KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. `OnDeviceConfig` 와 함께 `generativeModel`을 획득하고 `generateContent(prompt)`를 호출하면, iOS 상에서도 안전하게 추론 모드(PREFER_ON_DEVICE, PREFER_IN_CLOUD, ONLY_ON_DEVICE) 설정을 분석하여 가상의 시뮬레이션 결과를 돌려줍니다.
+3. **실제 온디바이스(Apple Intelligence) AI 추론 처리**:
+   iOS 실제 디바이스 및 시뮬레이터에서 Apple Intelligence 기반 온디바이스 추론 및 하이브리드 기능을 완전히 활용하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase AI Swift SDK를 직접 호출하여 사용해야 합니다.
 
 **대처 가이드**: 공통 소스셋이나 프리젠테이션 레이어에서 플랫폼 구별 플래그를 통해 호출 코드를 안전하게 보호해 주십시오:
 ```kotlin

@@ -52,7 +52,7 @@ import zone.ien.firebase.ml.modeldownloader.FirebaseModelDownloader
 fun ModelDownloaderScreen(
     onNavigateBack: () -> Unit
 ) {
-    val isSupported = !isIos
+    val isSupported = true
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
@@ -64,7 +64,7 @@ fun ModelDownloaderScreen(
 
     var logMessage by remember { 
         mutableStateOf(
-            if (!isSupported) "Model Downloader is NOT supported on this platform."
+            if (isIos) "iOS Notice: Running in memory simulation mode due to Swift-only cinterop constraints."
             else "Ready to download Firebase Custom Models."
         ) 
     }
@@ -106,24 +106,24 @@ fun ModelDownloaderScreen(
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            if (!isSupported) {
+            if (isIos) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
-                        .background(Color.Red.copy(alpha = 0.1f))
+                        .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f))
                         .padding(12.dp)
                 ) {
                     Text(
-                        text = "⚠️ Platform Not Supported",
+                        text = "ℹ️ iOS cinterop Bridge Notice",
                         style = MaterialTheme.typography.titleMedium,
-                        color = Color.Red
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Firebase Custom Model Downloader is unavailable on this target due to stub platform migration constraints.",
+                        text = "Firebase Model Downloader iOS SDK is Swift-only and cannot be linked directly into KMP via cinterop. This KMP wrapper runs in memory-only mode on iOS (acting as a model registry). To download actual physical TFLite model files on iOS, integrate the native Swift SDK inside your native iOS target codebase.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.Red
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))

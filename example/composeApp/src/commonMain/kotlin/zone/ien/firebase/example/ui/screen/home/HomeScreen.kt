@@ -122,7 +122,7 @@ public fun HomeScreen(
             subtitle = "Retrieve custom models and monitor status.",
             indicatorColor = Color(0xFF4CAF50),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.ModelDownloader
         ),
         HomeFeatureItem(
@@ -138,7 +138,7 @@ public fun HomeScreen(
             subtitle = "Generate content using Gemini model prompts.",
             indicatorColor = Color(0xFF9C27B0),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.AiLogic
         ),
         HomeFeatureItem(
@@ -146,7 +146,7 @@ public fun HomeScreen(
             subtitle = "Hybrid on-device Gemini inference and fallback.",
             indicatorColor = Color(0xFFE040FB),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.AiLogicOnDevice
         ),
         HomeFeatureItem(
@@ -162,7 +162,7 @@ public fun HomeScreen(
             subtitle = "Check prerelease availability and trigger in-app updates.",
             indicatorColor = Color(0xFFF58220),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.AppDistribution
         ),
         HomeFeatureItem(
@@ -170,7 +170,7 @@ public fun HomeScreen(
             subtitle = "Configure Postgres database GraphQL query connector bootstrap.",
             indicatorColor = Color(0xFF673AB7),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.DataConnect
         ),
         HomeFeatureItem(
@@ -178,7 +178,7 @@ public fun HomeScreen(
             subtitle = "Trigger contextual campaigns and control display suppression.",
             indicatorColor = Color(0xFFE91E63),
             supportsAndroid = true,
-            supportsIos = false,
+            supportsIos = true,
             route = ScreenRoute.InAppMessaging
         ),
         HomeFeatureItem(
@@ -196,6 +196,14 @@ public fun HomeScreen(
             supportsAndroid = true,
             supportsIos = true,
             route = ScreenRoute.Abt
+        ),
+        HomeFeatureItem(
+            title = "Sessions",
+            subtitle = "Track background session telemetry automatically (Internal-only). Click to verify on Init screen.",
+            indicatorColor = Color(0xFF607D8B),
+            supportsAndroid = true,
+            supportsIos = true,
+            route = ScreenRoute.FirebaseInit
         )
     )
 

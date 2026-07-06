@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import zone.ien.firebase.dataconnect.ConnectorConfig
 import zone.ien.firebase.dataconnect.FirebaseDataConnect
 import zone.ien.firebase.example.ui.theme.AppTheme
+import zone.ien.firebase.example.util.isIos
 import zone.ien.utils.ui.wrapper.M3RootWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,6 +51,8 @@ fun DataConnectScreen(
         mutableStateListOf<String>().apply {
             if (dynamicProbe.isFailure) {
                 add("Data Connect is NOT supported on this platform: ${dynamicProbe.exceptionOrNull()?.message}")
+            } else if (isIos) {
+                add("iOS Notice: KMP wrapper serves as a configuration container. Native GraphQL calls must be manually added to the iOS Native project (Swift codebase) due to Swift-only cinterop constraints.")
             }
         }
     }
@@ -94,7 +97,27 @@ fun DataConnectScreen(
                         .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    if (!isSupported) {
+                    if (isIos) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f))
+                                .padding(12.dp)
+                        ) {
+                            Text(
+                                text = "ℹ️ iOS cinterop Bridge Notice",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "Firebase Data Connect iOS SDK is Swift-only and cannot be linked directly into KMP via cinterop. This KMP wrapper runs in memory-only mode on iOS (acting as a config container). To execute live GraphQL queries, integrate the generated Swift SDK directly inside your native iOS target codebase.",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
+                    } else if (!isSupported) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
