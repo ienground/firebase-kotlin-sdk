@@ -99,7 +99,7 @@ fun FunctionsScreen(onBack: () -> Unit) {
                     .verticalScroll(scrollState),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Card(
                     shape = RoundedCornerShape(16.dp),

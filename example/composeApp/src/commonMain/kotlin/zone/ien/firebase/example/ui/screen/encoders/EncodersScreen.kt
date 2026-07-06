@@ -92,6 +92,7 @@ fun EncodersScreen(
                         .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
+                    Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = "JSON & Reflective Serialization Verification",
                         style = MaterialTheme.typography.titleMedium
