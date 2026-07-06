@@ -30,7 +30,7 @@ public actual class FirebaseDatabase private constructor(private val iosDatabase
 
         public actual fun getInstance(app: FirebaseApp): FirebaseDatabase {
             val iosApp = app.iosApp
-            return FirebaseDatabase(FIRDatabase.databaseForApp(iosApp))
+            return FirebaseDatabase(FIRDatabase.databaseForApp(iosApp as objcnames.classes.FIRApp))
         }
 
         public actual fun getInstance(url: String): FirebaseDatabase {
