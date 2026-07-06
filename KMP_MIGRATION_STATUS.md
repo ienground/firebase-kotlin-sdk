@@ -84,6 +84,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 
 ## 📜 Recent Migration History
 
+### 2026-07-06: Missing Core APIs across Modules Migrated (`firebase-auth`, `firebase-storage`, `firebase-functions`)
+* **Firebase Auth Improvements (Issue #222)**: Added `useEmulator(host, port)` configuration support. Implemented core user management APIs: `reauthenticate(credential)`, `unlink(provider)`, `sendEmailVerification()`, and `updateProfile(request)` with `UserProfileChangeRequest` builder.
+* **Firebase Storage Improvements (Issue #224)**: Added `useEmulator(host, port)` configuration support. Re-designed `putBytes(data)` to return an `UploadTask` and implemented progressive tracking via `UploadTask.snapshots()` flow and `await()` completion hooks on both platforms.
+* **Firebase Functions Improvements (Issue #226)**: Added `useEmulator(host, port)` configuration support across common and platform delegates.
+
 ### 2026-07-06: `firebase-components:firebase-dynamic-module-support` Migrated & iOS Memory-based Actual
 * **Final 50th Module Migration Completed**: Marked the 50th final module as fully migrated.
 * **Android actual typealias binding**: Replaced the custom mock actual interface with an `actual typealias` linked directly to Google's official `com.google.firebase.dynamicloading.DynamicLoadingRegistrar` to ensure absolute type safety and native compatibility.
