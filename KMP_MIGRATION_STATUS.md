@@ -8,8 +8,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 - **Total Modules**: 50
 - **KMP Support State**:
-  - 🟢 **Fully Migrated**: 46 (Android & iOS fully linked)
-  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 4 (iOS actual implemented as stubs)
+  - 🟢 **Fully Migrated**: 47 (Android & iOS fully linked)
+  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 3 (iOS actual implemented as stubs)
   - 🔴 **Android Native Only**: 0 (All modules compiled via KMP target)
 
 ---
@@ -65,7 +65,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `encoders:firebase-decoders-json`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP JSON decoder implementation (pure Kotlin). |
 | `encoders:protoc-gen-firebase-encoders`               | `sdk` | 🟢 Migrated |  JVM Tooling      | JVM-only protoc generator tooling compiler plugin. |
 | `transport:transport-api`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport contract (iOS Memory-based Actual). |
-| `transport:transport-backend-cct`                     | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport backend contract (iOS stub). |
+| `transport:transport-backend-cct`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport backend contract (iOS Memory-based Actual). |
 | `transport:transport-runtime`                         | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport core runtime contract (iOS stub). |
 | `transport:transport-runtime-testing`                 | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport internal testing utility stub (iOS stub). |
 
@@ -83,6 +83,10 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-06: `transport:transport-backend-cct` Migrated & iOS Memory-based Actual
+* **CCT Backend Memory-based actual**: Confirmed the iOS actual implementation in `CCTDestination.ios.kt` operates as a crash-free memory-based actual, capturing endpoints and legacy CCT keys successfully.
+* **Status tracking alignment**: Aligned the migration status representation to fully migrated to reflect the actual operational state on iOS.
 
 ### 2026-07-06: `transport:transport-api` Migrated & iOS Memory-based Actual
 * **Transport API Memory-based actual**: Replaced the iOS stub implementation with a simulated actual implementation inside `Actuals.ios.kt` (renamed from `Stubs.ios.kt`), including a memory event data wrapper `IOSEventWrapper` and successful completion callback callbacks.
