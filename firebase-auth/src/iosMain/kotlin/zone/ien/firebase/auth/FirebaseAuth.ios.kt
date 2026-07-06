@@ -110,6 +110,20 @@ public actual class FirebaseAuth private actual constructor() {
         }
     }
 
+    public actual fun useEmulator(host: String, port: Int) {
+        iosAuth.useEmulatorWithHost(host, port.toLong())
+    }
+
+    public actual suspend fun sendPasswordResetEmail(email: String): Unit = suspendCancellableCoroutine { cont ->
+        iosAuth.sendPasswordResetWithEmail(email) { error ->
+            if (error != null) {
+                cont.resumeWithException(Exception(error.localizedDescription))
+            } else {
+                cont.resume(Unit)
+            }
+        }
+    }
+
     public actual companion object {
         public actual fun getInstance(): FirebaseAuth {
             return FirebaseAuth(FIRAuth.auth())
