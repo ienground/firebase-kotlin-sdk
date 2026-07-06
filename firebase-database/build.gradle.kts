@@ -41,10 +41,12 @@ kotlin {
 
     // Kotlin 2.4.0 SwiftPM Integration Configuration
     swiftPMDependencies {
+        discoverClangModulesImplicitly.set(false)
         swiftPackage(
             url = url("https://github.com/firebase/firebase-ios-sdk.git"),
             version = from(libs.versions.firebase.ios.sdk.get()),
-            products = listOf(product("FirebaseDatabase"))
+            products = listOf(product("FirebaseDatabase")),
+            importedClangModules = listOf("FirebaseDatabase", "FirebaseDatabaseInternal")
         )
     }
 
