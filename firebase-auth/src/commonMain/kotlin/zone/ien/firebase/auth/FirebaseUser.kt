@@ -10,4 +10,7 @@ public expect class FirebaseUser private constructor() {
     public suspend fun unlink(provider: String): FirebaseUser
     public suspend fun sendEmailVerification()
     public suspend fun updateProfile(request: UserProfileChangeRequest)
+    public suspend fun link(credential: AuthCredential): AuthResult
+    public suspend fun updateEmail(email: String)
+    public suspend fun updatePassword(password: String)
 }
