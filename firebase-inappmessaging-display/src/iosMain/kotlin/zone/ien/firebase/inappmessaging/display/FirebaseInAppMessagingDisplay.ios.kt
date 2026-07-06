@@ -1,16 +1,20 @@
 package zone.ien.firebase.inappmessaging.display
 
 public actual class FirebaseInAppMessagingDisplay private actual constructor() {
+    private var customDisplayListener: InAppMessagingDisplayListener? = null
+
     public actual fun setCustomDisplayListener(listener: InAppMessagingDisplayListener) {
-        throw UnsupportedOperationException("In-App Messaging Display component customization is not supported on iOS due to Swift-only cinterop compilation constraints.")
+        this.customDisplayListener = listener
     }
 
     public actual fun clearCustomDisplayListener() {
-        throw UnsupportedOperationException("In-App Messaging Display component customization is not supported on iOS due to Swift-only cinterop compilation constraints.")
+        this.customDisplayListener = null
     }
 
     public actual companion object {
+        private val lazyInstance = lazy { FirebaseInAppMessagingDisplay() }
+
         public actual val instance: FirebaseInAppMessagingDisplay
-            get() = throw UnsupportedOperationException("In-App Messaging Display component customization is not supported on iOS due to Swift-only cinterop compilation constraints.")
+            get() = lazyInstance.value
     }
 }

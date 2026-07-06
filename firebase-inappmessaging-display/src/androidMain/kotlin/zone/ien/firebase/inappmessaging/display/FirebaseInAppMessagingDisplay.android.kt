@@ -1,7 +1,6 @@
 package zone.ien.firebase.inappmessaging.display
 
 import com.google.firebase.inappmessaging.FirebaseInAppMessagingDisplay as AndroidDisplay
-import com.google.firebase.inappmessaging.model.InAppMessage
 
 public actual class FirebaseInAppMessagingDisplay internal actual constructor() {
 
