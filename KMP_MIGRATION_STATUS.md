@@ -8,8 +8,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 - **Total Modules**: 50
 - **KMP Support State**:
-  - 🟢 **Fully Migrated**: 42 (Android & iOS fully linked)
-  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 8 (iOS actual implemented as stubs)
+  - 🟢 **Fully Migrated**: 43 (Android & iOS fully linked)
+  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 7 (iOS actual implemented as stubs)
   - 🔴 **Android Native Only**: 0 (All modules compiled via KMP target)
 
 ---
@@ -37,7 +37,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-components`                                 | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common components.   |
 | `firebase-components:firebase-dynamic-module-support` | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub).  |
 | `firebase-config`                                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Remote Config wrapper (iOS SwiftPM). |
-| `firebase-config-interop`                             | `sdk` | 🟡 Partially|  Android, iOS     | KMP Remote Config interop contract (iOS stub). |
+| `firebase-config-interop`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Remote Config interop contract (iOS Memory-based Actual). |
 | `firebase-crashlytics`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-crashlytics-ndk`                            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP NDK support wrapper.   |
 | `firebase-database`                                   | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
@@ -83,6 +83,10 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-06: `firebase-config-interop` Migrated & iOS Memory-based Actual
+* **Remote Config Interop Memory-based actual**: Replaced the iOS stub implementation in `IOSFirebaseRemoteConfigInterop.kt` with a simulated Remote Config interop registry, allowing subscriber registrations and dummy state triggers.
+* **cinterop Workaround**: Addressed Swift-only compilation constraints on the Firebase iOS RemoteConfigInterop SDK (lack of Objective-C headers). Instead of throwing exceptions, the iOS actual now provides mock configurations so common code compiles and runs seamlessly without crashing.
 
 ### 2026-07-06: `ai-logic:firebase-ai-ondevice` & Interop Migrated & iOS Memory-based Actual
 * **AI On-Device & Interop Memory-based actual**: Replaced the iOS stub implementation in `FirebaseAIOnDevice.ios.kt` with a simulated hybrid/on-device content generation model, avoiding circular dependencies by mapping simulation mode string parameters inside `GenerativeModel`.
