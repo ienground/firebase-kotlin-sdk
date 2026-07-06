@@ -41,7 +41,7 @@ public actual abstract class Event<T> protected actual constructor() {
     }
 }
 
-public class IOSEventWrapper<T>(
+internal class IOSEventWrapper<T>(
     private val payload: T,
     private val code: Int?,
     private val priority: Priority
