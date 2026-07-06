@@ -28,7 +28,7 @@ public class FieldDescriptor private constructor(
             if (properties == null) {
                 properties = mutableMapOf()
             }
-            properties?.put(property::class, property)
+            properties?.put(property.annotationKey(), property)
             return this
         }
 
@@ -40,3 +40,5 @@ public class FieldDescriptor private constructor(
         }
     }
 }
+
+internal expect fun <T : Annotation> T.annotationKey(): KClass<out Annotation>
