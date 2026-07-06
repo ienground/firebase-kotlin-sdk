@@ -16,6 +16,12 @@ public actual class FirebaseMessaging(private val delegate: AndroidFirebaseMessa
             delegate.isAutoInitEnabled = value
         }
 
+    public actual var isDeliveryMetricsExportToBigQueryEnabled: Boolean
+        get() = delegate.isDeliveryMetricsExportToBigQueryEnabled
+        set(value) {
+            delegate.setDeliveryMetricsExportToBigQueryEnabled(value)
+        }
+
     public actual suspend fun getToken(): String? = delegate.token.await()
 
     public actual suspend fun deleteToken() {
