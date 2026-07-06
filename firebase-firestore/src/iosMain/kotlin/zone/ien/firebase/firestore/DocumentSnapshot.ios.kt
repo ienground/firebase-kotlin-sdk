@@ -9,4 +9,5 @@ actual class DocumentSnapshot(private val iosSnapshot: FIRDocumentSnapshot) {
     actual fun getExists(): Boolean = iosSnapshot.exists
     actual fun getData(): Map<String, Any>? = iosSnapshot.data() as? Map<String, Any>
     actual fun get(field: String): Any? = iosSnapshot.valueForField(field)
+    actual internal fun nativeSnapshot(): Any = iosSnapshot
 }
