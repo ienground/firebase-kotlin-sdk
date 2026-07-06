@@ -1,6 +1,5 @@
 package zone.ien.firebase.auth
 
-import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.FirebaseUser as AndroidFirebaseUser
 import kotlinx.coroutines.tasks.await
 
@@ -20,32 +19,6 @@ public actual class FirebaseUser private actual constructor() {
     public actual val isAnonymous: Boolean
         get() = androidUser.isAnonymous
 
-    public actual suspend fun updateProfile(request: UserProfileChangeRequest) {
-        androidUser.updateProfile(request.androidRequest).await()
-    }
-
-    public actual suspend fun link(credential: AuthCredential): AuthResult {
-        val result = androidUser.linkWithCredential(credential.androidCredential).await()
-        return AuthResult(result)
-    }
-
-    public actual suspend fun updateEmail(email: String) {
-        androidUser.updateEmail(email).await()
-    }
-
-    public actual suspend fun updatePassword(password: String) {
-        androidUser.updatePassword(password).await()
-    }
-
-    public actual suspend fun unlink(provider: String): FirebaseUser {
-        val result = androidUser.unlink(provider).await()
-        return FirebaseUser(result.user!!)
-    }
-
-    public actual suspend fun sendEmailVerification() {
-        androidUser.sendEmailVerification().await()
-    }
-
     public actual suspend fun delete() {
         androidUser.delete().await()
     }
@@ -54,13 +27,9 @@ public actual class FirebaseUser private actual constructor() {
         return androidUser.getIdToken(forceRefresh).await().token ?: ""
     }
 
-    public actual suspend fun reauthenticate(credential: AuthCredential) {
-        androidUser.reauthenticate(credential.androidCredential).await()
-    }
-
     public actual suspend fun unlink(provider: String): FirebaseUser {
         val result = androidUser.unlink(provider).await()
-        val user = result.user ?: throw Exception("Unlink returned a null user.")
+        val user = result.user ?: throw IllegalStateException("Unlink returned a null user.")
         return FirebaseUser(user)
     }
 
@@ -83,5 +52,9 @@ public actual class FirebaseUser private actual constructor() {
 
     public actual suspend fun updatePassword(password: String) {
         androidUser.updatePassword(password).await()
+    }
+
+    public actual suspend fun reauthenticate(credential: AuthCredential) {
+        androidUser.reauthenticate(credential.androidCredential).await()
     }
 }
