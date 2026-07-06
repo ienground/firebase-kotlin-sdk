@@ -1,6 +1,6 @@
 package zone.ien.firebase.database
 
-public expect class DatabaseReference {
+public expect class DatabaseReference : Query {
     public val key: String?
     public fun child(pathString: String): DatabaseReference
     public fun push(): DatabaseReference
