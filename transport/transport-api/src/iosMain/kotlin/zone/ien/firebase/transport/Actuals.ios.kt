@@ -34,11 +34,21 @@ public actual abstract class Event<T> protected actual constructor() {
     public actual abstract fun getPriority(): Priority
 
     public actual companion object {
-        public actual fun <T> ofTelemetry(payload: T): Event<T> = throw UnsupportedOperationException("Datatransport is not supported on iOS yet.")
-        public actual fun <T> ofTelemetry(code: Int, payload: T): Event<T> = throw UnsupportedOperationException("Datatransport is not supported on iOS yet.")
-        public actual fun <T> ofUrgent(payload: T): Event<T> = throw UnsupportedOperationException("Datatransport is not supported on iOS yet.")
-        public actual fun <T> ofUrgent(code: Int, payload: T): Event<T> = throw UnsupportedOperationException("Datatransport is not supported on iOS yet.")
+        public actual fun <T> ofTelemetry(payload: T): Event<T> = IOSEventWrapper(payload, null, Priority.DEFAULT)
+        public actual fun <T> ofTelemetry(code: Int, payload: T): Event<T> = IOSEventWrapper(payload, code, Priority.DEFAULT)
+        public actual fun <T> ofUrgent(payload: T): Event<T> = IOSEventWrapper(payload, null, Priority.HIGHEST)
+        public actual fun <T> ofUrgent(code: Int, payload: T): Event<T> = IOSEventWrapper(payload, code, Priority.HIGHEST)
     }
+}
+
+public class IOSEventWrapper<T>(
+    private val payload: T,
+    private val code: Int?,
+    private val priority: Priority
+) : Event<T>() {
+    override fun getPayload(): T = payload
+    override fun getCode(): Int? = code
+    override fun getPriority(): Priority = priority
 }
 
 public actual interface Transformer<T, U> {
@@ -54,6 +64,16 @@ public actual interface Transport<T> {
     public actual fun schedule(event: Event<T>, callback: TransportScheduleCallback)
 }
 
+public class IOSTransport<T> : Transport<T> {
+    override fun send(event: Event<T>) {
+        // No-op simulation
+    }
+
+    override fun schedule(event: Event<T>, callback: TransportScheduleCallback) {
+        callback.onSchedule(null) // Mock successful callback
+    }
+}
+
 public actual interface TransportFactory {
     public actual fun <T : Any> getTransport(
         name: String,
@@ -67,4 +87,19 @@ public actual interface TransportFactory {
         encoding: Encoding,
         transformer: Transformer<T, ByteArray>
     ): Transport<T>
+}
+
+public class IOSTransportFactory : TransportFactory {
+    override fun <T : Any> getTransport(
+        name: String,
+        payloadType: KClass<T>,
+        transformer: Transformer<T, ByteArray>
+    ): Transport<T> = IOSTransport()
+
+    override fun <T : Any> getTransport(
+        name: String,
+        payloadType: KClass<T>,
+        encoding: Encoding,
+        transformer: Transformer<T, ByteArray>
+    ): Transport<T> = IOSTransport()
 }
