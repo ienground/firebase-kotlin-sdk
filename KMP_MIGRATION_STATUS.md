@@ -84,10 +84,10 @@ To convert any pending module (`firebase-xxx`) into KMP:
 
 ## 📜 Recent Migration History
 
-### 2026-07-06: `firebase-installations-interop` Migrated & iOS Linked
-* **Installations Interop Native Integration**: Replaced the iOS stub implementation in `IOSFirebaseInstallationsApi.kt` with a fully linked iOS target binding. Added the native `FirebaseInstallations` SwiftPM dependency.
-* **FIRInstallations actual delegation**: Modified `getId()`, `getToken()`, and `delete()` to delegate to the native `FIRInstallations` APIs using coroutines.
-* **No-op for Unsupported APIs**: Resolved unsupported change observer and cache clear operations without throwing exception errors to prevent crashes.
+### 2026-07-06: `firebase-installations-interop` Migrated & iOS Memory-based Actual
+* **Installations Interop Memory-based actual**: Replaced the iOS stub implementation in `IOSFirebaseInstallationsApi.kt` with a memory-based dummy implementation, returning mock values (`dummy-ios-fid`, `dummy-ios-token`) instead of throwing exceptions.
+* **No-op for Unsupported APIs**: Resolved unsupported change observer, cache clear, and delete operations without throwing exception errors to prevent crashes.
+* **SwiftPM Structure Added**: Added the basic SwiftPM subpackage structure for future native integration, though not yet registered in the main Package.swift.
 
 ### 2026-07-06: `firebase-inappmessaging-display` Migrated & iOS Memory-based Actual
 * **In-App Messaging Display Memory-based actual**: Replaced the iOS stub implementation in `FirebaseInAppMessagingDisplay.ios.kt` with a memory-based custom display listener registry, allowing registrations and clearances without runtime errors.
