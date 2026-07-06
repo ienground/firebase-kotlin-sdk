@@ -9,16 +9,22 @@ public actual class AbtExperimentInfo(private val androidInfo: com.google.fireba
         get() = androidInfo.variantId
 }
 
-public actual class FirebaseABTesting(private val androidAbt: com.google.firebase.abt.FirebaseABTesting) {
+public actual class FirebaseABTesting internal actual constructor() {
+    private var androidAbt: com.google.firebase.abt.FirebaseABTesting? = null
+
+    internal constructor(androidAbt: com.google.firebase.abt.FirebaseABTesting) : this() {
+        this.androidAbt = androidAbt
+    }
+
     public actual fun replaceAllExperiments(replacementExperiments: List<Map<String, String>>, originService: String) {
-        androidAbt.replaceAllExperiments(replacementExperiments, originService)
+        androidAbt?.replaceAllExperiments(replacementExperiments, originService)
     }
 
     public actual fun removeAllExperiments(originService: String) {
-        androidAbt.removeAllExperiments(originService)
+        androidAbt?.removeAllExperiments(originService)
     }
 
     public actual fun getAllExperiments(originService: String): List<AbtExperimentInfo> {
-        return androidAbt.getAllExperiments(originService).map { AbtExperimentInfo(it) }
+        return androidAbt?.getAllExperiments(originService)?.map { AbtExperimentInfo(it) } ?: emptyList()
     }
 }
