@@ -84,7 +84,8 @@ To convert any pending module (`firebase-xxx`) into KMP:
 
 ## 📜 Recent Migration History
 
-### 2026-07-06: Missing Core APIs across Modules Migrated (`firebase-auth`, `firebase-storage`, `firebase-functions`)
+### 2026-07-06: Missing Core APIs across Modules Migrated (`firebase-auth`, `firebase-storage`, `firebase-functions`, `firebase-crashlytics`)
+* **Firebase Crashlytics Expansion (Issue #230)**: Added report control APIs (`checkForUnsentReports()`, `sendUnsentReports()`, and `deleteUnsentReports()`) for user-consent report management. Added `didCrashOnPreviousExecution()` to query crash status from the previous application run.
 * **Firebase Auth Core Expansion (Issue #228)**: Added `EmailAuthProvider` to generate credentials from email/password inputs. Implemented `link(credential)` for merging auth providers. Added `updateEmail(email)` and `updatePassword(password)` for user credential settings.
 * **Firebase Auth Improvements (Issue #222)**: Added `useEmulator(host, port)` configuration support. Implemented core user management APIs: `reauthenticate(credential)`, `unlink(provider)`, `sendEmailVerification()`, and `updateProfile(request)` with `UserProfileChangeRequest` builder.
 * **Firebase Storage Improvements (Issue #224)**: Added `useEmulator(host, port)` configuration support. Re-designed `putBytes(data)` to return an `UploadTask` and implemented progressive tracking via `UploadTask.snapshots()` flow and `await()` completion hooks on both platforms.
