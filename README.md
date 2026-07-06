@@ -44,6 +44,7 @@ A Kotlin Multiplatform (KMP) wrapper around Firebase platform SDKs, designed to 
 | **App Distribution** (`firebase-appdistribution`) | 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Tester sign-in and update checks (no in-app progress monitoring) |
 | **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Memory-based metadata container (no live native query linking) |
 | **In-App Messaging** (`firebase-inappmessaging`) | 🟢 Yes | 🟢 Yes | **90%** | Native GMS / iOS SwiftPM SDK (Core API delegate) |
+| **In-App Messaging Display** (`firebase-inappmessaging-display`) | 🟢 Yes | 🟡 Partial | **80%** (iOS Partial) | Memory-based custom display listener simulation (no live native custom display rendering) |
 
 ---
 
@@ -81,6 +82,15 @@ xcodebuild -resolvePackageDependencies -workspace iosApp.xcworkspace -scheme ios
 > [!IMPORTANT]
 > **Minimum Kotlin Version**: This SwiftPM import feature relies on the official Swift Package Manager integration introduced in **Kotlin 2.4.0** (utilizing the new native `swiftPMDependencies` DSL). Therefore, **Kotlin 2.4.0 or higher is strictly required** as the minimum compiler version to compile and link this library's iOS targets.
 
+---
+
+## Running the Sample App
+
+The repository includes a Kotlin Multiplatform Compose sample application located in the [example](file:///Users/ienground/IEN_DATA/Developments/AndroidLibrary/firebase-kotlin-sdk/example) directory.
+
+To build and run the sample application successfully, you must provide your own Firebase configuration files:
+1. **Android**: Place your own `google-services.json` inside the `example/androidApp/` directory.
+2. **iOS**: Add your own `GoogleService-Info.plist` to the `example/iosApp/` project (typically inside the `iosApp/` folder and registered in Xcode).
 
 ---
 
@@ -138,15 +148,14 @@ Rename your packaging imports to adapt to this SDK's namespaces:
 
 - **Synchronous vs Asynchronous Task Mappings**: Android-specific `Task<T>` and callback models are mapped to standard Kotlin `suspend` functions returning `T` directly.
 - **Real-time Event Observers**: Event listeners are exposed as pure Kotlin `Flow<T>` streams. Replace older callback attachments with `.collect { ... }` blocks inside your Coroutine lifecycle.
-- **iOS Unsupported Stubs**: Features stubbed on iOS (such as `firebase-inappmessaging` or `firebase-dataconnect`) throw `UnsupportedOperationException` at runtime instead of failing compilation, permitting shared common code declarations.
+- **Elimination of iOS Unsupported Stubs (Memory-based Actual)**: To prevent compilation failure and runtime crashes (`UnsupportedOperationException`), several modules (such as AI Logic, Data Connect, ML Model Downloader, etc.) have been migrated to "Memory-based Actuals". These implementations store states and subscriber callbacks locally in memory to preserve API visibility and call flow safety.
 
 ---
 
 ## Platform Limitations & Breaking Changes
 
-### Swift-only cinterop compilation constraints (iOS)
-Google's native iOS SDKs for Gemini AI and Data Connect are written purely in Swift without Objective-C bridge headers. 
-Since Kotlin/Native's cinterop pipeline cannot generate bindings directly for Swift-only frameworks, the iOS source set implementations for these features throw `UnsupportedOperationException`.
+Google's native iOS SDKs for Gemini AI, Data Connect, Custom Model Downloader, and In-App Messaging Custom Display are written purely in Swift without Objective-C bridge headers. 
+Since Kotlin/Native's cinterop pipeline cannot generate bindings directly for Swift-only frameworks, the iOS source set implementations for these features operate in a virtualized simulation mode (Memory-based Actual). This allows listener registrations and local configurations to compile and run without crashes, while actual remote connections or native rendering must be implemented inside your iOS target codebase.
 (※ Note: In-App Messaging Core APIs are fully operational on iOS, though customizing the layout/styles of native display dialog layouts remains restricted in KMP common UI layer.)
 
 ### App Distribution iOS Setup Requirements
@@ -219,7 +228,8 @@ if (!isIos) {
 ## License
 
 ```
-Copyright 2026 Firebase Kotlin SDK Contributors
+Copyright (c) 2026. Firebase Kotlin SDK project and open source contributors.
+Copyright (c) 2026. IENGROUND of IENLAB.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

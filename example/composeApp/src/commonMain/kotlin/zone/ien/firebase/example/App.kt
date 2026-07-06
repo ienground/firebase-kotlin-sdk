@@ -2,6 +2,8 @@ package zone.ien.firebase.example
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -36,14 +38,17 @@ fun App(context: FirebasePlatformContext) {
 
     M3RootWrapper {
         AppTheme {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
+            Scaffold(
+                modifier = Modifier.fillMaxSize()
             ) {
-                ScreenNavigationGraph(
-                    context = context,
-                    backStack = backStack
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    ScreenNavigationGraph(
+                        context = context,
+                        backStack = backStack
+                    )
+                }
             }
         }
     }
