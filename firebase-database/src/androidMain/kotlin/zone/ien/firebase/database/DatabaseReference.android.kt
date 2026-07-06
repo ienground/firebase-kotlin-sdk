@@ -1,6 +1,11 @@
 package zone.ien.firebase.database
 
 import com.google.firebase.database.DatabaseReference as AndroidDatabaseReference
+import com.google.firebase.database.Transaction as AndroidTransaction
+import com.google.firebase.database.DatabaseError
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 public actual class DatabaseReference(private val androidReference: AndroidDatabaseReference) : Query(androidReference) {
 
@@ -25,5 +30,40 @@ public actual class DatabaseReference(private val androidReference: AndroidDatab
 
     public actual suspend fun updateChildren(update: Map<String, Any?>) {
         androidReference.updateChildren(update).await()
+     }
+
+    public actual suspend fun runTransaction(handler: (MutableData) -> TransactionResult): TransactionResult = suspendCancellableCoroutine { cont ->
+        var caughtException: Throwable? = null
+        androidReference.runTransaction(object : AndroidTransaction.Handler {
+            override fun doTransaction(currentData: com.google.firebase.database.MutableData): AndroidTransaction.Result {
+                return try {
+                    val result = handler(MutableData(currentData))
+                    when (result) {
+                        TransactionResult.SUCCESS -> AndroidTransaction.success(currentData)
+                        TransactionResult.ABORT -> AndroidTransaction.abort()
+                    }
+                } catch (e: Throwable) {
+                    caughtException = e
+                    AndroidTransaction.abort()
+                }
+            }
+
+            override fun onComplete(error: DatabaseError?, committed: Boolean, currentData: com.google.firebase.database.DataSnapshot?) {
+                if (cont.isActive) {
+                    val exception = caughtException
+                    if (exception != null) {
+                        cont.resumeWithException(exception)
+                    } else if (error != null) {
+                        cont.resumeWithException(error.toException())
+                    } else {
+                        cont.resume(if (committed) TransactionResult.SUCCESS else TransactionResult.ABORT)
+                    }
+                }
+            }
+        })
+    }
+
+    public actual fun keepSynced(keepSynced: Boolean) {
+        androidReference.keepSynced(keepSynced)
     }
 }
