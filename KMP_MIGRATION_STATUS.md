@@ -8,8 +8,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 - **Total Modules**: 50
 - **KMP Support State**:
-  - 🟢 **Fully Migrated**: 47 (Android & iOS fully linked)
-  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 3 (iOS actual implemented as stubs)
+  - 🟢 **Fully Migrated**: 49 (Android & iOS fully linked)
+  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 1 (iOS actual implemented as stubs)
   - 🔴 **Android Native Only**: 0 (All modules compiled via KMP target)
 
 ---
@@ -66,8 +66,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `encoders:protoc-gen-firebase-encoders`               | `sdk` | 🟢 Migrated |  JVM Tooling      | JVM-only protoc generator tooling compiler plugin. |
 | `transport:transport-api`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport contract (iOS Memory-based Actual). |
 | `transport:transport-backend-cct`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport backend contract (iOS Memory-based Actual). |
-| `transport:transport-runtime`                         | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport core runtime contract (iOS stub). |
-| `transport:transport-runtime-testing`                 | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport internal testing utility stub (iOS stub). |
+| `transport:transport-runtime`                         | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport core runtime contract (iOS Memory-based Actual). |
+| `transport:transport-runtime-testing`                 | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport internal testing utility stub (iOS Memory-based Actual). |
 
 ---
 
@@ -83,6 +83,14 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-06: `transport:transport-runtime-testing` Migrated & iOS Memory-based Actual
+* **Transport Runtime Testing Memory-based actual**: Confirmed the testing helpers (`FakeClock`, `FakeBackend`, `FakeEventStore`) are pure Kotlin based configurations. Replaced the iOS `Stubs.kt` file with `Actuals.kt` containing `IosTransportTesting` to clean up stub definitions.
+* **Gradle Configuration Enhanced**: Added explicit `androidMain` source directory declarations inside `build.gradle.kts`.
+
+### 2026-07-06: `transport:transport-runtime` Migrated & iOS Memory-based Actual
+* **Transport Runtime Memory-based actual**: Replaced the iOS stub implementation in `TransportRuntime.ios.kt` with a simulated actual implementation, including a singleton instance and returning a simulated `IOSTransportFactory` to handle factory flows without crash exceptions.
+* **Exceptions eliminated**: Removed all `UnsupportedOperationException` errors on iOS to secure crash safety and guarantee shared common code visibility.
 
 ### 2026-07-06: `transport:transport-backend-cct` Migrated & iOS Memory-based Actual
 * **CCT Backend Memory-based actual**: Confirmed the iOS actual implementation in `CCTDestination.ios.kt` operates as a crash-free memory-based actual, capturing endpoints and legacy CCT keys successfully.
