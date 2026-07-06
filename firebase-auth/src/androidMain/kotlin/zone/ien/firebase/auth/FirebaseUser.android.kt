@@ -33,7 +33,8 @@ public actual class FirebaseUser private actual constructor() {
 
     public actual suspend fun unlink(provider: String): FirebaseUser {
         val result = androidUser.unlink(provider).await()
-        return FirebaseUser(result.user!!)
+        val user = result.user ?: throw Exception("Unlink returned a null user.")
+        return FirebaseUser(user)
     }
 
     public actual suspend fun sendEmailVerification() {
