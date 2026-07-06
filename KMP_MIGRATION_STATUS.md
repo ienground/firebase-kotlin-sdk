@@ -87,7 +87,6 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ### 2026-07-06: `firebase-components:firebase-dynamic-module-support` Migrated & iOS Memory-based Actual
 * **Final 50th Module Migration Completed**: Marked the 50th final module as fully migrated.
 * **Android actual typealias binding**: Replaced the custom mock actual interface with an `actual typealias` linked directly to Google's official `com.google.firebase.dynamicloading.DynamicLoadingRegistrar` to ensure absolute type safety and native compatibility.
-* **Gradle Configuration Enhanced**: Specified the explicit `androidMain` source directory inside `build.gradle.kts`.
 
 ### 2026-07-06: `transport:transport-runtime-testing` Migrated & iOS Memory-based Actual
 * **Transport Runtime Testing Memory-based actual**: Confirmed the testing helpers (`FakeClock`, `FakeBackend`, `FakeEventStore`) are pure Kotlin based configurations. Replaced the iOS `Stubs.kt` file with `Actuals.kt` containing `IosTransportTesting` to clean up stub definitions.
