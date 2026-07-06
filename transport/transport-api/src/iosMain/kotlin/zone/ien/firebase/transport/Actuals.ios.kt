@@ -64,7 +64,7 @@ public actual interface Transport<T> {
     public actual fun schedule(event: Event<T>, callback: TransportScheduleCallback)
 }
 
-public class IOSTransport<T> : Transport<T> {
+internal class IOSTransport<T> : Transport<T> {
     override fun send(event: Event<T>) {
         // No-op simulation
     }
