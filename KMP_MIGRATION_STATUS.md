@@ -8,8 +8,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 - **Total Modules**: 50
 - **KMP Support State**:
-  - 🟢 **Fully Migrated**: 49 (Android & iOS fully linked)
-  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 1 (iOS actual implemented as stubs)
+  - 🟢 **Fully Migrated**: 50 (Android & iOS fully linked)
+  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 0 (iOS actual implemented as stubs)
   - 🔴 **Android Native Only**: 0 (All modules compiled via KMP target)
 
 ---
@@ -35,7 +35,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-auth`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-common`                                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common core modules. |
 | `firebase-components`                                 | `sdk` | 🟢 Migrated |  Android, iOS     | KMP common components.   |
-| `firebase-components:firebase-dynamic-module-support` | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub).  |
+| `firebase-components:firebase-dynamic-module-support` | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS Memory-based Actual).  |
 | `firebase-config`                                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Remote Config wrapper (iOS SwiftPM). |
 | `firebase-config-interop`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Remote Config interop contract (iOS Memory-based Actual). |
 | `firebase-crashlytics`                                | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
@@ -83,6 +83,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-06: `firebase-components:firebase-dynamic-module-support` Migrated & iOS Memory-based Actual
+* **Final 50th Module Migration Completed**: Marked the 50th final module as fully migrated.
+* **Android actual typealias binding**: Replaced the custom mock actual interface with an `actual typealias` linked directly to Google's official `com.google.firebase.dynamicloading.DynamicLoadingRegistrar` to ensure absolute type safety and native compatibility.
+* **Gradle Configuration Enhanced**: Specified the explicit `androidMain` source directory inside `build.gradle.kts`.
 
 ### 2026-07-06: `transport:transport-runtime-testing` Migrated & iOS Memory-based Actual
 * **Transport Runtime Testing Memory-based actual**: Confirmed the testing helpers (`FakeClock`, `FakeBackend`, `FakeEventStore`) are pure Kotlin based configurations. Replaced the iOS `Stubs.kt` file with `Actuals.kt` containing `IosTransportTesting` to clean up stub definitions.
