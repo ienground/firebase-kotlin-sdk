@@ -87,7 +87,6 @@ fun AiLogicScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
             if (isIos) {
                 Column(
                     modifier = Modifier

@@ -42,7 +42,6 @@ fun DatabaseCollectionScreen(onBack: () -> Unit) {
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Demonstrate real-time ImmutableSortedMap storage updates. Keys are alphabetically sorted automatically on insertion.",
                 style = MaterialTheme.typography.bodyMedium,

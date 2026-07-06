@@ -38,7 +38,6 @@ fun DatabaseScreen(onBack: () -> Unit) {
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Perform key write, sub-child auto-key push, remove, and child update operations via common Database API.",
                 style = MaterialTheme.typography.bodyMedium,
