@@ -44,6 +44,7 @@
 | **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원 (진행률 추적 미지원) |
 | **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 메타데이터 Actual 지원 (네이티브 링킹 미지원) |
 | **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 (Core 기능 실제 구현) |
+| **In-App Messaging Display** (`firebase-inappmessaging-display`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 가상 리스너 등록 시뮬레이션 지원 (네이티브 링킹 미지원) |
 
 ---
 
@@ -138,15 +139,14 @@ val userName = snapshot.get<String>("name")
 
 - **동기/비동기 태스크 매핑**: Android의 `Task<T>` 나 iOS의 비동기 콜백 패턴은 모두 코틀린 표준 `suspend` 함수로 래핑되어 리턴 값을 직접 받도록 단일화되었습니다.
 - **실시간 이벤트 관찰 (Observers)**: 모든 실시간 변경 리스너는 코틀린의 `Flow<T>` 스트림으로 노출됩니다. 기존의 콜백 등록 코드를 코루틴 스코프 내의 `.collect { ... }` 로직으로 전환하십시오.
-- **iOS 미지원 Stub 예외**: `firebase-inappmessaging` 이나 `firebase-dataconnect` 와 같이 iOS 타겟에서 컴파일이 불가능한 모듈들의 경우, 컴파일 시 빌드 에러를 유발하는 대신 런타임에 호출 시 `UnsupportedOperationException`을 발생시켜 공통 소스셋 컴파일 형상을 깨뜨리지 않도록 조정했습니다.
+- **iOS 미지원 Stub 예외 해소 (Memory-based Actual)**: cinterop 제약으로 인해 iOS 바이너리가 직접 링크되지 못하는 일부 모듈들(AI Logic, Data Connect, ML Model Downloader 등)에 대해서도 런타임 크래시(`UnsupportedOperationException`)를 원천적으로 제거하고, 메모리 수준에서 인스턴스 획득 및 A/B 테스팅 구독 상태를 저장/반환하는 "메모리 보존 실제 인스턴스(Memory-based Actual)"로 전환하여 공통 컴파일 형상과 호출 안정성을 지켰습니다.
 
 ---
 
 ## 플랫폼 제약사항 및 주의사항
 
-### iOS 내 Swift 전용 모듈 컴파일 이슈
-구글 공식 iOS SDK의 Gemini AI, Data Connect 모듈은 Objective-C 호환 헤더가 없는 순수 Swift로 구현되어 있어 Kotlin/Native의 cinterop 도구(`convertSyntheticImportProjectIntoDefFile`)로 직접 결합할 수 없는 한계가 존재합니다.
-따라서 본 래퍼 라이브러리 상에서도 해당 기능의 iOS 타겟은 동작 시 `UnsupportedOperationException` 예외가 발생하므로 사용 시 주의가 필요합니다.
+구글 공식 iOS SDK의 Gemini AI, Data Connect, Custom Model Downloader 및 In-App Messaging Custom Display 관련 컴포넌트는 Objective-C 호환 헤더가 없는 순수 Swift로 구현되어 있어 Kotlin/Native의 cinterop 도구(`convertSyntheticImportProjectIntoDefFile`)로 직접 결합할 수 없는 한계가 존재합니다.
+따라서 본 래퍼 라이브러리 상에서도 해당 기능의 iOS 타겟은 가상 시뮬레이션 모드(Memory-based Actual)로 동작하여 런타임 크래시 없이 리스너 등록 및 로컬 조회 기능을 수행하나, 실제 원격 서비스 및 네이티브 동작은 iOS Swift 영역에서 직접 네이티브 SDK를 연동해 처리해야 합니다.
 (※ In-App Messaging 모듈의 경우 Core 제어 API는 iOS 상에서 정상 작동하나, 네이티브 디스플레이 카드 UI 레이아웃의 직접 커스터마이징 제약은 존재합니다.)
 
 ### App Distribution iOS 연동 주의사항
