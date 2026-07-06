@@ -6,4 +6,9 @@ public expect class FirebaseUser private constructor() {
     public val isAnonymous: Boolean
     public suspend fun delete()
     public suspend fun getIdToken(forceRefresh: Boolean): String
+    public suspend fun unlink(provider: String): FirebaseUser
+    public suspend fun sendEmailVerification()
+    public suspend fun link(credential: AuthCredential): AuthResult
+    public suspend fun updateEmail(email: String)
+    public suspend fun updatePassword(password: String)
 }
