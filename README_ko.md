@@ -82,6 +82,15 @@ xcodebuild -resolvePackageDependencies -workspace iosApp.xcworkspace -scheme ios
 > [!IMPORTANT]
 > **최소 Kotlin 버전 요구사항**: 본 라이브러리의 SwiftPM 연동 및 가져오기 기법은 **Kotlin 2.4.0**부터 정식 도입된 새로운 `swiftPMDependencies` DSL 기능을 기반으로 구현되었습니다. 따라서, iOS 타겟을 컴파일하고 링킹하기 위해서는 **Kotlin 2.4.0 이상의 컴파일러 버전이 필수로 요구**됩니다.
 
+---
+
+## 샘플 앱 실행 방법 (Running the Sample App)
+
+이 저장소에는 [example](file:///Users/ienground/IEN_DATA/Developments/AndroidLibrary/firebase-kotlin-sdk/example) 디렉터리에 위치한 Kotlin Multiplatform Compose 샘플 애플리케이션이 포함되어 있습니다.
+
+샘플 앱을 성공적으로 빌드하고 직접 테스트해 보려면, 본인의 Firebase 설정 파일을 추가해야 합니다:
+1. **안드로이드 (Android)**: 본인의 `google-services.json` 파일을 `example/androidApp/` 디렉터리 내부에 추가하십시오.
+2. **iOS**: 본인의 `GoogleService-Info.plist` 파일을 `example/iosApp/` 프로젝트 내부(일반적으로 `iosApp/` 폴더 내부 및 Xcode 프로젝트 리소스 등록)에 추가한 뒤 빌드하십시오.
 
 ---
 
@@ -218,7 +227,8 @@ if (!isIos) {
 ## 라이선스 (License)
 
 ```
-Copyright 2026 Firebase Kotlin SDK Contributors
+Copyright (c) 2026. Firebase Kotlin SDK project and open source contributors.
+Copyright (c) 2026. IENGROUND of IENLAB.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

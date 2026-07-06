@@ -82,6 +82,15 @@ xcodebuild -resolvePackageDependencies -workspace iosApp.xcworkspace -scheme ios
 > [!IMPORTANT]
 > **Minimum Kotlin Version**: This SwiftPM import feature relies on the official Swift Package Manager integration introduced in **Kotlin 2.4.0** (utilizing the new native `swiftPMDependencies` DSL). Therefore, **Kotlin 2.4.0 or higher is strictly required** as the minimum compiler version to compile and link this library's iOS targets.
 
+---
+
+## Running the Sample App
+
+The repository includes a Kotlin Multiplatform Compose sample application located in the [example](file:///Users/ienground/IEN_DATA/Developments/AndroidLibrary/firebase-kotlin-sdk/example) directory.
+
+To build and run the sample application successfully, you must provide your own Firebase configuration files:
+1. **Android**: Place your own `google-services.json` inside the `example/androidApp/` directory.
+2. **iOS**: Add your own `GoogleService-Info.plist` to the `example/iosApp/` project (typically inside the `iosApp/` folder and registered in Xcode).
 
 ---
 
@@ -219,7 +228,8 @@ if (!isIos) {
 ## License
 
 ```
-Copyright 2026 Firebase Kotlin SDK Contributors
+Copyright (c) 2026. Firebase Kotlin SDK project and open source contributors.
+Copyright (c) 2026. IENGROUND of IENLAB.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

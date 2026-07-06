@@ -50,13 +50,13 @@ import zone.ien.firebase.transport.runtime.TransportRuntime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatatransportScreen(onNavigateBack: () -> Unit) {
-    val isSupported = !isIos
+    val isSupported = true
     var payload by remember { mutableStateOf("Hello Datatransport KMP!") }
     var selectedPriority by remember { mutableStateOf(Priority.DEFAULT) }
     val logs = remember { 
         mutableStateListOf<String>().apply {
-            if (!isSupported) {
-                add("Datatransport is NOT supported on this platform.")
+            if (isIos) {
+                add("Datatransport is running in Simulation Mode (iOS Memory-based).")
             }
         }
     }
@@ -85,24 +85,24 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            if (!isSupported) {
+            if (isIos) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
-                        .background(Color.Red.copy(alpha = 0.1f))
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
                         .padding(12.dp)
                 ) {
                     Text(
-                        text = "⚠️ Platform Not Supported",
+                        text = "⚠️ Simulation Mode (iOS Memory-based)",
                         style = MaterialTheme.typography.titleMedium,
-                        color = Color.Red
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "Datatransport is unavailable on this target due to Swift-only cinterop compilation constraints.",
+                        text = "Datatransport runs in memory-based simulation mode on iOS. Telemetry event mappings and scheduler callback loops are verified offline without sending network payloads.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.Red
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
