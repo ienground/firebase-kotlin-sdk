@@ -77,7 +77,7 @@ public actual class FirebaseCrashlytics private constructor(
     }
 
     public actual fun didCrashOnPreviousExecution(): Boolean {
-        return false
+        return iosCrashlytics.didCrashDuringPreviousExecution()
     }
 
     public actual companion object {
