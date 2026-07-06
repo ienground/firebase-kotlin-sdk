@@ -1,13 +1,43 @@
 package zone.ien.firebase.abt
 
-import kotlinx.cinterop.ExperimentalForeignApi
-
 actual class AbtException(message: String?, cause: Throwable?) : Exception(message, cause) {
     constructor() : this(null, null)
     constructor(message: String?) : this(message, null)
 }
 
-actual class AbtExperimentInfo
+public actual class AbtExperimentInfo {
+    private var mockExperimentId: String = ""
+    private var mockVariantId: String = ""
 
-@OptIn(ExperimentalForeignApi::class)
-actual typealias FirebaseABTesting = swiftPMImport.zone.ien.firebase.firebase.abt.FIRExperimentController
+    public constructor(experimentId: String, variantId: String) {
+        this.mockExperimentId = experimentId
+        this.mockVariantId = variantId
+    }
+
+    public actual val experimentId: String
+        get() = mockExperimentId
+
+    public actual val variantId: String
+        get() = mockVariantId
+}
+
+public actual class FirebaseABTesting {
+    private val memoryExperiments = mutableListOf<AbtExperimentInfo>()
+
+    public actual fun replaceAllExperiments(replacementExperiments: List<Map<String, String>>, originService: String) {
+        memoryExperiments.clear()
+        replacementExperiments.forEach { map ->
+            val expId = map["experimentId"] ?: ""
+            val varId = map["variantId"] ?: ""
+            memoryExperiments.add(AbtExperimentInfo(expId, varId))
+        }
+    }
+
+    public actual fun removeAllExperiments(originService: String) {
+        memoryExperiments.clear()
+    }
+
+    public actual fun getAllExperiments(originService: String): List<AbtExperimentInfo> {
+        return memoryExperiments.toList()
+    }
+}

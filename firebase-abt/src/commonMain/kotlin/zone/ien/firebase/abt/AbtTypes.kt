@@ -1,7 +1,14 @@
 package zone.ien.firebase.abt
 
-expect class AbtException : Exception
+public expect class AbtException : Exception
 
-expect class AbtExperimentInfo
+public expect class AbtExperimentInfo {
+    public val experimentId: String
+    public val variantId: String
+}
 
-expect class FirebaseABTesting
+public expect class FirebaseABTesting {
+    public fun replaceAllExperiments(replacementExperiments: List<Map<String, String>>, originService: String)
+    public fun removeAllExperiments(originService: String)
+    public fun getAllExperiments(originService: String): List<AbtExperimentInfo>
+}
