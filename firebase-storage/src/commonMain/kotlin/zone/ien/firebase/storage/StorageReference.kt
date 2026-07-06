@@ -11,5 +11,5 @@ expect class StorageReference {
     
     suspend fun getDownloadUrl(): String
     suspend fun delete()
-    suspend fun putBytes(data: ByteArray)
+    fun putBytes(data: ByteArray): UploadTask
 }

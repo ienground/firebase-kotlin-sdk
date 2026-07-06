@@ -30,7 +30,7 @@ actual class StorageReference(private val androidReference: AndroidStorageRefere
         androidReference.delete().await()
     }
 
-    actual suspend fun putBytes(data: ByteArray) {
-        androidReference.putBytes(data).await()
+    actual fun putBytes(data: ByteArray): UploadTask {
+        return UploadTask(androidReference.putBytes(data))
     }
 }
