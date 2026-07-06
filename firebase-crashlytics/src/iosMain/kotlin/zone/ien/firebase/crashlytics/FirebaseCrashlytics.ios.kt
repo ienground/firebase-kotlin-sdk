@@ -1,9 +1,11 @@
 package zone.ien.firebase.crashlytics
 
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.coroutines.suspendCancellableCoroutine
 import platform.Foundation.NSError
 import platform.Foundation.NSLocalizedDescriptionKey
 import swiftPMImport.zone.ien.firebase.firebase.crashlytics.FIRCrashlytics
+import kotlin.coroutines.resume
 
 @OptIn(ExperimentalForeignApi::class)
 public actual class FirebaseCrashlytics private constructor(
@@ -58,6 +60,24 @@ public actual class FirebaseCrashlytics private constructor(
 
     public actual fun setCrashlyticsCollectionEnabled(enabled: Boolean) {
         iosCrashlytics.setCrashlyticsCollectionEnabled(enabled)
+    }
+
+    public actual fun deleteUnsentReports() {
+        iosCrashlytics.deleteUnsentReports()
+    }
+
+    public actual fun sendUnsentReports() {
+        iosCrashlytics.sendUnsentReports()
+    }
+
+    public actual suspend fun checkForUnsentReports(): Boolean = suspendCancellableCoroutine { cont ->
+        iosCrashlytics.checkForUnsentReportsWithCompletion { hasUnsentReports ->
+            cont.resume(hasUnsentReports)
+        }
+    }
+
+    public actual fun didCrashOnPreviousExecution(): Boolean {
+        return iosCrashlytics.didCrashDuringPreviousExecution()
     }
 
     public actual companion object {
