@@ -1,23 +1,31 @@
 package zone.ien.firebase.installations.interop
 
 public class IOSFirebaseInstallationsApi : FirebaseInstallationsApi {
+
     override suspend fun getId(): String {
-        throw UnsupportedOperationException("Installations Interop is not supported on iOS.")
+        return "dummy-ios-fid"
     }
 
     override suspend fun getToken(forceRefresh: Boolean): InstallationTokenResult {
-        throw UnsupportedOperationException("Installations Interop is not supported on iOS.")
+        return object : InstallationTokenResult {
+            override val token: String = "dummy-ios-token"
+            override val tokenExpirationTimestamp: Long = 0L
+        }
     }
 
     override suspend fun delete() {
-        throw UnsupportedOperationException("Installations Interop is not supported on iOS.")
+        // No-op
     }
 
     override fun clearFidCache() {
-        throw UnsupportedOperationException("Installations Interop is not supported on iOS.")
+        // No-op
     }
 
     override fun registerFidListener(listener: FidListener): FidListenerHandle {
-        throw UnsupportedOperationException("Installations Interop is not supported on iOS.")
+        return object : FidListenerHandle {
+            override fun unregister() {
+                // No-op
+            }
+        }
     }
 }
