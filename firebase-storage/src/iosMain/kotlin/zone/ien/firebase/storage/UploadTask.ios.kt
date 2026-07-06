@@ -18,25 +18,36 @@ public actual class UploadTask(private val iosTask: FIRStorageUploadTask) {
     public actual suspend fun await(): Unit = suspendCancellableCoroutine { cont ->
         var successHandle: String? = null
         var failureHandle: String? = null
+        var isCompleted = false
 
         val cleanup = {
             successHandle?.let { iosTask.removeObserverWithHandle(it) }
             failureHandle?.let { iosTask.removeObserverWithHandle(it) }
         }
 
-        successHandle = iosTask.observeStatus(FIRStorageTaskStatusSuccess) { _ ->
+        val sHandle = iosTask.observeStatus(FIRStorageTaskStatusSuccess) { _ ->
+            isCompleted = true
             cleanup()
-            cont.resume(Unit)
+            if (cont.isActive) cont.resume(Unit)
         }
+        successHandle = sHandle
 
-        failureHandle = iosTask.observeStatus(FIRStorageTaskStatusFailure) { snapshot ->
+        val fHandle = iosTask.observeStatus(FIRStorageTaskStatusFailure) { snapshot ->
+            isCompleted = true
             cleanup()
-            val error = snapshot?.error()
-            if (error != null) {
-                cont.resumeWithException(RuntimeException(error.localizedDescription))
-            } else {
-                cont.resumeWithException(RuntimeException("Upload task failed with unknown error"))
+            if (cont.isActive) {
+                val error = snapshot?.error()
+                if (error != null) {
+                    cont.resumeWithException(RuntimeException(error.localizedDescription))
+                } else {
+                    cont.resumeWithException(RuntimeException("Upload task failed with unknown error"))
+                }
             }
+        }
+        failureHandle = fHandle
+
+        if (isCompleted) {
+            cleanup()
         }
 
         cont.invokeOnCancellation {
@@ -45,13 +56,52 @@ public actual class UploadTask(private val iosTask: FIRStorageUploadTask) {
     }
 
     public actual fun snapshots(): Flow<UploadTaskSnapshot> = callbackFlow {
-        val handle = iosTask.observeStatus(FIRStorageTaskStatusProgress) { snapshot ->
+        var progressHandle: String? = null
+        var successHandle: String? = null
+        var failureHandle: String? = null
+        var isCompleted = false
+
+        val cleanup = {
+            progressHandle?.let { iosTask.removeObserverWithHandle(it) }
+            successHandle?.let { iosTask.removeObserverWithHandle(it) }
+            failureHandle?.let { iosTask.removeObserverWithHandle(it) }
+        }
+
+        val pHandle = iosTask.observeStatus(FIRStorageTaskStatusProgress) { snapshot ->
             if (snapshot != null) {
                 trySend(UploadTaskSnapshot(snapshot))
             }
         }
+        progressHandle = pHandle
+
+        val sHandle = iosTask.observeStatus(FIRStorageTaskStatusSuccess) { snapshot ->
+            if (snapshot != null) {
+                trySend(UploadTaskSnapshot(snapshot))
+            }
+            isCompleted = true
+            cleanup()
+            close()
+        }
+        successHandle = sHandle
+
+        val fHandle = iosTask.observeStatus(FIRStorageTaskStatusFailure) { snapshot ->
+            isCompleted = true
+            cleanup()
+            val error = snapshot?.error()
+            if (error != null) {
+                close(RuntimeException(error.localizedDescription))
+            } else {
+                close(RuntimeException("Upload task failed with unknown error"))
+            }
+        }
+        failureHandle = fHandle
+
+        if (isCompleted) {
+            cleanup()
+        }
+
         awaitClose {
-            iosTask.removeObserverWithHandle(handle)
+            cleanup()
         }
     }
 }

@@ -13,12 +13,25 @@ public actual class UploadTask(private val androidTask: AndroidUploadTask) {
     }
 
     public actual fun snapshots(): Flow<UploadTaskSnapshot> = callbackFlow {
-        val listener = OnProgressListener<AndroidUploadTask.TaskSnapshot> { snapshot ->
+        val progressListener = OnProgressListener<AndroidUploadTask.TaskSnapshot> { snapshot ->
             trySend(UploadTaskSnapshot(snapshot))
         }
-        androidTask.addOnProgressListener(listener)
+        val successListener = com.google.android.gms.tasks.OnSuccessListener<AndroidUploadTask.TaskSnapshot> { snapshot ->
+            trySend(UploadTaskSnapshot(snapshot))
+            close()
+        }
+        val failureListener = com.google.android.gms.tasks.OnFailureListener { exception ->
+            close(exception)
+        }
+
+        androidTask.addOnProgressListener(progressListener)
+        androidTask.addOnSuccessListener(successListener)
+        androidTask.addOnFailureListener(failureListener)
+
         awaitClose {
-            androidTask.removeOnProgressListener(listener)
+            androidTask.removeOnProgressListener(progressListener)
+            androidTask.removeOnSuccessListener(successListener)
+            androidTask.removeOnFailureListener(failureListener)
         }
     }
 }
