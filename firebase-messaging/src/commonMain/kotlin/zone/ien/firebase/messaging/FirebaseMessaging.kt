@@ -4,6 +4,7 @@ import zone.ien.firebase.FirebaseApp
 
 public expect class FirebaseMessaging {
     public var isAutoInitEnabled: Boolean
+    public var isDeliveryMetricsExportToBigQueryEnabled: Boolean
 
     public suspend fun getToken(): String?
     public suspend fun deleteToken()
