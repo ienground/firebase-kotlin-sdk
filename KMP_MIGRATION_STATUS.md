@@ -50,7 +50,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-messaging-directboot`                       | `sdk` | 🟢 Migrated |  Android, iOS     | Android Direct Boot compatibility support. |
 | `firebase-inappmessaging`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-inappmessaging-display`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS Memory-based Actual). |
-| `firebase-installations-interop`                      | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
+| `firebase-installations-interop`                      | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS Memory-based Actual). |
 | `firebase-installations`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Installations SDK wrapper. |
 | `firebase-ml-modeldownloader`                         | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS Memory-based Actual). |
 | `firebase-perf`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Performance Monitoring wrapper. |
