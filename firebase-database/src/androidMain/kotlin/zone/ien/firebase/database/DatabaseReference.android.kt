@@ -2,7 +2,7 @@ package zone.ien.firebase.database
 
 import com.google.firebase.database.DatabaseReference as AndroidDatabaseReference
 
-public actual class DatabaseReference(private val androidReference: AndroidDatabaseReference) {
+public actual class DatabaseReference(private val androidReference: AndroidDatabaseReference) : Query(androidReference) {
 
     public actual val key: String?
         get() = androidReference.key

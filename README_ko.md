@@ -23,29 +23,31 @@
 
 ### 서비스 지원 현황 매트릭스
 
-| Firebase 기능 명칭 | Android 지원 | iOS 지원 | 완성도 | 내부 구현 메커니즘 |
-| :--- | :---: | :---: | :---: | :--- |
-| **Authentication** (`firebase-auth`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Firestore** (`firebase-firestore`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Realtime Database** (`firebase-database`) | 🟢 지원 | 🟢 지원 | **85%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Storage** (`firebase-storage`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Functions** (`firebase-functions`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Remote Config** (`firebase-config`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Crashlytics** (`firebase-crashlytics`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Messaging** (`firebase-messaging`) | 🟢 지원 | 🟢 지원 | **85%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Performance Monitoring** (`firebase-perf`) | 🟢 지원 | 🟢 지원 | **80%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Installations** (`firebase-installations`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **App Check** (`firebase-appcheck`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **A/B Testing** (`firebase-abt`) | 🟢 지원 | 🟢 지원 | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Sessions** (`firebase-sessions`) | 🟢 지원 | 🟢 지원 | **95%** | iOS SwiftPM SDK 링킹 완료 (백그라운드 세션 텔레메트리 자동 동작) |
-| **Encoders & Decoders** (`firebase-encoders`) | 🟢 지원 | 🟢 지원 | **95%** | Pure Kotlin 직렬화 파이프라인 |
-| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 모델 조회/삭제 시뮬레이션 지원 (네이티브 링킹 미지원) |
-| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 가상 Gemini 응답 시뮬레이터 지원 (네이티브 링킹 미지원) |
-| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 가상 온디바이스/하이브리드 AI 추론 시뮬레이션 지원 (네이티브 링킹 미지원) |
-| **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원 (진행률 추적 미지원) |
-| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 메타데이터 Actual 지원 (네이티브 링킹 미지원) |
-| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | 🟢 지원 | **90%** | Native GMS / iOS SwiftPM SDK 위임 (Core 기능 실제 구현) |
-| **In-App Messaging Display** (`firebase-inappmessaging-display`) | 🟢 지원 | 🟡 부분 지원 | **80%** (iOS Partial) | iOS 메모리 기반 가상 리스너 등록 시뮬레이션 지원 (네이티브 링킹 미지원) |
+| Firebase 기능 명칭 | Android 지원 | Android SDK 버전 | iOS 지원 | iOS SDK 버전 | 완성도 | 내부 구현 메커니즘 |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **Authentication** (`firebase-auth`) | 🟢 지원 | `24.1.0` | 🟢 지원 | `12.15.0` | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Firestore** (`firebase-firestore`) | 🟢 지원 | `26.4.0` | 🟢 지원 | `12.15.0` | **92%** | Native GMS / iOS SwiftPM SDK 위임, 쿼리 빌더 포함 |
+| **Realtime Database** (`firebase-database`) | 🟢 지원 | `22.0.1` | 🟢 지원 | `12.15.0` | **85%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Storage** (`firebase-storage`) | 🟢 지원 | `22.0.1` | 🟢 지원 | `12.15.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Functions** (`firebase-functions`) | 🟢 지원 | `22.1.1` | 🟢 지원 | `12.15.0` | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Remote Config** (`firebase-config`) | 🟢 지원 | BoM `34.15.0` | 🟢 지원 | `12.15.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Crashlytics** (`firebase-crashlytics`) | 🟢 지원 | `20.0.6` | 🟢 지원 | `12.15.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Messaging** (`firebase-messaging`) | 🟢 지원 | `25.1.0` | 🟢 지원 | `12.15.0` | **85%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Performance Monitoring** (`firebase-perf`) | 🟢 지원 | `22.0.5` | 🟢 지원 | `12.15.0` | **80%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Installations** (`firebase-installations`) | 🟢 지원 | `19.1.1` | 🟢 지원 | `12.15.0` | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **App Check** (`firebase-appcheck`) | 🟢 지원 | `19.2.0` | 🟢 지원 | `12.15.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **A/B Testing** (`firebase-abt`) | 🟢 지원 | `23.0.1` | 🟢 지원 | `12.15.0` | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Sessions** (`firebase-sessions`) | 🟢 지원 | `3.0.6` | 🟢 지원 | `12.15.0` | **95%** | iOS SwiftPM SDK 링킹 완료, 백그라운드 세션 텔레메트리 자동 동작 |
+| **Encoders & Decoders** (`firebase-encoders`) | 🟢 지원 | N/A | 🟢 지원 | N/A | **95%** | Pure Kotlin 직렬화 파이프라인 |
+| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | `26.0.2` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 모델 조회/삭제 시뮬레이션 지원, 네이티브 링킹 미지원 |
+| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | `17.13.0` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 가상 Gemini 응답 시뮬레이터 지원, 네이티브 링킹 미지원 |
+| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | `16.0.0-beta03` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 가상 온디바이스/하이브리드 AI 추론 시뮬레이션 지원, 네이티브 링킹 미지원 |
+| **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | `16.0.0-beta20` | 🟡 부분 지원 | `12.15.0` | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원, 진행률 추적 미지원 |
+| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | `17.3.1` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 메타데이터 Actual 지원, 네이티브 링킹 미지원 |
+| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | `22.0.3` | 🟢 지원 | `12.15.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임, Core 기능 실제 구현 |
+| **In-App Messaging Display** (`firebase-inappmessaging-display`) | 🟢 지원 | `22.0.3` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 가상 리스너 등록 시뮬레이션 지원, 네이티브 링킹 미지원 |
+
+Android 버전은 `gradle/libs.versions.toml` 기준입니다. BoM 관리 항목은 Firebase Android BoM `34.15.0`을 표기했습니다. iOS 네이티브 연동 항목은 Firebase Apple SDK `12.15.0` 기준이며, `Memory actual` 항목은 KMP 공통 코드에서 Apple 네이티브 SDK를 직접 링크하지 않습니다.
 
 ---
 
@@ -58,11 +60,11 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Core Common Firebase 기본 모듈
-            implementation("zone.ien.firebase:firebase-common:0.9.0")
+            implementation("zone.ien.firebase:firebase-common:1.0.0-beta01")
             
             // 사용하고자 하는 기능 래퍼 추가
-            implementation("zone.ien.firebase:firebase-auth:0.9.0")
-            implementation("zone.ien.firebase:firebase-firestore:0.9.0")
+            implementation("zone.ien.firebase:firebase-auth:1.0.0-beta01")
+            implementation("zone.ien.firebase:firebase-firestore:1.0.0-beta01")
         }
     }
 }
@@ -93,6 +95,8 @@ xcodebuild -resolvePackageDependencies -workspace iosApp.xcworkspace -scheme ios
 1. **안드로이드 (Android)**: 본인의 `google-services.json` 파일을 `example/androidApp/` 디렉터리 내부에 추가하십시오.
 2. **iOS**: 본인의 `GoogleService-Info.plist` 파일을 `example/iosApp/` 프로젝트 내부(일반적으로 `iosApp/` 폴더 내부 및 Xcode 프로젝트 리소스 등록)에 추가한 뒤 빌드하십시오.
 
+Firestore 샘플 화면에는 실제 실행 가능한 쿼리 테스트 패널이 포함됩니다. 화면 진입 시 `query_samples` 컬렉션에 `name`, `score`, `age`, `category`, `tags`, `createdAt` 필드를 가진 테스트 문서를 자동 시드하고, 앱 안에서 `where`, `orderBy`, `limit`, `limitToLast`, 문서 cursor 기반 페이지네이션을 바로 검증할 수 있습니다.
+
 ---
 
 ## 사용 예시
@@ -108,8 +112,8 @@ import zone.ien.firebase.initialize
 val app = Firebase.initialize(context) // FirebasePlatformContext
 ```
 
-### Firestore 데이터 읽기/쓰기
-코틀린 멀티플랫폼 공통 소스셋에서 직접 Firestore 문서를 조작합니다:
+### Firestore 데이터 읽기/쓰기 및 쿼리
+코틀린 멀티플랫폼 공통 소스셋에서 직접 Firestore 문서와 쿼리를 조작합니다:
 
 ```kotlin
 import zone.ien.firebase.firestore.firestore
@@ -124,7 +128,16 @@ document.set(mapOf("name" to "홍길동", "age" to 30))
 // Kotlin Coroutines 기반으로 데이터 가져오기 (Awaiting)
 val snapshot = document.get()
 val userName = snapshot.get<String>("name")
+
+// where, orderBy, limit 조합으로 쿼리 실행
+val users = db.collection("users")
+    .where("age", WhereOperator.GREATER_THAN_OR_EQUAL, 21)
+    .orderBy("score", QueryDirection.DESCENDING)
+    .limit(10)
+    .get()
 ```
+
+현재 쿼리 래퍼는 equality, inequality, comparison(`<`, `<=`, `>`, `>=`), `array-contains`, `array-contains-any`, `in`, `not-in`, 오름차순/내림차순 `orderBy`, `limit`, `limitToLast`, 문서 snapshot cursor(`startAt`, `startAfter`, `endAt`, `endBefore`)를 지원합니다. Android와 iOS 모두 공식 Firebase SDK에 직접 위임합니다. 지원되지 않는 조합, 복합 인덱스 필요, 플랫폼 SDK 오류는 숨기지 않고 호출자와 샘플 앱 화면에 표시합니다.
 
 ---
 

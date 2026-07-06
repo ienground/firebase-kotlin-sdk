@@ -73,6 +73,8 @@ public actual class FirebaseUser private actual constructor() {
 
     public actual suspend fun updatePassword(password: String): Unit = suspendCancellableCoroutine { cont ->
         iosUser.updatePassword(password) { error ->
+    public actual suspend fun reauthenticate(credential: AuthCredential): Unit = suspendCancellableCoroutine { cont ->
+        iosUser.reauthenticateWithCredential(credential.iosCredential) { _, error ->
             if (error != null) {
                 cont.resumeWithException(Exception(error.localizedDescription))
             } else {
@@ -98,6 +100,19 @@ public actual class FirebaseUser private actual constructor() {
 
     public actual suspend fun sendEmailVerification(): Unit = suspendCancellableCoroutine { cont ->
         iosUser.sendEmailVerificationWithCompletion { error ->
+            if (error != null) {
+                cont.resumeWithException(Exception(error.localizedDescription))
+            } else {
+                cont.resume(Unit)
+            }
+        }
+    }
+
+    public actual suspend fun updateProfile(request: UserProfileChangeRequest): Unit = suspendCancellableCoroutine { cont ->
+        val changeRequest = iosUser.profileChangeRequest()
+        changeRequest.displayName = request.displayName
+        changeRequest.photoURL = request.photoUrl?.let { platform.Foundation.NSURL.URLWithString(it) }
+        changeRequest.commitChangesWithCompletion { error ->
             if (error != null) {
                 cont.resumeWithException(Exception(error.localizedDescription))
             } else {

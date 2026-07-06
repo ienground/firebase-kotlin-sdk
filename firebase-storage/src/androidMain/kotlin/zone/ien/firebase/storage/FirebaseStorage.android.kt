@@ -14,6 +14,10 @@ actual class FirebaseStorage(private val androidStorage: AndroidFirebaseStorage)
         return StorageReference(androidStorage.getReferenceFromUrl(url))
     }
 
+    actual fun useEmulator(host: String, port: Int) {
+        androidStorage.useEmulator(host, port)
+    }
+
     actual companion object {
         actual fun getInstance(): FirebaseStorage {
             return FirebaseStorage(AndroidFirebaseStorage.getInstance())
