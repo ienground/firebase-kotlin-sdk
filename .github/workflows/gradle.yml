@@ -35,7 +35,7 @@ jobs:
       with:
         path: |
           ~/.konan
-        key: ${{ runner.os }}-konan-${{ hashFiles('**/*.gradle.kts', '**/gradle.properties') }}
+        key: ${{ runner.os }}-konan-${{ hashFiles('build.gradle.kts', 'settings.gradle.kts', 'gradle/libs.versions.toml', 'gradle.properties') }}
         restore-keys: |
           ${{ runner.os }}-konan-
     - name: Build with Gradle
