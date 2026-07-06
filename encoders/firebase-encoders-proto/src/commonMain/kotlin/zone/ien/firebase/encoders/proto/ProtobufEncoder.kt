@@ -41,7 +41,13 @@ public class ProtobufEncoder : EncoderConfig<ProtobufEncoder> {
             valueEncoders,
             fallbackEncoder
         )
-        context.internalEncode(value)
+        val objEncoder = objectEncoders[value::class]
+        if (objEncoder != null) {
+            @Suppress("UNCHECKED_CAST")
+            (objEncoder as ObjectEncoder<Any>).encode(value, context)
+        } else {
+            context.internalEncode(value)
+        }
     }
 }
 
