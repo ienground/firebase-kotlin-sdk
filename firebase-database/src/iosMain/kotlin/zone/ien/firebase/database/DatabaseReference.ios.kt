@@ -3,6 +3,7 @@ package zone.ien.firebase.database
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import swiftPMImport.zone.ien.firebase.firebase.database.FIRDatabaseReference
+import swiftPMImport.zone.ien.firebase.firebase.database.FIRTransactionResult
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -55,5 +56,31 @@ public actual class DatabaseReference(private val iosReference: FIRDatabaseRefer
                 }
             }
         }
+    }
+
+    public actual suspend fun runTransaction(handler: (MutableData) -> TransactionResult): TransactionResult = suspendCancellableCoroutine { cont ->
+        iosReference.runTransactionBlock({ mutableData ->
+            if (mutableData != null) {
+                val result = handler(MutableData(mutableData))
+                when (result) {
+                    TransactionResult.SUCCESS -> FIRTransactionResult.successWithValue(mutableData)
+                    TransactionResult.ABORT -> FIRTransactionResult.abort()
+                }
+            } else {
+                FIRTransactionResult.abort()
+            }
+        }) { error, committed, snapshot ->
+            if (cont.isActive) {
+                if (error != null) {
+                    cont.resumeWithException(DatabaseException(error.localizedDescription, null))
+                } else {
+                    cont.resume(if (committed) TransactionResult.SUCCESS else TransactionResult.ABORT)
+                }
+            }
+        }
+    }
+
+    public actual fun keepSynced(keepSynced: Boolean) {
+        iosReference.keepSynced(keepSynced)
     }
 }
