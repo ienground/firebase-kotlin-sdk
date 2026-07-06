@@ -51,7 +51,7 @@ public class JsonDataEncoderBuilder : EncoderConfig<JsonDataEncoderBuilder> {
                     fallbackEncoder,
                     ignoreNullValues
                 )
-                context.encode(value)
+                context.encodeRoot(value)
             }
         }
     }
@@ -66,6 +66,29 @@ private class JsonValueObjectEncoderContext(
 ) : ObjectEncoderContext, ValueEncoderContext {
 
     private var first = true
+
+    fun encodeRoot(value: Any?) {
+        if (value == null) {
+            encode(null)
+            return
+        }
+
+        val objEncoder = objectEncoders[value::class]
+        if (objEncoder != null) {
+            encode(value)
+            return
+        }
+
+        val valEncoder = valueEncoders[value::class]
+        if (valEncoder != null) {
+            @Suppress("UNCHECKED_CAST")
+            (valEncoder as ValueEncoder<Any>).encode(value, this)
+        } else if (fallbackEncoder != null) {
+            fallbackEncoder.encode(value, this)
+        } else {
+            encode(value)
+        }
+    }
 
     fun encode(value: Any?) {
         if (value == null) {

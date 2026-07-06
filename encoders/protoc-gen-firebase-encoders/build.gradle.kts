@@ -14,6 +14,10 @@ repositories {
     mavenCentral()
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
     // Explicit version is required since protobuf-java is not part of Firebase BoM
