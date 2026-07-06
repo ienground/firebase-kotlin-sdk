@@ -60,7 +60,21 @@ kotlin {
                 product("FirebaseFunctions"),
                 product("FirebaseAppCheck"),
                 product("FirebaseRemoteConfig"),
-                product("FirebaseMessaging")
+                product("FirebaseMessaging"),
+                product("FirebaseAppDistribution-Beta")
+            ),
+            importedClangModules = listOf(
+                "FirebaseCore",
+                "FirebaseFirestoreInternal",
+                "FirebaseAuth",
+                "FirebaseCrashlytics",
+                "FirebaseDatabase",
+                "FirebaseStorage",
+                "FirebaseFunctions",
+                "FirebaseAppCheck",
+                "FirebaseRemoteConfig",
+                "FirebaseMessaging",
+                "FirebaseAppDistribution"
             )
         )
     }
@@ -133,7 +147,8 @@ tasks.register("createFirebaseFrameworkSymlinks") {
         val frameworks = listOf(
             "FirebaseCore", "FirebaseFirestore", "FirebaseAuth", "FirebaseCrashlytics",
             "FirebaseDatabase", "FirebaseStorage", "FirebaseFunctions", "FirebaseAppCheck",
-            "FirebaseAppCheckInterop", "FirebaseCoreExtension", "FirebaseRemoteConfig", "FirebaseMessaging"
+            "FirebaseAppCheckInterop", "FirebaseCoreExtension", "FirebaseRemoteConfig", "FirebaseMessaging",
+            "FirebaseAppDistribution"
         )
 
         val buildTypes = listOf("Debug", "Release")
