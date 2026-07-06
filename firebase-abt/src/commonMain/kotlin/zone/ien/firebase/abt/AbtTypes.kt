@@ -2,7 +2,7 @@ package zone.ien.firebase.abt
 
 public expect class AbtException : Exception
 
-public expect class AbtExperimentInfo {
+public expect class AbtExperimentInfo internal constructor() {
     public val experimentId: String
     public val variantId: String
 }
