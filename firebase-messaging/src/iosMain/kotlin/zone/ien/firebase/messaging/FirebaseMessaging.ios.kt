@@ -16,6 +16,10 @@ public actual class FirebaseMessaging(private val delegate: FIRMessaging) {
             delegate.setAutoInitEnabled(value)
         }
 
+    public actual var isDeliveryMetricsExportToBigQueryEnabled: Boolean
+        get() = false
+        set(value) {}
+
     public actual suspend fun getToken(): String? = suspendCancellableCoroutine { cont ->
         delegate.tokenWithCompletion { token, error ->
             if (cont.isActive) {
