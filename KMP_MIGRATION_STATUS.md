@@ -84,7 +84,8 @@ To convert any pending module (`firebase-xxx`) into KMP:
 
 ## 📜 Recent Migration History
 
-### 2026-07-06: Missing Core APIs across Modules Migrated (`firebase-auth`, `firebase-storage`, `firebase-functions`, `firebase-crashlytics`, `firebase-database`, `firebase-messaging`)
+### 2026-07-06: Missing Core APIs across Modules Migrated (`firebase-auth`, `firebase-storage`, `firebase-functions`, `firebase-crashlytics`, `firebase-database`, `firebase-messaging`, `firebase-abt`)
+* **Firebase AB Testing Expansion (Issue #236)**: Replaced blank KMP stubs with concrete experiment control APIs (`replaceAllExperiments`, `removeAllExperiments`, `getAllExperiments`) on Android GMS delegate and iOS memory-based fallback actual.
 * **Firebase Messaging Expansion (Issue #234)**: Added `isDeliveryMetricsExportToBigQueryEnabled` property config to control data export on Android, with a fallback compatibility property implementation on iOS.
 * **Firebase Database Expansion (Issue #232)**: Added transactional update helper API `runTransaction(handler)` along with expect/actual definitions for `MutableData` and `TransactionResult`. Implemented `keepSynced(keepSynced)` for local cache synchronization persistence.
 * **Firebase Crashlytics Expansion (Issue #230)**: Added report control APIs (`checkForUnsentReports()`, `sendUnsentReports()`, and `deleteUnsentReports()`) for user-consent report management. Added `didCrashOnPreviousExecution()` to query crash status from the previous application run.
