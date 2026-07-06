@@ -13,6 +13,8 @@ public expect class FirebaseAuth private constructor() {
     public suspend fun createUserWithEmailAndPassword(email: String, password: String): AuthResult
     public suspend fun signInWithCredential(credential: AuthCredential): AuthResult
     public fun signOut()
+    public fun useEmulator(host: String, port: Int)
+    public suspend fun sendPasswordResetEmail(email: String)
 
     public companion object {
         public fun getInstance(): FirebaseAuth
