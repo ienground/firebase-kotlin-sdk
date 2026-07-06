@@ -47,7 +47,7 @@ kotlin {
         }
 
         val androidMain by getting {
-
+            kotlin.setSrcDirs(listOf("src/androidMain/kotlin"))
         }
 
         commonTest.dependencies {
