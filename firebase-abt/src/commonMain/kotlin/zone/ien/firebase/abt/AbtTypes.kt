@@ -7,7 +7,7 @@ public expect class AbtExperimentInfo internal constructor() {
     public val variantId: String
 }
 
-public expect class FirebaseABTesting {
+public expect class FirebaseABTesting internal constructor() {
     public fun replaceAllExperiments(replacementExperiments: List<Map<String, String>>, originService: String)
     public fun removeAllExperiments(originService: String)
     public fun getAllExperiments(originService: String): List<AbtExperimentInfo>
