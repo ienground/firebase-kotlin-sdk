@@ -89,6 +89,16 @@ To convert any pending module (`firebase-xxx`) into KMP:
 * **Supported Query Range**: Exposed equality, inequality, comparison (`<`, `<=`, `>`, `>=`), `array-contains`, `array-contains-any`, `in`, `not-in`, ascending/descending ordering, and limit variants. Unsupported combinations and missing composite index errors remain SDK-owned and are surfaced to callers.
 * **Sample App Integration**: Expanded `FirestoreScreen.kt` with a Query Testing panel, automatic/manual seed data for `query_samples`, condition/sort/limit controls, result count and field display, visible error reporting, and `startAfter` load-more pagination using the last returned document snapshot.
 * **Platform Status**: Sample UI marks Android and iOS as Supported for live Firestore query execution. No stub or memory-based emulation is used for Firestore query APIs; both targets call native SDK query builders.
+* 
+### 2026-07-06: Missing Core APIs across Modules Migrated (`firebase-auth`, `firebase-storage`, `firebase-functions`, `firebase-crashlytics`, `firebase-database`, `firebase-messaging`, `firebase-abt`)
+* **Firebase AB Testing Expansion (Issue #236)**: Replaced blank KMP stubs with concrete experiment control APIs (`replaceAllExperiments`, `removeAllExperiments`, `getAllExperiments`) on Android GMS delegate and iOS memory-based fallback actual.
+* **Firebase Messaging Expansion (Issue #234)**: Added `isDeliveryMetricsExportToBigQueryEnabled` property config to control data export on Android, with a fallback compatibility property implementation on iOS.
+* **Firebase Database Expansion (Issue #232)**: Added transactional update helper API `runTransaction(handler)` along with expect/actual definitions for `MutableData` and `TransactionResult`. Implemented `keepSynced(keepSynced)` for local cache synchronization persistence.
+* **Firebase Crashlytics Expansion (Issue #230)**: Added report control APIs (`checkForUnsentReports()`, `sendUnsentReports()`, and `deleteUnsentReports()`) for user-consent report management. Added `didCrashOnPreviousExecution()` to query crash status from the previous application run.
+* **Firebase Auth Core Expansion (Issue #228)**: Added `EmailAuthProvider` to generate credentials from email/password inputs. Implemented `link(credential)` for merging auth providers. Added `updateEmail(email)` and `updatePassword(password)` for user credential settings.
+* **Firebase Auth Improvements (Issue #222)**: Added `useEmulator(host, port)` configuration support. Implemented core user management APIs: `reauthenticate(credential)`, `unlink(provider)`, `sendEmailVerification()`, and `updateProfile(request)` with `UserProfileChangeRequest` builder.
+* **Firebase Storage Improvements (Issue #224)**: Added `useEmulator(host, port)` configuration support. Re-designed `putBytes(data)` to return an `UploadTask` and implemented progressive tracking via `UploadTask.snapshots()` flow and `await()` completion hooks on both platforms.
+* **Firebase Functions Improvements (Issue #226)**: Added `useEmulator(host, port)` configuration support across common and platform delegates.
 
 ### 2026-07-06: `firebase-components:firebase-dynamic-module-support` Migrated & iOS Memory-based Actual
 * **Final 50th Module Migration Completed**: Marked the 50th final module as fully migrated.
