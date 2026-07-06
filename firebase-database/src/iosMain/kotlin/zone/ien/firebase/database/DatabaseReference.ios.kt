@@ -59,19 +59,28 @@ public actual class DatabaseReference(private val iosReference: FIRDatabaseRefer
     }
 
     public actual suspend fun runTransaction(handler: (MutableData) -> TransactionResult): TransactionResult = suspendCancellableCoroutine { cont ->
+        var caughtException: Throwable? = null
         iosReference.runTransactionBlock({ mutableData ->
             if (mutableData != null) {
-                val result = handler(MutableData(mutableData))
-                when (result) {
-                    TransactionResult.SUCCESS -> FIRTransactionResult.successWithValue(mutableData)
-                    TransactionResult.ABORT -> FIRTransactionResult.abort()
+                try {
+                    val result = handler(MutableData(mutableData))
+                    when (result) {
+                        TransactionResult.SUCCESS -> FIRTransactionResult.successWithValue(mutableData)
+                        TransactionResult.ABORT -> FIRTransactionResult.abort()
+                    }
+                } catch (e: Throwable) {
+                    caughtException = e
+                    FIRTransactionResult.abort()
                 }
             } else {
                 FIRTransactionResult.abort()
             }
         }) { error, committed, snapshot ->
             if (cont.isActive) {
-                if (error != null) {
+                val exception = caughtException
+                if (exception != null) {
+                    cont.resumeWithException(exception)
+                } else if (error != null) {
                     cont.resumeWithException(DatabaseException(error.localizedDescription, null))
                 } else {
                     cont.resume(if (committed) TransactionResult.SUCCESS else TransactionResult.ABORT)

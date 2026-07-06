@@ -33,20 +33,31 @@ public actual class DatabaseReference(private val androidReference: AndroidDatab
      }
 
     public actual suspend fun runTransaction(handler: (MutableData) -> TransactionResult): TransactionResult = suspendCancellableCoroutine { cont ->
+        var caughtException: Throwable? = null
         androidReference.runTransaction(object : AndroidTransaction.Handler {
             override fun doTransaction(currentData: com.google.firebase.database.MutableData): AndroidTransaction.Result {
-                val result = handler(MutableData(currentData))
-                return when (result) {
-                    TransactionResult.SUCCESS -> AndroidTransaction.success(currentData)
-                    TransactionResult.ABORT -> AndroidTransaction.abort()
+                return try {
+                    val result = handler(MutableData(currentData))
+                    when (result) {
+                        TransactionResult.SUCCESS -> AndroidTransaction.success(currentData)
+                        TransactionResult.ABORT -> AndroidTransaction.abort()
+                    }
+                } catch (e: Throwable) {
+                    caughtException = e
+                    AndroidTransaction.abort()
                 }
             }
 
             override fun onComplete(error: DatabaseError?, committed: Boolean, currentData: com.google.firebase.database.DataSnapshot?) {
-                if (error != null) {
-                    cont.resumeWithException(error.toException())
-                } else {
-                    cont.resume(if (committed) TransactionResult.SUCCESS else TransactionResult.ABORT)
+                if (cont.isActive) {
+                    val exception = caughtException
+                    if (exception != null) {
+                        cont.resumeWithException(exception)
+                    } else if (error != null) {
+                        cont.resumeWithException(error.toException())
+                    } else {
+                        cont.resume(if (committed) TransactionResult.SUCCESS else TransactionResult.ABORT)
+                    }
                 }
             }
         })
