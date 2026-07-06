@@ -40,7 +40,8 @@ kotlin {
             baseName = "FirebaseInAppMessaging"
             isStatic = true
         }
-    }    // Kotlin 2.4.0 SwiftPM Integration Configuration for In-App Messaging ObjC wrapper
+    }
+    // Kotlin 2.4.0 SwiftPM Integration Configuration for In-App Messaging ObjC wrapper
     swiftPMDependencies {
         discoverClangModulesImplicitly.set(false)
         swiftPackage(
