@@ -42,9 +42,9 @@ public actual open class Query(private val iosQuery: FIRDatabaseQuery) {
             },
             withCancelBlock = { error ->
                 if (error != null) {
-                    close(RuntimeException(error.localizedDescription))
+                    close(DatabaseException(error.localizedDescription, null))
                 } else {
-                    close(RuntimeException("Unknown cancel error"))
+                    close(DatabaseException("Unknown cancel error", null))
                 }
             }
         )
