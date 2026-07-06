@@ -7,7 +7,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 @OptIn(ExperimentalForeignApi::class)
-public actual class DatabaseReference(private val iosReference: FIRDatabaseReference) {
+public actual class DatabaseReference(private val iosReference: FIRDatabaseReference) : Query(iosReference) {
 
     public actual val key: String?
         get() = iosReference.key()

@@ -5,4 +5,5 @@ expect class DocumentSnapshot {
     fun getExists(): Boolean
     fun getData(): Map<String, Any>?
     fun get(field: String): Any?
+    internal fun nativeSnapshot(): Any
 }

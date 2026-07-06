@@ -18,7 +18,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 | Subproject Path                                       | Type  | KMP Support | Targets Supported | Notes                    |
 |:------------------------------------------------------|:-----:|:-----------:|:-----------------:|:-------------------------|
-| `firebase-firestore`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
+| `firebase-firestore`                                  | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM), query builders and sample query testing. |
 | `appcheck:firebase-appcheck`                          | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `appcheck:firebase-appcheck-debug`                    | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `appcheck:firebase-appcheck-debug-testing`            | `sdk` | 🟢 Migrated |  Android, iOS     | KMP internal support shell. |
@@ -84,6 +84,12 @@ To convert any pending module (`firebase-xxx`) into KMP:
 
 ## 📜 Recent Migration History
 
+### 2026-07-06: `firebase-firestore` Query API and Sample Query Testing
+* **Query Wrapper Expansion**: Added common `where`, `orderBy`, `limit`, `limitToLast`, and document cursor APIs (`startAt`, `startAfter`, `endAt`, `endBefore`) with Android and iOS actual implementations delegated to official Firebase Firestore SDKs.
+* **Supported Query Range**: Exposed equality, inequality, comparison (`<`, `<=`, `>`, `>=`), `array-contains`, `array-contains-any`, `in`, `not-in`, ascending/descending ordering, and limit variants. Unsupported combinations and missing composite index errors remain SDK-owned and are surfaced to callers.
+* **Sample App Integration**: Expanded `FirestoreScreen.kt` with a Query Testing panel, automatic/manual seed data for `query_samples`, condition/sort/limit controls, result count and field display, visible error reporting, and `startAfter` load-more pagination using the last returned document snapshot.
+* **Platform Status**: Sample UI marks Android and iOS as Supported for live Firestore query execution. No stub or memory-based emulation is used for Firestore query APIs; both targets call native SDK query builders.
+* 
 ### 2026-07-06: Missing Core APIs across Modules Migrated (`firebase-auth`, `firebase-storage`, `firebase-functions`, `firebase-crashlytics`, `firebase-database`, `firebase-messaging`, `firebase-abt`)
 * **Firebase AB Testing Expansion (Issue #236)**: Replaced blank KMP stubs with concrete experiment control APIs (`replaceAllExperiments`, `removeAllExperiments`, `getAllExperiments`) on Android GMS delegate and iOS memory-based fallback actual.
 * **Firebase Messaging Expansion (Issue #234)**: Added `isDeliveryMetricsExportToBigQueryEnabled` property config to control data export on Android, with a fallback compatibility property implementation on iOS.
