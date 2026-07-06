@@ -63,14 +63,9 @@ actual class StorageReference(private val iosReference: FIRStorageReference) {
         }
     }
 
-    actual suspend fun putBytes(data: ByteArray): Unit = suspendCancellableCoroutine { cont ->
+    actual fun putBytes(data: ByteArray): UploadTask {
         val nsData = data.toNSData()
-        iosReference.putData(nsData, metadata = null) { _, error ->
-            if (error != null) {
-                cont.resumeWithException(RuntimeException(error.localizedDescription))
-            } else {
-                cont.resume(Unit)
-            }
-        }
+        val iosTask = iosReference.putData(nsData, metadata = null) { _, _ -> }
+        return UploadTask(iosTask)
     }
 }

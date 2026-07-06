@@ -13,6 +13,10 @@ actual class FirebaseFunctions(private val androidFunctions: AndroidFirebaseFunc
         return HttpsCallableReference(androidFunctions.getHttpsCallableFromUrl(java.net.URL(url)))
     }
 
+    actual fun useEmulator(host: String, port: Int) {
+        androidFunctions.useEmulator(host, port)
+    }
+
     actual companion object {
         actual fun getInstance(): FirebaseFunctions {
             return FirebaseFunctions(AndroidFirebaseFunctions.getInstance())
