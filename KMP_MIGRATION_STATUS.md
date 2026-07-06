@@ -8,8 +8,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 - **Total Modules**: 50
 - **KMP Support State**:
-  - 🟢 **Fully Migrated**: 45 (Android & iOS fully linked)
-  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 5 (iOS actual implemented as stubs)
+  - 🟢 **Fully Migrated**: 46 (Android & iOS fully linked)
+  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 4 (iOS actual implemented as stubs)
   - 🔴 **Android Native Only**: 0 (All modules compiled via KMP target)
 
 ---
@@ -64,7 +64,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `encoders:firebase-encoders-reflective`               | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Reflective encoder helper (capability differentiated). |
 | `encoders:firebase-decoders-json`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP JSON decoder implementation (pure Kotlin). |
 | `encoders:protoc-gen-firebase-encoders`               | `sdk` | 🟢 Migrated |  JVM Tooling      | JVM-only protoc generator tooling compiler plugin. |
-| `transport:transport-api`                             | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport contract (iOS stub). |
+| `transport:transport-api`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP transport contract (iOS Memory-based Actual). |
 | `transport:transport-backend-cct`                     | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport backend contract (iOS stub). |
 | `transport:transport-runtime`                         | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport core runtime contract (iOS stub). |
 | `transport:transport-runtime-testing`                 | `sdk` | 🟡 Partially|  Android, iOS     | KMP transport internal testing utility stub (iOS stub). |
@@ -83,6 +83,10 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-06: `transport:transport-api` Migrated & iOS Memory-based Actual
+* **Transport API Memory-based actual**: Replaced the iOS stub implementation with a simulated actual implementation inside `Actuals.ios.kt` (renamed from `Stubs.ios.kt`), including a memory event data wrapper `IOSEventWrapper` and successful completion callback callbacks.
+* **Exceptions eliminated**: Removed all `UnsupportedOperationException` errors on iOS to secure crash safety and guarantee shared common code visibility.
 
 ### 2026-07-06: `firebase-installations-interop` Migrated & iOS Memory-based Actual
 * **Installations Interop Memory-based actual**: Replaced the iOS stub implementation in `IOSFirebaseInstallationsApi.kt` with a memory-based dummy implementation, returning mock values (`dummy-ios-fid`, `dummy-ios-token`) instead of throwing exceptions.
