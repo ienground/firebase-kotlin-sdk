@@ -84,7 +84,8 @@ To convert any pending module (`firebase-xxx`) into KMP:
 
 ## 📜 Recent Migration History
 
-### 2026-07-06: Firebase Auth User Hotfix & Firestore Query API
+### 2026-07-06: Firebase Database leveldb Hotfix & Auth User Hotfix
+* **Firebase Database leveldb Hotfix**: Resolved Clang compiler header search path failure for libc++ (`<cstddef>`/`<cfloat>` missing standard headers) inside the leveldb dependency on iOS Simulator targets by disabling implicit Clang modules discovery and explicitly restricting imported modules to `FirebaseDatabase` and `FirebaseDatabaseInternal`. Fixed `FIRApp` type mismatch via explicit casting.
 * **Firebase Auth User Hotfix**: Resolved duplicate member declarations and restored missing `link`, `updateEmail`, and `updatePassword` APIs on Android GMS and iOS SwiftPM actuals without syntax and compiler issues.
 * **Query Wrapper Expansion**: Added common `where`, `orderBy`, `limit`, `limitToLast`, and document cursor APIs (`startAt`, `startAfter`, `endAt`, `endBefore`) with Android and iOS actual implementations delegated to official Firebase Firestore SDKs.
 * **Supported Query Range**: Exposed equality, inequality, comparison (`<`, `<=`, `>`, `>=`), `array-contains`, `array-contains-any`, `in`, `not-in`, ascending/descending ordering, and limit variants. Unsupported combinations and missing composite index errors remain SDK-owned and are surfaced to callers.
