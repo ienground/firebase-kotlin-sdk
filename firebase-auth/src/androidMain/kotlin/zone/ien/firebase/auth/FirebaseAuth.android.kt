@@ -52,6 +52,14 @@ public actual class FirebaseAuth private actual constructor() {
         androidAuth.signOut()
     }
 
+    public actual fun useEmulator(host: String, port: Int) {
+        androidAuth.useEmulator(host, port)
+    }
+
+    public actual suspend fun sendPasswordResetEmail(email: String) {
+        androidAuth.sendPasswordResetEmail(email).await()
+    }
+
     public actual companion object {
         public actual fun getInstance(): FirebaseAuth {
             return FirebaseAuth(AndroidFirebaseAuth.getInstance())
