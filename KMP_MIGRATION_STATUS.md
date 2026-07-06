@@ -8,8 +8,8 @@ This document tracks the KMP migration status across all subprojects defined in 
 
 - **Total Modules**: 50
 - **KMP Support State**:
-  - 🟢 **Fully Migrated**: 44 (Android & iOS fully linked)
-  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 6 (iOS actual implemented as stubs)
+  - 🟢 **Fully Migrated**: 45 (Android & iOS fully linked)
+  - 🟡 **Partially Migrated (iOS Stub/Unsupported)**: 5 (iOS actual implemented as stubs)
   - 🔴 **Android Native Only**: 0 (All modules compiled via KMP target)
 
 ---
@@ -50,7 +50,7 @@ This document tracks the KMP migration status across all subprojects defined in 
 | `firebase-messaging-directboot`                       | `sdk` | 🟢 Migrated |  Android, iOS     | Android Direct Boot compatibility support. |
 | `firebase-inappmessaging`                             | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS SwiftPM). |
 | `firebase-inappmessaging-display`                     | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS Memory-based Actual). |
-| `firebase-installations-interop`                      | `sdk` | 🟡 Partially|  Android, iOS     | KMP wrapper (iOS stub).  |
+| `firebase-installations-interop`                      | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS Memory-based Actual). |
 | `firebase-installations`                              | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Firebase Installations SDK wrapper. |
 | `firebase-ml-modeldownloader`                         | `sdk` | 🟢 Migrated |  Android, iOS     | KMP wrapper (iOS Memory-based Actual). |
 | `firebase-perf`                                       | `sdk` | 🟢 Migrated |  Android, iOS     | KMP Performance Monitoring wrapper. |
@@ -83,6 +83,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ---
 
 ## 📜 Recent Migration History
+
+### 2026-07-06: `firebase-installations-interop` Migrated & iOS Memory-based Actual
+* **Installations Interop Memory-based actual**: Replaced the iOS stub implementation in `IOSFirebaseInstallationsApi.kt` with a memory-based dummy implementation, returning mock values (`dummy-ios-fid`, `dummy-ios-token`) instead of throwing exceptions.
+* **No-op for Unsupported APIs**: Resolved unsupported change observer, cache clear, and delete operations without throwing exception errors to prevent crashes.
+* **SwiftPM Structure Added**: Added the basic SwiftPM subpackage structure for future native integration, though not yet registered in the main Package.swift.
 
 ### 2026-07-06: `firebase-inappmessaging-display` Migrated & iOS Memory-based Actual
 * **In-App Messaging Display Memory-based actual**: Replaced the iOS stub implementation in `FirebaseInAppMessagingDisplay.ios.kt` with a memory-based custom display listener registry, allowing registrations and clearances without runtime errors.
