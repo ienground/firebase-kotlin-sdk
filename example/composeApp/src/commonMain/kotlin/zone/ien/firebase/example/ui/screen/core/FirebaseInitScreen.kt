@@ -84,7 +84,6 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
                 .padding(it)
                 .padding(horizontal = 24.dp)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(

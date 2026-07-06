@@ -107,7 +107,6 @@ fun RemoteConfigScreen(
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Firebase Remote Config Demo",
                 fontSize = 18.sp,
