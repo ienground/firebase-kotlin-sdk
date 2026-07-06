@@ -5,11 +5,11 @@ actual class AbtException(message: String?, cause: Throwable?) : Exception(messa
     constructor(message: String?) : this(message, null)
 }
 
-public actual class AbtExperimentInfo {
+public actual class AbtExperimentInfo internal actual constructor() {
     private var mockExperimentId: String = ""
     private var mockVariantId: String = ""
 
-    public constructor(experimentId: String, variantId: String) {
+    public constructor(experimentId: String, variantId: String) : this() {
         this.mockExperimentId = experimentId
         this.mockVariantId = variantId
     }
