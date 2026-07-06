@@ -12,9 +12,6 @@ public actual class FirebaseInAppMessagingDisplay private actual constructor() {
     }
 
     public actual companion object {
-        private val lazyInstance = lazy { FirebaseInAppMessagingDisplay() }
-
-        public actual val instance: FirebaseInAppMessagingDisplay
-            get() = lazyInstance.value
+        public actual val instance: FirebaseInAppMessagingDisplay = FirebaseInAppMessagingDisplay()
     }
 }
