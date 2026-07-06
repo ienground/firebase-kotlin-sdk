@@ -7,4 +7,5 @@ actual class DocumentSnapshot(private val androidSnapshot: AndroidDocumentSnapsh
     actual fun getExists(): Boolean = androidSnapshot.exists()
     actual fun getData(): Map<String, Any>? = androidSnapshot.data
     actual fun get(field: String): Any? = androidSnapshot.get(field)
+    actual internal fun nativeSnapshot(): Any = androidSnapshot
 }

@@ -79,7 +79,7 @@ public fun HomeScreen(
         ),
         HomeFeatureItem(
             title = "Firestore",
-            subtitle = "Real-time document storage and queries.",
+            subtitle = "Document Read/Write & where, orderBy, limit query test.",
             indicatorColor = Color(0xFFFF9800),
             supportsAndroid = true,
             supportsIos = true,

@@ -19,14 +19,14 @@ public actual open class Query(private val iosQuery: FIRDatabaseQuery) {
                 if (snapshot != null) {
                     cont.resume(DataSnapshot(snapshot))
                 } else {
-                    cont.resumeWithException(RuntimeException("Snapshot was null"))
+                    cont.resumeWithException(DatabaseException("Snapshot was null", null))
                 }
             },
             withCancelBlock = { error ->
                 if (error != null) {
-                    cont.resumeWithException(RuntimeException(error.localizedDescription))
+                    cont.resumeWithException(DatabaseException(error.localizedDescription, null))
                 } else {
-                    cont.resumeWithException(RuntimeException("Unknown cancel error"))
+                    cont.resumeWithException(DatabaseException("Unknown cancel error", null))
                 }
             }
         )
@@ -56,8 +56,14 @@ public actual open class Query(private val iosQuery: FIRDatabaseQuery) {
     public actual fun orderByChild(path: String): Query = Query(iosQuery.queryOrderedByChild(path))
     public actual fun orderByKey(): Query = Query(iosQuery.queryOrderedByKey())
     public actual fun orderByValue(): Query = Query(iosQuery.queryOrderedByValue())
-    public actual fun limitToFirst(limit: Int): Query = Query(iosQuery.queryLimitedToFirst(limit.toULong()))
-    public actual fun limitToLast(limit: Int): Query = Query(iosQuery.queryLimitedToLast(limit.toULong()))
+    public actual fun limitToFirst(limit: Int): Query {
+        require(limit > 0) { "Limit must be a positive integer" }
+        return Query(iosQuery.queryLimitedToFirst(limit.toULong()))
+    }
+    public actual fun limitToLast(limit: Int): Query {
+        require(limit > 0) { "Limit must be a positive integer" }
+        return Query(iosQuery.queryLimitedToLast(limit.toULong()))
+    }
     public actual fun equalTo(value: String): Query = Query(iosQuery.queryEqualToValue(value))
     public actual fun equalTo(value: Double): Query = Query(iosQuery.queryEqualToValue(value))
     public actual fun equalTo(value: Boolean): Query = Query(iosQuery.queryEqualToValue(value))
