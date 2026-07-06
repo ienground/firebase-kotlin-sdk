@@ -21,7 +21,7 @@ public actual class AbtExperimentInfo internal actual constructor() {
         get() = mockVariantId
 }
 
-public actual class FirebaseABTesting {
+public actual class FirebaseABTesting internal actual constructor() {
     private val memoryExperiments = mutableListOf<AbtExperimentInfo>()
 
     public actual fun replaceAllExperiments(replacementExperiments: List<Map<String, String>>, originService: String) {
