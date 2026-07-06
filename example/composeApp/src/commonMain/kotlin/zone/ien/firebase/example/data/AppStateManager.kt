@@ -22,7 +22,8 @@ public data class HomeFeatureItem(
     val route: ScreenRoute,
     val supportsAndroid: Boolean,
     val supportsIos: Boolean,
-    val requiresInitialization: Boolean = true
+    val requiresInitialization: Boolean = true,
+    val isIosSimulated: Boolean = false
 )
 
 public object AppStateManager {

@@ -123,7 +123,8 @@ public fun HomeScreen(
             indicatorColor = Color(0xFF4CAF50),
             supportsAndroid = true,
             supportsIos = true,
-            route = ScreenRoute.ModelDownloader
+            route = ScreenRoute.ModelDownloader,
+            isIosSimulated = true
         ),
         HomeFeatureItem(
             title = "Remote Config",
@@ -139,7 +140,8 @@ public fun HomeScreen(
             indicatorColor = Color(0xFF9C27B0),
             supportsAndroid = true,
             supportsIos = true,
-            route = ScreenRoute.AiLogic
+            route = ScreenRoute.AiLogic,
+            isIosSimulated = true
         ),
         HomeFeatureItem(
             title = "AI On-Device",
@@ -147,15 +149,17 @@ public fun HomeScreen(
             indicatorColor = Color(0xFFE040FB),
             supportsAndroid = true,
             supportsIos = true,
-            route = ScreenRoute.AiLogicOnDevice
+            route = ScreenRoute.AiLogicOnDevice,
+            isIosSimulated = true
         ),
         HomeFeatureItem(
             title = "Datatransport",
             subtitle = "Telemetry datatransport priority & scheduling contract test.",
             indicatorColor = Color(0xFF3F51B5),
             supportsAndroid = true,
-            supportsIos = false,
-            route = ScreenRoute.Datatransport
+            supportsIos = true,
+            route = ScreenRoute.Datatransport,
+            isIosSimulated = true
         ),
         HomeFeatureItem(
             title = "App Distribution",
@@ -171,7 +175,8 @@ public fun HomeScreen(
             indicatorColor = Color(0xFF673AB7),
             supportsAndroid = true,
             supportsIos = true,
-            route = ScreenRoute.DataConnect
+            route = ScreenRoute.DataConnect,
+            isIosSimulated = true
         ),
         HomeFeatureItem(
             title = "In-App Messaging",
@@ -355,15 +360,36 @@ public fun DemoCard(
                     modifier = Modifier
                         .alpha(if (item.supportsIos) 1.0f else 0.2f)
                         .semantics {
-                            contentDescription = if (item.supportsIos) "iOS supported" else "iOS not supported"
+                            contentDescription = if (item.supportsIos) {
+                                if (item.isIosSimulated) "iOS simulated support" else "iOS supported"
+                            } else {
+                                "iOS not supported"
+                            }
                         }
                 ) {
-                    Icon(
-                        imageVector = Icons.AppleFill,
-                        contentDescription = "iOS supported",
-                        modifier = Modifier.size(18.dp),
-                        tint = if (item.supportsIos) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.AppleFill,
+                            contentDescription = "iOS supported",
+                            modifier = Modifier.size(18.dp),
+                            tint = if (item.supportsIos) {
+                                if (item.isIosSimulated) Color(0xFFFFB300) else MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
+                            }
+                        )
+                        if (item.supportsIos && item.isIosSimulated) {
+                            Text(
+                                text = "Sim",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFFFFB300)
+                            )
+                        }
+                    }
                 }
             }
 

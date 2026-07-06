@@ -46,10 +46,6 @@ kotlin {
             api(libs.firebase.android.dynamic.module.support)
         }
 
-        val androidMain by getting {
-
-        }
-
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
