@@ -3,7 +3,7 @@ package zone.ien.firebase.transport.runtime
 import zone.ien.firebase.transport.TransportFactory
 import zone.ien.firebase.transport.IOSTransportFactory
 
-public actual class TransportRuntime private constructor() {
+public actual class TransportRuntime {
     public actual fun newFactory(destinationName: String): TransportFactory {
         return IOSTransportFactory()
     }
