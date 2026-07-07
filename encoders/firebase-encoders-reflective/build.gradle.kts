@@ -52,13 +52,14 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":encoders:firebase-encoders"))
-            implementation(project(":encoders:firebase-encoders-proto"))
+            api(project(":encoders:firebase-encoders-proto"))
         }
 
         val jvmCommonMain by creating {
             dependsOn(commonMain.get())
             dependencies {
                 implementation(kotlin("reflect"))
+                implementation(project(":encoders:firebase-encoders-proto"))
             }
         }
 
