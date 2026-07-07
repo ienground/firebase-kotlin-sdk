@@ -124,8 +124,7 @@ private class JsonValueObjectEncoderContext(
                 for (item in value) {
                     if (!firstItem) appendable.append(",")
                     firstItem = false
-                    val subContext = JsonValueObjectEncoderContext(appendable, objectEncoders, valueEncoders, fallbackEncoder, ignoreNullValues)
-                    subContext.encode(item)
+                    encode(item)
                 }
                 appendable.append("]")
             }
@@ -137,8 +136,7 @@ private class JsonValueObjectEncoderContext(
                     if (!firstEntry) appendable.append(",")
                     firstEntry = false
                     appendable.append("\"").append(escape(key.toString())).append("\":")
-                    val subContext = JsonValueObjectEncoderContext(appendable, objectEncoders, valueEncoders, fallbackEncoder, ignoreNullValues)
-                    subContext.encode(item)
+                    encode(item)
                 }
                 appendable.append("}")
             }
@@ -156,8 +154,9 @@ private class JsonValueObjectEncoderContext(
                 val objEncoder = objectEncoders[objClass]
                 if (objEncoder != null) {
                     appendable.append("{")
+                    val subContext = JsonValueObjectEncoderContext(appendable, objectEncoders, valueEncoders, fallbackEncoder, ignoreNullValues)
                     @Suppress("UNCHECKED_CAST")
-                    (objEncoder as ObjectEncoder<Any>).encode(value, this)
+                    (objEncoder as ObjectEncoder<Any>).encode(value, subContext)
                     appendable.append("}")
                 } else {
                     val valEncoder = valueEncoders[objClass]
@@ -182,8 +181,7 @@ private class JsonValueObjectEncoderContext(
     private fun addValue(name: String, value: Any?): ObjectEncoderContext {
         if (ignoreNullValues && value == null) return this
         writeKey(name)
-        val subContext = JsonValueObjectEncoderContext(appendable, objectEncoders, valueEncoders, fallbackEncoder, ignoreNullValues)
-        subContext.encode(value)
+        encode(value)
         return this
     }
 

@@ -32,8 +32,12 @@ public actual class ReflectiveObjectEncoder<T : Any> actual constructor() : Obje
                 val fieldValue = field.get(value)
                 val fieldName = field.name
 
-                // Construct a simple descriptor using naming selector
-                val descriptor = FieldDescriptor.of(fieldName)
+                val builder = FieldDescriptor.builder(fieldName)
+                val protobufAnno = field.getAnnotation(zone.ien.firebase.encoders.proto.Protobuf::class.java)
+                if (protobufAnno != null) {
+                    builder.withProperty(protobufAnno)
+                }
+                val descriptor = builder.build()
                 context.add(descriptor, fieldValue)
             } catch (e: Exception) {
                 // Ignore accessibility or extraction failures silently
