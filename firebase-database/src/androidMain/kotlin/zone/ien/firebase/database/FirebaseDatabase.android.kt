@@ -13,6 +13,14 @@ public actual class FirebaseDatabase(private val androidDatabase: AndroidFirebas
         return DatabaseReference(androidDatabase.getReference(path))
     }
 
+    public actual fun useEmulator(host: String, port: Int) {
+        androidDatabase.useEmulator(host, port)
+    }
+
+    public actual fun setPersistenceEnabled(enabled: Boolean) {
+        androidDatabase.setPersistenceEnabled(enabled)
+    }
+
     public actual companion object {
         public actual fun getInstance(): FirebaseDatabase {
             return FirebaseDatabase(AndroidFirebaseDatabase.getInstance())

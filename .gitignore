@@ -24,3 +24,9 @@ xcuserdata
 
 example/androidApp/google-services.json
 example/iosApp/iosApp/GoogleService-Info.plist
+
+# SwiftPM Local Cache Build Directories
+.build/
+example/iosApp/KotlinMultiplatformLinkedPackage/.build/
+/example/androidApp/release/
+example/iosApp/Configuration/LocalConfig.xcconfig

@@ -140,3 +140,27 @@ Stop and call out the issue instead of guessing if:
 - If you create new files as part of the task, stage them with `git add .`.
 - This applies especially to files newly created by the agent, such as source files, Gradle files, documentation updates, and migration status files.
 - Do not assume newly created files will be picked up later; explicitly stage them with `git add .`.
+
+## SwiftPM 추가 후 공통 규칙
+
+- iOS / Swift / SwiftPM 관련 작업에서,
+  Swift 패키지(SPM)를 새로 추가하거나 변경했으면
+  **작업을 마무리하기 전에 반드시 한 번은 터미널에서 의존성 Resolve를 실행한다.**
+
+- 구체적으로:
+  - Swift 패키지 루트(`Package.swift`가 있는 디렉터리)에서:
+    - `swift package resolve` 를 실행한다
+    - 필요하면 `swift package update` 도 함께 고려한다
+  - Xcode 프로젝트 / 워크스페이스 기준이라면:
+    - `xcodebuild -resolvePackageDependencies -project <project>.xcodeproj -scheme <scheme>`
+    - 또는 `xcodebuild -resolvePackageDependencies -workspace <workspace>.xcworkspace -scheme <scheme>`
+
+- 요점:
+  - “SPM 의존성을 추가/변경만 해놓고 Resolve는 안 한 상태”로 작업을 끝내지 말고,
+  - **최소 한 번은 터미널에서 의존성 리졸브를 실행한 뒤에 작업을 끝난 상태로 둔다.**
+
+## Swift-only iOS SDK 대응 규칙
+
+- iOS 의존성 중 Objective-C 호환 헤더가 전혀 제공되지 않는 Swift-only SDK(예: FirebaseDataConnect, FirebaseMLModelDownloader, FirebaseAILogic 등)는 cinterop에서 헤더 정보를 읽지 못하므로 직접 링킹 및 컴파일이 불가능합니다.
+- 이러한 경우 KMP wrapper 모듈의 iOS actual은 예외를 던지는 스텁(Stub) 대신, **컴파일을 보장하고 상태 정보를 저장/조회하거나 목업 데이터를 반환하는 "메모리 보존 실제 인스턴스(Memory-based Actual)"** 형태로 구현합니다.
+- 이 규칙을 적용하여 런타임 크래시를 예방하고 컴파일 호환성을 보장하되, 실제 네트워크 통신 등 실기기 처리는 KMP 공통 코드 대신 iOS 네이티브 소스셋(Swift 소스) 영역에서 직접 공식 Swift SDK를 가져와 사용해야 함을 `README_ko.md`, `README.md` 및 `KMP_MIGRATION_STATUS.md` 에 제약사항(Bridge Notice)으로 상세히 명시해야 합니다.

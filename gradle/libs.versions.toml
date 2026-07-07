@@ -4,9 +4,41 @@ kotlin = "2.4.0"
 android-minSdk = "29"
 android-compileSdk = "36"
 android-targetSdk = "36"
-lib-version-name = "0.9.0"
+lib-version-name = "1.0.0-beta01"
 firebase-android-bom = "34.15.0"
-firebase-ios-sdk = "11.3.0"
+firebase-android-messaging = "25.1.0"
+android-datatransport = "4.1.1"
+kotlinx-coroutines = "1.11.0"
+firebase-android-appcheck = "19.2.0"
+firebase-android-crashlytics = "20.0.6"
+firebase-android-ai-ondevice = "16.0.0-beta03"
+firebase-android-inappmessaging = "22.0.3"
+firebase-firestore = "26.4.0"
+firebase-components = "19.0.1"
+firebase-dynamic-module-support = "16.0.0-beta04" # TODO: 16.0.0-beta04 -> stable/16.0.0 존재 시 전환 가능하지만 dynamic feature 모듈 전용 beta 릴리스 고정이므로 유지
+firebase-abt = "23.0.1"
+firebase-storage = "22.0.1"
+firebase-auth = "24.1.0"
+firebase-sessions = "3.0.6"
+firebase-perf = "22.0.5"
+firebase-installations = "19.1.1"
+firebase-installations-interop = "17.3.0"
+firebase-config-interop = "16.0.1"
+firebase-ml-modeldownloader = "26.0.2"
+firebase-ai = "17.13.0"
+firebase-protolite-well-known-types = "18.0.0" # TODO: 18.0.0 -> 18.0.1 가능하지만 빌드 환경에서 18.0.1 의존성 해상(resolve) 실패로 com.google.protobuf 패키지 유실 에러가 발생하여 보류
+firebase-database = "22.0.1"
+firebase-dataconnect = "17.3.1"
+androidx-annotation-ver = "1.10.0"
+errorprone-annotations-ver = "2.50.0"
+firebase-annotations-ver = "17.0.0"
+play-services-tasks-ver = "18.4.1"
+firebase-appcheck-recaptcha = "19.0.0"
+firebase-appcheck-playintegrity = "19.2.0"
+firebase-functions = "22.1.1"
+firebase-appdistribution = "16.0.0-beta20" # TODO: 16.0.0-beta20 -> stable/16.0.0 존재 시 전환 가능하지만 App Distribution 전용 beta 고정이므로 유지
+firebase-appcheck-interop = "17.1.0"
+firebase-ios-sdk = "12.15.0"
 google-services = "4.5.0"
 
 # plugin
@@ -30,28 +62,48 @@ ienlab-cmp = "2.11.0"
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 firebase-android-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-android-bom" }
 firebase-android-common = { module = "com.google.firebase:firebase-common" }
-firebase-android-firestore = { module = "com.google.firebase:firebase-firestore", version = "21.0.1" }
-firebase-android-components = { module = "com.google.firebase:firebase-components", version = "18.0.0" }
-firebase-android-dynamic-module-support = { module = "com.google.firebase:firebase-dynamic-module-support", version = "16.0.0-beta04" }
-firebase-android-abt = { module = "com.google.firebase:firebase-abt", version = "21.1.1" }
-firebase-android-storage = { module = "com.google.firebase:firebase-storage", version = "21.0.1" }
-firebase-android-appcheck-recaptcha = { module = "com.google.firebase:firebase-appcheck-recaptcha", version = "19.0.0" }
-firebase-android-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "19.0.3" }
-firebase-android-crashlytics-ndk = { module = "com.google.firebase:firebase-crashlytics-ndk", version = "19.0.3" }
-firebase-android-auth = { module = "com.google.firebase:firebase-auth", version = "23.1.0" }
-firebase-android-sessions = { module = "com.google.firebase:firebase-sessions", version = "2.0.8" }
-firebase-android-protolite-well-known-types = { module = "com.google.firebase:protolite-well-known-types", version = "18.0.0" }
-firebase-android-database = { module = "com.google.firebase:firebase-database", version = "21.0.0" }
-firebase-android-appcheck = { module = "com.google.firebase:firebase-appcheck", version = "19.2.0" }
-firebase-android-appcheck-interop = { module = "com.google.firebase:firebase-appcheck-interop", version = "17.1.0" }
-firebase-android-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug", version = "19.2.0" }
-firebase-android-appcheck-debug-testing = { module = "com.google.firebase:firebase-appcheck-debug-testing", version = "19.2.0" }
-firebase-android-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity", version = "18.0.0" }
-firebase-android-functions = { module = "com.google.firebase:firebase-functions", version = "21.0.0" }
-androidx-annotation = { module = "androidx.annotation:annotation", version = "1.8.0" }
-errorprone-annotations = { module = "com.google.errorprone:error_prone_annotations", version = "2.26.0" }
-firebase-annotations = { module = "com.google.firebase:firebase-annotations", version = "16.2.0" }
-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "1.8.0" }
+firebase-android-firestore = { module = "com.google.firebase:firebase-firestore", version.ref = "firebase-firestore" }
+firebase-android-components = { module = "com.google.firebase:firebase-components", version.ref = "firebase-components" }
+firebase-android-dynamic-module-support = { module = "com.google.firebase:firebase-dynamic-module-support", version.ref = "firebase-dynamic-module-support" }
+firebase-android-abt = { module = "com.google.firebase:firebase-abt", version.ref = "firebase-abt" }
+firebase-android-storage = { module = "com.google.firebase:firebase-storage", version.ref = "firebase-storage" }
+firebase-android-appcheck-recaptcha = { module = "com.google.firebase:firebase-appcheck-recaptcha", version.ref = "firebase-appcheck-recaptcha" }
+firebase-android-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebase-android-crashlytics" }
+firebase-android-crashlytics-ndk = { module = "com.google.firebase:firebase-crashlytics-ndk", version.ref = "firebase-android-crashlytics" }
+firebase-android-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebase-auth" }
+firebase-android-sessions = { module = "com.google.firebase:firebase-sessions", version.ref = "firebase-sessions" }
+firebase-android-perf = { module = "com.google.firebase:firebase-perf", version.ref = "firebase-perf" }
+firebase-android-installations = { module = "com.google.firebase:firebase-installations", version.ref = "firebase-installations" }
+firebase-android-installations-interop = { module = "com.google.firebase:firebase-installations-interop", version.ref = "firebase-installations-interop" }
+firebase-android-config-interop = { module = "com.google.firebase:firebase-config-interop", version.ref = "firebase-config-interop" }
+firebase-android-ml-modeldownloader = { module = "com.google.firebase:firebase-ml-modeldownloader", version.ref = "firebase-ml-modeldownloader" }
+firebase-android-ai = { module = "com.google.firebase:firebase-ai", version.ref = "firebase-ai" }
+firebase-android-ai-ondevice = { module = "com.google.firebase:firebase-ai-ondevice", version.ref = "firebase-android-ai-ondevice" }
+firebase-android-ai-ondevice-interop = { module = "com.google.firebase:firebase-ai-ondevice-interop", version.ref = "firebase-android-ai-ondevice" }
+firebase-android-config = { module = "com.google.firebase:firebase-config" }
+firebase-android-protolite-well-known-types = { module = "com.google.firebase:protolite-well-known-types", version.ref = "firebase-protolite-well-known-types" }
+firebase-android-database = { module = "com.google.firebase:firebase-database", version.ref = "firebase-database" }
+firebase-android-appcheck = { module = "com.google.firebase:firebase-appcheck", version.ref = "firebase-android-appcheck" }
+firebase-android-appcheck-interop = { module = "com.google.firebase:firebase-appcheck-interop", version.ref = "firebase-appcheck-interop" }
+firebase-android-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug", version.ref = "firebase-android-appcheck" }
+firebase-android-appcheck-debug-testing = { module = "com.google.firebase:firebase-appcheck-debug-testing", version.ref = "firebase-android-appcheck" }
+firebase-android-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity", version.ref = "firebase-appcheck-playintegrity" }
+firebase-android-functions = { module = "com.google.firebase:firebase-functions", version.ref = "firebase-functions" }
+firebase-android-appdistribution = { module = "com.google.firebase:firebase-appdistribution", version.ref = "firebase-appdistribution" }
+firebase-android-messaging = { module = "com.google.firebase:firebase-messaging", version.ref = "firebase-android-messaging" }
+firebase-android-messaging-directboot = { module = "com.google.firebase:firebase-messaging-directboot", version.ref = "firebase-android-messaging" }
+firebase-android-dataconnect = { module = "com.google.firebase:firebase-dataconnect", version.ref = "firebase-dataconnect" }
+firebase-android-inappmessaging = { module = "com.google.firebase:firebase-inappmessaging", version.ref = "firebase-android-inappmessaging" }
+firebase-android-inappmessaging-display = { module = "com.google.firebase:firebase-inappmessaging-display", version.ref = "firebase-android-inappmessaging" }
+androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation-ver" }
+errorprone-annotations = { module = "com.google.errorprone:error_prone_annotations", version.ref = "errorprone-annotations-ver" }
+firebase-annotations = { module = "com.google.firebase:firebase-annotations", version.ref = "firebase-annotations-ver" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
+play-services-tasks = { module = "com.google.android.gms:play-services-tasks", version.ref = "play-services-tasks-ver" }
+android-datatransport-api = { module = "com.google.android.datatransport:transport-api", version.ref = "android-datatransport" }
+android-datatransport-backend-cct = { module = "com.google.android.datatransport:transport-backend-cct", version.ref = "android-datatransport" }
+android-datatransport-runtime = { module = "com.google.android.datatransport:transport-runtime", version.ref = "android-datatransport" }
 
 # ui
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }

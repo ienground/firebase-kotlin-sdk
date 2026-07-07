@@ -16,6 +16,10 @@ actual class FirebaseStorage private constructor(private val iosStorage: FIRStor
         return StorageReference(iosStorage.referenceForURL(url))
     }
 
+    actual fun useEmulator(host: String, port: Int) {
+        iosStorage.useEmulatorWithHost(host, port.toLong())
+    }
+
     actual companion object {
         actual fun getInstance(): FirebaseStorage {
             return FirebaseStorage(FIRStorage.storage())

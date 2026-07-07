@@ -1,5 +1,3 @@
 package zone.ien.firebase.dynamicloading
 
-import zone.ien.firebase.components.ComponentRegistrar
-
-actual interface DynamicLoadingRegistrar : ComponentRegistrar
+public actual typealias DynamicLoadingRegistrar = com.google.firebase.dynamicloading.DynamicLoadingRegistrar

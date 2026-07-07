@@ -1,3 +1,6 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.nio.file.Files
 import java.nio.file.LinkOption
@@ -55,7 +58,23 @@ kotlin {
                 product("FirebaseDatabase"),
                 product("FirebaseStorage"),
                 product("FirebaseFunctions"),
-                product("FirebaseAppCheck")
+                product("FirebaseAppCheck"),
+                product("FirebaseRemoteConfig"),
+                product("FirebaseMessaging"),
+                product("FirebaseAppDistribution-Beta")
+            ),
+            importedClangModules = listOf(
+                "FirebaseCore",
+                "FirebaseFirestoreInternal",
+                "FirebaseAuth",
+                "FirebaseCrashlytics",
+                "FirebaseDatabase",
+                "FirebaseStorage",
+                "FirebaseFunctions",
+                "FirebaseAppCheck",
+                "FirebaseRemoteConfig",
+                "FirebaseMessaging",
+                "FirebaseAppDistribution"
             )
         )
     }
@@ -76,6 +95,8 @@ kotlin {
             implementation(project(":firebase-abt"))
             implementation(project(":firebase-storage"))
             implementation(project(":firebase-sessions"))
+            implementation(project(":firebase-perf"))
+            implementation(project(":firebase-installations"))
             implementation(project(":firebase-database"))
             implementation(project(":firebase-database-collection"))
             implementation(project(":firebase-crashlytics"))
@@ -90,7 +111,26 @@ kotlin {
             implementation(project(":appcheck:firebase-appcheck-playintegrity"))
             implementation(project(":appcheck:firebase-appcheck-recaptcha"))
             implementation(project(":appcheck:firebase-appcheck-debug-testing"))
-
+            implementation(project(":firebase-ml-modeldownloader"))
+            implementation(project(":firebase-config"))
+            implementation(project(":ai-logic:firebase-ai"))
+            implementation(project(":ai-logic:firebase-ai-ondevice"))
+            implementation(project(":transport:transport-api"))
+            implementation(project(":transport:transport-backend-cct"))
+            implementation(project(":transport:transport-runtime"))
+            implementation(project(":firebase-appdistribution"))
+            implementation(project(":firebase-dataconnect"))
+            implementation(project(":firebase-dataconnect:connectors"))
+            implementation(project(":firebase-inappmessaging"))
+            implementation(project(":firebase-inappmessaging-display"))
+            implementation(project(":encoders:firebase-encoders"))
+            implementation(project(":encoders:firebase-encoders-json"))
+            implementation(project(":encoders:firebase-encoders-proto"))
+            implementation(project(":encoders:firebase-encoders-reflective"))
+            implementation(project(":encoders:firebase-decoders-json"))
+            implementation(project(":firebase-messaging"))
+            implementation(project(":firebase-messaging-directboot"))
+ 
             implementation(libs.bundles.ienlab.cmp)
         }
         commonTest.dependencies {
@@ -107,7 +147,8 @@ tasks.register("createFirebaseFrameworkSymlinks") {
         val frameworks = listOf(
             "FirebaseCore", "FirebaseFirestore", "FirebaseAuth", "FirebaseCrashlytics",
             "FirebaseDatabase", "FirebaseStorage", "FirebaseFunctions", "FirebaseAppCheck",
-            "FirebaseAppCheckInterop", "FirebaseCoreExtension"
+            "FirebaseAppCheckInterop", "FirebaseCoreExtension", "FirebaseRemoteConfig", "FirebaseMessaging",
+            "FirebaseAppDistribution"
         )
 
         val buildTypes = listOf("Debug", "Release")
@@ -144,5 +185,42 @@ tasks.register("createFirebaseFrameworkSymlinks") {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink>().configureEach {
     if (name.startsWith("linkDebug") || name.startsWith("linkRelease")) {
         dependsOn("createFirebaseFrameworkSymlinks")
+    }
+}
+
+val generateVersionInfo = tasks.register("generateVersionInfo") {
+    val outputDir = file("$projectDir/build/generated/sources/version/commonMain/kotlin")
+    inputs.property("version", libs.versions.lib.version.name.get())
+    outputs.dir(outputDir)
+    
+    doLast {
+        val versionFile = file("$outputDir/zone/ien/firebase/example/util/Version.kt")
+        versionFile.parentFile.mkdirs()
+        versionFile.writeText("""
+            package zone.ien.firebase.example.util
+            
+            public val libraryVersion: String = "${libs.versions.lib.version.name.get()}"
+        """.trimIndent())
+    }
+}
+
+kotlin.sourceSets.configureEach {
+    if (name == "commonMain") {
+        kotlin.srcDirs(generateVersionInfo)
+    }
+}
+
+// Forcefully delete the package resolved lock file during the configuration phase 
+// to ensure Gradle's Task Execution graph evaluates resolveSyntheticPackageDependencies as out-of-date!
+tasks.configureEach {
+    if (name.startsWith("resolveSyntheticPackageDependencies") || name.startsWith("fetchSyntheticImportProjectPackages")) {
+        outputs.upToDateWhen { false }
+        doFirst {
+            val resolvedLockFile = file("build/kotlin/swiftImport/Package.resolved")
+            if (resolvedLockFile.exists()) {
+                resolvedLockFile.delete()
+                logger.lifecycle("Deleted swiftImport/Package.resolved before executing task: $name")
+            }
+        }
     }
 }

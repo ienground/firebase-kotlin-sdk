@@ -27,6 +27,18 @@ sealed interface ScreenRoute: NavKey {
     @Serializable data object PlayIntegrity: ScreenRoute
     @Serializable data object Crashlytics: ScreenRoute
     @Serializable data object Auth: ScreenRoute
+    @Serializable data object Performance: ScreenRoute
+    @Serializable data object Installations: ScreenRoute
+    @Serializable data object ModelDownloader: ScreenRoute
+    @Serializable data object RemoteConfig: ScreenRoute
+    @Serializable data object AiLogic: ScreenRoute
+    @Serializable data object AiLogicOnDevice: ScreenRoute
+    @Serializable data object Datatransport: ScreenRoute
+    @Serializable data object AppDistribution: ScreenRoute
+    @Serializable data object DataConnect: ScreenRoute
+    @Serializable data object InAppMessaging: ScreenRoute
+    @Serializable data object Encoders: ScreenRoute
+    @Serializable data object Abt: ScreenRoute
 }
 
 @Composable
@@ -73,9 +85,7 @@ fun ScreenNavigationGraph(
                 )
             }
             entry<ScreenRoute.MessagingPlaceholder> {
-                PlaceholderScreen(
-                    title = "Cloud Messaging",
-                    description = "Firebase Cloud Messaging (FCM) push notification handler wrapper is coming soon to KMP SDK.",
+                zone.ien.firebase.example.ui.screen.messaging.MessagingScreen(
                     onBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }
@@ -102,6 +112,67 @@ fun ScreenNavigationGraph(
             entry<ScreenRoute.Auth> {
                 zone.ien.firebase.example.ui.screen.auth.AuthScreen(
                     onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.Performance> {
+                zone.ien.firebase.example.ui.screen.perf.PerformanceScreen(
+                    onNavigateBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.Installations> {
+                zone.ien.firebase.example.ui.screen.installations.InstallationsScreen(
+                    onNavigateBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.ModelDownloader> {
+                zone.ien.firebase.example.ui.screen.ml.ModelDownloaderScreen(
+                    onNavigateBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.RemoteConfig> {
+                zone.ien.firebase.example.ui.screen.config.RemoteConfigScreen(
+                    onNavigateBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.AiLogic> {
+                zone.ien.firebase.example.ui.screen.ai.AiLogicScreen(
+                    onNavigateBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.AiLogicOnDevice> {
+                zone.ien.firebase.example.ui.screen.ai.AiLogicOnDeviceScreen(
+                    onNavigateBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.Datatransport> {
+                zone.ien.firebase.example.ui.screen.transport.DatatransportScreen(
+                    onNavigateBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.AppDistribution> {
+                zone.ien.firebase.example.ui.screen.appdistribution.AppDistributionScreen(
+                    context = context,
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.DataConnect> {
+                zone.ien.firebase.example.ui.screen.dataconnect.DataConnectScreen(
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.InAppMessaging> {
+                zone.ien.firebase.example.ui.screen.inappmessaging.InAppMessagingScreen(
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.Encoders> {
+                zone.ien.firebase.example.ui.screen.encoders.EncodersScreen(
+                    onBack = { backStack.removeAt(backStack.lastIndex) }
+                )
+            }
+            entry<ScreenRoute.Abt> {
+                zone.ien.firebase.example.ui.screen.abt.AbtScreen(
+                    onNavigateBack = { backStack.removeAt(backStack.lastIndex) }
                 )
             }
         }

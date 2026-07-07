@@ -22,6 +22,7 @@ kotlin {
 
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 
@@ -33,6 +34,17 @@ kotlin {
             baseName = "FirebaseAbt"
             isStatic = true
         }
+    }
+
+    // Kotlin 2.4.0 SwiftPM Integration Configuration for A/B Testing ObjC wrapper
+    swiftPMDependencies {
+        discoverClangModulesImplicitly.set(false)
+        swiftPackage(
+            url = url("https://github.com/firebase/firebase-ios-sdk.git"),
+            version = from(libs.versions.firebase.ios.sdk.get()),
+            products = listOf(product("FirebaseRemoteConfig")),
+            importedClangModules = listOf("FirebaseABTesting")
+        )
     }
 
     sourceSets {

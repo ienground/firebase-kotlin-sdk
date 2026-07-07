@@ -26,4 +26,35 @@ public actual class FirebaseUser private actual constructor() {
     public actual suspend fun getIdToken(forceRefresh: Boolean): String {
         return androidUser.getIdToken(forceRefresh).await().token ?: ""
     }
+
+    public actual suspend fun unlink(provider: String): FirebaseUser {
+        val result = androidUser.unlink(provider).await()
+        val user = result.user ?: throw IllegalStateException("Unlink returned a null user.")
+        return FirebaseUser(user)
+    }
+
+    public actual suspend fun sendEmailVerification() {
+        androidUser.sendEmailVerification().await()
+    }
+
+    public actual suspend fun updateProfile(request: UserProfileChangeRequest) {
+        androidUser.updateProfile(request.androidRequest).await()
+    }
+
+    public actual suspend fun link(credential: AuthCredential): AuthResult {
+        val result = androidUser.linkWithCredential(credential.androidCredential).await()
+        return AuthResult(result)
+    }
+
+    public actual suspend fun updateEmail(email: String) {
+        androidUser.updateEmail(email).await()
+    }
+
+    public actual suspend fun updatePassword(password: String) {
+        androidUser.updatePassword(password).await()
+    }
+
+    public actual suspend fun reauthenticate(credential: AuthCredential) {
+        androidUser.reauthenticate(credential.androidCredential).await()
+    }
 }

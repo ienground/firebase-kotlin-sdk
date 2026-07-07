@@ -16,6 +16,10 @@ actual class FirebaseFunctions private constructor(private val iosFunctions: FIR
         return HttpsCallableReference(iosFunctions.HTTPSCallableWithURL(nsUrl))
     }
 
+    actual fun useEmulator(host: String, port: Int) {
+        iosFunctions.useEmulatorWithHost(host, port.toLong())
+    }
+
     actual companion object {
         actual fun getInstance(): FirebaseFunctions {
             return FirebaseFunctions(FIRFunctions.functions())
