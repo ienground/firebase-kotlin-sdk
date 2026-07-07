@@ -22,6 +22,7 @@ kotlin {
 
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 
@@ -43,10 +44,6 @@ kotlin {
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
             api(libs.firebase.android.dynamic.module.support)
-        }
-
-        val androidMain by getting {
-
         }
 
         commonTest.dependencies {

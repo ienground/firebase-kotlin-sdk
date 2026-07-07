@@ -1,5 +1,8 @@
 package zone.ien.firebase.dynamicloading
 
+import zone.ien.firebase.components.Component
 import zone.ien.firebase.components.ComponentRegistrar
 
-expect interface DynamicLoadingRegistrar : ComponentRegistrar
+expect class DynamicLoadingRegistrar() : ComponentRegistrar {
+    override fun getComponents(): List<Component<*>>
+}

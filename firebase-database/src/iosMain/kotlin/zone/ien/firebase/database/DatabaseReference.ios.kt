@@ -3,11 +3,12 @@ package zone.ien.firebase.database
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import swiftPMImport.zone.ien.firebase.firebase.database.FIRDatabaseReference
+import swiftPMImport.zone.ien.firebase.firebase.database.FIRTransactionResult
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 @OptIn(ExperimentalForeignApi::class)
-public actual class DatabaseReference(private val iosReference: FIRDatabaseReference) {
+public actual class DatabaseReference(private val iosReference: FIRDatabaseReference) : Query(iosReference) {
 
     public actual val key: String?
         get() = iosReference.key()
@@ -55,5 +56,40 @@ public actual class DatabaseReference(private val iosReference: FIRDatabaseRefer
                 }
             }
         }
+    }
+
+    public actual suspend fun runTransaction(handler: (MutableData) -> TransactionResult): TransactionResult = suspendCancellableCoroutine { cont ->
+        var caughtException: Throwable? = null
+        iosReference.runTransactionBlock({ mutableData ->
+            if (mutableData != null) {
+                try {
+                    val result = handler(MutableData(mutableData))
+                    when (result) {
+                        TransactionResult.SUCCESS -> FIRTransactionResult.successWithValue(mutableData)
+                        TransactionResult.ABORT -> FIRTransactionResult.abort()
+                    }
+                } catch (e: Throwable) {
+                    caughtException = e
+                    FIRTransactionResult.abort()
+                }
+            } else {
+                FIRTransactionResult.abort()
+            }
+        }) { error, committed, snapshot ->
+            if (cont.isActive) {
+                val exception = caughtException
+                if (exception != null) {
+                    cont.resumeWithException(exception)
+                } else if (error != null) {
+                    cont.resumeWithException(DatabaseException(error.localizedDescription, null))
+                } else {
+                    cont.resume(if (committed) TransactionResult.SUCCESS else TransactionResult.ABORT)
+                }
+            }
+        }
+    }
+
+    public actual fun keepSynced(keepSynced: Boolean) {
+        iosReference.keepSynced(keepSynced)
     }
 }

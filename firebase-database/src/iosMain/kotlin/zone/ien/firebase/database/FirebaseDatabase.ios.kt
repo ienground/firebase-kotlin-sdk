@@ -15,6 +15,14 @@ public actual class FirebaseDatabase private constructor(private val iosDatabase
         return DatabaseReference(iosDatabase.referenceWithPath(path))
     }
 
+    public actual fun useEmulator(host: String, port: Int) {
+        iosDatabase.useEmulatorWithHost(host, port.toLong())
+    }
+
+    public actual fun setPersistenceEnabled(enabled: Boolean) {
+        iosDatabase.persistenceEnabled = enabled
+    }
+
     public actual companion object {
         public actual fun getInstance(): FirebaseDatabase {
             return FirebaseDatabase(FIRDatabase.database())
@@ -22,7 +30,7 @@ public actual class FirebaseDatabase private constructor(private val iosDatabase
 
         public actual fun getInstance(app: FirebaseApp): FirebaseDatabase {
             val iosApp = app.iosApp
-            return FirebaseDatabase(FIRDatabase.databaseForApp(iosApp))
+            return FirebaseDatabase(FIRDatabase.databaseForApp(iosApp as objcnames.classes.FIRApp))
         }
 
         public actual fun getInstance(url: String): FirebaseDatabase {

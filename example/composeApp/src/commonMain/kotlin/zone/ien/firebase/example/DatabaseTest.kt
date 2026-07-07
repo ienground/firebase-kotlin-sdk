@@ -14,6 +14,10 @@ public object DatabaseTest {
             
             // Set value
             myRef.setValue("Hello, Realtime Database KMP!")
+
+            // Verify Query API (orderByKey & limitToFirst & get)
+            val querySnapshot = myRef.orderByKey().limitToFirst(1).get()
+            println("Realtime Database Query verification success! Key: ${querySnapshot.key}, Value: ${querySnapshot.value}")
             
             // Push sub-child and set value
             val childRef = myRef.child("items").push()
