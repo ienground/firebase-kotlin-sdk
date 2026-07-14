@@ -1,3 +1,14 @@
+val localPropertiesFile = settingsDir.resolve("local.properties")
+if (localPropertiesFile.exists()) {
+    val localProperties = java.util.Properties()
+    localPropertiesFile.inputStream().use { localProperties.load(it) }
+    gradle.beforeProject {
+        localProperties.forEach { key, value ->
+            extra.set(key as String, value)
+        }
+    }
+}
+
 pluginManagement {
     repositories {
         google()
