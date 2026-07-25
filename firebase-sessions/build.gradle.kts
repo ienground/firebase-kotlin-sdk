@@ -19,6 +19,11 @@ kotlin {
                 implementation(project(":firebase-common"))
             }
         }
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
+        }
         androidMain {
             dependencies {
                 api(libs.firebase.android.sessions)

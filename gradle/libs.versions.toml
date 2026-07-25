@@ -4,7 +4,7 @@ kotlin = "2.4.0"
 android-minSdk = "29"
 android-compileSdk = "36"
 android-targetSdk = "36"
-lib-version-name = "1.0.0-beta01"
+lib-version-name = "1.0.0-beta02"
 firebase-android-bom = "34.15.0"
 firebase-android-messaging = "25.1.0"
 android-datatransport = "4.1.1"
@@ -38,7 +38,7 @@ firebase-appcheck-playintegrity = "19.2.0"
 firebase-functions = "22.1.1"
 firebase-appdistribution = "16.0.0-beta20" # TODO: 16.0.0-beta20 -> stable/16.0.0 존재 시 전환 가능하지만 App Distribution 전용 beta 고정이므로 유지
 firebase-appcheck-interop = "17.1.0"
-firebase-ios-sdk = "12.15.0"
+firebase-ios-sdk = "12.14.0"
 google-services = "4.5.0"
 
 # plugin
