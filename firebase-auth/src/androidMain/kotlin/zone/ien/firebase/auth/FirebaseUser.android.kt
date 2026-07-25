@@ -38,7 +38,11 @@ public actual class FirebaseUser private actual constructor() {
     }
 
     public actual suspend fun updateProfile(request: UserProfileChangeRequest) {
-        androidUser.updateProfile(request.androidRequest).await()
+        val androidReq = request.androidRequest ?: com.google.firebase.auth.UserProfileChangeRequest.Builder()
+            .setDisplayName(request.displayName)
+            .setPhotoUri(request.photoUrl?.let { android.net.Uri.parse(it) })
+            .build()
+        androidUser.updateProfile(androidReq).await()
     }
 
     public actual suspend fun link(credential: AuthCredential): AuthResult {

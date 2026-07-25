@@ -450,3 +450,7 @@ To convert any pending module (`firebase-xxx`) into KMP:
 * **Platform SDK Wrapping**: Designed expect class `DebugAppCheckTestHelper` inside `commonMain` to support programmatic debug token injection.
 * **Platform Helpers Bindings**: Delegates to Android's official `com.google.firebase.appcheck.debug.testing.DebugAppCheckTestHelper` on Android Target. Provides an unsupported exception on iOS since iOS configures debug tokens via static startup arguments rather than runtime Helper API. SwiftPM is **not** required.
 * **Dependency Reference Check**: Added `:appcheck:firebase-appcheck-debug-testing` compile reference in `composeApp` and `AppCheckDebugTestingTest` helper to verify debug testing compilation and safe iOS runtime exception handling.
+
+### 2026-07-25: `firebase-ios-sdk` 12.14.0 Version Sync
+* **Firebase iOS SDK 12.14.0 Sync**: Updated core Firebase Apple SDK version from `12.15.0` to `12.14.0` across Version Catalog (`gradle/libs.versions.toml`), main `Package.swift`, subpackage `Package.swift` files, SPM resolved lockfiles, and documentation (`README.md`, `README_ko.md`).
+* **SwiftPM Dependencies Resolved**: Executed `swift package resolve` to verify resolution of `12.14.0` dependencies.
