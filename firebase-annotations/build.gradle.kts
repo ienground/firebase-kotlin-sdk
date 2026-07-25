@@ -41,6 +41,10 @@ kotlin {
             // Annotations module has no external dependencies
         }
 
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+        }
+
         val androidMain by getting {
             kotlin.setSrcDirs(listOf("src/androidMain/kotlin"))
         }

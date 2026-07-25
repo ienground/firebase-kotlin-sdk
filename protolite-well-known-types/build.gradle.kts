@@ -19,6 +19,11 @@ kotlin {
                 // Common dependencies if any
             }
         }
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
+        }
         androidMain {
             dependencies {
                 api(libs.firebase.android.protolite.well.known.types)
