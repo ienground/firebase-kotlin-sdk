@@ -48,6 +48,7 @@ import firebase_kotlin_sdk.example.composeapp.generated.resources.Res
 import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebaseApp
 import zone.ien.firebase.storage.FirebaseStorage
+import zone.ien.firebase.storage.storageMetadata
 
 @Composable
 fun StorageScreen(onBack: () -> Unit) {
@@ -167,8 +168,12 @@ fun StorageScreen(onBack: () -> Unit) {
                             try {
                                 val storage = FirebaseStorage.getInstance()
                                 val ref = storage.reference.child(pathInput)
-                                ref.putBytes(uploadInput.encodeToByteArray())
-                                logText = "Successfully uploaded payload to '$pathInput'!"
+                                val metadata = storageMetadata {
+                                    contentType = "text/plain"
+                                    setCustomMetadata("uploaded_by", "KMP_SampleApp")
+                                }
+                                ref.putBytes(uploadInput.encodeToByteArray(), metadata)
+                                logText = "Successfully uploaded payload to '$pathInput' with metadata!"
                             } catch (e: Exception) {
                                 logText = "Upload failed: ${e.message}"
                             }
@@ -176,7 +181,7 @@ fun StorageScreen(onBack: () -> Unit) {
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IenText("Upload Data")
+                    IenText("Upload Data with Metadata")
                 }
 
                 // Upload Sample Image button
@@ -204,6 +209,49 @@ fun StorageScreen(onBack: () -> Unit) {
                 }
 
                 // Storage Operations
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    IenButton(
+                        onClick = {
+                            coroutineScope.launch {
+                                logText = "Fetching object metadata..."
+                                try {
+                                    val storage = FirebaseStorage.getInstance()
+                                    val ref = storage.reference.child(pathInput)
+                                    val meta = ref.getMetadata()
+                                    logText = "Metadata for '$pathInput':\n- Content-Type: ${meta.contentType}\n- Size: ${meta.sizeBytes} bytes\n- Custom: ${meta.customMetadata}"
+                                } catch (e: Exception) {
+                                    logText = "Failed to fetch metadata:\n${e.message}"
+                                }
+                            }
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        IenText("Get Meta")
+                    }
+
+                    IenButton(
+                        onClick = {
+                            coroutineScope.launch {
+                                logText = "Downloading bytes (max 1MB)..."
+                                try {
+                                    val storage = FirebaseStorage.getInstance()
+                                    val ref = storage.reference.child(pathInput)
+                                    val bytes = ref.getData(1024 * 1024)
+                                    logText = "Successfully downloaded ${bytes.size} bytes from '$pathInput'!"
+                                } catch (e: Exception) {
+                                    logText = "Failed to download data:\n${e.message}"
+                                }
+                            }
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        IenText("GetData")
+                    }
+                }
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)

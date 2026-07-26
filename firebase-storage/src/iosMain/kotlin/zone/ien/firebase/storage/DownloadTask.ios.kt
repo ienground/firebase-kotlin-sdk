@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import swiftPMImport.zone.ien.firebase.firebase.storage.FIRStorageUploadTask
+import swiftPMImport.zone.ien.firebase.firebase.storage.FIRStorageDownloadTask
 import swiftPMImport.zone.ien.firebase.firebase.storage.FIRStorageTaskSnapshot
 import swiftPMImport.zone.ien.firebase.firebase.storage.FIRStorageTaskStatusProgress
 import swiftPMImport.zone.ien.firebase.firebase.storage.FIRStorageTaskStatusSuccess
 import swiftPMImport.zone.ien.firebase.firebase.storage.FIRStorageTaskStatusFailure
 
 @OptIn(ExperimentalForeignApi::class)
-public actual class UploadTask(private val iosTask: FIRStorageUploadTask) {
+public actual class DownloadTask(private val iosTask: FIRStorageDownloadTask) {
     public actual suspend fun await(): Unit = suspendCancellableCoroutine { cont ->
         var successHandle: String? = null
         var failureHandle: String? = null
@@ -40,7 +40,7 @@ public actual class UploadTask(private val iosTask: FIRStorageUploadTask) {
                 if (error != null) {
                     cont.resumeWithException(RuntimeException(error.localizedDescription))
                 } else {
-                    cont.resumeWithException(RuntimeException("Upload task failed with unknown error"))
+                    cont.resumeWithException(RuntimeException("Download task failed with unknown error"))
                 }
             }
         }
@@ -55,7 +55,7 @@ public actual class UploadTask(private val iosTask: FIRStorageUploadTask) {
         }
     }
 
-    public actual fun snapshots(): Flow<UploadTaskSnapshot> = callbackFlow {
+    public actual fun snapshots(): Flow<DownloadTaskSnapshot> = callbackFlow {
         var progressHandle: String? = null
         var successHandle: String? = null
         var failureHandle: String? = null
@@ -69,14 +69,14 @@ public actual class UploadTask(private val iosTask: FIRStorageUploadTask) {
 
         val pHandle = iosTask.observeStatus(FIRStorageTaskStatusProgress) { snapshot ->
             if (snapshot != null) {
-                trySend(UploadTaskSnapshot(snapshot))
+                trySend(DownloadTaskSnapshot(snapshot))
             }
         }
         progressHandle = pHandle
 
         val sHandle = iosTask.observeStatus(FIRStorageTaskStatusSuccess) { snapshot ->
             if (snapshot != null) {
-                trySend(UploadTaskSnapshot(snapshot))
+                trySend(DownloadTaskSnapshot(snapshot))
             }
             isCompleted = true
             cleanup()
@@ -91,7 +91,7 @@ public actual class UploadTask(private val iosTask: FIRStorageUploadTask) {
             if (error != null) {
                 close(RuntimeException(error.localizedDescription))
             } else {
-                close(RuntimeException("Upload task failed with unknown error"))
+                close(RuntimeException("Download task failed with unknown error"))
             }
         }
         failureHandle = fHandle
@@ -107,13 +107,10 @@ public actual class UploadTask(private val iosTask: FIRStorageUploadTask) {
 }
 
 @OptIn(ExperimentalForeignApi::class)
-public actual class UploadTaskSnapshot(private val iosSnapshot: FIRStorageTaskSnapshot) {
+public actual class DownloadTaskSnapshot(private val iosSnapshot: FIRStorageTaskSnapshot) {
     public actual val bytesTransferred: Long
         get() = iosSnapshot.progress()?.completedUnitCount ?: 0L
 
     public actual val totalByteCount: Long
         get() = iosSnapshot.progress()?.totalUnitCount ?: 0L
-
-    public actual val metadata: StorageMetadata?
-        get() = iosSnapshot.metadata()?.toCommon()
 }

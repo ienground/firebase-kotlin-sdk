@@ -459,3 +459,11 @@ To convert any pending module (`firebase-xxx`) into KMP:
 * **Common Entrypoint Creation**: Added `public object Firebase` in `firebase-common` with `Firebase.app` property and `Firebase.initialize(context)` helper function.
 * **Service Extension Properties**: Added `Firebase.<service>` extension properties and functions across all feature SDK modules (`storage`, `auth`, `firestore`, `database`, `functions`, `messaging`, `remoteConfig`, `crashlytics`, `crashlyticsNdk`, `performance`, `appDistribution`, `installations`, `dataConnect`, `modelDownloader`, `inAppMessaging`, `inAppMessagingDisplay`, `messagingDirectBoot`, `appCheck`, `ai`).
 * **Common Test Verification**: Added unit test `FirebaseTest` in `firebase-common` confirming `Firebase` singleton accessibility.
+
+### 2026-07-26: Firebase Storage Metadata, File & Data APIs Implementation (Issue IEN-35)
+* **StorageMetadata & Builder**: Added `StorageMetadata` model with property accessors (`contentType`, `cacheControl`, `customMetadata`, `sizeBytes`, `creationTimeMillis`, etc.), `storageMetadata { ... }` builder DSL, and `FirebaseStorageMetadata` typealias in `commonMain`.
+* **File & Data Multiplatform Classes**: Added `File` and `Data` expect/actual classes for Gitlive API parity (Android `Uri`/`java.io.File`, iOS `NSURL`/`NSData`).
+* **StorageReference API Expansion**: Added `putBytes(data, metadata)`, `putData(data, metadata)`, `putFile(filePath, metadata)`, `putFile(file, metadata)` for file/data upload, `getData(maxDownloadSizeBytes)` / `getBytes(maxDownloadSizeBytes)` for byte downloads, `getFile(destinationPath)` / `getFile(file)` for file downloads, and `getMetadata()` / `updateMetadata(metadata)` across common expect contracts and Android/iOS actual delegates.
+* **DownloadTask & Snapshots**: Added `DownloadTask` and `DownloadTaskSnapshot` expect/actual classes for progressive download tracking and suspension await hooks.
+* **UploadTask Metadata Property**: Exposed `UploadTaskSnapshot.metadata` property for uploaded object metadata access.
+* **Contract Verification**: Updated `StorageApiContractTest` covering new types and DSL builder behavior.

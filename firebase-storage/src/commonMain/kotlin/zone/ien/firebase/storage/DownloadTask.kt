@@ -2,13 +2,12 @@ package zone.ien.firebase.storage
 
 import kotlinx.coroutines.flow.Flow
 
-public expect class UploadTask {
+public expect class DownloadTask {
     public suspend fun await()
-    public fun snapshots(): Flow<UploadTaskSnapshot>
+    public fun snapshots(): Flow<DownloadTaskSnapshot>
 }
 
-public expect class UploadTaskSnapshot {
+public expect class DownloadTaskSnapshot {
     public val bytesTransferred: Long
     public val totalByteCount: Long
-    public val metadata: StorageMetadata?
 }
