@@ -82,3 +82,27 @@ fun Query.whereInArray(field: FieldPath, values: List<Any>): Query = where(field
 fun Query.inArray(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
 fun Query.whereIn(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.IN, values)
 fun Query.whereNotIn(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.NOT_IN, values)
+
+
+fun Query.snapshots(includeMetadataChanges: Boolean): Flow<QuerySnapshot> =
+    snapshots(includeMetadataChanges = includeMetadataChanges, source = ListenSource.DEFAULT)
+
+fun Query.snapshots(source: ListenSource): Flow<QuerySnapshot> =
+    snapshots(includeMetadataChanges = false, source = source)
+
+class QueryFilterBuilder(val query: Query) {
+    infix fun FieldPath.inArray(values: List<Any>): Query = query.whereInArray(this, values)
+    infix fun String.inArray(values: List<Any>): Query = query.whereInArray(this, values)
+    infix fun FieldPath.equalTo(value: Any?): Query = query.whereEqualTo(this, value)
+    infix fun String.equalTo(value: Any?): Query = query.whereEqualTo(this, value)
+    infix fun FieldPath.notEqualTo(value: Any?): Query = query.whereNotEqualTo(this, value)
+    infix fun String.notEqualTo(value: Any?): Query = query.whereNotEqualTo(this, value)
+    infix fun FieldPath.lessThan(value: Any): Query = query.whereLessThan(this, value)
+    infix fun String.lessThan(value: Any): Query = query.whereLessThan(this, value)
+    infix fun FieldPath.greaterThan(value: Any): Query = query.whereGreaterThan(this, value)
+    infix fun String.greaterThan(value: Any): Query = query.whereGreaterThan(this, value)
+    infix fun FieldPath.arrayContains(value: Any): Query = query.whereArrayContains(this, value)
+    infix fun String.arrayContains(value: Any): Query = query.whereArrayContains(this, value)
+}
+
+fun Query.where(block: QueryFilterBuilder.() -> Query): Query = QueryFilterBuilder(this).block()

@@ -36,3 +36,10 @@ fun DocumentReference.getPath(): String = path
 fun DocumentReference.getSnapshots(cache: Boolean = true): Flow<DocumentSnapshot?> =
     snapshots(includeMetadataChanges = !cache, source = ListenSource.DEFAULT)
         .filter { doc -> doc == null || !doc.metadata.isFromCache || cache }
+
+
+fun DocumentReference.snapshots(includeMetadataChanges: Boolean): Flow<DocumentSnapshot?> =
+    snapshots(includeMetadataChanges = includeMetadataChanges, source = ListenSource.DEFAULT)
+
+fun DocumentReference.snapshots(source: ListenSource): Flow<DocumentSnapshot?> =
+    snapshots(includeMetadataChanges = false, source = source)

@@ -54,4 +54,18 @@ class QueryModelsTest {
         val fp = FieldPath.documentId()
         assertNotNull(fp)
     }
+
+    @Test
+    fun FieldPath_documentId_프로퍼티_접근이_가능하다() {
+        val fp = FieldPath.documentId
+        assertNotNull(fp)
+    }
+
+    @Test
+    fun snapshots_단일_인자_오버로드가_정상_참조된다() {
+        val querySnapshotsOneArg: (Query, Boolean) -> Flow<QuerySnapshot> = { q, b -> q.snapshots(b) }
+        val docSnapshotsOneArg: (DocumentReference, Boolean) -> Flow<DocumentSnapshot?> = { d, b -> d.snapshots(b) }
+        assertNotNull(querySnapshotsOneArg)
+        assertNotNull(docSnapshotsOneArg)
+    }
 }

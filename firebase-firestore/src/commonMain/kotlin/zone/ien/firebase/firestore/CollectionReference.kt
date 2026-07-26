@@ -9,3 +9,8 @@ expect class CollectionReference : Query {
     fun document(documentPath: String): DocumentReference
     suspend fun add(data: Map<String, Any?>): DocumentReference
 }
+
+import kotlinx.coroutines.flow.Flow
+
+fun CollectionReference.getSnapshots(cache: Boolean = true): Flow<QuerySnapshot> =
+    (this as Query).getSnapshots(cache)

@@ -13,3 +13,6 @@ expect class FieldPath {
         fun documentId(): FieldPath
     }
 }
+
+val FieldPath.Companion.documentId: FieldPath
+    get() = documentId()
