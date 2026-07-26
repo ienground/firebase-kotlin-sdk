@@ -8,6 +8,10 @@ actual class FirebaseFirestore(internal val androidFirestore: AndroidFirebaseFir
         return CollectionReference(androidFirestore.collection(collectionPath))
     }
 
+    actual fun collectionGroup(collectionId: String): Query {
+        return Query(androidFirestore.collectionGroup(collectionId))
+    }
+
     actual fun document(documentPath: String): DocumentReference {
         return DocumentReference(androidFirestore.document(documentPath))
     }
@@ -26,6 +30,18 @@ actual class FirebaseFirestore(internal val androidFirestore: AndroidFirebaseFir
 
     actual suspend fun clearPersistence() {
         androidFirestore.clearPersistence().await()
+    }
+
+    actual suspend fun enableNetwork() {
+        androidFirestore.enableNetwork().await()
+    }
+
+    actual suspend fun disableNetwork() {
+        androidFirestore.disableNetwork().await()
+    }
+
+    actual suspend fun waitForPendingWrites() {
+        androidFirestore.waitForPendingWrites().await()
     }
 
     actual suspend fun loadBundle(bundleData: ByteArray): LoadBundleTaskProgress {

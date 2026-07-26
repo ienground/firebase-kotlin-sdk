@@ -13,9 +13,13 @@ import swiftPMImport.zone.ien.firebase.firebase.firestore.FIRFirestore
 import swiftPMImport.zone.ien.firebase.firebase.firestore.FIRLoadBundleTaskState
 
 @OptIn(ExperimentalForeignApi::class)
-actual class FirebaseFirestore private constructor(internal val iosFirestore: FIRFirestore) {
+actual class FirebaseFirestore internal constructor(internal val iosFirestore: FIRFirestore) {
     actual fun collection(collectionPath: String): CollectionReference {
         return CollectionReference(iosFirestore.collectionWithPath(collectionPath))
+    }
+
+    actual fun collectionGroup(collectionId: String): Query {
+        return Query(iosFirestore.collectionGroupWithID(collectionId))
     }
 
     actual fun document(documentPath: String): DocumentReference {
@@ -55,6 +59,24 @@ actual class FirebaseFirestore private constructor(internal val iosFirestore: FI
             } else {
                 cont.resume(Unit)
             }
+        }
+    }
+
+    actual suspend fun enableNetwork() = suspendCancellableCoroutine<Unit> { cont ->
+        iosFirestore.enableNetworkWithCompletion { error ->
+            if (error != null) cont.resumeWithException(RuntimeException(error.localizedDescription)) else cont.resume(Unit)
+        }
+    }
+
+    actual suspend fun disableNetwork() = suspendCancellableCoroutine<Unit> { cont ->
+        iosFirestore.disableNetworkWithCompletion { error ->
+            if (error != null) cont.resumeWithException(RuntimeException(error.localizedDescription)) else cont.resume(Unit)
+        }
+    }
+
+    actual suspend fun waitForPendingWrites() = suspendCancellableCoroutine<Unit> { cont ->
+        iosFirestore.waitForPendingWritesWithCompletion { error ->
+            if (error != null) cont.resumeWithException(RuntimeException(error.localizedDescription)) else cont.resume(Unit)
         }
     }
 

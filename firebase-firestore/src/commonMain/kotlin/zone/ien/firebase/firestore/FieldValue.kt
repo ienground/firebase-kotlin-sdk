@@ -12,8 +12,10 @@ class FieldValue private constructor(internal val operation: Operation) {
 
     companion object {
         fun delete(): FieldValue = FieldValue(Operation.Delete)
+        val delete: FieldValue get() = delete()
 
         fun serverTimestamp(): FieldValue = FieldValue(Operation.ServerTimestamp)
+        val serverTimestamp: FieldValue get() = serverTimestamp()
 
         fun arrayUnion(vararg elements: Any): FieldValue =
             FieldValue(Operation.ArrayUnion(elements.toList()))

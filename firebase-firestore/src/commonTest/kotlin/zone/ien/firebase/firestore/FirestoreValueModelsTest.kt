@@ -22,7 +22,9 @@ class FirestoreValueModelsTest {
     @Test
     fun FieldValue는_쓰기_변환에_필요한_연산값을_보존한다() {
         assertEquals(FieldValue.Operation.Delete, FieldValue.delete().operation)
+        assertEquals(FieldValue.Operation.Delete, FieldValue.delete.operation)
         assertEquals(FieldValue.Operation.ServerTimestamp, FieldValue.serverTimestamp().operation)
+        assertEquals(FieldValue.Operation.ServerTimestamp, FieldValue.serverTimestamp.operation)
         assertEquals(
             FieldValue.Operation.ArrayUnion(listOf("a", 1L)),
             FieldValue.arrayUnion("a", 1L).operation

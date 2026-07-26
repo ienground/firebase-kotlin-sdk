@@ -14,6 +14,9 @@ import swiftPMImport.zone.ien.firebase.firebase.firestore.FIRQuery
 
 @OptIn(ExperimentalForeignApi::class)
 actual open class Query(private val iosQuery: FIRQuery) {
+    actual val firestore: FirebaseFirestore
+        get() = FirebaseFirestore(iosQuery.firestore)
+
     actual suspend fun get(): QuerySnapshot = get(Source.DEFAULT)
 
     actual suspend fun get(source: Source): QuerySnapshot = suspendCancellableCoroutine { cont ->
@@ -52,25 +55,25 @@ actual open class Query(private val iosQuery: FIRQuery) {
         }
     }
 
-    actual fun where(field: String, operator: WhereOperator, value: Any): Query {
+    actual fun where(field: String, operator: WhereOperator, value: Any?): Query {
         val filteredQuery = when (operator) {
             WhereOperator.EQUAL -> iosQuery.queryWhereField(field, isEqualTo = value.toIosValue())
             WhereOperator.NOT_EQUAL ->
                 iosQuery.queryWhereField(field, isNotEqualTo = value.toIosValue())
             WhereOperator.LESS_THAN ->
-                iosQuery.queryWhereField(field, isLessThan = value.toIosValue())
+                iosQuery.queryWhereField(field, isLessThan = requireNotNull(value).toIosValue())
             WhereOperator.LESS_THAN_OR_EQUAL ->
-                iosQuery.queryWhereField(field, isLessThanOrEqualTo = value.toIosValue())
+                iosQuery.queryWhereField(field, isLessThanOrEqualTo = requireNotNull(value).toIosValue())
             WhereOperator.GREATER_THAN ->
-                iosQuery.queryWhereField(field, isGreaterThan = value.toIosValue())
+                iosQuery.queryWhereField(field, isGreaterThan = requireNotNull(value).toIosValue())
             WhereOperator.GREATER_THAN_OR_EQUAL ->
-                iosQuery.queryWhereField(field, isGreaterThanOrEqualTo = value.toIosValue())
+                iosQuery.queryWhereField(field, isGreaterThanOrEqualTo = requireNotNull(value).toIosValue())
             WhereOperator.ARRAY_CONTAINS ->
-                iosQuery.queryWhereField(field, arrayContains = value.toIosValue())
+                iosQuery.queryWhereField(field, arrayContains = requireNotNull(value).toIosValue())
             WhereOperator.ARRAY_CONTAINS_ANY ->
-                iosQuery.queryWhereField(field, arrayContainsAny = value.asNativeList())
-            WhereOperator.IN -> iosQuery.queryWhereField(field, `in` = value.asNativeList())
-            WhereOperator.NOT_IN -> iosQuery.queryWhereField(field, notIn = value.asNativeList())
+                iosQuery.queryWhereField(field, arrayContainsAny = requireNotNull(value).asNativeList())
+            WhereOperator.IN -> iosQuery.queryWhereField(field, `in` = requireNotNull(value).asNativeList())
+            WhereOperator.NOT_IN -> iosQuery.queryWhereField(field, notIn = requireNotNull(value).asNativeList())
         }
         return Query(filteredQuery)
     }
@@ -84,26 +87,26 @@ actual open class Query(private val iosQuery: FIRQuery) {
         )
     }
 
-    actual fun where(field: FieldPath, operator: WhereOperator, value: Any): Query {
+    actual fun where(field: FieldPath, operator: WhereOperator, value: Any?): Query {
         val fp = field.nativePath() as FIRFieldPath
         val filteredQuery = when (operator) {
             WhereOperator.EQUAL -> iosQuery.queryWhereFieldPath(fp, isEqualTo = value.toIosValue())
             WhereOperator.NOT_EQUAL ->
                 iosQuery.queryWhereFieldPath(fp, isNotEqualTo = value.toIosValue())
             WhereOperator.LESS_THAN ->
-                iosQuery.queryWhereFieldPath(fp, isLessThan = value.toIosValue())
+                iosQuery.queryWhereFieldPath(fp, isLessThan = requireNotNull(value).toIosValue())
             WhereOperator.LESS_THAN_OR_EQUAL ->
-                iosQuery.queryWhereFieldPath(fp, isLessThanOrEqualTo = value.toIosValue())
+                iosQuery.queryWhereFieldPath(fp, isLessThanOrEqualTo = requireNotNull(value).toIosValue())
             WhereOperator.GREATER_THAN ->
-                iosQuery.queryWhereFieldPath(fp, isGreaterThan = value.toIosValue())
+                iosQuery.queryWhereFieldPath(fp, isGreaterThan = requireNotNull(value).toIosValue())
             WhereOperator.GREATER_THAN_OR_EQUAL ->
-                iosQuery.queryWhereFieldPath(fp, isGreaterThanOrEqualTo = value.toIosValue())
+                iosQuery.queryWhereFieldPath(fp, isGreaterThanOrEqualTo = requireNotNull(value).toIosValue())
             WhereOperator.ARRAY_CONTAINS ->
-                iosQuery.queryWhereFieldPath(fp, arrayContains = value.toIosValue())
+                iosQuery.queryWhereFieldPath(fp, arrayContains = requireNotNull(value).toIosValue())
             WhereOperator.ARRAY_CONTAINS_ANY ->
-                iosQuery.queryWhereFieldPath(fp, arrayContainsAny = value.asNativeList())
-            WhereOperator.IN -> iosQuery.queryWhereFieldPath(fp, `in` = value.asNativeList())
-            WhereOperator.NOT_IN -> iosQuery.queryWhereFieldPath(fp, notIn = value.asNativeList())
+                iosQuery.queryWhereFieldPath(fp, arrayContainsAny = requireNotNull(value).asNativeList())
+            WhereOperator.IN -> iosQuery.queryWhereFieldPath(fp, `in` = requireNotNull(value).asNativeList())
+            WhereOperator.NOT_IN -> iosQuery.queryWhereFieldPath(fp, notIn = requireNotNull(value).asNativeList())
         }
         return Query(filteredQuery)
     }
@@ -122,12 +125,28 @@ actual open class Query(private val iosQuery: FIRQuery) {
     actual fun limitToLast(limit: Long): Query = Query(iosQuery.queryLimitedToLast(limit.toLong()))
     actual fun startAt(document: DocumentSnapshot): Query =
         Query(iosQuery.queryStartingAtDocument(document.nativeSnapshot() as FIRDocumentSnapshot))
+    actual fun startAt(vararg fieldValues: Any?): Query {
+        val list = fieldValues.map { it.toIosValue() }
+        return Query(iosQuery.queryStartingAtValues(list))
+    }
     actual fun startAfter(document: DocumentSnapshot): Query =
         Query(iosQuery.queryStartingAfterDocument(document.nativeSnapshot() as FIRDocumentSnapshot))
+    actual fun startAfter(vararg fieldValues: Any?): Query {
+        val list = fieldValues.map { it.toIosValue() }
+        return Query(iosQuery.queryStartingAfterValues(list))
+    }
     actual fun endAt(document: DocumentSnapshot): Query =
         Query(iosQuery.queryEndingAtDocument(document.nativeSnapshot() as FIRDocumentSnapshot))
+    actual fun endAt(vararg fieldValues: Any?): Query {
+        val list = fieldValues.map { it.toIosValue() }
+        return Query(iosQuery.queryEndingAtValues(list))
+    }
     actual fun endBefore(document: DocumentSnapshot): Query =
         Query(iosQuery.queryEndingBeforeDocument(document.nativeSnapshot() as FIRDocumentSnapshot))
+    actual fun endBefore(vararg fieldValues: Any?): Query {
+        val list = fieldValues.map { it.toIosValue() }
+        return Query(iosQuery.queryEndingBeforeValues(list))
+    }
     actual fun count(): AggregateQuery = AggregateQuery(iosQuery.count())
     actual fun sum(field: String): AggregateQuery =
         AggregateQuery(iosQuery.aggregate(listOf(FIRAggregateField.aggregateFieldForSumOfField(field))))

@@ -1,8 +1,12 @@
 package zone.ien.firebase.auth
 
-public expect class FirebaseUser private constructor() {
+public expect class FirebaseUser {
     public val uid: String
     public val email: String?
+    public val displayName: String?
+    public val photoUrl: String?
+    public val phoneNumber: String?
+    public val isEmailVerified: Boolean
     public val isAnonymous: Boolean
     public suspend fun delete()
     public suspend fun getIdToken(forceRefresh: Boolean): String
