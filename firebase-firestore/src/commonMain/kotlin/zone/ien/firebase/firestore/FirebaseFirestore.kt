@@ -5,6 +5,12 @@ import zone.ien.firebase.Firebase
 expect class FirebaseFirestore {
     fun collection(collectionPath: String): CollectionReference
     fun document(documentPath: String): DocumentReference
+    fun batch(): WriteBatch
+    suspend fun <T> runTransaction(block: (Transaction) -> T): T
+    fun setSettings(settings: FirebaseFirestoreSettings)
+    suspend fun clearPersistence()
+    suspend fun loadBundle(bundleData: ByteArray): LoadBundleTaskProgress
+    suspend fun namedQuery(name: String): Query?
 
     companion object {
         fun getInstance(): FirebaseFirestore

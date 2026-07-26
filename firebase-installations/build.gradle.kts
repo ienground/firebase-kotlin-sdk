@@ -49,7 +49,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":firebase-common"))
+            api(project(":firebase-common"))
             implementation(project(":firebase-components"))
             api(project(":firebase-installations-interop"))
             implementation(libs.kotlinx.coroutines.core)

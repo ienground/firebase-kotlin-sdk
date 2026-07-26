@@ -25,13 +25,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebaseApp
 import zone.ien.firebase.example.data.Message
+import zone.ien.firebase.firestore.AggregateField
 import zone.ien.firebase.firestore.DocumentSnapshot
+import zone.ien.firebase.firestore.FieldValue
 import zone.ien.firebase.firestore.FirebaseFirestore
 import zone.ien.firebase.firestore.Query
 import zone.ien.firebase.firestore.QueryDirection
@@ -171,6 +172,10 @@ fun FirestoreScreen(onBack: () -> Unit) {
             }
 
             item {
+                AdvancedFeaturesSection(firestore = firestore)
+            }
+
+            item {
                 QueryTestingSection(
                     firestore = firestore,
                     seedStatus = seedStatus,
@@ -204,6 +209,105 @@ fun FirestoreScreen(onBack: () -> Unit) {
 }
 
 @Composable
+private fun AdvancedFeaturesSection(firestore: FirebaseFirestore?) {
+    val isSupported = firestore != null
+    val scope = rememberCoroutineScope()
+    var statusText by remember { mutableStateOf("Ready to test Batch, Transaction, Aggregate & Settings.") }
+
+    IenSurface(
+        modifier = Modifier.fillMaxWidth(),
+        color = IenTheme.colors.surfaceVariant,
+        shape = ContinuousRoundedRectangle(8.dp)
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            IenText(
+                text = "Advanced Features (Batch, Transaction, Aggregation)",
+                style = IenTheme.typography.title2,
+                color = IenTheme.colors.textPrimary
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                IenButton(
+                    onClick = {
+                        val db = firestore ?: return@IenButton
+                        scope.launch {
+                            runCatching {
+                                val batch = db.batch()
+                                val ref1 = db.collection("batch_test").document("doc1")
+                                val ref2 = db.collection("batch_test").document("doc2")
+                                batch.set(ref1, mapOf("title" to "Batch Doc 1", "score" to 100L))
+                                batch.set(ref2, mapOf("title" to "Batch Doc 2", "score" to 200L))
+                                batch.commit()
+                                statusText = "Batch commit succeeded (created 2 docs)."
+                            }.onFailure {
+                                statusText = "Batch failed: ${it.message}"
+                            }
+                        }
+                    },
+                    state = IenButtonState(enabled = isSupported),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    IenText("Run Batch")
+                }
+                IenButton(
+                    onClick = {
+                        val db = firestore ?: return@IenButton
+                        scope.launch {
+                            runCatching {
+                                val result = db.runTransaction { tx ->
+                                    val ref = db.collection("batch_test").document("doc1")
+                                    val snap = tx.get(ref)
+                                    val currentScore = (snap.get("score") as? Number)?.toLong() ?: 0L
+                                    tx.update(ref, mapOf("score" to currentScore + 10L))
+                                    currentScore + 10L
+                                }
+                                statusText = "Transaction succeeded: updated doc1 score to $result."
+                            }.onFailure {
+                                statusText = "Transaction failed: ${it.message}"
+                            }
+                        }
+                    },
+                    state = IenButtonState(enabled = isSupported),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    IenText("Run Transaction")
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                IenButton(
+                    onClick = {
+                        val db = firestore ?: return@IenButton
+                        scope.launch {
+                            runCatching {
+                                val countSnap = db.collection(QueryCollection).count().get()
+                                val sumSnap = db.collection(QueryCollection).sum("score").get()
+                                val avgSnap = db.collection(QueryCollection).average("score").get()
+                                val sumVal = sumSnap.getDouble(AggregateField.sum("score")) ?: 0.0
+                                val avgVal = avgSnap.getDouble(AggregateField.average("score")) ?: 0.0
+                                statusText = "Aggregation: count=${countSnap.count}, sum(score)=$sumVal, avg(score)=$avgVal"
+                            }.onFailure {
+                                statusText = "Aggregation failed: ${it.message}"
+                            }
+                        }
+                    },
+                    state = IenButtonState(enabled = isSupported),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    IenText("Aggregate (count/sum/avg)")
+                }
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            IenText(
+                text = statusText,
+                style = IenTheme.typography.body2,
+                color = IenTheme.colors.textPrimary.copy(alpha = 0.85f)
+            )
+        }
+    }
+}
+
+@Composable
 private fun PlatformStatusCard(
     isSupported: Boolean,
     initError: String?
@@ -232,7 +336,7 @@ private fun PlatformStatusCard(
                 color = IenTheme.colors.textPrimary
             )
             IenText(
-                text = "Query API: where, orderBy, limit, limitToLast, and document cursors call the real SDK.",
+                text = "Query API: where, orderBy, limit, limitToLast, cursors, WriteBatch, Transaction, Aggregate (count/sum/avg) call the real SDK.",
                 style = IenTheme.typography.body2,
                 color = IenTheme.colors.textPrimary
             )

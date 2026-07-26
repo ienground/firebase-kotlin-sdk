@@ -46,14 +46,14 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":firebase-common"))
+            api(project(":firebase-common"))
             implementation(project(":firebase-components"))
-            implementation(libs.kotlinx.coroutines.core)
+            api(libs.kotlinx.coroutines.core)
         }
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
-            api(libs.firebase.android.dataconnect)
+            implementation(libs.firebase.android.dataconnect)
         }
 
         val androidMain by getting {

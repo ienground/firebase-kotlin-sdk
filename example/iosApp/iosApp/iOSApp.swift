@@ -3,6 +3,7 @@ import FirebaseCore
 import FirebaseMessaging
 import FirebaseAppDistribution
 import UserNotifications
+//import composeApp
 
 class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
     func application(
@@ -71,11 +72,15 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
         didReceiveRemoteNotification userInfo: [AnyHashable : Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
     ) {
-        // Forward remote notification payload to Firebase Messaging
+        // Forward remote notification payload to native Firebase Messaging
         Messaging.messaging().appDidReceiveMessage(userInfo)
+        
+        // Bridge APNs remote notification payload to KMP FirebaseMessaging
+//        let remoteMessage = FirebaseMessaging_iosKt.remoteMessageFromUserInfo(userInfo)
+//        FirebaseMessaging.companion.getInstance().handleMessage(message: remoteMessage)
+        
         completionHandler(.newData)
     }
-
 
     // MessagingDelegate method to receive registration tokens from FCM
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {

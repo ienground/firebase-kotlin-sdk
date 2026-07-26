@@ -113,4 +113,7 @@ public actual class UploadTaskSnapshot(private val iosSnapshot: FIRStorageTaskSn
 
     public actual val totalByteCount: Long
         get() = iosSnapshot.progress()?.totalUnitCount ?: 0L
+
+    public actual val metadata: StorageMetadata?
+        get() = iosSnapshot.metadata()?.toCommon()
 }

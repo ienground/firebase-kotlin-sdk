@@ -53,12 +53,12 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":firebase-common"))
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+            api(libs.kotlinx.coroutines.core)
         }
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
-            implementation(libs.firebase.android.firestore)
+            api(libs.firebase.android.firestore)
         }
 
         commonTest.dependencies {

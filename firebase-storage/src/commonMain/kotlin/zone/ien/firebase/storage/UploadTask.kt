@@ -10,4 +10,5 @@ public expect class UploadTask {
 public expect class UploadTaskSnapshot {
     public val bytesTransferred: Long
     public val totalByteCount: Long
+    public val metadata: StorageMetadata?
 }

@@ -8,5 +8,13 @@ public class AndroidInstallationTokenResult(
     override val token: String
         get() = androidTokenResult.token
     override val tokenExpirationTimestamp: Long
-        get() = androidTokenResult.tokenExpirationTimestamp
+        get() = Math.multiplyExact(
+            Math.addExact(
+                androidTokenResult.tokenCreationTimestamp,
+                androidTokenResult.tokenExpirationTimestamp
+            ),
+            MILLIS_PER_SECOND
+        )
 }
+
+private const val MILLIS_PER_SECOND: Long = 1_000L

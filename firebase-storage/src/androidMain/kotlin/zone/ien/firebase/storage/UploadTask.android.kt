@@ -42,4 +42,7 @@ public actual class UploadTaskSnapshot(private val androidSnapshot: AndroidUploa
 
     public actual val totalByteCount: Long
         get() = androidSnapshot.totalByteCount
+
+    public actual val metadata: StorageMetadata?
+        get() = androidSnapshot.metadata?.toCommon()
 }
