@@ -58,7 +58,8 @@ core = "1.17.0"
 ext-junit = "1.3.0"
 
 vanniktechMavenPublish = "0.37.0"
-ienlab-cmp = "3.0.0"
+ienlab-cmp = "3.0.1"
+hig = "1.3.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -112,6 +113,7 @@ activity-compose = { module = "androidx.activity:activity-compose", version.ref 
 lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 capsule = { group = "zone.ien.capsule", name = "capsule", version.ref = "capsule"}
+hig-adaptive = { group = "zone.ien.hig", name = "hig-adaptive", version.ref = "hig" }
 
 compose-material3 = { group = "org.jetbrains.compose.material3", name = "material3", version.ref = "compose-material3" }
 compose-preview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "compose-plugin" }

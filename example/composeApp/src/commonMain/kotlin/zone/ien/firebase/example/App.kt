@@ -18,6 +18,8 @@ import zone.ien.utils.ui.wrapper.IenRootWrapper
 import zone.ien.firebase.FirebaseApp
 import zone.ien.firebase.example.data.AppStateManager
 import zone.ien.firebase.example.data.FirebaseInitState
+import zone.ien.hig.adaptive.Theme
+import zone.ien.utils.adaptive.theme.IenAdaptiveTheme
 
 @Composable
 fun App(context: FirebasePlatformContext) {
@@ -36,8 +38,10 @@ fun App(context: FirebasePlatformContext) {
     // Explicit Backstack key-based Navigation3 State Framework
     val backStack = rememberNavBackStack<ScreenRoute>(ScreenRoute.Home)
 
-    IenRootWrapper {
-        AppTheme {
+    IenAdaptiveTheme(
+        target = Theme.Material3
+    ) {
+        IenRootWrapper {
             IenScaffold(
                 modifier = Modifier.fillMaxSize()
             ) {
