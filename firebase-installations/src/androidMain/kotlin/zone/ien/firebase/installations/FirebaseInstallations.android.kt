@@ -18,12 +18,7 @@ public actual class FirebaseInstallations(
     }
 
     actual override suspend fun getToken(forceRefresh: Boolean): InstallationTokenResult {
-        val result = androidInstallations.getToken(forceRefresh).await()
-        return InstallationTokenResult(
-            token = result.token,
-            tokenExpirationTimestamp = result.tokenExpirationTimestamp,
-            tokenCreationTimestamp = result.tokenCreationTimestamp
-        )
+        return androidInstallations.getToken(forceRefresh).await().toCommonInstallationTokenResult()
     }
 
     actual override suspend fun delete() {
@@ -49,3 +44,14 @@ public actual class FirebaseInstallations(
         }
     }
 }
+
+internal fun com.google.firebase.installations.InstallationTokenResult.toCommonInstallationTokenResult(): InstallationTokenResult {
+    val expirationEpochSeconds = Math.addExact(tokenCreationTimestamp, tokenExpirationTimestamp)
+    return InstallationTokenResult(
+        token = token,
+        tokenExpirationTimestamp = Math.multiplyExact(expirationEpochSeconds, MILLIS_PER_SECOND),
+        tokenCreationTimestamp = Math.multiplyExact(tokenCreationTimestamp, MILLIS_PER_SECOND)
+    )
+}
+
+private const val MILLIS_PER_SECOND: Long = 1_000L

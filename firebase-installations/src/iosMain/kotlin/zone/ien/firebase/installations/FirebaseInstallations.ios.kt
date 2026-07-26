@@ -17,11 +17,14 @@ import zone.ien.firebase.installations.interop.FidListenerHandle
 public actual class FirebaseInstallations(
     private val iosInstallations: FIRInstallations
 ) : FirebaseInstallationsApi {
+    private val fidMemoryState: FidMemoryState = FidMemoryState()
+
     actual override suspend fun getId(): String = suspendCancellableCoroutine { continuation ->
         iosInstallations.installationIDWithCompletion { id, error ->
             if (error != null) {
                 continuation.resumeWithException(Exception(error.localizedDescription))
             } else if (id != null) {
+                fidMemoryState.recordFid(id)
                 continuation.resume(id)
             } else {
                 continuation.resumeWithException(Exception("Installation ID fetch returned null values."))
@@ -37,12 +40,11 @@ public actual class FirebaseInstallations(
                 val token = result.authToken
                 val expirationDate = result.expirationDate
                 val expirationTimestamp = (expirationDate.timeIntervalSince1970 * 1000).toLong()
-                val creationTimestamp = (platform.Foundation.NSDate().timeIntervalSince1970 * 1000).toLong()
                 continuation.resume(
                     InstallationTokenResult(
                         token = token,
                         tokenExpirationTimestamp = expirationTimestamp,
-                        tokenCreationTimestamp = creationTimestamp
+                        tokenCreationTimestamp = InstallationTokenResult.UNAVAILABLE_TOKEN_CREATION_TIMESTAMP
                     )
                 )
             } else {
@@ -62,19 +64,25 @@ public actual class FirebaseInstallations(
     }
 
     actual override fun clearFidCache() {
-        throw UnsupportedOperationException("clearFidCache is not supported on iOS.")
+        fidMemoryState.clearFidCache()
     }
 
     actual override fun registerFidListener(listener: FidListener): FidListenerHandle {
-        throw UnsupportedOperationException("registerFidListener is not supported on iOS.")
+        return fidMemoryState.registerFidListener(listener)
     }
 
     public actual companion object {
+        private val instances: IdentityInstanceCache<FirebaseInstallations> = IdentityInstanceCache()
+
         public actual val instance: FirebaseInstallations
-            get() = FirebaseInstallations(FIRInstallations.installations())
+            get() = instances.getOrCreate(FirebaseApp.instance.getName()) {
+                FirebaseInstallations(FIRInstallations.installations())
+            }
 
         public actual fun getInstance(app: FirebaseApp): FirebaseInstallations {
-            return FirebaseInstallations(FIRInstallations.installationsWithApp(app.iosApp))
+            return instances.getOrCreate(app.getName()) {
+                FirebaseInstallations(FIRInstallations.installationsWithApp(app.iosApp))
+            }
         }
     }
 }

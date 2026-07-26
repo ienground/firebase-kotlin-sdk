@@ -1,6 +1,7 @@
 package zone.ien.firebase.firestore
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 
 enum class QueryDirection {
     ASCENDING,
@@ -21,14 +22,63 @@ enum class WhereOperator {
 }
 
 expect open class Query {
+    val firestore: FirebaseFirestore
     suspend fun get(): QuerySnapshot
+    suspend fun get(source: Source): QuerySnapshot
     fun snapshots(): Flow<QuerySnapshot>
-    fun where(field: String, operator: WhereOperator, value: Any): Query
+    fun snapshots(
+        includeMetadataChanges: Boolean,
+        source: ListenSource
+    ): Flow<QuerySnapshot>
+    fun where(field: String, operator: WhereOperator, value: Any?): Query
     fun orderBy(field: String, direction: QueryDirection = QueryDirection.ASCENDING): Query
+    fun where(field: FieldPath, operator: WhereOperator, value: Any?): Query
+    fun orderBy(field: FieldPath, direction: QueryDirection = QueryDirection.ASCENDING): Query
     fun limit(limit: Long): Query
     fun limitToLast(limit: Long): Query
     fun startAt(document: DocumentSnapshot): Query
+    fun startAt(vararg fieldValues: Any?): Query
     fun startAfter(document: DocumentSnapshot): Query
+    fun startAfter(vararg fieldValues: Any?): Query
     fun endAt(document: DocumentSnapshot): Query
+    fun endAt(vararg fieldValues: Any?): Query
     fun endBefore(document: DocumentSnapshot): Query
+    fun endBefore(vararg fieldValues: Any?): Query
+
+    fun count(): AggregateQuery
+    fun sum(field: String): AggregateQuery
+    fun sum(field: FieldPath): AggregateQuery
+    fun average(field: String): AggregateQuery
+    fun average(field: FieldPath): AggregateQuery
+    fun aggregate(field: AggregateField, vararg fields: AggregateField): AggregateQuery
 }
+
+fun Query.getSnapshots(cache: Boolean = true): Flow<QuerySnapshot> =
+    snapshots(includeMetadataChanges = !cache, source = ListenSource.DEFAULT)
+        .filter { querySnapshot -> !querySnapshot.metadata.isFromCache || cache }
+
+fun Query.whereEqualTo(field: String, value: Any?): Query = where(field, WhereOperator.EQUAL, value)
+fun Query.whereNotEqualTo(field: String, value: Any?): Query = where(field, WhereOperator.NOT_EQUAL, value)
+fun Query.whereLessThan(field: String, value: Any): Query = where(field, WhereOperator.LESS_THAN, value)
+fun Query.whereLessThanOrEqualTo(field: String, value: Any): Query = where(field, WhereOperator.LESS_THAN_OR_EQUAL, value)
+fun Query.whereGreaterThan(field: String, value: Any): Query = where(field, WhereOperator.GREATER_THAN, value)
+fun Query.whereGreaterThanOrEqualTo(field: String, value: Any): Query = where(field, WhereOperator.GREATER_THAN_OR_EQUAL, value)
+fun Query.whereArrayContains(field: String, value: Any): Query = where(field, WhereOperator.ARRAY_CONTAINS, value)
+fun Query.whereArrayContainsAny(field: String, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
+fun Query.whereInArray(field: String, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
+fun Query.inArray(field: String, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
+fun Query.whereIn(field: String, values: List<Any>): Query = where(field, WhereOperator.IN, values)
+fun Query.whereNotIn(field: String, values: List<Any>): Query = where(field, WhereOperator.NOT_IN, values)
+
+fun Query.whereEqualTo(field: FieldPath, value: Any?): Query = where(field, WhereOperator.EQUAL, value)
+fun Query.whereNotEqualTo(field: FieldPath, value: Any?): Query = where(field, WhereOperator.NOT_EQUAL, value)
+fun Query.whereLessThan(field: FieldPath, value: Any): Query = where(field, WhereOperator.LESS_THAN, value)
+fun Query.whereLessThanOrEqualTo(field: FieldPath, value: Any): Query = where(field, WhereOperator.LESS_THAN_OR_EQUAL, value)
+fun Query.whereGreaterThan(field: FieldPath, value: Any): Query = where(field, WhereOperator.GREATER_THAN, value)
+fun Query.whereGreaterThanOrEqualTo(field: FieldPath, value: Any): Query = where(field, WhereOperator.GREATER_THAN_OR_EQUAL, value)
+fun Query.whereArrayContains(field: FieldPath, value: Any): Query = where(field, WhereOperator.ARRAY_CONTAINS, value)
+fun Query.whereArrayContainsAny(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
+fun Query.whereInArray(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
+fun Query.inArray(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
+fun Query.whereIn(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.IN, values)
+fun Query.whereNotIn(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.NOT_IN, values)

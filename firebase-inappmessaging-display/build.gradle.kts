@@ -42,9 +42,20 @@ kotlin {
         }
     }
 
+    swiftPMDependencies {
+        discoverClangModulesImplicitly.set(false)
+        swiftPackage(
+            url = url("https://github.com/firebase/firebase-ios-sdk.git"),
+            version = from(libs.versions.firebase.ios.sdk.get()),
+            products = listOf(product("FirebaseInAppMessaging-Beta")),
+            importedClangModules = listOf("FirebaseInAppMessagingInternal")
+        )
+    }
+
     sourceSets {
         commonMain.dependencies {
-            api(project(":firebase-inappmessaging"))
+            api(project(":firebase-common"))
+            implementation(project(":firebase-inappmessaging"))
         }
 
         androidMain.dependencies {

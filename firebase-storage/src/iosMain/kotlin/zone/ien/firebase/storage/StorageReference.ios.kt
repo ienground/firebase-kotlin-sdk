@@ -6,6 +6,7 @@ import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.usePinned
 import kotlinx.coroutines.suspendCancellableCoroutine
 import platform.Foundation.NSData
+import platform.Foundation.NSURL
 import platform.Foundation.create
 import platform.Foundation.data
 import swiftPMImport.zone.ien.firebase.firebase.storage.FIRStorageReference
@@ -18,6 +19,17 @@ fun ByteArray.toNSData(): NSData {
     return usePinned { pinned ->
         NSData.create(bytes = pinned.addressOf(0), length = this.size.toULong())
     }
+}
+
+@OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
+fun NSData.toByteArray(): ByteArray {
+    val size = length.toInt()
+    if (size == 0) return ByteArray(0)
+    val byteArray = ByteArray(size)
+    byteArray.usePinned { pinned ->
+        platform.posix.memcpy(pinned.addressOf(0), bytes, length)
+    }
+    return byteArray
 }
 
 @OptIn(ExperimentalForeignApi::class)
@@ -63,9 +75,77 @@ actual class StorageReference(private val iosReference: FIRStorageReference) {
         }
     }
 
-    actual fun putBytes(data: ByteArray): UploadTask {
+    actual fun putBytes(data: ByteArray, metadata: StorageMetadata?): UploadTask {
         val nsData = data.toNSData()
-        val iosTask = iosReference.putData(nsData, metadata = null) { _, _ -> }
+        val iosMetadata = metadata?.toIos()
+        val iosTask = iosReference.putData(nsData, metadata = iosMetadata) { _, _ -> }
         return UploadTask(iosTask)
+    }
+
+    actual fun putData(data: Data, metadata: StorageMetadata?): UploadTask {
+        val iosMetadata = metadata?.toIos()
+        val iosTask = iosReference.putData(data.nsData, metadata = iosMetadata) { _, _ -> }
+        return UploadTask(iosTask)
+    }
+    actual fun putFile(filePath: String, metadata: StorageMetadata?): UploadTask {
+        val nsUrl = NSURL.fileURLWithPath(filePath)
+        val iosMetadata = metadata?.toIos()
+        val iosTask = iosReference.putFile(nsUrl, metadata = iosMetadata) { _, _ -> }
+        return UploadTask(iosTask)
+    }
+
+    actual fun putFile(file: File, metadata: StorageMetadata?): UploadTask {
+        val iosMetadata = metadata?.toIos()
+        val iosTask = iosReference.putFile(file.url, metadata = iosMetadata) { _, _ -> }
+        return UploadTask(iosTask)
+    }
+    actual suspend fun getData(maxDownloadSizeBytes: Long): ByteArray = suspendCancellableCoroutine { cont ->
+        iosReference.dataWithMaxSize(maxDownloadSizeBytes) { nsData, error ->
+            if (error != null) {
+                cont.resumeWithException(RuntimeException(error.localizedDescription))
+            } else if (nsData != null) {
+                cont.resume(nsData.toByteArray())
+            } else {
+                cont.resumeWithException(RuntimeException("Data result is null"))
+            }
+        }
+    }
+
+    actual suspend fun getBytes(maxDownloadSizeBytes: Long): ByteArray {
+        return getData(maxDownloadSizeBytes)
+    }
+
+    actual fun getFile(destinationPath: String): DownloadTask {
+        val nsUrl = NSURL.fileURLWithPath(destinationPath)
+        val iosTask = iosReference.writeToFile(nsUrl) { _, _ -> }
+        return DownloadTask(iosTask)
+    }
+
+    actual fun getFile(file: File): DownloadTask {
+        val iosTask = iosReference.writeToFile(file.url) { _, _ -> }
+        return DownloadTask(iosTask)
+    }
+    actual suspend fun getMetadata(): StorageMetadata = suspendCancellableCoroutine { cont ->
+        iosReference.metadataWithCompletion { metadata, error ->
+            if (error != null) {
+                cont.resumeWithException(RuntimeException(error.localizedDescription))
+            } else if (metadata != null) {
+                cont.resume(metadata.toCommon())
+            } else {
+                cont.resumeWithException(RuntimeException("Metadata result is null"))
+            }
+        }
+    }
+
+    actual suspend fun updateMetadata(metadata: StorageMetadata): StorageMetadata = suspendCancellableCoroutine { cont ->
+        iosReference.updateMetadata(metadata.toIos()) { updatedMetadata, error ->
+            if (error != null) {
+                cont.resumeWithException(RuntimeException(error.localizedDescription))
+            } else if (updatedMetadata != null) {
+                cont.resume(updatedMetadata.toCommon())
+            } else {
+                cont.resumeWithException(RuntimeException("Updated metadata result is null"))
+            }
+        }
     }
 }

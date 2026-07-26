@@ -12,18 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -35,17 +23,31 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebaseApp
 import zone.ien.firebase.example.data.Message
+import zone.ien.firebase.firestore.AggregateField
 import zone.ien.firebase.firestore.DocumentSnapshot
+import zone.ien.firebase.firestore.FieldValue
 import zone.ien.firebase.firestore.FirebaseFirestore
 import zone.ien.firebase.firestore.Query
 import zone.ien.firebase.firestore.QueryDirection
 import zone.ien.firebase.firestore.WhereOperator
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import com.kyant.capsule.ContinuousRoundedRectangle
 
 private const val QueryCollection = "query_samples"
 
@@ -99,24 +101,18 @@ fun FirestoreScreen(onBack: () -> Unit) {
     }
     val liveMessages by messagesFlow.collectAsState(initial = emptyList())
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Text(
-                            text = "<",
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.onBackground,
-                        )
-                    }
-                },
+            IenTopAppBar(
                 title = {
-                    Text(
+                    IenText(
                         text = "Firestore Testing",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onBackground
+                        style = IenTheme.typography.title1,
+                        color = IenTheme.colors.textPrimary
                     )
+                },
+                navigationIcon = {
+                    IenBackButton(onClick = onBack)
                 }
             )
         },
@@ -176,6 +172,10 @@ fun FirestoreScreen(onBack: () -> Unit) {
             }
 
             item {
+                AdvancedFeaturesSection(firestore = firestore)
+            }
+
+            item {
                 QueryTestingSection(
                     firestore = firestore,
                     seedStatus = seedStatus,
@@ -194,10 +194,10 @@ fun FirestoreScreen(onBack: () -> Unit) {
             }
 
             item {
-                Text(
+                IenText(
                     text = "Live Collection Stream",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                    style = IenTheme.typography.title3,
+                    color = IenTheme.colors.textPrimary.copy(alpha = 0.7f)
                 )
             }
 
@@ -209,44 +209,143 @@ fun FirestoreScreen(onBack: () -> Unit) {
 }
 
 @Composable
+private fun AdvancedFeaturesSection(firestore: FirebaseFirestore?) {
+    val isSupported = firestore != null
+    val scope = rememberCoroutineScope()
+    var statusText by remember { mutableStateOf("Ready to test Batch, Transaction, Aggregate & Settings.") }
+
+    IenSurface(
+        modifier = Modifier.fillMaxWidth(),
+        color = IenTheme.colors.surfaceVariant,
+        shape = ContinuousRoundedRectangle(8.dp)
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            IenText(
+                text = "Advanced Features (Batch, Transaction, Aggregation)",
+                style = IenTheme.typography.title2,
+                color = IenTheme.colors.textPrimary
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                IenButton(
+                    onClick = {
+                        val db = firestore ?: return@IenButton
+                        scope.launch {
+                            runCatching {
+                                val batch = db.batch()
+                                val ref1 = db.collection("batch_test").document("doc1")
+                                val ref2 = db.collection("batch_test").document("doc2")
+                                batch.set(ref1, mapOf("title" to "Batch Doc 1", "score" to 100L))
+                                batch.set(ref2, mapOf("title" to "Batch Doc 2", "score" to 200L))
+                                batch.commit()
+                                statusText = "Batch commit succeeded (created 2 docs)."
+                            }.onFailure {
+                                statusText = "Batch failed: ${it.message}"
+                            }
+                        }
+                    },
+                    state = IenButtonState(enabled = isSupported),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    IenText("Run Batch")
+                }
+                IenButton(
+                    onClick = {
+                        val db = firestore ?: return@IenButton
+                        scope.launch {
+                            runCatching {
+                                val result = db.runTransaction { tx ->
+                                    val ref = db.collection("batch_test").document("doc1")
+                                    val snap = tx.get(ref)
+                                    val currentScore = (snap.get("score") as? Number)?.toLong() ?: 0L
+                                    tx.update(ref, mapOf("score" to currentScore + 10L))
+                                    currentScore + 10L
+                                }
+                                statusText = "Transaction succeeded: updated doc1 score to $result."
+                            }.onFailure {
+                                statusText = "Transaction failed: ${it.message}"
+                            }
+                        }
+                    },
+                    state = IenButtonState(enabled = isSupported),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    IenText("Run Transaction")
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                IenButton(
+                    onClick = {
+                        val db = firestore ?: return@IenButton
+                        scope.launch {
+                            runCatching {
+                                val countSnap = db.collection(QueryCollection).count().get()
+                                val sumSnap = db.collection(QueryCollection).sum("score").get()
+                                val avgSnap = db.collection(QueryCollection).average("score").get()
+                                val sumVal = sumSnap.getDouble(AggregateField.sum("score")) ?: 0.0
+                                val avgVal = avgSnap.getDouble(AggregateField.average("score")) ?: 0.0
+                                statusText = "Aggregation: count=${countSnap.count}, sum(score)=$sumVal, avg(score)=$avgVal"
+                            }.onFailure {
+                                statusText = "Aggregation failed: ${it.message}"
+                            }
+                        }
+                    },
+                    state = IenButtonState(enabled = isSupported),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    IenText("Aggregate (count/sum/avg)")
+                }
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            IenText(
+                text = statusText,
+                style = IenTheme.typography.body2,
+                color = IenTheme.colors.textPrimary.copy(alpha = 0.85f)
+            )
+        }
+    }
+}
+
+@Composable
 private fun PlatformStatusCard(
     isSupported: Boolean,
     initError: String?
 ) {
-    val statusColor = if (isSupported) Color(0xFF2E7D32) else MaterialTheme.colorScheme.error
-    Card(
+    val statusColor = if (isSupported) Color(0xFF2E7D32) else IenTheme.colors.danger
+    IenSurface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = statusColor.copy(alpha = 0.12f)),
-        shape = RoundedCornerShape(8.dp)
+        color = statusColor.copy(alpha = 0.12f),
+        shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Text(
+            IenText(
                 text = "Platform Status",
-                style = MaterialTheme.typography.titleMedium,
+                style = IenTheme.typography.title2,
                 color = statusColor
             )
             Spacer(modifier = Modifier.height(6.dp))
-            Text(
+            IenText(
                 text = "Android: Supported - delegates to the official Firebase Android Firestore SDK.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface
+                style = IenTheme.typography.body2,
+                color = IenTheme.colors.textPrimary
             )
-            Text(
+            IenText(
                 text = "iOS: Supported - delegates to the SwiftPM FirebaseFirestore Objective-C exposed API.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface
+                style = IenTheme.typography.body2,
+                color = IenTheme.colors.textPrimary
             )
-            Text(
-                text = "Query API: where, orderBy, limit, limitToLast, and document cursors call the real SDK.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface
+            IenText(
+                text = "Query API: where, orderBy, limit, limitToLast, cursors, WriteBatch, Transaction, Aggregate (count/sum/avg) call the real SDK.",
+                style = IenTheme.typography.body2,
+                color = IenTheme.colors.textPrimary
             )
             if (!isSupported || initError != null) {
                 Spacer(modifier = Modifier.height(6.dp))
-                Text(
+                IenText(
                     text = initError ?: "Firestore cannot create an instance on the current target.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error
+                    style = IenTheme.typography.body2,
+                    color = IenTheme.colors.danger
                 )
             }
         }
@@ -262,53 +361,48 @@ private fun BasicDocumentSection(
     onWrite: () -> Unit,
     onRead: () -> Unit
 ) {
-    Card(
+    IenSurface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        shape = RoundedCornerShape(8.dp)
+        color = IenTheme.colors.surfaceVariant,
+        shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Text(
+            IenText(
                 text = "Basic Document Read/Write",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                style = IenTheme.typography.title2,
+                color = IenTheme.colors.textPrimary
             )
             Spacer(modifier = Modifier.height(10.dp))
-            OutlinedTextField(
+            IenTextField(
                 value = inputText,
-                enabled = isSupported,
+                state = IenTextFieldState(enabled = isSupported),
                 onValueChange = onInputChange,
-                label = { Text("Message") },
-                modifier = Modifier.fillMaxWidth(),
-                textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface)
+                label = "Message",
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(10.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
-                Button(
+                IenButton(
                     onClick = onWrite,
-                    enabled = isSupported,
-                    modifier = Modifier.weight(1f).height(44.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    shape = RoundedCornerShape(8.dp)
+                    state = IenButtonState(enabled = isSupported),
+                    modifier = Modifier.weight(1f).height(44.dp)
                 ) {
-                    Text("Write", color = MaterialTheme.colorScheme.onPrimary)
+                    IenText("Write")
                 }
                 Spacer(modifier = Modifier.width(10.dp))
-                Button(
+                IenButton(
                     onClick = onRead,
-                    enabled = isSupported,
-                    modifier = Modifier.weight(1f).height(44.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
-                    shape = RoundedCornerShape(8.dp)
+                    state = IenButtonState(enabled = isSupported),
+                    modifier = Modifier.weight(1f).height(44.dp)
                 ) {
-                    Text("Read", color = MaterialTheme.colorScheme.onPrimary)
+                    IenText("Read")
                 }
             }
             Spacer(modifier = Modifier.height(10.dp))
-            Text(
+            IenText(
                 text = "Result: $singleReadText",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                style = IenTheme.typography.body1,
+                color = IenTheme.colors.textPrimary
             )
         }
     }
@@ -381,38 +475,37 @@ private fun QueryTestingSection(
         }
     }
 
-    Card(
+    IenSurface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        shape = RoundedCornerShape(8.dp)
+        color = IenTheme.colors.surfaceVariant,
+        shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Text(
+            IenText(
                 text = "Query Testing",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                style = IenTheme.typography.title2,
+                color = IenTheme.colors.textPrimary
             )
             Spacer(modifier = Modifier.height(6.dp))
-            Text(
+            IenText(
                 text = seedStatus,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
+                style = IenTheme.typography.body2,
+                color = IenTheme.colors.textPrimary.copy(alpha = 0.75f)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Button(
+            IenButton(
                 onClick = onSeed,
-                enabled = isSupported,
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp)
+                state = IenButtonState(enabled = isSupported),
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Reset Seed Data")
+                IenText("Reset Seed Data")
             }
             Spacer(modifier = Modifier.height(10.dp))
-            OutlinedTextField(
+            IenTextField(
                 value = collectionPath,
-                enabled = isSupported,
+                state = IenTextFieldState(enabled = isSupported),
                 onValueChange = { collectionPath = it },
-                label = { Text("Collection") },
+                label = "Collection",
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -433,11 +526,11 @@ private fun QueryTestingSection(
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
-            OutlinedTextField(
+            IenTextField(
                 value = valueText,
-                enabled = isSupported,
+                state = IenTextFieldState(enabled = isSupported),
                 onValueChange = { valueText = it },
-                label = { Text("Value") },
+                label = "Value",
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -465,11 +558,11 @@ private fun QueryTestingSection(
             }
             Spacer(modifier = Modifier.height(10.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(
+                IenTextField(
                     value = limitText,
-                    enabled = isSupported,
+                    state = IenTextFieldState(enabled = isSupported),
                     onValueChange = { limitText = it.filter(Char::isDigit) },
-                    label = { Text("limit") },
+                    label = "limit",
                     modifier = Modifier.weight(1f)
                 )
                 CycleButton(
@@ -490,38 +583,36 @@ private fun QueryTestingSection(
             )
             Spacer(modifier = Modifier.height(10.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(
+                IenButton(
                     onClick = { runQuery(loadMore = false) },
-                    enabled = isSupported,
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(8.dp)
+                    state = IenButtonState(enabled = isSupported),
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Text("Run Query")
+                    IenText("Run Query")
                 }
-                Button(
+                IenButton(
                     onClick = { runQuery(loadMore = true) },
-                    enabled = isSupported && lastPageDocuments.isNotEmpty() && !useLimitToLast,
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(8.dp)
+                    state = IenButtonState(enabled = isSupported && lastPageDocuments.isNotEmpty() && !useLimitToLast),
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Text("Next Page")
+                    IenText("Next Page")
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
+            IenText(
                 text = resultSummary,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
+                style = IenTheme.typography.body2,
+                color = IenTheme.colors.textPrimary.copy(alpha = 0.75f)
             )
             errorText?.let {
                 Spacer(modifier = Modifier.height(8.dp))
                 ErrorBox(it)
             }
             Spacer(modifier = Modifier.height(10.dp))
-            Text(
+            IenText(
                 text = "Returned documents: ${results.size}",
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface
+                style = IenTheme.typography.title3,
+                color = IenTheme.colors.textPrimary
             )
             Spacer(modifier = Modifier.height(6.dp))
             results.forEach { row ->
@@ -540,23 +631,21 @@ private fun CycleButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    Button(
+    IenButton(
         onClick = onClick,
-        enabled = enabled,
-        modifier = modifier.height(54.dp),
-        shape = RoundedCornerShape(8.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+        state = IenButtonState(enabled = enabled),
+        modifier = modifier.height(54.dp)
     ) {
         Column {
-            Text(
+            IenText(
                 text = label,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
+                style = IenTheme.typography.label2,
+                color = IenTheme.colors.textPrimary.copy(alpha = 0.7f)
             )
-            Text(
+            IenText(
                 text = value,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
+                style = IenTheme.typography.body2,
+                color = IenTheme.colors.textPrimary
             )
         }
     }
@@ -567,50 +656,50 @@ private fun ErrorBox(message: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.error.copy(alpha = 0.12f))
+            .clip(ContinuousRoundedRectangle(8.dp))
+            .background(IenTheme.colors.danger.copy(alpha = 0.12f))
             .padding(10.dp)
     ) {
-        Text(
+        IenText(
             text = "Error",
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.error
+            style = IenTheme.typography.title3,
+            color = IenTheme.colors.danger
         )
-        Text(
+        IenText(
             text = message,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.error
+            style = IenTheme.typography.body2,
+            color = IenTheme.colors.danger
         )
-        Text(
+        IenText(
             text = "Missing composite indexes, SDK constraints, and unsupported combinations are shown here without being hidden.",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.error
+            style = IenTheme.typography.body2,
+            color = IenTheme.colors.danger
         )
     }
 }
 
 @Composable
 private fun QueryResultCard(row: QueryResultRow) {
-    Card(
+    IenSurface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        shape = RoundedCornerShape(8.dp)
+        color = IenTheme.colors.surfaceVariant,
+        shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
-            Text(
+            IenText(
                 text = "${row.name} / ${row.category}",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                style = IenTheme.typography.body1,
+                color = IenTheme.colors.textPrimary
             )
-            Text(
+            IenText(
                 text = "id=${row.id}, score=${row.score}, age=${row.age}, createdAt=${row.createdAt}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                style = IenTheme.typography.body2,
+                color = IenTheme.colors.textPrimary.copy(alpha = 0.7f)
             )
-            Text(
+            IenText(
                 text = "tags=${row.tags.joinToString()}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                style = IenTheme.typography.body2,
+                color = IenTheme.colors.textPrimary.copy(alpha = 0.7f)
             )
         }
     }
@@ -618,23 +707,22 @@ private fun QueryResultCard(row: QueryResultRow) {
 
 @Composable
 private fun MessageCard(msg: Message) {
-    Card(
+    IenSurface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        color = IenTheme.colors.surfaceVariant,
+        shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Text(
+            IenText(
                 text = msg.text,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                style = IenTheme.typography.body1,
+                color = IenTheme.colors.textPrimary
             )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(
+            IenText(
                 text = "Document=${msg.id}, order=${msg.order}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                style = IenTheme.typography.body2,
+                color = IenTheme.colors.textPrimary.copy(alpha = 0.5f)
             )
         }
     }

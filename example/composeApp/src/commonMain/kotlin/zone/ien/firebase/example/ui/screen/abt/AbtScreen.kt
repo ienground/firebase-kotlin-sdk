@@ -1,4 +1,25 @@
 package zone.ien.firebase.example.ui.screen.abt
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,15 +30,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,7 +42,6 @@ import androidx.compose.ui.unit.sp
 import zone.ien.firebase.abt.AbtException
 import zone.ien.firebase.abt.FirebaseABTesting
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AbtScreen(
     onNavigateBack: () -> Unit
@@ -38,15 +49,11 @@ fun AbtScreen(
     val scrollState = rememberScrollState()
     var logMessage by remember { mutableStateOf("Ready to verify A/B Testing components.") }
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("A/B Testing", fontWeight = FontWeight.Bold) },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Text("←", fontSize = 20.sp)
-                    }
-                }
+            IenTopAppBar(
+                title = { IenText("A/B Testing", fontWeight = FontWeight.Bold) },
+                navigationIcon = { IenBackButton(onClick = onNavigateBack) }
             )
         }
     ) { innerPadding ->
@@ -58,27 +65,23 @@ fun AbtScreen(
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
-            ) {
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
+                modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
+                    IenText(
                         text = "KMP A/B Testing Verification",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = IenTheme.typography.title2,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
+                    IenText(
                         text = "This screen validates the compiled binding classes and exceptions for the ':firebase-abt' KMP wrapper.",
-                        style = MaterialTheme.typography.bodyMedium
+                        style = IenTheme.typography.body1
                     )
                 }
             }
 
-            Button(
+            IenButton(
                 onClick = {
                     try {
                         logMessage = "Verifying KMP classes...\n"
@@ -93,10 +96,10 @@ fun AbtScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Verify SDK Classes")
+                IenText("Verify SDK Classes")
             }
 
-            Button(
+            IenButton(
                 onClick = {
                     try {
                         throw AbtException("Test AbtException message")
@@ -108,26 +111,22 @@ fun AbtScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Trigger and Catch AbtException")
+                IenText("Trigger and Catch AbtException")
             }
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                )
-            ) {
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
+                modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
+                    IenText(
                         text = "Console Output Logs",
-                        style = MaterialTheme.typography.labelLarge,
+                        style = IenTheme.typography.label1,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
+                    IenText(
                         text = logMessage,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                        style = IenTheme.typography.body1,
+                        color = IenTheme.colors.textPrimary
                     )
                 }
             }

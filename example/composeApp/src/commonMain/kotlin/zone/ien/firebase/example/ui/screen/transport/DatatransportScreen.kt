@@ -1,5 +1,27 @@
 package zone.ien.firebase.example.ui.screen.transport
 
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,20 +34,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -46,14 +55,14 @@ import zone.ien.firebase.transport.Transformer
 import zone.ien.firebase.transport.TransportScheduleCallback
 import zone.ien.firebase.transport.cct.CCTDestination
 import zone.ien.firebase.transport.runtime.TransportRuntime
+import com.kyant.capsule.ContinuousRoundedRectangle
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatatransportScreen(onNavigateBack: () -> Unit) {
     val isSupported = true
     var payload by remember { mutableStateOf("Hello Datatransport KMP!") }
     var selectedPriority by remember { mutableStateOf(Priority.DEFAULT) }
-    val logs = remember { 
+    val logs = remember {
         mutableStateListOf<String>().apply {
             if (isIos) {
                 add("Datatransport is running in Simulation Mode (iOS Memory-based).")
@@ -65,15 +74,11 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
         logs.add(message)
     }
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Datatransport API Test") },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Text("←")
-                    }
-                }
+            IenTopAppBar(
+                title = { IenText("Datatransport API Test") },
+                navigationIcon = { IenBackButton(onClick = onNavigateBack) }
             )
         }
     ) { padding ->
@@ -89,41 +94,41 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+                        .clip(ContinuousRoundedRectangle(8.dp))
+                        .background(IenTheme.colors.brand.copy(alpha = 0.1f))
                         .padding(12.dp)
                 ) {
-                    Text(
+                    IenText(
                         text = "⚠️ Simulation Mode (iOS Memory-based)",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary
+                        style = IenTheme.typography.title2,
+                        color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(
+                    IenText(
                         text = "Datatransport runs in memory-based simulation mode on iOS. Telemetry event mappings and scheduler callback loops are verified offline without sending network payloads.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.primary
+                        style = IenTheme.typography.body2,
+                        color = IenTheme.colors.brand
                     )
                 }
             }
 
-            Text(
+            IenText(
                 text = "Configure Telemetry Event",
-                style = MaterialTheme.typography.titleMedium,
+                style = IenTheme.typography.title2,
                 color = if (isSupported) Color.Unspecified else Color.Gray
             )
 
-            OutlinedTextField(
+            IenTextField(
                 value = payload,
-                enabled = isSupported,
+                state = IenTextFieldState(enabled = isSupported),
                 onValueChange = { payload = it },
-                label = { Text("Payload String") },
+                label = "Payload String",
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Text(
+            IenText(
                 text = "Priority Level",
-                style = MaterialTheme.typography.bodyMedium,
+                style = IenTheme.typography.body1,
                 color = if (isSupported) Color.Unspecified else Color.Gray
             )
 
@@ -139,15 +144,15 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                             if (isSupported) selectedPriority = priority
                         }
                     ) {
-                        RadioButton(
-                            selected = (selectedPriority == priority),
-                            enabled = isSupported,
-                            onClick = { selectedPriority = priority }
-                        )
+                        IenDotCheckbox(checked = (selectedPriority == priority), onCheckedChange = {
+                            if (it) {
+                                selectedPriority = priority
+                            }
+                        })
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = priority.name, 
-                            style = MaterialTheme.typography.bodySmall,
+                        IenText(
+                            text = priority.name,
+                            style = IenTheme.typography.body2,
                             color = if (isSupported) Color.Unspecified else Color.Gray
                         )
                     }
@@ -158,7 +163,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Button(
+                IenButton(
                     onClick = {
                         try {
                             log("Creating Event structure...")
@@ -179,55 +184,60 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                             log("Error during Event/Encoding test: ${e.message}")
                         }
                     },
-                    enabled = isSupported,
+                    state = IenButtonState(enabled = isSupported),
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Verify Event API")
+                    IenText("Verify Event API")
                 }
 
-                Button(
+                IenButton(
                     onClick = {
                         try {
                             log("Simulating mock Transport scheduler...")
                             val mockTransformer = object : Transformer<String, ByteArray> {
-                                                    override fun apply(input: String): ByteArray = input.encodeToByteArray()
-                                                }
+                                override fun apply(input: String): ByteArray =
+                                    input.encodeToByteArray()
+                            }
                             val processed = mockTransformer.apply(payload)
                             log("Transformer applied. Byte size: ${processed.size}")
 
                             val callback = object : TransportScheduleCallback {
-                                                    override fun onSchedule(error: Exception?) {
-                                                        if (error != null) {
-                                                            log("Scheduled callback fired with error: ${error.message}")
-                                                        } else {
-                                                            log("Scheduled callback completed successfully!")
-                                                        }
-                                                    }
-                                                }
+                                override fun onSchedule(error: Exception?) {
+                                    if (error != null) {
+                                        log("Scheduled callback fired with error: ${error.message}")
+                                    } else {
+                                        log("Scheduled callback completed successfully!")
+                                    }
+                                }
+                            }
                             callback.onSchedule(null)
                         } catch (e: Exception) {
                             log("Error during Transport callback test: ${e.message}")
                         }
                     },
-                    enabled = isSupported,
+                    state = IenButtonState(enabled = isSupported),
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Verify Callback API")
+                    IenText("Verify Callback API")
                 }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Card(
+            IenSurface(
+                color = IenTheme.colors.surfaceVariant,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(
-                        text = "CCT Destination Verification", 
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    IenText(
+                        text = "CCT Destination Verification",
                         fontWeight = FontWeight.Bold,
                         color = if (isSupported) Color.Unspecified else Color.Gray
                     )
-                    Button(
+                    IenButton(
                         onClick = {
                             try {
                                 log("Fetching CCTDestination.INSTANCE...")
@@ -243,7 +253,8 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                                 log("Legacy APIKey: ${legacy.apiKey}")
 
                                 log("Testing serialization...")
-                                val testDestination = CCTDestination("https://test.endpoint.com", "test-api-key-xyz")
+                                val testDestination =
+                                    CCTDestination("https://test.endpoint.com", "test-api-key-xyz")
                                 val bytes = testDestination.asByteArray()
                                 if (bytes != null) {
                                     log("Serialized byte size: ${bytes.size}")
@@ -257,10 +268,10 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                                 log("CCTDestination verification failed: ${e.message}")
                             }
                         },
-                        enabled = isSupported,
+                        state = IenButtonState(enabled = isSupported),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Verify CCT Destination")
+                        IenText("Verify CCT Destination")
                     }
                 }
             }
@@ -269,7 +280,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Button(
+                IenButton(
                     onClick = {
                         try {
                             log("Getting TransportRuntime instance...")
@@ -307,54 +318,53 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                             log("TransportRuntime verification failed: ${e.message}")
                         }
                     },
-                    enabled = isSupported,
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                    state = IenButtonState(enabled = isSupported),
+
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Verify Transport Runtime Pipeline")
+                    IenText("Verify Transport Runtime Pipeline")
                 }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Text(
+            IenText(
                 text = "Verification Output Log",
-                style = MaterialTheme.typography.titleMedium
+                style = IenTheme.typography.title2
             )
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(250.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(ContinuousRoundedRectangle(8.dp))
                     .background(Color.Black.copy(alpha = 0.05f))
                     .padding(12.dp)
                     .verticalScroll(rememberScrollState())
             ) {
                 if (logs.isEmpty()) {
-                    Text(
+                    IenText(
                         text = "No action logged yet. Click 'Verify Event API' to test KMP contracts.",
-                        style = MaterialTheme.typography.bodySmall,
+                        style = IenTheme.typography.body2,
                         color = Color.Gray
                     )
                 } else {
                     logs.forEach { logLine ->
-                        Text(
+                        IenText(
                             text = "> $logLine",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.primary,
+                            style = IenTheme.typography.body2,
+                            color = IenTheme.colors.brand,
                             modifier = Modifier.padding(vertical = 2.dp)
                         )
                     }
                 }
             }
 
-            Button(
+            IenButton(
                 onClick = { logs.clear() },
-                colors = ButtonDefaults.textButtonColors(),
                 modifier = Modifier.align(Alignment.End)
             ) {
-                Text("Clear Log")
+                IenText("Clear Log")
             }
         }
     }

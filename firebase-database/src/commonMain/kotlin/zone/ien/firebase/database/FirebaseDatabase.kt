@@ -1,5 +1,6 @@
 package zone.ien.firebase.database
 
+import zone.ien.firebase.Firebase
 import zone.ien.firebase.FirebaseApp
 
 public expect class FirebaseDatabase {
@@ -14,3 +15,12 @@ public expect class FirebaseDatabase {
         public fun getInstance(url: String): FirebaseDatabase
     }
 }
+
+public val Firebase.database: FirebaseDatabase
+    get() = FirebaseDatabase.getInstance()
+
+public fun Firebase.database(app: FirebaseApp): FirebaseDatabase =
+    FirebaseDatabase.getInstance(app)
+
+public fun Firebase.database(url: String): FirebaseDatabase =
+    FirebaseDatabase.getInstance(url)

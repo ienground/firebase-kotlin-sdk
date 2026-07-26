@@ -13,6 +13,10 @@ kotlin {
         namespace = "zone.ien.firebase.abt"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
+        optimization {
+            consumerKeepRules.file("consumer-rules.pro")
+            consumerKeepRules.publish = true
+        }
 
         withJava()
         withHostTestBuilder {}.configure {}
@@ -36,26 +40,16 @@ kotlin {
         }
     }
 
-    // Kotlin 2.4.0 SwiftPM Integration Configuration for A/B Testing ObjC wrapper
-    swiftPMDependencies {
-        discoverClangModulesImplicitly.set(false)
-        swiftPackage(
-            url = url("https://github.com/firebase/firebase-ios-sdk.git"),
-            version = from(libs.versions.firebase.ios.sdk.get()),
-            products = listOf(product("FirebaseRemoteConfig")),
-            importedClangModules = listOf("FirebaseABTesting")
-        )
-    }
-
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":firebase-common"))
+            api(project(":firebase-common"))
             implementation(project(":firebase-components"))
+            implementation(libs.kotlinx.coroutines.core)
         }
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
-            api(libs.firebase.android.abt)
+            implementation(libs.firebase.android.abt)
         }
 
         val androidMain by getting {

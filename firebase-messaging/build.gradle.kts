@@ -17,6 +17,8 @@ kotlin {
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
+        androidResources.enable = true
+
         withJava()
         withHostTestBuilder {}.configure {}
         withDeviceTestBuilder {
@@ -58,8 +60,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":firebase-common"))
-            api(project(":firebase-components"))
-            implementation(libs.kotlinx.coroutines.core)
+            implementation(project(":firebase-components"))
+            api(libs.kotlinx.coroutines.core)
         }
 
         androidMain.dependencies {

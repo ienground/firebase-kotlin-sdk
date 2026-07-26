@@ -1,15 +1,34 @@
 package zone.ien.firebase.example.ui.screen.database
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import zone.ien.firebase.database.collection.ImmutableSortedMap
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatabaseCollectionScreen(onBack: () -> Unit) {
     val scrollState = rememberScrollState()
@@ -22,15 +41,11 @@ fun DatabaseCollectionScreen(onBack: () -> Unit) {
     var keyInput by remember { mutableStateOf("") }
     var valueInput by remember { mutableStateOf("") }
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Database Collection Demo") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Text("←")
-                    }
-                }
+            IenTopAppBar(
+                title = { IenText("Database Collection Demo") },
+                navigationIcon = { IenBackButton(onClick = onBack) }
             )
         }
     ) { innerPadding ->
@@ -42,23 +57,23 @@ fun DatabaseCollectionScreen(onBack: () -> Unit) {
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
+            IenText(
                 text = "Demonstrate real-time ImmutableSortedMap storage updates. Keys are alphabetically sorted automatically on insertion.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                style = IenTheme.typography.body1,
+                color = IenTheme.colors.textSecondary
             )
 
-            OutlinedTextField(
+            IenTextField(
                 value = keyInput,
                 onValueChange = { keyInput = it },
-                label = { Text("Key (e.g. apple, banana)") },
+                label = "Key (e.g. apple, banana)",
                 modifier = Modifier.fillMaxWidth()
             )
 
-            OutlinedTextField(
+            IenTextField(
                 value = valueInput,
                 onValueChange = { valueInput = it },
-                label = { Text("Value") },
+                label = "Value",
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -66,7 +81,7 @@ fun DatabaseCollectionScreen(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Button(
+                IenButton(
                     onClick = {
                         if (keyInput.isNotBlank()) {
                             sortedMap = sortedMap.insert(keyInput, valueInput)
@@ -76,26 +91,26 @@ fun DatabaseCollectionScreen(onBack: () -> Unit) {
                     },
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Insert Key")
+                    IenText("Insert Key")
                 }
 
-                Button(
+                IenButton(
                     onClick = {
                         if (keyInput.isNotBlank()) {
                             sortedMap = sortedMap.remove(keyInput)
                             keyInput = ""
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                    
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Remove Key")
+                    IenText("Remove Key")
                 }
             }
 
-            Text("Sorted Collection Entries:", style = MaterialTheme.typography.titleMedium)
+            IenText("Sorted Collection Entries:", style = IenTheme.typography.title2)
 
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
@@ -103,12 +118,12 @@ fun DatabaseCollectionScreen(onBack: () -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     if (sortedMap.isEmpty()) {
-                        Text("No entries in sorted map.", style = MaterialTheme.typography.bodyMedium)
+                        IenText("No entries in sorted map.", style = IenTheme.typography.body1)
                     } else {
                         sortedMap.forEach { entry ->
-                            Text(
+                            IenText(
                                 text = "🔑 ${entry.key} ➔ 📄 ${entry.value}",
-                                style = MaterialTheme.typography.bodyMedium
+                                style = IenTheme.typography.body1
                             )
                         }
                     }
