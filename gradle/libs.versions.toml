@@ -50,6 +50,8 @@ firebase-crashlytics = "3.0.7"
 activity-compose = "1.13.0"
 lifecycle = "2.11.0"
 compose-navigation3 = "1.1.1"
+capsule = "2.1.4"
+
 
 # backend
 core = "1.17.0"
@@ -109,6 +111,7 @@ android-datatransport-runtime = { module = "com.google.android.datatransport:tra
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+capsule = { group = "zone.ien.capsule", name = "capsule", version.ref = "capsule"}
 
 compose-material3 = { group = "org.jetbrains.compose.material3", name = "material3", version.ref = "compose-material3" }
 compose-preview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "compose-plugin" }

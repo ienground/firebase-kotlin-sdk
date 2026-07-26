@@ -3,7 +3,7 @@ package zone.ien.firebase.example
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import zone.ien.utils.ui.screen.IenScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -38,7 +38,7 @@ fun App(context: FirebasePlatformContext) {
 
     IenRootWrapper {
         AppTheme {
-            Scaffold(
+            IenScaffold(
                 modifier = Modifier.fillMaxSize()
             ) {
                 Box(

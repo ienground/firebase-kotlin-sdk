@@ -88,6 +88,7 @@ kotlin {
 
             implementation(libs.lifecycle.viewmodel)
             implementation(libs.lifecycle.runtime)
+            implementation(libs.capsule)
 
             implementation(project(":firebase-common"))
             implementation(project(":firebase-firestore"))

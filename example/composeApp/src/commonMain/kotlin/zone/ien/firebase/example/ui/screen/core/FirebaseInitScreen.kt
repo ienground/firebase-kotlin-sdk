@@ -1,4 +1,25 @@
 package zone.ien.firebase.example.ui.screen.core
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,17 +31,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,6 +47,7 @@ import zone.ien.firebase.FirebasePlatformContext
 import zone.ien.firebase.example.data.AppStateManager
 import zone.ien.firebase.example.data.FirebaseInitState
 import zone.ien.firebase.example.ui.toast.showToast
+import com.kyant.capsule.ContinuousRoundedRectangle
 
 @Composable
 fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
@@ -56,23 +67,15 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
     var detailMessage by remember { mutableStateOf("Ready to trigger initialization check.") }
     val scope = rememberCoroutineScope()
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Text(
-                            text = "←",
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.onBackground,
-                        )
-                    }
-                },
+            IenTopAppBar(
+                navigationIcon = { IenBackButton(onClick = onBack) },
                 title = {
-                    Text(
+                    IenText(
                         text = "Firebase Core Init",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onBackground
+                        style = IenTheme.typography.title1,
+                        color = IenTheme.colors.textPrimary
                     )
                 }
             )
@@ -84,55 +87,48 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
                 .padding(it)
                 .padding(horizontal = 24.dp)
         ) {
-            Card(
+            IenSurface(
+                color = IenTheme.colors.surfaceVariant,
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = when (AppStateManager.initState) {
-                        FirebaseInitState.Initialized -> MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
-                        FirebaseInitState.Initializing -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f)
-                        FirebaseInitState.InitializationFailed -> MaterialTheme.colorScheme.error.copy(alpha = 0.15f)
-                        FirebaseInitState.NotInitialized -> MaterialTheme.colorScheme.surfaceVariant
-                    }
-                ),
-                shape = RoundedCornerShape(16.dp)
+                shape = ContinuousRoundedRectangle(16.dp)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
-                    Text(
+                    IenText(
                         text = "Core Setup Status",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                        style = IenTheme.typography.body1,
+                        color = IenTheme.colors.textPrimary.copy(alpha = 0.6f)
                     )
                     Spacer(modifier = Modifier.height(6.dp))
-                    Text(
+                    IenText(
                         text = statusText,
-                        style = MaterialTheme.typography.headlineSmall,
+                        style = IenTheme.typography.title1,
                         color = when (AppStateManager.initState) {
                             FirebaseInitState.Initialized -> if (isSystemInDarkTheme()) Color(0xFF81C784) else Color(0xFF2E7D32)
-                            FirebaseInitState.Initializing -> MaterialTheme.colorScheme.primary
-                            FirebaseInitState.InitializationFailed -> MaterialTheme.colorScheme.error
-                            FirebaseInitState.NotInitialized -> MaterialTheme.colorScheme.onSurfaceVariant
+                            FirebaseInitState.Initializing -> IenTheme.colors.brand
+                            FirebaseInitState.InitializationFailed -> IenTheme.colors.danger
+                            FirebaseInitState.NotInitialized -> IenTheme.colors.textSecondary
                         }
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    Text(
+                    IenText(
                         text = detailMessage,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f)
+                        style = IenTheme.typography.body2,
+                        color = IenTheme.colors.textPrimary.copy(alpha = 0.8f)
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
+            IenButton(
                 onClick = {
                     if (isInitialized) {
                         showToast("Firebase is already initialized.")
-                        return@Button
+                        return@IenButton
                     }
                     if (isInitializing) {
                         showToast("Firebase initialization is in progress.")
-                        return@Button
+                        return@IenButton
                     }
                     scope.launch {
                         try {
@@ -155,14 +151,10 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
-                enabled = !isInitializing && !isInitialized,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isInitialized) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                shape = RoundedCornerShape(12.dp)
+                state = IenButtonState(enabled = !isInitializing && !isInitialized),
+
             ) {
-                Text(
+                IenText(
                     text = when {
                         isInitializing -> "Initializing..."
                         isInitialized -> "Initialized (Double Tap Prevented)"
@@ -174,29 +166,27 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
             Spacer(modifier = Modifier.height(32.dp))
 
             // Platform File Rules Description
-            Text(
+            IenText(
                 text = "Platform Configuration Instructions",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground
+                style = IenTheme.typography.title2,
+                color = IenTheme.colors.textPrimary
             )
             Spacer(modifier = Modifier.height(12.dp))
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                shape = RoundedCornerShape(12.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
+                
+                shape = ContinuousRoundedRectangle(12.dp)) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
+                    IenText(
                         text = "Android:\nMust place 'google-services.json' in 'example/androidApp/' directory. Initialization is constrained to run only in the Main Process to prevent secondary process memory crashes.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                        style = IenTheme.typography.body2,
+                        color = IenTheme.colors.textPrimary.copy(alpha = 0.7f)
                     )
                     Spacer(modifier = Modifier.height(12.dp))
-                    Text(
+                    IenText(
                         text = "iOS:\nMust place 'GoogleService-Info.plist' inside 'example/iosApp/iosApp/' directory and register it as an Xcode project bundle resource.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                        style = IenTheme.typography.body2,
+                        color = IenTheme.colors.textPrimary.copy(alpha = 0.7f)
                     )
                 }
             }

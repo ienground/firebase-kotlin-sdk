@@ -1,4 +1,25 @@
 package zone.ien.firebase.example.ui.screen.messaging
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,15 +31,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -35,8 +48,8 @@ import zone.ien.firebase.example.ui.theme.AppTheme
 import zone.ien.firebase.messaging.FirebaseMessaging
 import zone.ien.firebase.messaging.directboot.FirebaseMessagingDirectBoot
 import zone.ien.utils.ui.wrapper.IenRootWrapper
+import com.kyant.capsule.ContinuousRoundedRectangle
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessagingScreen(
     onBack: () -> Unit
@@ -51,19 +64,11 @@ fun MessagingScreen(
 
     IenRootWrapper {
         AppTheme {
-            Scaffold(
+            IenScaffold(
                 topBar = {
-                    TopAppBar(
-                        title = { Text("Firebase Messaging") },
-                        navigationIcon = {
-                            IconButton(onClick = onBack) {
-                                Text(
-                                    text = "←",
-                                    style = MaterialTheme.typography.headlineMedium,
-                                    color = MaterialTheme.colorScheme.onBackground
-                                )
-                            }
-                        }
+                    IenTopAppBar(
+                        title = { IenText("Firebase Messaging") },
+                        navigationIcon = { IenBackButton(onClick = onBack) }
                     )
                 }
             ) { padding ->
@@ -75,35 +80,35 @@ fun MessagingScreen(
                         .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Text(
+                    IenText(
                         text = "FCM Client SDK Verification Panel",
-                        style = MaterialTheme.typography.titleMedium
+                        style = IenTheme.typography.title2
                     )
 
-                    Text(
+                    IenText(
                         text = "This screen acts as a developer utility to request and revoke registration tokens or manage topic subscriptions using the KMP wrappers.",
-                        style = MaterialTheme.typography.bodyMedium
+                        style = IenTheme.typography.body1
                     )
 
                     // Display Current Token Box
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .clip(ContinuousRoundedRectangle(8.dp))
+                            .background(IenTheme.colors.surfaceVariant)
                             .padding(12.dp)
                     ) {
-                        Text("Current Token:", style = MaterialTheme.typography.labelSmall)
+                        IenText("Current Token:", style = IenTheme.typography.label2)
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(
+                        IenText(
                             text = tokenText,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            style = IenTheme.typography.body2,
+                            color = IenTheme.colors.textSecondary
                         )
                     }
 
                     // Token Actions
-                    Button(
+                    IenButton(
                         onClick = {
                             scope.launch {
                                 try {
@@ -118,10 +123,10 @@ fun MessagingScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Get FCM Token")
+                        IenText("Get FCM Token")
                     }
 
-                    Button(
+                    IenButton(
                         onClick = {
                             scope.launch {
                                 try {
@@ -136,40 +141,40 @@ fun MessagingScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Delete FCM Token")
+                        IenText("Delete FCM Token")
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Android Direct Boot Capability Status", style = MaterialTheme.typography.titleSmall)
+                    IenText("Android Direct Boot Capability Status", style = IenTheme.typography.title3)
                     
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .clip(ContinuousRoundedRectangle(8.dp))
+                            .background(IenTheme.colors.surfaceVariant)
                             .padding(12.dp)
                     ) {
                         val isDbSupported = remember { FirebaseMessagingDirectBoot.getInstance().isSupported }
-                        Text(
+                        IenText(
                             text = "Direct Boot Supported: ${if (isDbSupported) "🟢 ENABLED (Android Only)" else "🔴 UNAVAILABLE (iOS/No-op)"}",
-                            style = MaterialTheme.typography.bodySmall
+                            style = IenTheme.typography.body2
                         )
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(
+                        IenText(
                             text = "Direct Boot Aware components allow device protected storage access prior to user decryption.",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                            style = IenTheme.typography.label2,
+                            color = IenTheme.colors.textSecondary.copy(alpha = 0.7f)
                         )
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Topic Operations", style = MaterialTheme.typography.titleSmall)
+                    IenText("Topic Operations", style = IenTheme.typography.title3)
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Button(
+                        IenButton(
                             onClick = {
                                 scope.launch {
                                     try {
@@ -183,10 +188,10 @@ fun MessagingScreen(
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Sub 'news'")
+                            IenText("Sub 'news'")
                         }
 
-                        Button(
+                        IenButton(
                             onClick = {
                                 scope.launch {
                                     try {
@@ -200,26 +205,26 @@ fun MessagingScreen(
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Unsub 'news'")
+                            IenText("Unsub 'news'")
                         }
                     }
 
                     // Logs Output
-                    Text("Event Logs", style = MaterialTheme.typography.titleSmall)
+                    IenText("Event Logs", style = IenTheme.typography.title3)
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(180.dp)
-                            .clip(RoundedCornerShape(8.dp))
+                            .clip(ContinuousRoundedRectangle(8.dp))
                             .background(Color.Black.copy(alpha = 0.05f))
                             .padding(12.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
                         if (logs.isEmpty()) {
-                            Text("Console ready.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+                            IenText("Console ready.", color = Color.Gray, style = IenTheme.typography.body2)
                         } else {
                             logs.forEach { logLine ->
-                                Text("> $logLine", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
+                                IenText("> $logLine", color = IenTheme.colors.brand, style = IenTheme.typography.body2)
                             }
                         }
                     }

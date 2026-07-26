@@ -1,4 +1,25 @@
 package zone.ien.firebase.example.ui.screen.config
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,18 +31,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,8 +49,8 @@ import kotlinx.coroutines.launch
 import zone.ien.firebase.remoteconfig.FirebaseRemoteConfig
 import zone.ien.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import zone.ien.firebase.remoteconfig.configUpdates
+import zone.ien.utils.ui.foundation.IenSemanticTone
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RemoteConfigScreen(
     onNavigateBack: () -> Unit
@@ -69,8 +78,8 @@ fun RemoteConfigScreen(
 
     var testKey by remember { mutableStateOf("welcome_message") }
 
-    val primaryColor = MaterialTheme.colorScheme.primary
-    val errorColor = MaterialTheme.colorScheme.error
+    val primaryColor = IenTheme.colors.brand
+    val errorColor = IenTheme.colors.danger
 
     fun updateConfigInfo() {
         try {
@@ -87,15 +96,11 @@ fun RemoteConfigScreen(
         updateConfigInfo()
     }
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Remote Config", fontWeight = FontWeight.Bold) },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Text("←")
-                    }
-                }
+            IenTopAppBar(
+                title = { IenText("Remote Config", fontWeight = FontWeight.Bold) },
+                navigationIcon = { IenBackButton(onClick = onNavigateBack) }
             )
         }
     ) { innerPadding ->
@@ -107,43 +112,43 @@ fun RemoteConfigScreen(
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
+            IenText(
                 text = "Firebase Remote Config Demo",
-                fontSize = 18.sp,
+                
                 fontWeight = FontWeight.Bold,
                 color = primaryColor
             )
 
             // Alert Box
-            Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
+                
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
+                    IenText(
                         "⚠️ Warnings and Usage Instructions",
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onErrorContainer
+                        color = IenTheme.colors.danger
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
+                    IenText(
                         "1. To test the Real-time Config Update feature locally, change template configurations in the Firebase Console and 'Publish' them.\n" +
                         "2. Firebase Core must be initialized beforehand. Fetch and Activate latency may vary depending on network connectivity.\n" +
                         "3. Calling Fetch more frequently than the minimumFetchInterval can cause THROTTLED exceptions from the server.",
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onErrorContainer
+                        
+                        color = IenTheme.colors.danger
                     )
                 }
             }
 
             // Defaults Settings Card
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("1. Local Defaults Configuration", fontWeight = FontWeight.Bold)
-                    Text("Sets local fallback defaults based on code.", fontSize = 12.sp)
-                    Button(
+                    IenText("1. Local Defaults Configuration", fontWeight = FontWeight.Bold)
+                    IenText("Sets local fallback defaults based on code.", )
+                    IenButton(
                         onClick = {
                             coroutineScope.launch {
                                 try {
@@ -160,35 +165,35 @@ fun RemoteConfigScreen(
                             }
                         }
                     ) {
-                        Text("Set Defaults")
+                        IenText("Set Defaults")
                     }
                 }
             }
 
             // Settings Configurations Card
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("2. Config Settings Modification", fontWeight = FontWeight.Bold)
+                    IenText("2. Config Settings Modification", fontWeight = FontWeight.Bold)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        OutlinedTextField(
+                        IenTextField(
                             value = minimumFetchInterval,
                             onValueChange = { minimumFetchInterval = it },
-                            label = { Text("Min Fetch Interval (s)") },
+                            label = "Min Fetch Interval (s)",
                             modifier = Modifier.weight(1f)
                         )
-                        OutlinedTextField(
+                        IenTextField(
                             value = fetchTimeout,
                             onValueChange = { fetchTimeout = it },
-                            label = { Text("Timeout (s)") },
+                            label = "Timeout (s)",
                             modifier = Modifier.weight(1f)
                         )
                     }
-                    Button(
+                    IenButton(
                         onClick = {
                             coroutineScope.launch {
                                 try {
@@ -205,24 +210,24 @@ fun RemoteConfigScreen(
                             }
                         }
                     ) {
-                        Text("Update Settings")
+                        IenText("Update Settings")
                     }
                 }
             }
 
             // Fetch & Activate Operations Card
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("3. Fetch & Activate Control", fontWeight = FontWeight.Bold)
-                    Text("Fetch the latest remote configuration from server and activate to local template.", fontSize = 12.sp)
+                    IenText("3. Fetch & Activate Control", fontWeight = FontWeight.Bold)
+                    IenText("Fetch the latest remote configuration from server and activate to local template.", )
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Button(
+                        IenButton(
                             onClick = {
                                 coroutineScope.launch {
                                     try {
@@ -237,10 +242,10 @@ fun RemoteConfigScreen(
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Fetch")
+                            IenText("Fetch")
                         }
 
-                        Button(
+                        IenButton(
                             onClick = {
                                 coroutineScope.launch {
                                     try {
@@ -255,11 +260,11 @@ fun RemoteConfigScreen(
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Activate")
+                            IenText("Activate")
                         }
                     }
 
-                    Button(
+                    IenButton(
                         onClick = {
                             coroutineScope.launch {
                                 try {
@@ -274,28 +279,29 @@ fun RemoteConfigScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Fetch and Activate")
+                        IenText("Fetch and Activate")
                     }
 
-                    Divider(modifier = Modifier.padding(vertical = 4.dp))
-                    Text("Last Fetch Status: $lastFetchStatus", fontSize = 12.sp)
-                    Text("Last Fetch Time: $lastFetchTime", fontSize = 12.sp)
+                    IenDivider(modifier = Modifier.padding(vertical = 4.dp))
+                    IenText("Last Fetch Status: $lastFetchStatus", )
+                    IenText("Last Fetch Time: $lastFetchTime", )
                 }
             }
 
             // Real-time config updates Card
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("4. Real-time Config Update Listener", fontWeight = FontWeight.Bold)
-                    Text("Detect real-time template update events from the remote backend.", fontSize = 12.sp)
+                    IenText("4. Real-time Config Update Listener", fontWeight = FontWeight.Bold)
+                    IenText("Detect real-time template update events from the remote backend.", )
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        Button(
+                        IenButton(
+                            tone = if (isListening) IenSemanticTone.Danger else IenSemanticTone.Brand,
                             onClick = {
                                 if (isListening) {
                                     listenerJob?.cancel()
@@ -318,40 +324,37 @@ fun RemoteConfigScreen(
                                     }
                                 }
                             },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (isListening) errorColor else primaryColor
-                            )
                         ) {
-                            Text(if (isListening) "Disconnect Listener" else "Connect Listener")
+                            IenText(if (isListening) "Disconnect Listener" else "Connect Listener")
                         }
 
-                        Text(
+                        IenText(
                             text = if (isListening) "🟢 Connected" else "🔴 Disconnected",
                             fontWeight = FontWeight.Bold
                         )
                     }
 
                     if (updatedKeysLog.isNotEmpty()) {
-                        Text(updatedKeysLog, fontSize = 12.sp, color = primaryColor)
+                        IenText(updatedKeysLog,  color = primaryColor)
                     }
                 }
             }
 
             // Config Read Card
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("5. Config Value Query (Typed Accessors)", fontWeight = FontWeight.Bold)
+                    IenText("5. Config Value Query (Typed Accessors)", fontWeight = FontWeight.Bold)
 
-                    OutlinedTextField(
+                    IenTextField(
                         value = testKey,
                         onValueChange = { testKey = it },
-                        label = { Text("Query Parameter Key") },
+                        label = "Query Parameter Key",
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    Button(
+                    IenButton(
                         onClick = {
                             try {
                                 val value = FirebaseRemoteConfig.instance.getValue(testKey)
@@ -367,27 +370,27 @@ fun RemoteConfigScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Query Value")
+                        IenText("Query Value")
                     }
 
-                    Divider(modifier = Modifier.padding(vertical = 4.dp))
-                    Text("String Value: $fetchedStringValue", fontSize = 13.sp)
-                    Text("Boolean Value: $fetchedBooleanValue", fontSize = 13.sp)
-                    Text("Long Value: $fetchedLongValue", fontSize = 13.sp)
-                    Text("Double Value: $fetchedDoubleValue", fontSize = 13.sp)
-                    Text("Value Source: $valueSource", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                    IenDivider(modifier = Modifier.padding(vertical = 4.dp))
+                    IenText("String Value: $fetchedStringValue", )
+                    IenText("Boolean Value: $fetchedBooleanValue", )
+                    IenText("Long Value: $fetchedLongValue", )
+                    IenText("Double Value: $fetchedDoubleValue", )
+                    IenText("Value Source: $valueSource",  fontWeight = FontWeight.Bold)
                 }
             }
 
             // Console Log Card
-            Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
+                
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("📜 Execution Console Log", fontWeight = FontWeight.Bold)
+                    IenText("📜 Execution Console Log", fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(logMessage, fontSize = 12.sp)
+                    IenText(logMessage, )
                 }
             }
         }

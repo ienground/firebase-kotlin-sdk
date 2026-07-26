@@ -1,4 +1,25 @@
 package zone.ien.firebase.example.ui.screen.appdistribution
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,18 +31,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -41,8 +51,8 @@ import zone.ien.firebase.appdistribution.UpdateProgress
 import zone.ien.firebase.example.ui.theme.AppTheme
 import zone.ien.firebase.example.util.isIos
 import zone.ien.utils.ui.wrapper.IenRootWrapper
+import com.kyant.capsule.ContinuousRoundedRectangle
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDistributionScreen(
     context: FirebasePlatformContext,
@@ -78,20 +88,11 @@ fun AppDistributionScreen(
 
     IenRootWrapper {
         AppTheme {
-            Scaffold(
+            IenScaffold(
                 topBar = {
-                    TopAppBar(
-                        title = { Text("App Distribution") },
-                        navigationIcon = {
-                            IconButton(onClick = onBack) {
-                                Text(
-                                    text = "←",
-                                    style = MaterialTheme.typography.headlineMedium,
-                                    color = MaterialTheme.colorScheme.onBackground
-                                )
-                            }
-                        },
-                    )
+                    IenTopAppBar(
+                        title = { IenText("App Distribution") },
+                        navigationIcon = { IenBackButton(onClick = onBack) })
                 }
             ) { padding ->
                 Column(
@@ -106,36 +107,36 @@ fun AppDistributionScreen(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f))
+                                .clip(ContinuousRoundedRectangle(8.dp))
+                                .background(IenTheme.colors.brandWeak)
                                 .padding(12.dp)
                         ) {
-                            Text(
+                            IenText(
                                 text = "ℹ️ iOS Platform Notice",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.primary
+                                style = IenTheme.typography.title2,
+                                color = IenTheme.colors.brand
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-                            Text(
+                            IenText(
                                 text = "In-app update progress tracking is unsupported on iOS. Checking for releases will automatically prompt the native SDK update flow if a release is available.",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                                style = IenTheme.typography.body2,
+                                color = IenTheme.colors.brand
                             )
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                     }
 
-                    Text(
+                    IenText(
                         text = "Tester Authentication",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = if (isSupported) MaterialTheme.colorScheme.onBackground else Color.Gray
+                        style = IenTheme.typography.title2,
+                        color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray
                     )
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Button(
+                        IenButton(
                             onClick = {
                                 coroutineScope.launch {
                                     try {
@@ -148,13 +149,13 @@ fun AppDistributionScreen(
                                     }
                                 }
                             },
-                            enabled = isSupported && !isTesterSignedIn,
+                            state = IenButtonState(enabled = isSupported && !isTesterSignedIn),
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Sign In Tester")
+                            IenText("Sign In Tester")
                         }
 
-                        Button(
+                        IenButton(
                             onClick = {
                                 try {
                                     appDistribution?.signOutTester()
@@ -164,22 +165,22 @@ fun AppDistributionScreen(
                                     log("Sign out failed: ${e.message}")
                                 }
                             },
-                            enabled = isSupported && isTesterSignedIn,
+                            state = IenButtonState(enabled = isSupported && isTesterSignedIn),
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Sign Out")
+                            IenText("Sign Out")
                         }
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    Text(
+                    IenText(
                         text = "Prerelease Updates",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = if (isSupported) MaterialTheme.colorScheme.onBackground else Color.Gray
+                        style = IenTheme.typography.title2,
+                        color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray
                     )
 
-                    Button(
+                    IenButton(
                         onClick = {
                             coroutineScope.launch {
                                 try {
@@ -199,13 +200,13 @@ fun AppDistributionScreen(
                                 }
                             }
                         },
-                        enabled = isSupported && !isChecking,
+                        state = IenButtonState(enabled = isSupported && !isChecking),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Check For New Release")
+                        IenText("Check For New Release")
                     }
 
-                    Button(
+                    IenButton(
                         onClick = {
                             coroutineScope.launch {
                                 try {
@@ -219,27 +220,23 @@ fun AppDistributionScreen(
                                 }
                             }
                         },
-                        enabled = isSupported && latestRelease != null && isUpdateProgressSupported,
+                        state = IenButtonState(enabled = isSupported && latestRelease != null && isUpdateProgressSupported),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(if (isIos) "Update App (Android Only)" else "Update App")
+                        IenText(if (isIos) "Update App (Android Only)" else "Update App")
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text(
+                    IenText(
                         text = "Execution Log",
-                        style = MaterialTheme.typography.titleMedium
+                        style = IenTheme.typography.title2
                     )
 
-                    Card(
+                    IenSurface(color = IenTheme.colors.surfaceVariant, 
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant
-                        )
-                    ) {
+                            .height(200.dp)) {
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -248,17 +245,17 @@ fun AppDistributionScreen(
                             verticalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             if (logs.isEmpty()) {
-                                Text(
+                                IenText(
                                     "No events logged yet.",
-                                    style = MaterialTheme.typography.bodySmall,
+                                    style = IenTheme.typography.body2,
                                     color = Color.Gray
                                 )
                             } else {
                                 logs.forEach { msg ->
-                                    Text(
+                                    IenText(
                                         text = msg,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        style = IenTheme.typography.body2,
+                                        color = IenTheme.colors.textSecondary
                                     )
                                 }
                             }

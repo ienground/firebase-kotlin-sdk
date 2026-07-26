@@ -1,4 +1,25 @@
 package zone.ien.firebase.example.ui.screen.storage
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,21 +32,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,12 +43,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.kyant.capsule.ContinuousRoundedRectangle
 import firebase_kotlin_sdk.example.composeapp.generated.resources.Res
 import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebaseApp
 import zone.ien.firebase.storage.FirebaseStorage
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StorageScreen(onBack: () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
@@ -76,21 +83,11 @@ fun StorageScreen(onBack: () -> Unit) {
     val refBucket = reference?.bucket ?: "-"
     val hasParent = reference?.parent != null
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Cloud Storage Demo") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Text(
-                            text = "←",
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
-                },
-
-            )
+            IenTopAppBar(
+                title = { IenText("Cloud Storage Demo") },
+                navigationIcon = { IenBackButton(onClick = onBack) })
         }
     ) { padding ->
         if (initError != null) {
@@ -105,14 +102,14 @@ fun StorageScreen(onBack: () -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
                 ) {
-                    Text(
+                    IenText(
                         text = initError,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
+                        style = IenTheme.typography.body1,
+                        color = IenTheme.colors.danger,
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center
                     )
-                    Button(onClick = onBack) {
-                        Text("Go Back")
+                    IenButton(onClick = onBack) {
+                        IenText("Go Back")
                     }
                 }
             }
@@ -128,19 +125,16 @@ fun StorageScreen(onBack: () -> Unit) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Reference metadata card
-                Card(
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                    ),
+                IenSurface(
+                    color = IenTheme.colors.surfaceVariant,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("Storage Reference Meta", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
-                        HorizontalDivider(color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f))
+                        IenText("Storage Reference Meta", style = IenTheme.typography.title2, color = IenTheme.colors.brand)
+                        IenDivider(color = IenTheme.colors.textSecondary.copy(alpha = 0.2f))
                         MetadataRow("Reference Name", refName)
                         MetadataRow("Full Path", refPath)
                         MetadataRow("Bucket Name", refBucket)
@@ -149,24 +143,24 @@ fun StorageScreen(onBack: () -> Unit) {
                 }
 
                 // Path configuration input
-                OutlinedTextField(
+                IenTextField(
                     value = pathInput,
                     onValueChange = { pathInput = it },
-                    label = { Text("Reference Child Path") },
-                    placeholder = { Text("e.g. images/sample.jpg") },
+                    label = "Reference Child Path",
+                    placeholder = "e.g. images/sample.jpg",
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 // Content payload input
-                OutlinedTextField(
+                IenTextField(
                     value = uploadInput,
                     onValueChange = { uploadInput = it },
-                    label = { Text("Content to Upload") },
+                    label = "Content to Upload",
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 // Upload action button
-                Button(
+                IenButton(
                     onClick = {
                         coroutineScope.launch {
                             logText = "Uploading payload data..."
@@ -182,11 +176,11 @@ fun StorageScreen(onBack: () -> Unit) {
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Upload Data")
+                    IenText("Upload Data")
                 }
 
                 // Upload Sample Image button
-                Button(
+                IenButton(
                     onClick = {
                         coroutineScope.launch {
                             logText = "Loading sample_image.png from app resources..."
@@ -203,10 +197,10 @@ fun StorageScreen(onBack: () -> Unit) {
                             }
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                    
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Upload Sample Image")
+                    IenText("Upload Sample Image")
                 }
 
                 // Storage Operations
@@ -214,7 +208,7 @@ fun StorageScreen(onBack: () -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Button(
+                    IenButton(
                         onClick = {
                             coroutineScope.launch {
                                 logText = "Fetching download URL..."
@@ -230,10 +224,10 @@ fun StorageScreen(onBack: () -> Unit) {
                         },
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text("Get URL")
+                        IenText("Get URL")
                     }
 
-                    Button(
+                    IenButton(
                         onClick = {
                             coroutineScope.launch {
                                 logText = "Deleting file..."
@@ -247,17 +241,16 @@ fun StorageScreen(onBack: () -> Unit) {
                                 }
                             }
                         },
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                        
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text("Delete")
+                        IenText("Delete")
                     }
                 }
 
                 // Logging window
-                Card(
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E)),
+                IenSurface(color = IenTheme.colors.surfaceVariant, 
+                    shape = ContinuousRoundedRectangle(12.dp),
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 120.dp)
@@ -265,15 +258,15 @@ fun StorageScreen(onBack: () -> Unit) {
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
-                        Text(
+                        IenText(
                             text = "Console Output Log",
-                            style = MaterialTheme.typography.labelSmall,
+                            style = IenTheme.typography.label2,
                             color = Color.Gray
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text(
+                        IenText(
                             text = logText,
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = IenTheme.typography.body1,
                             color = Color.Green
                         )
                     }
@@ -289,7 +282,7 @@ private fun MetadataRow(label: String, value: String) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(text = value, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
+        IenText(text = label, style = IenTheme.typography.body1, color = IenTheme.colors.textSecondary)
+        IenText(text = value, style = IenTheme.typography.body1, color = IenTheme.colors.textPrimary)
     }
 }

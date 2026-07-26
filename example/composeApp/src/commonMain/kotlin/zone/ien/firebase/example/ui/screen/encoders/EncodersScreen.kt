@@ -1,4 +1,25 @@
 package zone.ien.firebase.example.ui.screen.encoders
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,16 +31,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -36,6 +48,7 @@ import zone.ien.firebase.encoders.json.JsonDataEncoderBuilder
 import zone.ien.firebase.encoders.reflective.ReflectiveObjectEncoder
 import zone.ien.firebase.example.ui.theme.AppTheme
 import zone.ien.utils.ui.wrapper.IenRootWrapper
+import com.kyant.capsule.ContinuousRoundedRectangle
 
 // Mock Annotation to verify FieldDescriptor property generic constraint
 annotation class ProtoDescriptor(val tag: Int)
@@ -43,7 +56,6 @@ annotation class ProtoDescriptor(val tag: Int)
 @Encodable
 data class UserProfile(val username: String, val age: Int, val isPremium: Boolean, val hobby: String?)
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EncodersScreen(
     onBack: () -> Unit
@@ -68,19 +80,11 @@ fun EncodersScreen(
 
     IenRootWrapper {
         AppTheme {
-            Scaffold(
+            IenScaffold(
                 topBar = {
-                    TopAppBar(
-                        title = { Text("Encoders Core Contract") },
-                        navigationIcon = {
-                            IconButton(onClick = onBack) {
-                                Text(
-                                    text = "←",
-                                    style = MaterialTheme.typography.headlineMedium,
-                                    color = MaterialTheme.colorScheme.onBackground
-                                )
-                            }
-                        }
+                    IenTopAppBar(
+                        title = { IenText("Encoders Core Contract") },
+                        navigationIcon = { IenBackButton(onClick = onBack) }
                     )
                 }
             ) { padding ->
@@ -92,17 +96,17 @@ fun EncodersScreen(
                         .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Text(
+                    IenText(
                         text = "JSON & Reflective Serialization Verification",
-                        style = MaterialTheme.typography.titleMedium
+                        style = IenTheme.typography.title2
                     )
 
-                    Text(
+                    IenText(
                         text = "This screen executes the newly created KMP modules. It registers standard builders, verifies reflective field discovery on JVM, and tests explicit registration fallback on iOS.",
-                        style = MaterialTheme.typography.bodyMedium
+                        style = IenTheme.typography.body1
                     )
 
-                    Button(
+                    IenButton(
                         onClick = {
                             try {
                                 log("--- Initiating Serialization Tests ---")
@@ -151,38 +155,37 @@ fun EncodersScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Run Serialization Sim")
+                        IenText("Run Serialization Sim")
                     }
 
-                    Text(
+                    IenText(
                         text = "Simulation Console Logs",
-                        style = MaterialTheme.typography.titleSmall
+                        style = IenTheme.typography.title3
                     )
 
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(240.dp)
-                            .clip(RoundedCornerShape(8.dp))
+                            .clip(ContinuousRoundedRectangle(8.dp))
                             .background(Color.Black.copy(alpha = 0.05f))
                             .padding(12.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
                         if (logs.isEmpty()) {
-                            Text("Press Run to initiate JSON output simulation.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+                            IenText("Press Run to initiate JSON output simulation.", color = Color.Gray, style = IenTheme.typography.body2)
                         } else {
                             logs.forEach { logLine ->
-                                Text("> $logLine", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
+                                IenText("> $logLine", color = IenTheme.colors.brand, style = IenTheme.typography.body2)
                             }
                         }
                     }
 
-                    Button(
+                    IenButton(
                         onClick = { logs.clear() },
-                        colors = ButtonDefaults.textButtonColors(),
                         modifier = Modifier.align(Alignment.End)
                     ) {
-                        Text("Clear Logs")
+                        IenText("Clear Logs")
                     }
                 }
             }

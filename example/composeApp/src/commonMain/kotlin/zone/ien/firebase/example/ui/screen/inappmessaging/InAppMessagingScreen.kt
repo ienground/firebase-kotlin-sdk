@@ -1,4 +1,25 @@
 package zone.ien.firebase.example.ui.screen.inappmessaging
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,18 +31,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -41,8 +51,8 @@ import zone.ien.firebase.inappmessaging.display.InAppMessagingDisplayListener
 import zone.ien.firebase.inappmessaging.display.InAppMessageDismissType
 import zone.ien.firebase.inappmessaging.display.InAppMessagingDisplayCallbacks
 import zone.ien.utils.ui.wrapper.IenRootWrapper
+import com.kyant.capsule.ContinuousRoundedRectangle
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InAppMessagingScreen(
     onBack: () -> Unit
@@ -75,19 +85,11 @@ fun InAppMessagingScreen(
 
     IenRootWrapper {
         AppTheme {
-            Scaffold(
+            IenScaffold(
                 topBar = {
-                    TopAppBar(
-                        title = { Text("In-App Messaging") },
-                        navigationIcon = {
-                            IconButton(onClick = onBack) {
-                                Text(
-                                    text = "←",
-                                    style = MaterialTheme.typography.headlineMedium,
-                                    color = MaterialTheme.colorScheme.onBackground
-                                )
-                            }
-                        }
+                    IenTopAppBar(
+                        title = { IenText("In-App Messaging") },
+                        navigationIcon = { IenBackButton(onClick = onBack) }
                     )
                 }
             ) { padding ->
@@ -103,27 +105,27 @@ fun InAppMessagingScreen(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(8.dp))
+                                .clip(ContinuousRoundedRectangle(8.dp))
                                 .background(Color.Red.copy(alpha = 0.1f))
                                 .padding(12.dp)
                         ) {
-                            Text(
+                            IenText(
                                 text = "⚠️ Platform Not Supported",
-                                style = MaterialTheme.typography.titleMedium,
+                                style = IenTheme.typography.title2,
                                 color = Color.Red
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-                            Text(
+                            IenText(
                                 text = "In-App Messaging is unavailable on this target or failed to initialize native dependencies.",
-                                style = MaterialTheme.typography.bodySmall,
+                                style = IenTheme.typography.body2,
                                 color = Color.Red
                             )
                         }
                     }
 
-                    Text(
+                    IenText(
                         text = "Campaign Display Control",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = IenTheme.typography.title2,
                         color = if (isSupported) Color.Unspecified else Color.Gray
                     )
 
@@ -133,14 +135,14 @@ fun InAppMessagingScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column {
-                            Text("Automatic Data Collection", color = if (isSupported) Color.Unspecified else Color.Gray)
-                            Text(
+                            IenText("Automatic Data Collection", color = if (isSupported) Color.Unspecified else Color.Gray)
+                            IenText(
                                 "Enable/disable telemetry collection",
-                                style = MaterialTheme.typography.bodySmall,
+                                style = IenTheme.typography.body2,
                                 color = Color.Gray
                             )
                         }
-                        Switch(
+                        IenSwitch(
                             checked = isDataCollectionEnabled,
                             enabled = isSupported,
                             onCheckedChange = { checked ->
@@ -161,14 +163,14 @@ fun InAppMessagingScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column {
-                            Text("Suppress Message Display", color = if (isSupported) Color.Unspecified else Color.Gray)
-                            Text(
+                            IenText("Suppress Message Display", color = if (isSupported) Color.Unspecified else Color.Gray)
+                            IenText(
                                 "Silence visual campaigns temporarily",
-                                style = MaterialTheme.typography.bodySmall,
+                                style = IenTheme.typography.body2,
                                 color = Color.Gray
                             )
                         }
-                        Switch(
+                        IenSwitch(
                             checked = isSuppressed,
                             enabled = isSupported,
                             onCheckedChange = { checked ->
@@ -185,25 +187,25 @@ fun InAppMessagingScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    Text(
+                    IenText(
                         text = "Trigger Event Dispatcher",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = IenTheme.typography.title2,
                         color = if (isSupported) Color.Unspecified else Color.Gray
                     )
 
-                    OutlinedTextField(
+                    IenTextField(
                         value = triggerEventName,
-                        enabled = isSupported,
+                        state = IenTextFieldState(enabled = isSupported),
                         onValueChange = { triggerEventName = it },
-                        label = { Text("Analytics Trigger Event Name") },
+                        label = "Analytics Trigger Event Name",
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    Button(
+                    IenButton(
                         onClick = {
                             if (triggerEventName.isBlank()) {
                                 log("Error: Event name cannot be empty.")
-                                return@Button
+                                return@IenButton
                             }
                             try {
                                 log("Triggering event: '$triggerEventName'...")
@@ -213,13 +215,13 @@ fun InAppMessagingScreen(
                                 log("Trigger failed: ${e.message}")
                             }
                         },
-                        enabled = isSupported,
+                        state = IenButtonState(enabled = isSupported),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Trigger Event")
+                        IenText("Trigger Event")
                     }
 
-                    Button(
+                    IenButton(
                         onClick = {
                             try {
                                 log("Binding custom display lifecycle listener...")
@@ -235,50 +237,49 @@ fun InAppMessagingScreen(
                                 log("Listener registration failed: ${e.message}")
                             }
                         },
-                        enabled = isDisplaySupported,
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                        state = IenButtonState(enabled = isDisplaySupported),
+                        
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Register Display Component Listener")
+                        IenText("Register Display Component Listener")
                     }
 
-                    Text(
+                    IenText(
                         text = "Actions History Log",
-                        style = MaterialTheme.typography.titleSmall
+                        style = IenTheme.typography.title3
                     )
 
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(180.dp)
-                            .clip(RoundedCornerShape(8.dp))
+                            .clip(ContinuousRoundedRectangle(8.dp))
                             .background(Color.Black.copy(alpha = 0.05f))
                             .padding(12.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
                         if (logs.isEmpty()) {
-                            Text("No actions logged yet.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
+                            IenText("No actions logged yet.", color = Color.Gray, style = IenTheme.typography.body2)
                         } else {
                             logs.forEach { logLine ->
-                                Text("> $logLine", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
+                                IenText("> $logLine", color = IenTheme.colors.brand, style = IenTheme.typography.body2)
                             }
                         }
                     }
 
-                    Button(
+                    IenButton(
                         onClick = { logs.clear() },
-                        colors = ButtonDefaults.textButtonColors(),
                         modifier = Modifier.align(Alignment.End)
                     ) {
-                        Text("Clear Log")
+                        IenText("Clear Log")
                     }
 
-                    Text(
+                    IenText(
                         text = "* Testing Verification Guide:\n" +
                                 "1. Visual rendering of modal/card campaigns requires targets configured via Firebase Console.\n" +
                                 "2. To test immediately on a device/simulator: Retrieve the Firebase Installation ID (available via Installations API) and register it as a 'Test Device' inside In-App Messaging Console.\n" +
                                 "3. Foreground transition (backgrounding and reopening the app) is often needed to force check for pending campaigns.",
-                        style = MaterialTheme.typography.bodySmall,
+                        style = IenTheme.typography.body2,
                         color = Color.Gray
                     )
                 }

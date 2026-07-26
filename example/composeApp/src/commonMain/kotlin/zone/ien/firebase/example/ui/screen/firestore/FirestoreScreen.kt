@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -47,6 +46,7 @@ import zone.ien.utils.ui.primitives.IenText
 import zone.ien.utils.ui.screen.IenBackButton
 import zone.ien.utils.ui.screen.IenScaffold
 import zone.ien.utils.ui.screen.IenTopAppBar
+import com.kyant.capsule.ContinuousRoundedRectangle
 
 private const val QueryCollection = "query_samples"
 
@@ -212,7 +212,7 @@ private fun PlatformStatusCard(
     IenSurface(
         modifier = Modifier.fillMaxWidth(),
         color = statusColor.copy(alpha = 0.12f),
-        shape = RoundedCornerShape(8.dp)
+        shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             IenText(
@@ -260,7 +260,7 @@ private fun BasicDocumentSection(
     IenSurface(
         modifier = Modifier.fillMaxWidth(),
         color = IenTheme.colors.surfaceVariant,
-        shape = RoundedCornerShape(8.dp)
+        shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             IenText(
@@ -374,7 +374,7 @@ private fun QueryTestingSection(
     IenSurface(
         modifier = Modifier.fillMaxWidth(),
         color = IenTheme.colors.surfaceVariant,
-        shape = RoundedCornerShape(8.dp)
+        shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             IenText(
@@ -552,7 +552,7 @@ private fun ErrorBox(message: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
+            .clip(ContinuousRoundedRectangle(8.dp))
             .background(IenTheme.colors.danger.copy(alpha = 0.12f))
             .padding(10.dp)
     ) {
@@ -579,7 +579,7 @@ private fun QueryResultCard(row: QueryResultRow) {
     IenSurface(
         modifier = Modifier.fillMaxWidth(),
         color = IenTheme.colors.surfaceVariant,
-        shape = RoundedCornerShape(8.dp)
+        shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
             IenText(
@@ -606,7 +606,7 @@ private fun MessageCard(msg: Message) {
     IenSurface(
         modifier = Modifier.fillMaxWidth(),
         color = IenTheme.colors.surfaceVariant,
-        shape = RoundedCornerShape(8.dp)
+        shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             IenText(

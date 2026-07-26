@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +39,7 @@ import zone.ien.utils.ui.primitives.IenText
 import zone.ien.utils.ui.screen.IenBackButton
 import zone.ien.utils.ui.screen.IenScaffold
 import zone.ien.utils.ui.screen.IenTopAppBar
+import com.kyant.capsule.ContinuousRoundedRectangle
 
 @Composable
 fun FunctionsScreen(onBack: () -> Unit) {
@@ -74,8 +74,7 @@ fun FunctionsScreen(onBack: () -> Unit) {
             "internal",
             "unavailable",
             "data-loss",
-            "unauthenticated",
-        )
+            "unauthenticated")
     }
 
     IenScaffold(
@@ -123,7 +122,7 @@ fun FunctionsScreen(onBack: () -> Unit) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 IenSurface(
-                    shape = RoundedCornerShape(16.dp),
+                    shape = ContinuousRoundedRectangle(16.dp),
                     color = IenTheme.colors.surfaceVariant,
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -238,7 +237,7 @@ fun FunctionsScreen(onBack: () -> Unit) {
                 }
 
                 IenSurface(
-                    shape = RoundedCornerShape(12.dp),
+                    shape = ContinuousRoundedRectangle(12.dp),
                     color = Color(0xFF1E1E1E),
                     modifier = Modifier
                         .fillMaxWidth()
