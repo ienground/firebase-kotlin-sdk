@@ -10,4 +10,6 @@ actual class QuerySnapshot(private val iosSnapshot: FIRQuerySnapshot) {
         val nativeDocs = iosSnapshot.documents as List<FIRDocumentSnapshot>
         return nativeDocs.map { DocumentSnapshot(it) }
     }
+
+    actual fun getMetadata(): SnapshotMetadata = iosSnapshot.metadata.toCommonMetadata()
 }

@@ -5,28 +5,39 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-actual class DocumentReference(private val androidDocument: AndroidDocumentReference) {
+actual class DocumentReference(internal val androidDocument: AndroidDocumentReference) {
     actual fun getId(): String = androidDocument.id
     actual fun getPath(): String = androidDocument.path
 
     actual suspend fun set(data: Map<String, Any>) {
-        androidDocument.set(data).await()
+        androidDocument.set(data.toAndroidData()).await()
     }
 
     actual suspend fun update(data: Map<String, Any>) {
-        androidDocument.update(data).await()
+        androidDocument.update(data.toAndroidData()).await()
     }
 
     actual suspend fun delete() {
         androidDocument.delete().await()
     }
 
-    actual suspend fun get(): DocumentSnapshot {
-        return DocumentSnapshot(androidDocument.get().await())
+    actual suspend fun get(): DocumentSnapshot = get(Source.DEFAULT)
+
+    actual suspend fun get(source: Source): DocumentSnapshot {
+        return DocumentSnapshot(androidDocument.get(source.toAndroidSource()).await())
     }
 
-    actual fun snapshots(): Flow<DocumentSnapshot?> = callbackFlow {
-        val listener = androidDocument.addSnapshotListener { snapshot, error ->
+    actual fun snapshots(): Flow<DocumentSnapshot?> = snapshots(
+        includeMetadataChanges = false,
+        source = ListenSource.DEFAULT
+    )
+
+    actual fun snapshots(
+        includeMetadataChanges: Boolean,
+        source: ListenSource
+    ): Flow<DocumentSnapshot?> = callbackFlow {
+        val options = snapshotListenOptions(includeMetadataChanges, source)
+        val listener = androidDocument.addSnapshotListener(options) { snapshot, error ->
             if (error != null) {
                 close(error)
                 return@addSnapshotListener

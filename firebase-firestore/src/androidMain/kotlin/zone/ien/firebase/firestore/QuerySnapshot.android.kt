@@ -6,4 +6,6 @@ actual class QuerySnapshot(private val androidSnapshot: AndroidQuerySnapshot) {
     actual fun getDocuments(): List<DocumentSnapshot> {
         return androidSnapshot.documents.map { DocumentSnapshot(it) }
     }
+
+    actual fun getMetadata(): SnapshotMetadata = androidSnapshot.metadata.toCommonMetadata()
 }

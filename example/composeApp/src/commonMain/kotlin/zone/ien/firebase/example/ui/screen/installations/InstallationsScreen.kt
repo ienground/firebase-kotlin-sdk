@@ -230,9 +230,13 @@ fun InstallationsScreen(
                                     logMessage = "Fetching installation Auth Token..."
                                     val result = FirebaseInstallations.instance.getToken(forceRefresh)
                                     authToken = result.token
-                                    tokenExpiresAt = "${result.tokenExpirationTimestamp} ms"
-                                    tokenCreatedAt = "${result.tokenCreationTimestamp} ms"
-                                    logMessage = "Success fetching Auth Token (Expires: ${result.tokenExpirationTimestamp} ms)"
+                                    tokenExpiresAt = "${result.tokenExpirationTimestampMillis} epoch ms"
+                                    tokenCreatedAt = if (result.hasTokenCreationTimestamp) {
+                                        "${result.tokenCreationTimestampMillis} epoch ms"
+                                    } else {
+                                        "Not available"
+                                    }
+                                    logMessage = "Success fetching Auth Token (Expires: ${result.tokenExpirationTimestampMillis} epoch ms)"
                                 } catch (e: Exception) {
                                     logMessage = "Token Query Failed: ${e.message}"
                                 }

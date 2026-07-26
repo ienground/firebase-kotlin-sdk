@@ -10,12 +10,12 @@ import kotlin.coroutines.resumeWithException
 import swiftPMImport.zone.ien.firebase.firebase.firestore.FIRDocumentReference
 
 @OptIn(ExperimentalForeignApi::class)
-actual class DocumentReference(private val iosDocument: FIRDocumentReference) {
+actual class DocumentReference(internal val iosDocument: FIRDocumentReference) {
     actual fun getId(): String = iosDocument.documentID
     actual fun getPath(): String = iosDocument.path
 
     actual suspend fun set(data: Map<String, Any>) = suspendCancellableCoroutine<Unit> { cont ->
-        iosDocument.setData(data as Map<Any?, *>) { error ->
+        iosDocument.setData(data.toIosData()) { error ->
             if (error != null) {
                 cont.resumeWithException(RuntimeException(error.localizedDescription))
             } else {
@@ -25,7 +25,7 @@ actual class DocumentReference(private val iosDocument: FIRDocumentReference) {
     }
 
     actual suspend fun update(data: Map<String, Any>) = suspendCancellableCoroutine<Unit> { cont ->
-        iosDocument.updateData(data as Map<Any?, *>) { error ->
+        iosDocument.updateData(data.toIosData()) { error ->
             if (error != null) {
                 cont.resumeWithException(RuntimeException(error.localizedDescription))
             } else {
@@ -44,8 +44,10 @@ actual class DocumentReference(private val iosDocument: FIRDocumentReference) {
         }
     }
 
-    actual suspend fun get(): DocumentSnapshot = suspendCancellableCoroutine { cont ->
-        iosDocument.getDocumentWithCompletion { snapshot, error ->
+    actual suspend fun get(): DocumentSnapshot = get(Source.DEFAULT)
+
+    actual suspend fun get(source: Source): DocumentSnapshot = suspendCancellableCoroutine { cont ->
+        iosDocument.getDocumentWithSource(source.toIosSource()) { snapshot, error ->
             if (error != null) {
                 cont.resumeWithException(RuntimeException(error.localizedDescription))
             } else if (snapshot != null) {
@@ -56,11 +58,20 @@ actual class DocumentReference(private val iosDocument: FIRDocumentReference) {
         }
     }
 
-    actual fun snapshots(): Flow<DocumentSnapshot?> = callbackFlow {
-        val handle = iosDocument.addSnapshotListener { snapshot, error ->
+    actual fun snapshots(): Flow<DocumentSnapshot?> = snapshots(
+        includeMetadataChanges = false,
+        source = ListenSource.DEFAULT
+    )
+
+    actual fun snapshots(
+        includeMetadataChanges: Boolean,
+        source: ListenSource
+    ): Flow<DocumentSnapshot?> = callbackFlow {
+        val options = snapshotListenOptions(includeMetadataChanges, source)
+        val handle = iosDocument.addSnapshotListenerWithOptions(options) { snapshot, error ->
             if (error != null) {
                 close(RuntimeException(error.localizedDescription))
-                return@addSnapshotListener
+                return@addSnapshotListenerWithOptions
             }
             trySend(snapshot?.let { DocumentSnapshot(it) })
         }

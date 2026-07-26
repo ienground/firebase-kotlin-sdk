@@ -18,7 +18,6 @@ let package = Package(
       from: "12.14.0"
     ),
     .package(path: "subpackages/_firebase_firestore"),
-    .package(path: "subpackages/_firebase_abt"),
     .package(path: "subpackages/_firebase_storage"),
     .package(path: "subpackages/_firebase_perf"),
     .package(path: "subpackages/_firebase_installations"),
@@ -31,6 +30,7 @@ let package = Package(
     .package(path: "subpackages/_appcheck_firebase_appcheck_interop"),
     .package(path: "subpackages/_firebase_config"),
     .package(path: "subpackages/_firebase_appdistribution"),
+    .package(path: "subpackages/_firebase_inappmessaging_display"),
     .package(path: "subpackages/_firebase_inappmessaging"),
     .package(path: "subpackages/_firebase_messaging"),
     .package(path: "subpackages/_firebase_common")
@@ -84,7 +84,6 @@ let package = Package(
           package: "firebase-ios-sdk"
         ),
         .product(name: "_firebase_firestore", package: "_firebase_firestore"),
-        .product(name: "_firebase_abt", package: "_firebase_abt"),
         .product(name: "_firebase_storage", package: "_firebase_storage"),
         .product(name: "_firebase_perf", package: "_firebase_perf"),
         .product(name: "_firebase_installations", package: "_firebase_installations"),
@@ -97,6 +96,7 @@ let package = Package(
         .product(name: "_appcheck_firebase_appcheck_interop", package: "_appcheck_firebase_appcheck_interop"),
         .product(name: "_firebase_config", package: "_firebase_config"),
         .product(name: "_firebase_appdistribution", package: "_firebase_appdistribution"),
+        .product(name: "_firebase_inappmessaging_display", package: "_firebase_inappmessaging_display"),
         .product(name: "_firebase_inappmessaging", package: "_firebase_inappmessaging"),
         .product(name: "_firebase_messaging", package: "_firebase_messaging"),
         .product(name: "_firebase_common", package: "_firebase_common")

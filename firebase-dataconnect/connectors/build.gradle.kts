@@ -47,6 +47,10 @@ kotlin {
             api(project(":firebase-dataconnect"))
         }
 
+        androidMain.dependencies {
+            api(libs.firebase.android.dataconnect)
+        }
+
         val androidMain by getting {
             kotlin.setSrcDirs(listOf("src/androidMain/kotlin"))
         }

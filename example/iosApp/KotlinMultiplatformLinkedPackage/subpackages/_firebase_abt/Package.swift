@@ -12,21 +12,11 @@ let package = Package(
       targets: ["_firebase_abt"]
     )
   ],
-  dependencies: [
-    .package(
-      url: "https://github.com/firebase/firebase-ios-sdk.git",
-      from: "12.14.0"
-    )
-  ],
+  dependencies: [],
   targets: [
     .target(
       name: "_firebase_abt",
-      dependencies: [
-        .product(
-          name: "FirebaseRemoteConfig",
-          package: "firebase-ios-sdk"
-        )
-      ]
+      dependencies: []
     )
   ]
 )
