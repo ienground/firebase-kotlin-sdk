@@ -1,20 +1,30 @@
 package zone.ien.firebase.auth
 
+import android.net.Uri
 import com.google.firebase.auth.FirebaseUser as AndroidFirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest as AndroidUserProfileChangeRequest
 import kotlinx.coroutines.tasks.await
 
-public actual class FirebaseUser private actual constructor() {
-    private lateinit var androidUser: AndroidFirebaseUser
-
-    public constructor(androidUser: AndroidFirebaseUser) : this() {
-        this.androidUser = androidUser
-    }
-
+public actual class FirebaseUser internal constructor(
+    internal val androidUser: AndroidFirebaseUser
+) {
     public actual val uid: String
         get() = androidUser.uid
 
     public actual val email: String?
         get() = androidUser.email
+
+    public actual val displayName: String?
+        get() = androidUser.displayName
+
+    public actual val photoUrl: String?
+        get() = androidUser.photoUrl?.toString()
+
+    public actual val phoneNumber: String?
+        get() = androidUser.phoneNumber
+
+    public actual val isEmailVerified: Boolean
+        get() = androidUser.isEmailVerified
 
     public actual val isAnonymous: Boolean
         get() = androidUser.isAnonymous
@@ -24,12 +34,13 @@ public actual class FirebaseUser private actual constructor() {
     }
 
     public actual suspend fun getIdToken(forceRefresh: Boolean): String {
-        return androidUser.getIdToken(forceRefresh).await().token ?: ""
+        val result = androidUser.getIdToken(forceRefresh).await()
+        return result.token ?: throw FirebaseAuthException("Token is null", null)
     }
 
     public actual suspend fun unlink(provider: String): FirebaseUser {
         val result = androidUser.unlink(provider).await()
-        val user = result.user ?: throw IllegalStateException("Unlink returned a null user.")
+        val user = result.user ?: throw FirebaseAuthException("User is null after unlink", null)
         return FirebaseUser(user)
     }
 
@@ -38,9 +49,9 @@ public actual class FirebaseUser private actual constructor() {
     }
 
     public actual suspend fun updateProfile(request: UserProfileChangeRequest) {
-        val androidReq = request.androidRequest ?: com.google.firebase.auth.UserProfileChangeRequest.Builder()
+        val androidReq = request.androidRequest ?: AndroidUserProfileChangeRequest.Builder()
             .setDisplayName(request.displayName)
-            .setPhotoUri(request.photoUrl?.let { android.net.Uri.parse(it) })
+            .setPhotoUri(request.photoUrl?.let { Uri.parse(it) })
             .build()
         androidUser.updateProfile(androidReq).await()
     }
@@ -60,5 +71,10 @@ public actual class FirebaseUser private actual constructor() {
 
     public actual suspend fun reauthenticate(credential: AuthCredential) {
         androidUser.reauthenticate(credential.androidCredential).await()
+    }
+
+    internal companion object {
+        fun create(androidUser: AndroidFirebaseUser?): FirebaseUser? =
+            androidUser?.let { FirebaseUser(it) }
     }
 }

@@ -3,7 +3,8 @@ package zone.ien.firebase.firestore
 import com.google.firebase.Timestamp as AndroidTimestamp
 import com.google.firebase.firestore.FieldValue as AndroidFieldValue
 
-internal fun Any.toAndroidValue(): Any = when (this) {
+internal fun Any?.toAndroidValue(): Any? = when (this) {
+    null -> null
     is Timestamp -> AndroidTimestamp(seconds, nanoseconds)
     is FieldValue -> when (val operation = operation) {
         FieldValue.Operation.Delete -> AndroidFieldValue.delete()
@@ -19,13 +20,13 @@ internal fun Any.toAndroidValue(): Any = when (this) {
     }
     is Map<*, *> -> entries.associate { (key, value) ->
         require(key is String) { "Firestore map keys must be strings." }
-        key to value?.toAndroidValue()
+        key to value.toAndroidValue()
     }
-    is List<*> -> map { it?.toAndroidValue() }
+    is List<*> -> map { it.toAndroidValue() }
     else -> this
 }
 
-internal fun Map<String, Any>.toAndroidData(): Map<String, Any> =
+internal fun Map<String, Any?>.toAndroidData(): Map<String, Any?> =
     mapValues { (_, value) -> value.toAndroidValue() }
 
 internal fun Any?.toCommonValue(): Any? = when (this) {

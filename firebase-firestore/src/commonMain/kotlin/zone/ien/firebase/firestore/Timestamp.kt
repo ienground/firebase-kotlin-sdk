@@ -22,8 +22,17 @@ data class Timestamp(
         }
     }
 
-    private companion object {
-        const val MIN_SECONDS = -62_135_596_800L
+    companion object {
+        private const val MIN_SECONDS = -62_135_596_800L
         const val MAX_SECONDS = 253_402_300_799L
+
+        fun now(): Timestamp {
+            val currentMillis = epochMillis()
+            val seconds = currentMillis / 1000
+            val nanos = ((currentMillis % 1000) * 1_000_000).toInt()
+            return Timestamp(seconds, if (nanos < 0) nanos + 1_000_000_000 else nanos)
+        }
     }
 }
+
+internal expect fun epochMillis(): Long

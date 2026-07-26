@@ -14,10 +14,10 @@ This document tracks the Kotlin Multiplatform (KMP) migration status across all 
 | `firebase-common`                                     | `sdk` | 🟢 Migrated | Android, iOS      | Core `Firebase` / `FirebaseApp` initialization and app registry.    |
 | `firebase-components`                                 | `sdk` | 🟢 Migrated | Android, iOS      | Dependency injection & component container contracts.              |
 | `firebase-annotations`                                | `sdk` | 🟢 Migrated | Common-only       | Marker annotations and common metadata types.                      |
-| `firebase-firestore`                                  | `sdk` | 🟢 Migrated | Android, iOS      | KMP wrapper (iOS SwiftPM), FieldPath/value mapping, snapshot APIs, WriteBatch, Transaction, AggregateQuery (count/sum/average), Settings, Bundle (loadBundle/namedQuery). |
-| `firebase-auth`                                       | `sdk` | 🟢 Migrated | Android, iOS      | User authentication, state listeners, and provider credentials.    |
+| `firebase-firestore`                                  | `sdk` | 🟢 Migrated | Android, iOS      | KMP wrapper (iOS SwiftPM), FieldPath/value mapping (null values), snapshot APIs (`getSnapshots`), `whereInArray`/`inArray`, WriteBatch, Transaction, AggregateQuery (count/sum/average), Settings, Bundle (loadBundle/namedQuery), DocumentChange, and mergeFields. |
+| `firebase-auth`                                       | `sdk` | 🟢 Migrated | Android, iOS      | User authentication, state listeners, provider credentials, and expanded FirebaseUser properties (`displayName`, `photoUrl`, `phoneNumber`, `isEmailVerified`). |
 | `firebase-storage`                                    | `sdk` | 🟢 Migrated | Android, iOS      | File upload/download tasks, metadata, and StorageReference.        |
-| `firebase-database`                                   | `sdk` | 🟢 Migrated | Android, iOS      | Realtime Database references, snapshots, and query filters.        |
+| `firebase-database`                                   | `sdk` | 🟢 Migrated | Android, iOS      | Realtime Database references, snapshots, children iteration, and expanded query filters (`startAt`, `endAt`). |
 | `firebase-functions`                                  | `sdk` | 🟢 Migrated | Android, iOS      | HTTPS Callable functions & region endpoints.                        |
 | `firebase-messaging`                                  | `sdk` | 🟢 Migrated | Android, iOS      | Token handling, message flows, and APNs integration bridge.        |
 | `firebase-config`                                     | `sdk` | 🟢 Migrated | Android, iOS      | Remote Config fetch, activate, and parameter values.               |
@@ -36,10 +36,8 @@ This document tracks the Kotlin Multiplatform (KMP) migration status across all 
 
 ## Detailed Migration Logs
 
-### 2026-07-26: Firebase Firestore Batch, Transaction, Aggregate Query & Settings Implementation
-* **WriteBatch**: Added multiplatform `WriteBatch` expect/actual class with `set(documentRef, data)`, `set(documentRef, data, merge)`, `update(documentRef, data)`, `delete(documentRef)`, and `commit()` suspend function delegating to native Android `WriteBatch` and iOS `FIRWriteBatch`.
-* **Transaction**: Added `Transaction` expect/actual class supporting `get(documentRef)`, `set(documentRef, data)`, `set(documentRef, data, merge)`, `update(documentRef, data)`, and `delete(documentRef)` with `FirebaseFirestore.runTransaction { transaction -> ... }` suspend helper delegating to native transaction execution blocks on Android and iOS.
-* **Aggregate Queries**: Added `AggregateField` (supporting `count()`, `sum()`, `average()`) and `AggregateQuerySnapshot` (`count`, `get`, `getLong`, `getDouble`) with `Query.count()`, `Query.sum()`, `Query.average()`, and `Query.aggregate()` delegating to native Android/iOS aggregation APIs.
-* **Firestore Settings**: Added `FirebaseFirestoreSettings` expect/actual class and `firestoreSettings { ... }` builder DSL supporting `host`, `isSslEnabled`, and `isPersistenceEnabled` configuration along with `FirebaseFirestore.setSettings()` and `FirebaseFirestore.clearPersistence()`.
-* **Firestore Bundles**: Added `loadBundle(bundleData: ByteArray): LoadBundleTaskProgress` and `namedQuery(name: String): Query?` on `FirebaseFirestore` supporting Firestore bundle loading and named query retrieval from cache.
-* **Verification**: Added `FirestoreBatchAndTransactionTest` verifying settings builder DSL, `AggregateField` constructors, `LoadBundleTaskProgress` model, and `AggregateSource` enum. Verified Android host tests and iOS Simulator compilation.
+### 2026-07-26: Complete Cross-Module API Parity Audit & Implementation Expansion
+* **Firebase Auth**: Added `displayName`, `photoUrl`, `phoneNumber`, and `isEmailVerified` properties to `FirebaseUser` with Android (`FirebaseUser.android.kt`) and iOS (`FirebaseUser.ios.kt`) actual mappings.
+* **Firebase Realtime Database**: Added `childrenCount`, `children: Iterable<DataSnapshot>`, `hasChildren()` to `DataSnapshot`, and `startAt`, `endAt` filters across String, Double, and Boolean overloads to `Query`.
+* **Firebase Firestore**: Full parity complete with `Map<String, Any?>` null mapping, `DocumentChange`, `QuerySnapshot.documentChanges`/`documents`, `getSnapshots()`, `inArray`/`whereInArray`, `mergeFields`, `WriteBatch`, `Transaction`, `AggregateQuery` (`count`/`sum`/`average`), `Settings`, `Bundle`, and `FieldValue` property accessors (`serverTimestamp`, `delete`).
+* **Verification**: Verified Android host tests (`BUILD SUCCESSFUL`) and iOS Simulator compilation (`BUILD SUCCESSFUL`).
