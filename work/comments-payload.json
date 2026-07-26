@@ -1,0 +1,24 @@
+{
+  "summary": "## 리뷰 요약\n\nStorageMetadata, File, Data 및 다운로드 API가 잘 구현되었습니다. 공통 API 계약, Android/iOS actual 분리, Firestore/Database 등 타 모듈과 일관된 스타일을 유지하고 있습니다.\n\n다만 아래 3가지 이슈는 컴파일 오류나 런타임 크래시로 이어질 수 있어 수정이 필요합니다.\n\n---\n\n### 1️⃣ [should-fix] `kotlinx.coroutines.tasks.await` import 충돌\n\n**파일**: `firebase-storage/src/androidMain/kotlin/zone/ien/firebase/storage/StorageReference.android.kt:6`  \n**원인**: `import kotlinx.coroutines.tasks.await`를 추가했으나, 이미 동일 패키지의 `TaskExtensions.kt`가 자체 `Task<T>.await()` 확장 함수를 정의하고 있습니다. `kotlinx-coroutines-play-services`가 androidMain 의존성에 포함되어 있지 않아 이 import는 `Unresolved reference` 오류를 발생시키거나, 중복 확장 함수로 인해 모호성(ambiguity) 오류가 발생합니다.  \n**조치**: `import kotlinx.coroutines.tasks.await` 줄을 제거하세요. `TaskExtensions.kt`의 로컬 확장 함수가 이미 동일한 역할을 수행합니다.\n\n### 2️⃣ [should-fix] `java.io.File` import로 인한 클래스명 충돌\n\n**파일**: `firebase-storage/src/androidMain/kotlin/zone/ien/firebase/storage/StorageReference.android.kt:4`  \n**원인**: 새로 추가한 `zone.ien.firebase.storage.File` wrapper 클래스와 `java.io.File` import가 같은 파일에 존재합니다. `File(...)`만 작성하면 `java.io.File`로 해석되어 혼란을 줍니다. `getFile(destinationPath)`에서 사용되는 `java.io.File`을 인라인으로 호출하고, import 자체를 제거하면 명확해집니다.  \n**조치**: `import java.io.File`을 제거하고, `getFile(destinationPath)`에서 `java.io.File(destinationPath)`로 직접 작성하세요.\n\n### 3️⃣ [should-fix] iOS `setCustomMetadata` unsafe cast\n\n**파일**: `firebase-storage/src/iosMain/kotlin/zone/ien/firebase/storage/StorageMetadata.ios.kt:39`  \n**원인**: `it as Map<Any?, *>` 캐스트는 Kotlin/Native ObjC 인터롭에서 타입 안전성을 보장하지 않습니다. `Map<String, String>`을 직접 ObjC의 `NSDictionary<NSString *, NSString *>`로 브릿징해야 하지만, `Map<Any?, *>` 캐스트로 인해 타입 검사가 무시되고 런타임 크래시 가능성이 있습니다.  \n**조치**: `@Suppress(\"UNCHECKED_CAST\")`와 함께 안전한 다운캐스트 패턴을 사용하거나, `platform.Foundation`의 NSDictionary 변환 유틸리티를 통해 명시적 변환을 수행하세요.",
+  "event": "COMMENT",
+  "comments": [
+    {
+      "path": "firebase-storage/src/androidMain/kotlin/zone/ien/firebase/storage/StorageReference.android.kt",
+      "line": 6,
+      "side": "RIGHT",
+      "body": "[should-fix] `import kotlinx.coroutines.tasks.await` — `kotlinx-coroutines-play-services`가 androidMain 의존성에 없어서 Unresolved reference 오류가 발생하거나, 로컬 `TaskExtensions.kt`의 동일 확장 함수와 충돌합니다. `TaskExtensions.kt`가 이미 `Task<T>.await()`를 제공하므로 이 import 줄은 제거해야 합니다.\n\n```suggestion\n\n```"
+    },
+    {
+      "path": "firebase-storage/src/androidMain/kotlin/zone/ien/firebase/storage/StorageReference.android.kt",
+      "line": 4,
+      "side": "RIGHT",
+      "body": "[should-fix] `import java.io.File` — 새로 추가된 `zone.ien.firebase.storage.File`과 이름이 충돌합니다. `File(...)`만 쓰면 `java.io.File`로 해석되어 혼란을 줍니다. import를 제거하고 `getFile(destinationPath)`에서 `java.io.File(destinationPath)`로 인라인 사용하세요.\n\n```suggestion\n\n```"
+    },
+    {
+      "path": "firebase-storage/src/iosMain/kotlin/zone/ien/firebase/storage/StorageMetadata.ios.kt",
+      "line": 39,
+      "side": "RIGHT",
+      "body": "[should-fix] `it as Map<Any?, *>` — unchecked cast로 인해 Kotlin/Native ObjC 인터롭에서 타입 안전성이 깨집니다. `Map<String, String>`이 `NSDictionary<NSString *, NSString *>`로 올바르게 브릿징되지 않으면 런타임 크래시가 발생할 수 있습니다. `@Suppress(\"UNCHECKED_CAST\")`와 함께 사용하거나 명시적 변환을 고려하세요.\n\n```suggestion\n    customMetadata?.let { iosMetadata.setCustomMetadata(it as Map<Any?, *>) }\n```"
+    }
+  ]
+}
