@@ -1,5 +1,6 @@
 package zone.ien.firebase.installations
 
+import zone.ien.firebase.Firebase
 import zone.ien.firebase.FirebaseApp
 
 import zone.ien.firebase.installations.interop.FirebaseInstallationsApi
@@ -18,3 +19,9 @@ public expect class FirebaseInstallations : FirebaseInstallationsApi {
         public fun getInstance(app: FirebaseApp): FirebaseInstallations
     }
 }
+
+public val Firebase.installations: FirebaseInstallations
+    get() = FirebaseInstallations.instance
+
+public fun Firebase.installations(app: FirebaseApp): FirebaseInstallations =
+    FirebaseInstallations.getInstance(app)

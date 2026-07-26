@@ -1,5 +1,6 @@
 package zone.ien.firebase.ai
 
+import zone.ien.firebase.Firebase
 import zone.ien.firebase.FirebaseApp
 
 public expect class FirebaseAI {
@@ -12,3 +13,9 @@ public expect class FirebaseAI {
 }
 
 public expect val FirebaseApp.ai: FirebaseAI
+
+public val Firebase.ai: FirebaseAI
+    get() = FirebaseAI.instance
+
+public fun Firebase.ai(app: FirebaseApp): FirebaseAI =
+    FirebaseAI.getInstance(app)

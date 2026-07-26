@@ -1,6 +1,7 @@
 package zone.ien.firebase.appdistribution
 
 import kotlinx.coroutines.flow.Flow
+import zone.ien.firebase.Firebase
 
 public expect class FirebaseAppDistribution : FirebaseAppDistributionApi {
     public override val isTesterSignedIn: Boolean
@@ -13,3 +14,6 @@ public expect class FirebaseAppDistribution : FirebaseAppDistributionApi {
         public val instance: FirebaseAppDistribution
     }
 }
+
+public val Firebase.appDistribution: FirebaseAppDistribution
+    get() = FirebaseAppDistribution.instance

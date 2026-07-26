@@ -1,23 +1,43 @@
 package zone.ien.firebase.example.ui.screen.perf
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import zone.ien.firebase.perf.FirebasePerformance
-import zone.ien.firebase.perf.Trace
 import zone.ien.firebase.perf.HttpMetric
+import zone.ien.firebase.perf.Trace
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import com.kyant.capsule.ContinuousRoundedRectangle
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PerformanceScreen(
     onNavigateBack: () -> Unit
@@ -40,16 +60,13 @@ fun PerformanceScreen(
 
     var logMessage by remember { mutableStateOf("Ready to test manual performance monitoring API.") }
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Performance Monitoring", fontWeight = FontWeight.Bold) },
+            IenTopAppBar(
+                title = { IenText("Performance Monitoring", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Text("←")
-                    }
-                },
-
+                    IenBackButton(onClick = onNavigateBack)
+                }
             )
         }
     ) { innerPadding ->
@@ -60,8 +77,8 @@ fun PerformanceScreen(
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(
-                            MaterialTheme.colorScheme.surface,
-                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                            IenTheme.colors.surface,
+                            IenTheme.colors.surfaceVariant.copy(alpha = 0.5f)
                         )
                     )
                 )
@@ -70,17 +87,17 @@ fun PerformanceScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Section 1: Config Info Card
-            Card(
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+            IenSurface(
+                color = IenTheme.colors.surfaceVariant,
+                shape = ContinuousRoundedRectangle(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
+                    IenText(
                         text = "Config & Status",
-                        fontSize = 18.sp,
+                        style = IenTheme.typography.title3,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(
@@ -88,11 +105,12 @@ fun PerformanceScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
+                        IenText(
                             text = "Performance Collection Enabled:",
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                            style = IenTheme.typography.body2,
+                            color = IenTheme.colors.textPrimary
                         )
-                        Switch(
+                        IenSwitch(
                             checked = isCollectionEnabled,
                             onCheckedChange = { checked ->
                                 FirebasePerformance.instance.isPerformanceCollectionEnabled = checked
@@ -105,24 +123,25 @@ fun PerformanceScreen(
             }
 
             // Section 2: Custom Trace Manual Control Card
-            Card(
-                shape = RoundedCornerShape(16.dp),
+            IenSurface(
+                color = IenTheme.colors.surfaceVariant,
+                shape = ContinuousRoundedRectangle(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
+                    IenText(
                         text = "Custom Trace Control",
-                        fontSize = 18.sp,
+                        style = IenTheme.typography.title2,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    OutlinedTextField(
+                    IenTextField(
                         value = traceName,
                         onValueChange = { traceName = it },
-                        label = { Text("Trace Name") },
+                        label = "Trace Name",
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = activeTrace == null
+                        state = IenTextFieldState(enabled = activeTrace == null)
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -131,7 +150,7 @@ fun PerformanceScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Button(
+                        IenButton(
                             onClick = {
                                 val trace = FirebasePerformance.instance.newTrace(traceName)
                                 trace.start()
@@ -139,32 +158,31 @@ fun PerformanceScreen(
                                 logMessage = "Started Trace: '$traceName'"
                             },
                             modifier = Modifier.weight(1f),
-                            enabled = activeTrace == null
+                            state = IenButtonState(enabled = activeTrace == null)
                         ) {
-                            Text("Start Trace")
+                            IenText("Start Trace")
                         }
 
-                        Button(
+                        IenButton(
                             onClick = {
                                 activeTrace?.stop()
                                 activeTrace = null
                                 logMessage = "Stopped active trace."
                             },
                             modifier = Modifier.weight(1f),
-                            enabled = activeTrace != null,
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                            state = IenButtonState(enabled = activeTrace != null)
                         ) {
-                            Text("Stop Trace")
+                            IenText("Stop Trace")
                         }
                     }
 
                     if (activeTrace != null) {
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
-                        Text(
+                        IenDivider(modifier = Modifier.padding(vertical = 12.dp))
+                        IenText(
                             text = "Active Trace Mutations",
-                            fontSize = 14.sp,
+                            style = IenTheme.typography.body2,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary
+                            color = IenTheme.colors.brand
                         )
                         Spacer(modifier = Modifier.height(8.dp))
 
@@ -174,19 +192,19 @@ fun PerformanceScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            OutlinedTextField(
+                            IenTextField(
                                 value = metricName,
                                 onValueChange = { metricName = it },
-                                label = { Text("Metric Name") },
+                                label = "Metric Name",
                                 modifier = Modifier.weight(1.5f)
                             )
-                            OutlinedTextField(
+                            IenTextField(
                                 value = metricIncrement,
                                 onValueChange = { metricIncrement = it },
-                                label = { Text("Inc By") },
+                                label = "Inc By",
                                 modifier = Modifier.weight(1f)
                             )
-                            Button(
+                            IenButton(
                                 onClick = {
                                     val inc = metricIncrement.toLongOrNull() ?: 1L
                                     activeTrace?.incrementMetric(metricName, inc)
@@ -195,7 +213,7 @@ fun PerformanceScreen(
                                 },
                                 modifier = Modifier.padding(top = 4.dp)
                             ) {
-                                Text("Add")
+                                IenText("Add")
                             }
                         }
 
@@ -207,19 +225,19 @@ fun PerformanceScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            OutlinedTextField(
+                            IenTextField(
                                 value = attributeKey,
                                 onValueChange = { attributeKey = it },
-                                label = { Text("Attr Key") },
+                                label = "Attr Key",
                                 modifier = Modifier.weight(1.2f)
                             )
-                            OutlinedTextField(
+                            IenTextField(
                                 value = attributeValue,
                                 onValueChange = { attributeValue = it },
-                                label = { Text("Attr Value") },
+                                label = "Attr Value",
                                 modifier = Modifier.weight(1.2f)
                             )
-                            Button(
+                            IenButton(
                                 onClick = {
                                     activeTrace?.putAttribute(attributeKey, attributeValue)
                                     val currentVal = activeTrace?.getAttribute(attributeKey) ?: "null"
@@ -227,7 +245,7 @@ fun PerformanceScreen(
                                 },
                                 modifier = Modifier.padding(top = 4.dp)
                             ) {
-                                Text("Put")
+                                IenText("Put")
                             }
                         }
                     }
@@ -235,24 +253,25 @@ fun PerformanceScreen(
             }
 
             // Section 3: Manual HTTP Metric Control Card
-            Card(
-                shape = RoundedCornerShape(16.dp),
+            IenSurface(
+                color = IenTheme.colors.surfaceVariant,
+                shape = ContinuousRoundedRectangle(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
+                    IenText(
                         text = "HTTP Request Metric Control",
-                        fontSize = 18.sp,
+                        style = IenTheme.typography.title2,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    OutlinedTextField(
+                    IenTextField(
                         value = httpUrl,
                         onValueChange = { httpUrl = it },
-                        label = { Text("Request URL") },
+                        label = "Request URL",
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = activeHttpMetric == null
+                        state = IenTextFieldState(enabled = activeHttpMetric == null)
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -261,19 +280,19 @@ fun PerformanceScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        OutlinedTextField(
+                        IenTextField(
                             value = httpMethod,
                             onValueChange = { httpMethod = it },
-                            label = { Text("Method (GET/POST)") },
+                            label = "Method (GET/POST)",
                             modifier = Modifier.weight(1f),
-                            enabled = activeHttpMetric == null
+                            state = IenTextFieldState(enabled = activeHttpMetric == null)
                         )
-                        OutlinedTextField(
+                        IenTextField(
                             value = httpResponseCode,
                             onValueChange = { httpResponseCode = it },
-                            label = { Text("Response Code") },
+                            label = "Response Code",
                             modifier = Modifier.weight(1f),
-                            enabled = activeHttpMetric == null
+                            state = IenTextFieldState(enabled = activeHttpMetric == null)
                         )
                     }
 
@@ -283,7 +302,7 @@ fun PerformanceScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Button(
+                        IenButton(
                             onClick = {
                                 val metric = HttpMetric(httpUrl, httpMethod)
                                 metric.start()
@@ -291,12 +310,12 @@ fun PerformanceScreen(
                                 logMessage = "Started HTTP Metric for $httpMethod to $httpUrl"
                             },
                             modifier = Modifier.weight(1f),
-                            enabled = activeHttpMetric == null
+                            state = IenButtonState(enabled = activeHttpMetric == null)
                         ) {
-                            Text("Start HTTP Req")
+                            IenText("Start HTTP Req")
                         }
 
-                        Button(
+                        IenButton(
                             onClick = {
                                 activeHttpMetric?.let { metric ->
                                     val code = httpResponseCode.toIntOrNull() ?: 200
@@ -310,34 +329,32 @@ fun PerformanceScreen(
                                 logMessage = "HTTP Request logged successfully! Code: $httpResponseCode, Req: 1KB, Resp: 2KB."
                             },
                             modifier = Modifier.weight(1f),
-                            enabled = activeHttpMetric != null,
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                            state = IenButtonState(enabled = activeHttpMetric != null)
                         ) {
-                            Text("Stop & Log")
+                            IenText("Stop & Log")
                         }
                     }
                 }
             }
 
             // Log Console Card
-            Card(
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            IenSurface(
+                color = IenTheme.colors.surfaceVariant,
+                shape = ContinuousRoundedRectangle(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
+                    IenText(
                         text = "Console Output",
-                        fontSize = 14.sp,
+                        style = IenTheme.typography.title3,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
+                    IenText(
                         text = logMessage,
-                        fontSize = 13.sp,
-                        fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        style = IenTheme.typography.body2,
+                        color = IenTheme.colors.textSecondary
                     )
                 }
             }

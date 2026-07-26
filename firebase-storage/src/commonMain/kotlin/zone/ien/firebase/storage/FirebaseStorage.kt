@@ -1,5 +1,7 @@
 package zone.ien.firebase.storage
 
+import zone.ien.firebase.Firebase
+
 expect class FirebaseStorage {
     val reference: StorageReference
     fun getReference(path: String): StorageReference
@@ -10,3 +12,6 @@ expect class FirebaseStorage {
         fun getInstance(): FirebaseStorage
     }
 }
+
+val Firebase.storage: FirebaseStorage
+    get() = FirebaseStorage.getInstance()

@@ -1,7 +1,27 @@
 package zone.ien.firebase.example
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -9,25 +29,20 @@ import androidx.compose.ui.unit.dp
 import zone.ien.firebase.appcheck.FirebaseAppCheck
 import zone.ien.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun PlayIntegrityScreen(onBack: () -> Unit) {
-    val defaultColor = MaterialTheme.colorScheme.onSurfaceVariant
-    val primaryColor = MaterialTheme.colorScheme.primary
-    val errorColor = MaterialTheme.colorScheme.error
+    val defaultColor = IenTheme.colors.textSecondary
+    val primaryColor = IenTheme.colors.brand
+    val errorColor = IenTheme.colors.danger
 
     var statusText by remember { mutableStateOf("Idle") }
     var statusColor by remember { mutableStateOf(defaultColor) }
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Play Integrity Provider") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Text("←")
-                    }
-                }
+            IenTopAppBar(
+                title = { IenText("Play Integrity Provider") },
+                navigationIcon = { IenBackButton(onClick = onBack) }
             )
         }
     ) { innerPadding ->
@@ -38,43 +53,43 @@ public fun PlayIntegrityScreen(onBack: () -> Unit) {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
+                    IenText(
                         text = "Android Play Integrity App Check",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary
+                        style = IenTheme.typography.title2,
+                        color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
+                    IenText(
                         text = "This provider uses Google Play Integrity API to verify the authenticity of your app. This is an Android-exclusive feature.",
-                        style = MaterialTheme.typography.bodyMedium
+                        style = IenTheme.typography.body1
                     )
                 }
             }
 
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
+                    IenText(
                         text = "⚠️ Setup Prerequisites",
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.error
+                        style = IenTheme.typography.title3,
+                        color = IenTheme.colors.danger
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
+                    IenText(
                         text = "1. Enable Play Integrity API in Google Play Console.\n" +
                                "2. Register Play Integrity provider in Firebase Console App Check.\n" +
                                "3. Add your app's SHA-256 fingerprint in Firebase Console settings.",
-                        style = MaterialTheme.typography.bodySmall
+                        style = IenTheme.typography.body2
                     )
                 }
             }
 
-            Button(
+            IenButton(
                 onClick = {
                     try {
                         // 1. Get Play Integrity Provider Factory
@@ -93,15 +108,15 @@ public fun PlayIntegrityScreen(onBack: () -> Unit) {
                 },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
-                Text("Install Play Integrity Provider")
+                IenText("Install Play Integrity Provider")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
+            IenText(
                 text = "Status: $statusText",
                 color = statusColor,
-                style = MaterialTheme.typography.bodyLarge,
+                style = IenTheme.typography.body1,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }

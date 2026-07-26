@@ -1,5 +1,7 @@
 package zone.ien.firebase.crashlytics
 
+import zone.ien.firebase.Firebase
+
 public expect class FirebaseCrashlytics {
     public fun log(message: String)
     public fun recordException(throwable: Throwable)
@@ -15,8 +17,11 @@ public expect class FirebaseCrashlytics {
     public fun sendUnsentReports()
     public suspend fun checkForUnsentReports(): Boolean
     public fun didCrashOnPreviousExecution(): Boolean
- 
+
     public companion object {
         public fun getInstance(): FirebaseCrashlytics
     }
 }
+
+public val Firebase.crashlytics: FirebaseCrashlytics
+    get() = FirebaseCrashlytics.getInstance()

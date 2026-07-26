@@ -1,6 +1,8 @@
 package zone.ien.firebase.abt
 
-public actual typealias AbtException = com.google.firebase.abt.AbtException
+public actual class AbtException actual constructor(message: String?, cause: Throwable?) : Exception(message, cause) {
+    public actual constructor(message: String?) : this(message, null)
+}
 
 public actual class AbtExperimentInfo internal actual constructor() {
     private var values: Map<String, String> = emptyMap()

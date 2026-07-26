@@ -1,21 +1,41 @@
 package zone.ien.firebase.example.ui.screen.auth
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import zone.ien.firebase.auth.FirebaseAuth
-import zone.ien.firebase.auth.FirebaseUser
-import zone.ien.firebase.auth.GoogleAuthProvider
 import zone.ien.firebase.auth.GithubAuthProvider
+import zone.ien.firebase.auth.GoogleAuthProvider
 import zone.ien.firebase.auth.OAuthProvider
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldLabelOption
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun AuthScreen(onBack: () -> Unit) {
     val auth = remember { FirebaseAuth.getInstance() }
@@ -40,21 +60,17 @@ public fun AuthScreen(onBack: () -> Unit) {
     var statusText by remember { mutableStateOf("Idle") }
     var idTokenText by remember { mutableStateOf("") }
 
-    val defaultColor = MaterialTheme.colorScheme.onSurfaceVariant
-    val primaryColor = MaterialTheme.colorScheme.primary
-    val errorColor = MaterialTheme.colorScheme.error
+    val defaultColor = IenTheme.colors.textSecondary
+    val primaryColor = IenTheme.colors.brand
+    val errorColor = IenTheme.colors.danger
 
     var statusColor by remember { mutableStateOf(defaultColor) }
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Firebase Authentication") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Text("←")
-                    }
-                }
+            IenTopAppBar(
+                title = { IenText("Firebase Authentication") },
+                navigationIcon = { IenBackButton(onClick = onBack) }
             )
         }
     ) { innerPadding ->
@@ -66,44 +82,44 @@ public fun AuthScreen(onBack: () -> Unit) {
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
+                    IenText(
                         text = "ℹ️ Configuration Pre-requisites",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = IenTheme.typography.title2,
                         color = primaryColor
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
+                    IenText(
                         text = "1. Enable 'Anonymous' and 'Email/Password' providers in the Firebase Console.\n" +
                                "2. Configure social login keys (Google, GitHub, Apple) under Console > Authentication > Sign-in method.\n" +
                                "3. [iOS] Verify Bundle ID and custom URL schemes match configurations when using native OAuth client.",
-                        style = MaterialTheme.typography.bodySmall
+                        style = IenTheme.typography.body2
                     )
                 }
             }
 
             // Authentication Status Card
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("Current Session Info", style = MaterialTheme.typography.titleSmall)
+                    IenText("Current Session Info", style = IenTheme.typography.title3)
                     if (user != null) {
-                        Text("UID: ${user.uid}", style = MaterialTheme.typography.bodyMedium)
-                        Text("Email: ${user.email ?: "N/A"}", style = MaterialTheme.typography.bodyMedium)
-                        Text("Anonymous: ${user.isAnonymous}", style = MaterialTheme.typography.bodyMedium)
+                        IenText("UID: ${user.uid}", style = IenTheme.typography.body1)
+                        IenText("Email: ${user.email ?: "N/A"}", style = IenTheme.typography.body1)
+                        IenText("Anonymous: ${user.isAnonymous}", style = IenTheme.typography.body1)
                         
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Button(
+                            IenButton(
                                 onClick = {
                                     scope.launch {
                                         try {
@@ -120,10 +136,10 @@ public fun AuthScreen(onBack: () -> Unit) {
                                 },
                                 modifier = Modifier.weight(1f)
                             ) {
-                                Text("Get ID Token")
+                                IenText("Get ID Token")
                             }
 
-                            Button(
+                            IenButton(
                                 onClick = {
                                     scope.launch {
                                         try {
@@ -138,44 +154,46 @@ public fun AuthScreen(onBack: () -> Unit) {
                                         }
                                     }
                                 },
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                                
                                 modifier = Modifier.weight(1f)
                             ) {
-                                Text("Delete User")
+                                IenText("Delete User")
                             }
                         }
                     } else {
-                        Text("Signed Out / No Active Session", style = MaterialTheme.typography.bodyMedium, color = errorColor)
+                        IenText("Signed Out / No Active Session", style = IenTheme.typography.body1, color = errorColor)
                     }
                 }
             }
 
             // Email & Password Card
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("Email & Password Authentication", style = MaterialTheme.typography.titleSmall)
-                    OutlinedTextField(
+                    IenText("Email & Password Authentication", style = IenTheme.typography.title3)
+                    IenTextField(
                         value = email,
                         onValueChange = { email = it },
-                        label = { Text("Email Address") },
+                        label = "Email Address",
+                        labelOption = IenTextFieldLabelOption.Sustain,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    OutlinedTextField(
+                    IenTextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = { Text("Password") },
+                        label = "Password",
+                        labelOption = IenTextFieldLabelOption.Sustain,
                         modifier = Modifier.fillMaxWidth()
                     )
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Button(
+                        IenButton(
                             onClick = {
                                 scope.launch {
                                     try {
@@ -191,9 +209,9 @@ public fun AuthScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Sign In")
+                            IenText("Sign In")
                         }
-                        Button(
+                        IenButton(
                             onClick = {
                                 scope.launch {
                                     try {
@@ -209,55 +227,59 @@ public fun AuthScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Register")
+                            IenText("Register")
                         }
                     }
                 }
             }
 
             // Credential & Social/OAuth Authentication Card
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("Social & Custom Credential Sign In", style = MaterialTheme.typography.titleSmall)
+                    IenText("Social & Custom Credential Sign In", style = IenTheme.typography.title3)
                     
-                    OutlinedTextField(
+                    IenTextField(
                         value = tokenField,
                         onValueChange = { tokenField = it },
-                        label = { Text("General Token (GitHub)") },
+                        label = "General Token (GitHub)",
+                        labelOption = IenTextFieldLabelOption.Sustain,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    OutlinedTextField(
+                    IenTextField(
                         value = idTokenField,
                         onValueChange = { idTokenField = it },
-                        label = { Text("ID Token (Google / Apple)") },
+                        label = "ID Token (Google / Apple)",
+                        labelOption = IenTextFieldLabelOption.Sustain,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    OutlinedTextField(
+                    IenTextField(
                         value = accessTokenField,
                         onValueChange = { accessTokenField = it },
-                        label = { Text("Access Token (Google / Custom)") },
+                        label = "Access Token (Google / Custom)",
+                        labelOption = IenTextFieldLabelOption.Sustain,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    OutlinedTextField(
+                    IenTextField(
                         value = rawNonceField,
                         onValueChange = { rawNonceField = it },
-                        label = { Text("Raw Nonce (Apple / OIDC)") },
+                        label = "Raw Nonce (Apple / OIDC)",
+                        labelOption = IenTextFieldLabelOption.Sustain,
                         modifier = Modifier.fillMaxWidth()
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text("Select Provider to Sign In", style = MaterialTheme.typography.bodyMedium, color = primaryColor)
+                    IenText("Select Provider to Sign In", style = IenTheme.typography.body1, color = primaryColor)
 
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Button(
+                        IenButton(
                             onClick = {
                                 scope.launch {
                                     try {
@@ -277,10 +299,10 @@ public fun AuthScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Google")
+                            IenText("Google")
                         }
 
-                        Button(
+                        IenButton(
                             onClick = {
                                 scope.launch {
                                     try {
@@ -297,10 +319,10 @@ public fun AuthScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("GitHub")
+                            IenText("GitHub")
                         }
 
-                        Button(
+                        IenButton(
                             onClick = {
                                 scope.launch {
                                     try {
@@ -322,21 +344,22 @@ public fun AuthScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Apple")
+                            IenText("Apple")
                         }
                     }
 
-                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                    Text("Custom OAuth Provider", style = MaterialTheme.typography.bodyMedium, color = primaryColor)
+                    IenDivider(modifier = Modifier.padding(vertical = 8.dp))
+                    IenText("Custom OAuth Provider", style = IenTheme.typography.body1, color = primaryColor)
 
-                    OutlinedTextField(
+                    IenTextField(
                         value = providerId,
                         onValueChange = { providerId = it },
-                        label = { Text("Custom Provider ID (e.g. microsoft.com)") },
+                        label = "Custom Provider ID (e.g. microsoft.com)",
+                        labelOption = IenTextFieldLabelOption.Sustain,
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    Button(
+                    IenButton(
                         onClick = {
                             scope.launch {
                                 try {
@@ -358,25 +381,25 @@ public fun AuthScreen(onBack: () -> Unit) {
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Sign In with Custom OAuth")
+                        IenText("Sign In with Custom OAuth")
                     }
                 }
             }
 
             // Anonymous & Sign Out Actions Card
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("Quick Access & Session Control", style = MaterialTheme.typography.titleSmall)
+                    IenText("Quick Access & Session Control", style = IenTheme.typography.title3)
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Button(
+                        IenButton(
                             onClick = {
                                 scope.launch {
                                     try {
@@ -392,34 +415,34 @@ public fun AuthScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Anonymous Sign In")
+                            IenText("Anonymous Sign In")
                         }
-                        Button(
+                        IenButton(
                             onClick = {
                                 auth.signOut()
                                 idTokenText = ""
                                 statusText = "Signed out successfully."
                                 statusColor = primaryColor
                             },
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                            
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Sign Out")
+                            IenText("Sign Out")
                         }
                     }
                 }
             }
 
             if (idTokenText.isNotEmpty()) {
-                Card(
+                IenSurface(color = IenTheme.colors.surfaceVariant, 
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Session ID Token", style = MaterialTheme.typography.titleSmall)
+                        IenText("Session ID Token", style = IenTheme.typography.title3)
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(
+                        IenText(
                             text = idTokenText,
-                            style = MaterialTheme.typography.bodySmall
+                            style = IenTheme.typography.body2
                         )
                     }
                 }
@@ -427,10 +450,10 @@ public fun AuthScreen(onBack: () -> Unit) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
+            IenText(
                 text = "Status: $statusText",
                 color = statusColor,
-                style = MaterialTheme.typography.bodyLarge,
+                style = IenTheme.typography.body1,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }

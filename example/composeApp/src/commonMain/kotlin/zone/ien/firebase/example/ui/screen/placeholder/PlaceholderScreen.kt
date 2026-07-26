@@ -1,4 +1,25 @@
 package zone.ien.firebase.example.ui.screen.placeholder
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,19 +30,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kyant.capsule.ContinuousRoundedRectangle
 
 @Composable
 fun PlaceholderScreen(
@@ -29,26 +42,16 @@ fun PlaceholderScreen(
     description: String,
     onBack: () -> Unit
 ) {
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
+            IenTopAppBar(
 
-                navigationIcon = {
-                    IconButton(
-                        onClick = onBack
-                    ) {
-                        Text(
-                            text = "←",
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = MaterialTheme.colorScheme.onBackground,
-                        )
-                    }
-                },
+                navigationIcon = { IenBackButton(onClick = onBack) },
                 title = {
-                    Text(
+                    IenText(
                         text = title,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onBackground
+                        style = IenTheme.typography.title1,
+                        color = IenTheme.colors.textPrimary
                     )
                 }
             )
@@ -64,23 +67,21 @@ fun PlaceholderScreen(
         ) {
             Spacer(modifier = Modifier.height(24.dp))
 
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
+                
+                shape = ContinuousRoundedRectangle(16.dp)) {
                 Column(modifier = Modifier.padding(24.dp)) {
-                    Text(
+                    IenText(
                         text = "Placeholder Screen",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary
+                        style = IenTheme.typography.title2,
+                        color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(12.dp))
-                    Text(
+                    IenText(
                         text = description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                        style = IenTheme.typography.body1,
+                        color = IenTheme.colors.textPrimary.copy(alpha = 0.8f)
                     )
                 }
             }

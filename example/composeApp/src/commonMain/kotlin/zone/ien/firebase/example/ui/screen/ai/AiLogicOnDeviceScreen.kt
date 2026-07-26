@@ -1,4 +1,25 @@
 package zone.ien.firebase.example.ui.screen.ai
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,21 +35,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,8 +56,9 @@ import zone.ien.firebase.ai.OnDeviceConfig
 import zone.ien.firebase.ai.ai
 import zone.ien.firebase.ai.generativeModel
 import zone.ien.firebase.example.util.isIos
+import com.kyant.capsule.ContinuousRoundedRectangle
 
-@OptIn(ExperimentalMaterial3Api::class, zone.ien.firebase.InternalFirebaseApi::class)
+@OptIn(zone.ien.firebase.InternalFirebaseApi::class)
 @Composable
 fun AiLogicOnDeviceScreen(
     onNavigateBack: () -> Unit
@@ -72,15 +80,11 @@ fun AiLogicOnDeviceScreen(
         consoleLogs += "${message}\n"
     }
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("AI On-Device (Hybrid)") },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Text("←")
-                    }
-                }
+            IenTopAppBar(
+                title = { IenText("AI On-Device (Hybrid)") },
+                navigationIcon = { IenBackButton(onClick = onNavigateBack) }
             )
         }
     ) { paddingValues ->
@@ -96,54 +100,50 @@ fun AiLogicOnDeviceScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f))
+                        .clip(ContinuousRoundedRectangle(8.dp))
+                        .background(IenTheme.colors.brandWeak)
                         .padding(12.dp)
                 ) {
-                    Text(
+                    IenText(
                         text = "ℹ️ iOS cinterop Bridge Notice",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary
+                        style = IenTheme.typography.title2,
+                        color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(
+                    IenText(
                         text = "Firebase AI On-Device iOS SDK is Swift-only and cannot be linked directly into KMP via cinterop. This KMP wrapper runs in memory-only mode on iOS (acting as a hybrid simulation engine). To run live on-device inference utilizing Apple Intelligence, integrate the native Swift SDK inside your native iOS target codebase.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        style = IenTheme.typography.body2,
+                        color = IenTheme.colors.brand
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
             // Configuration Card
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                )
-            ) {
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
+                modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Text(
+                    IenText(
                         text = "Hybrid Settings",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = if (isSupported) MaterialTheme.colorScheme.onSurfaceVariant else Color.Gray
+                        style = IenTheme.typography.title2,
+                        color = if (isSupported) IenTheme.colors.textSecondary else Color.Gray
                     )
 
-                    OutlinedTextField(
+                    IenTextField(
                         value = modelName,
-                        enabled = isSupported,
+                        state = IenTextFieldState(enabled = isSupported),
                         onValueChange = { modelName = it },
-                        label = { Text("Fallback Cloud Model ID") },
+                        label = "Fallback Cloud Model ID",
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    Text(
+                    IenText(
                         text = "Inference Mode",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = if (isSupported) MaterialTheme.colorScheme.onSurfaceVariant else Color.Gray
+                        style = IenTheme.typography.body1,
+                        color = if (isSupported) IenTheme.colors.textSecondary else Color.Gray
                     )
 
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -156,15 +156,11 @@ fun AiLogicOnDeviceScreen(
                                     }
                                     .padding(vertical = 4.dp)
                             ) {
-                                RadioButton(
-                                    selected = inferenceMode == mode,
-                                    enabled = isSupported,
-                                    onClick = null
-                                )
+                                IenDotCheckbox(checked = inferenceMode == mode, onCheckedChange = { }) 
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(
+                                IenText(
                                     text = mode.name,
-                                    color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray
+                                    color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray
                                 )
                             }
                         }
@@ -173,29 +169,29 @@ fun AiLogicOnDeviceScreen(
             }
 
             // Prompt Input Card
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Text(
+                    IenText(
                         text = "Prompt Input",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = if (isSupported) MaterialTheme.colorScheme.onSurface else Color.Gray
+                        style = IenTheme.typography.title2,
+                        color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray
                     )
 
-                    OutlinedTextField(
+                    IenTextField(
                         value = prompt,
-                        enabled = isSupported,
+                        state = IenTextFieldState(enabled = isSupported),
                         onValueChange = { prompt = it },
-                        label = { Text("Prompt Text") },
+                        label = "Prompt Text",
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 3
                     )
 
-                    Button(
+                    IenButton(
                         onClick = {
                             coroutineScope.launch {
                                 try {
@@ -222,41 +218,37 @@ fun AiLogicOnDeviceScreen(
                                 }
                             }
                         },
-                        enabled = isSupported && !isLoading,
+                        state = IenButtonState(enabled = isSupported && !isLoading),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         if (isLoading) {
-                            CircularProgressIndicator(
+                            IenCircularProgressIndicator(
                                 modifier = Modifier.size(24.dp),
-                                color = MaterialTheme.colorScheme.onPrimary,
+                                color = IenTheme.colors.textPrimary,
                                 strokeWidth = 2.dp
                             )
                         } else {
-                            Text("Run Inference")
+                            IenText("Run Inference")
                         }
                     }
                 }
             }
 
             // Console Logs Card
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
-            ) {
+                    .height(200.dp)) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(12.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    Text(
+                    IenText(
                         text = consoleLogs,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        style = IenTheme.typography.body2,
+                        color = IenTheme.colors.textSecondary
                     )
                 }
             }

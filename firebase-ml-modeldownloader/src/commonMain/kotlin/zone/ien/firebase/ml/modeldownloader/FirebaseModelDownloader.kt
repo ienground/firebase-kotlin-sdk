@@ -1,5 +1,6 @@
 package zone.ien.firebase.ml.modeldownloader
 
+import zone.ien.firebase.Firebase
 import zone.ien.firebase.FirebaseApp
 
 public expect class FirebaseModelDownloader {
@@ -18,3 +19,9 @@ public expect class FirebaseModelDownloader {
         public fun getInstance(app: FirebaseApp): FirebaseModelDownloader
     }
 }
+
+public val Firebase.modelDownloader: FirebaseModelDownloader
+    get() = FirebaseModelDownloader.instance
+
+public fun Firebase.modelDownloader(app: FirebaseApp): FirebaseModelDownloader =
+    FirebaseModelDownloader.getInstance(app)

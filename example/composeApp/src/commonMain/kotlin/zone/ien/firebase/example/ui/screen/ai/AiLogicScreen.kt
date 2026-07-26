@@ -1,4 +1,25 @@
 package zone.ien.firebase.example.ui.screen.ai
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,19 +32,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,8 +50,8 @@ import kotlinx.coroutines.launch
 import zone.ien.firebase.FirebaseApp
 import zone.ien.firebase.ai.ai
 import zone.ien.firebase.example.util.isIos
+import com.kyant.capsule.ContinuousRoundedRectangle
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AiLogicScreen(
     onNavigateBack: () -> Unit
@@ -67,15 +76,11 @@ fun AiLogicScreen(
         consoleLogs += "${message}\n"
     }
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Firebase AI Logic") },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Text("←")
-                    }
-                }
+            IenTopAppBar(
+                title = { IenText("Firebase AI Logic") },
+                navigationIcon = { IenBackButton(onClick = onNavigateBack) }
             )
         }
     ) { paddingValues ->
@@ -91,56 +96,52 @@ fun AiLogicScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f))
+                        .clip(ContinuousRoundedRectangle(8.dp))
+                        .background(IenTheme.colors.brandWeak)
                         .padding(12.dp)
                 ) {
-                    Text(
+                    IenText(
                         text = "ℹ️ iOS cinterop Bridge Notice",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary
+                        style = IenTheme.typography.title2,
+                        color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(
+                    IenText(
                         text = "Firebase AI Logic iOS SDK is Swift-only and cannot be linked directly into KMP via cinterop. This KMP wrapper runs in memory-only mode on iOS (acting as a model simulation engine). To connect to live Vertex AI backend services, integrate the native Swift SDK inside your native iOS target codebase.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        style = IenTheme.typography.body2,
+                        color = IenTheme.colors.brand
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
             // Configuration Card
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                )
-            ) {
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
+                modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Text(
+                    IenText(
                         text = "Model Settings",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = if (isSupported) MaterialTheme.colorScheme.onSurfaceVariant else Color.Gray
+                        style = IenTheme.typography.title2,
+                        color = if (isSupported) IenTheme.colors.textSecondary else Color.Gray
                     )
 
-                    OutlinedTextField(
+                    IenTextField(
                         value = modelName,
-                        enabled = isSupported,
+                        state = IenTextFieldState(enabled = isSupported),
                         onValueChange = { modelName = it },
-                        label = { Text("Model Name") },
+                        label = "Model Name",
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
 
-                    OutlinedTextField(
+                    IenTextField(
                         value = prompt,
-                        enabled = isSupported,
+                        state = IenTextFieldState(enabled = isSupported),
                         onValueChange = { prompt = it },
-                        label = { Text("Prompt") },
+                        label = "Prompt",
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 3
                     )
@@ -148,7 +149,7 @@ fun AiLogicScreen(
             }
 
             // Action Button
-            Button(
+            IenButton(
                 onClick = {
                     coroutineScope.launch {
                         isLoading = true
@@ -178,31 +179,31 @@ fun AiLogicScreen(
                         }
                     }
                 },
-                enabled = isSupported && !isLoading && modelName.isNotEmpty() && prompt.isNotEmpty(),
+                state = IenButtonState(enabled = isSupported && !isLoading && modelName.isNotEmpty() && prompt.isNotEmpty()),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 if (isLoading) {
-                    CircularProgressIndicator(
+                    IenCircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = IenTheme.colors.textPrimary,
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Text("Generate Content")
+                    IenText("Generate Content")
                 }
             }
 
             // Output Console Card
-            Text(
+            IenText(
                 text = "Console Output",
-                style = MaterialTheme.typography.titleMedium
+                style = IenTheme.typography.title2
             )
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(250.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(ContinuousRoundedRectangle(8.dp))
                     .background(Color.Black)
                     .padding(12.dp)
             ) {
@@ -211,12 +212,11 @@ fun AiLogicScreen(
                         .fillMaxSize()
                         .verticalScroll(consoleScrollState)
                 ) {
-                    Text(
+                    IenText(
                         text = consoleLogs,
                         color = Color.Green,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontFamily = FontFamily.Monospace
-                        )
+                        style = IenTheme.typography.body2.copy(
+                            )
                     )
                 }
             }

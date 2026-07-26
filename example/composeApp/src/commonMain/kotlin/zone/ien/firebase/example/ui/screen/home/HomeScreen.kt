@@ -1,4 +1,25 @@
 package zone.ien.firebase.example.ui.screen.home
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,16 +38,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,8 +62,8 @@ import zone.ien.firebase.example.icon.Icons
 import zone.ien.firebase.example.ui.navigation.ScreenRoute
 import zone.ien.firebase.example.util.isIos
 import zone.ien.firebase.example.util.libraryVersion
+import com.kyant.capsule.ContinuousRoundedRectangle
 
-@OptIn(ExperimentalMaterial3Api::class)
 @PreviewApi
 @Composable
 public fun HomeScreen(
@@ -212,14 +223,14 @@ public fun HomeScreen(
         )
     )
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
+            IenTopAppBar(
                 title = {
-                    Text(
+                    IenText(
                         text = "Firebase KMP Examples",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onBackground
+                        style = IenTheme.typography.title1,
+                        color = IenTheme.colors.textPrimary
                     )
                 }
             )
@@ -239,14 +250,12 @@ public fun HomeScreen(
             ) {
                 // 1. Library Info Card spanning across 2 columns
                 item(span = { GridItemSpan(2) }) {
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainer
-                        ),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    IenSurface(color = IenTheme.colors.surfaceVariant, 
+                        
+                        
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(16.dp))
+                            .clip(ContinuousRoundedRectangle(16.dp))
                     ) {
                         Column(
                             modifier = Modifier
@@ -260,31 +269,35 @@ public fun HomeScreen(
                                 modifier = Modifier.size(100.dp)
                             )
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text(
+                            IenText(
                                 text = "Firebase Kotlin SDK",
-                                style = MaterialTheme.typography.titleLarge,
+                                style = IenTheme.typography.title1,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = IenTheme.colors.textPrimary
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-                             Text(
+                             IenText(
                                 text = "v$libraryVersion",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                style = IenTheme.typography.body1,
+                                color = IenTheme.colors.textPrimary.copy(alpha = 0.6f)
                             )
                             Spacer(modifier = Modifier.height(16.dp))
-                            Button(
+                            IenButton(
                                 onClick = {
                                     uriHandler.openUri("https://github.com/ienground/firebase-kotlin-sdk")
                                 }
                             ) {
-                                Icon(
-                                    imageVector = Icons.GithubFill,
-                                    contentDescription = "Github Logo",
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text("Github")
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    IenIcon(
+                                        imageVector = Icons.GithubFill,
+                                        contentDescription = "Github Logo",
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    IenText("Github")
+                                }
                             }
                         }
                     }
@@ -292,7 +305,7 @@ public fun HomeScreen(
 
                 // 2. Grid Items
                 items(items) { item ->
-                    DemoCard(
+                    DemoIenSurface(
                         item = item,
                         onClick = {
                             AppStateManager.handleFeatureNavigation(item, onNavigate)
@@ -305,20 +318,17 @@ public fun HomeScreen(
 }
 
 @Composable
-public fun DemoCard(
+public fun DemoIenSurface(
     item: HomeFeatureItem,
     onClick: () -> Unit
 ) {
-    Card(
-        onClick = onClick,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+    IenSurface(
+        color = IenTheme.colors.surfaceVariant,
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
-            .clip(RoundedCornerShape(16.dp))
+            .clip(ContinuousRoundedRectangle(16.dp))
+            .clickable { onClick() }
     ) {
         Box(
             modifier = Modifier
@@ -329,7 +339,7 @@ public fun DemoCard(
             Box(
                 modifier = Modifier
                     .size(14.dp)
-                    .clip(RoundedCornerShape(7.dp))
+                    .clip(ContinuousRoundedRectangle(7.dp))
                     .background(item.indicatorColor)
                     .align(Alignment.TopStart)
             )
@@ -347,11 +357,11 @@ public fun DemoCard(
                             contentDescription = if (item.supportsAndroid) "Android supported" else "Android not supported"
                         }
                 ) {
-                    Icon(
+                    IenIcon(
                         imageVector = Icons.AndroidFill,
                         contentDescription = "Android supported",
                         modifier = Modifier.size(18.dp),
-                        tint = if (item.supportsAndroid) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
+                        tint = if (item.supportsAndroid) IenTheme.colors.brand else IenTheme.colors.textPrimary.copy(alpha = 0.2f)
                     )
                 }
 
@@ -371,20 +381,20 @@ public fun DemoCard(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
-                        Icon(
+                        IenIcon(
                             imageVector = Icons.AppleFill,
                             contentDescription = "iOS supported",
                             modifier = Modifier.size(18.dp),
                             tint = if (item.supportsIos) {
-                                if (item.isIosSimulated) Color(0xFFFFB300) else MaterialTheme.colorScheme.primary
+                                if (item.isIosSimulated) Color(0xFFFFB300) else IenTheme.colors.brand
                             } else {
-                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
+                                IenTheme.colors.textPrimary.copy(alpha = 0.2f)
                             }
                         )
                         if (item.supportsIos && item.isIosSimulated) {
-                            Text(
+                            IenText(
                                 text = "Sim",
-                                style = MaterialTheme.typography.labelSmall,
+                                style = IenTheme.typography.label2,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFFFFB300)
                             )
@@ -397,16 +407,16 @@ public fun DemoCard(
             Column(
                 modifier = Modifier.align(Alignment.BottomStart)
             ) {
-                Text(
+                IenText(
                     text = item.title,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    style = IenTheme.typography.title2,
+                    color = IenTheme.colors.textPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(
+                IenText(
                     text = item.subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    style = IenTheme.typography.body2,
+                    color = IenTheme.colors.textPrimary.copy(alpha = 0.6f)
                 )
             }
         }

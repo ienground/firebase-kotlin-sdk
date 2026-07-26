@@ -1,43 +1,41 @@
 package zone.ien.firebase.abt
 
-actual class AbtException(message: String?, cause: Throwable?) : Exception(message, cause) {
-    constructor() : this(null, null)
-    constructor(message: String?) : this(message, null)
+public actual class AbtException actual constructor(message: String?, cause: Throwable?) : Exception(message, cause) {
+    public actual constructor(message: String?) : this(message, null)
 }
 
 public actual class AbtExperimentInfo internal actual constructor() {
-    private var mockExperimentId: String = ""
-    private var mockVariantId: String = ""
+    private var _experimentId: String = ""
+    private var _variantId: String = ""
 
-    public constructor(experimentId: String, variantId: String) : this() {
-        this.mockExperimentId = experimentId
-        this.mockVariantId = variantId
+    internal constructor(experimentId: String, variantId: String) : this() {
+        _experimentId = experimentId
+        _variantId = variantId
     }
 
-    public actual val experimentId: String
-        get() = mockExperimentId
-
-    public actual val variantId: String
-        get() = mockVariantId
+    public actual val experimentId: String get() = _experimentId
+    public actual val variantId: String get() = _variantId
 }
 
 public actual class FirebaseABTesting internal actual constructor() {
-    private val memoryExperiments = mutableListOf<AbtExperimentInfo>()
+    private val experiments = mutableListOf<AbtExperimentInfo>()
 
     public actual fun replaceAllExperiments(replacementExperiments: List<Map<String, String>>, originService: String) {
-        memoryExperiments.clear()
+        experiments.clear()
         replacementExperiments.forEach { map ->
-            val expId = map["experimentId"] ?: ""
-            val varId = map["variantId"] ?: ""
-            memoryExperiments.add(AbtExperimentInfo(expId, varId))
+            val info = AbtExperimentInfo(
+                experimentId = map["experimentId"] ?: "",
+                variantId = map["variantId"] ?: ""
+            )
+            experiments.add(info)
         }
     }
 
     public actual fun removeAllExperiments(originService: String) {
-        memoryExperiments.clear()
+        experiments.clear()
     }
 
     public actual fun getAllExperiments(originService: String): List<AbtExperimentInfo> {
-        return memoryExperiments.toList()
+        return experiments.toList()
     }
 }

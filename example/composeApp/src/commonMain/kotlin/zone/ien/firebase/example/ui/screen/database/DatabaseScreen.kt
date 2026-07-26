@@ -1,16 +1,35 @@
 package zone.ien.firebase.example.ui.screen.database
+import zone.ien.utils.ui.foundation.IenTheme
+import zone.ien.utils.ui.interactive.IenButton
+import zone.ien.utils.ui.interactive.IenButtonState
+import zone.ien.utils.ui.interactive.IenIconButton
+import zone.ien.utils.ui.interactive.IenTextField
+import zone.ien.utils.ui.interactive.IenTextFieldState
+import zone.ien.utils.ui.interactive.IenSwitch
+import zone.ien.utils.ui.interactive.IenCircleCheckbox
+import zone.ien.utils.ui.interactive.IenDotCheckbox
+import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
+import zone.ien.utils.ui.primitives.IenText
+import zone.ien.utils.ui.primitives.IenSurface
+import zone.ien.utils.ui.primitives.IenDivider
+import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.ui.screen.IenScaffold
+import zone.ien.utils.ui.screen.IenTopAppBar
+import zone.ien.utils.ui.screen.IenBackButton
+import zone.ien.utils.ui.wrapper.IenRootWrapper
+import zone.ien.utils.ui.dialog.IenConfirmDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import zone.ien.firebase.example.DatabaseTest
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatabaseScreen(onBack: () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
@@ -18,15 +37,11 @@ fun DatabaseScreen(onBack: () -> Unit) {
     var logs by remember { mutableStateOf("Ready to run Database operations.") }
     var isRunning by remember { mutableStateOf(false) }
 
-    Scaffold(
+    IenScaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Realtime Database Demo") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Text("←")
-                    }
-                }
+            IenTopAppBar(
+                title = { IenText("Realtime Database Demo") },
+                navigationIcon = { IenBackButton(onClick = onBack) }
             )
         }
     ) { innerPadding ->
@@ -38,13 +53,13 @@ fun DatabaseScreen(onBack: () -> Unit) {
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
+            IenText(
                 text = "Perform key write, sub-child auto-key push, remove, and child update operations via common Database API.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                style = IenTheme.typography.body1,
+                color = IenTheme.colors.textSecondary
             )
 
-            Button(
+            IenButton(
                 onClick = {
                     coroutineScope.launch {
                         isRunning = true
@@ -59,19 +74,19 @@ fun DatabaseScreen(onBack: () -> Unit) {
                         }
                     }
                 },
-                enabled = !isRunning,
+                state = IenButtonState(enabled = !isRunning),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(if (isRunning) "Running Operations..." else "Run Database Test")
+                IenText(if (isRunning) "Running Operations..." else "Run Database Test")
             }
 
-            Card(
+            IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth().heightIn(min = 150.dp)
             ) {
-                Text(
+                IenText(
                     text = logs,
                     modifier = Modifier.padding(16.dp),
-                    style = MaterialTheme.typography.bodySmall
+                    style = IenTheme.typography.body2
                 )
             }
         }

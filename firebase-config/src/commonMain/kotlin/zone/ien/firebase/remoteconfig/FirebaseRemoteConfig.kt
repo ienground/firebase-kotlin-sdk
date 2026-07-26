@@ -1,6 +1,7 @@
 package zone.ien.firebase.remoteconfig
 
 import kotlinx.coroutines.flow.Flow
+import zone.ien.firebase.Firebase
 import zone.ien.firebase.FirebaseApp
 
 public expect class FirebaseRemoteConfig {
@@ -25,3 +26,9 @@ public expect class FirebaseRemoteConfig {
 }
 
 public expect val FirebaseRemoteConfig.configUpdates: Flow<ConfigUpdate>
+
+public val Firebase.remoteConfig: FirebaseRemoteConfig
+    get() = FirebaseRemoteConfig.instance
+
+public fun Firebase.remoteConfig(app: FirebaseApp): FirebaseRemoteConfig =
+    FirebaseRemoteConfig.getInstance(app)
