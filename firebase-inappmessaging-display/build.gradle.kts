@@ -44,6 +44,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(project(":firebase-common"))
             api(project(":firebase-inappmessaging"))
         }
 

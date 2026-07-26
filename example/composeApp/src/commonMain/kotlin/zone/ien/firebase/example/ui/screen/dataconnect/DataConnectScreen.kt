@@ -36,7 +36,7 @@ import zone.ien.firebase.dataconnect.ConnectorConfig
 import zone.ien.firebase.dataconnect.FirebaseDataConnect
 import zone.ien.firebase.example.ui.theme.AppTheme
 import zone.ien.firebase.example.util.isIos
-import zone.ien.utils.ui.wrapper.M3RootWrapper
+import zone.ien.utils.ui.wrapper.IenRootWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,7 +71,7 @@ fun DataConnectScreen(
         logs.add(msg)
     }
 
-    M3RootWrapper {
+    IenRootWrapper {
         AppTheme {
             Scaffold(
                 topBar = {

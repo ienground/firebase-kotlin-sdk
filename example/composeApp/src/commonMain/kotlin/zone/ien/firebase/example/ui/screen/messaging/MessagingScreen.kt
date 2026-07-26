@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 import zone.ien.firebase.example.ui.theme.AppTheme
 import zone.ien.firebase.messaging.FirebaseMessaging
 import zone.ien.firebase.messaging.directboot.FirebaseMessagingDirectBoot
-import zone.ien.utils.ui.wrapper.M3RootWrapper
+import zone.ien.utils.ui.wrapper.IenRootWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +49,7 @@ fun MessagingScreen(
         logs.add(msg)
     }
 
-    M3RootWrapper {
+    IenRootWrapper {
         AppTheme {
             Scaffold(
                 topBar = {

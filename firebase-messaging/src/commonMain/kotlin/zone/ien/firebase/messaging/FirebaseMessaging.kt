@@ -1,5 +1,6 @@
 package zone.ien.firebase.messaging
 
+import zone.ien.firebase.Firebase
 import zone.ien.firebase.FirebaseApp
 
 public expect class FirebaseMessaging {
@@ -26,3 +27,9 @@ public class RemoteMessage(
     public val data: Map<String, String>,
     public val notification: Notification?
 )
+
+public val Firebase.messaging: FirebaseMessaging
+    get() = FirebaseMessaging.getInstance()
+
+public fun Firebase.messaging(app: FirebaseApp): FirebaseMessaging =
+    FirebaseMessaging.getInstance(app)

@@ -35,7 +35,7 @@ import zone.ien.firebase.encoders.annotations.Encodable
 import zone.ien.firebase.encoders.json.JsonDataEncoderBuilder
 import zone.ien.firebase.encoders.reflective.ReflectiveObjectEncoder
 import zone.ien.firebase.example.ui.theme.AppTheme
-import zone.ien.utils.ui.wrapper.M3RootWrapper
+import zone.ien.utils.ui.wrapper.IenRootWrapper
 
 // Mock Annotation to verify FieldDescriptor property generic constraint
 annotation class ProtoDescriptor(val tag: Int)
@@ -66,7 +66,7 @@ fun EncodersScreen(
         }
     }
 
-    M3RootWrapper {
+    IenRootWrapper {
         AppTheme {
             Scaffold(
                 topBar = {

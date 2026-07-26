@@ -40,7 +40,7 @@ import zone.ien.firebase.inappmessaging.display.InAppMessageMetadata
 import zone.ien.firebase.inappmessaging.display.InAppMessagingDisplayListener
 import zone.ien.firebase.inappmessaging.display.InAppMessageDismissType
 import zone.ien.firebase.inappmessaging.display.InAppMessagingDisplayCallbacks
-import zone.ien.utils.ui.wrapper.M3RootWrapper
+import zone.ien.utils.ui.wrapper.IenRootWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,7 +73,7 @@ fun InAppMessagingScreen(
         logs.add(msg)
     }
 
-    M3RootWrapper {
+    IenRootWrapper {
         AppTheme {
             Scaffold(
                 topBar = {

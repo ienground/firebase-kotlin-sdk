@@ -1,6 +1,7 @@
 package zone.ien.firebase.auth
 
 import kotlinx.coroutines.flow.Flow
+import zone.ien.firebase.Firebase
 import zone.ien.firebase.FirebaseApp
 
 public expect class FirebaseAuth private constructor() {
@@ -21,3 +22,9 @@ public expect class FirebaseAuth private constructor() {
         public fun getInstance(app: FirebaseApp): FirebaseAuth
     }
 }
+
+public val Firebase.auth: FirebaseAuth
+    get() = FirebaseAuth.getInstance()
+
+public fun Firebase.auth(app: FirebaseApp): FirebaseAuth =
+    FirebaseAuth.getInstance(app)

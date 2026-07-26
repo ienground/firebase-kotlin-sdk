@@ -454,3 +454,8 @@ To convert any pending module (`firebase-xxx`) into KMP:
 ### 2026-07-25: `firebase-ios-sdk` 12.14.0 Version Sync
 * **Firebase iOS SDK 12.14.0 Sync**: Updated core Firebase Apple SDK version from `12.15.0` to `12.14.0` across Version Catalog (`gradle/libs.versions.toml`), main `Package.swift`, subpackage `Package.swift` files, SPM resolved lockfiles, and documentation (`README.md`, `README_ko.md`).
 * **SwiftPM Dependencies Resolved**: Executed `swift package resolve` to verify resolution of `12.14.0` dependencies.
+
+### 2026-07-26: `Firebase` Singleton & `Firebase.{service}` Extension Properties Implementation
+* **Common Entrypoint Creation**: Added `public object Firebase` in `firebase-common` with `Firebase.app` property and `Firebase.initialize(context)` helper function.
+* **Service Extension Properties**: Added `Firebase.<service>` extension properties and functions across all feature SDK modules (`storage`, `auth`, `firestore`, `database`, `functions`, `messaging`, `remoteConfig`, `crashlytics`, `crashlyticsNdk`, `performance`, `appDistribution`, `installations`, `dataConnect`, `modelDownloader`, `inAppMessaging`, `inAppMessagingDisplay`, `messagingDirectBoot`, `appCheck`, `ai`).
+* **Common Test Verification**: Added unit test `FirebaseTest` in `firebase-common` confirming `Firebase` singleton accessibility.

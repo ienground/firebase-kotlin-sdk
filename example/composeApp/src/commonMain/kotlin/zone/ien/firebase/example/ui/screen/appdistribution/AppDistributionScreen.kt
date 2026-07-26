@@ -40,7 +40,7 @@ import zone.ien.firebase.appdistribution.FirebaseAppDistribution
 import zone.ien.firebase.appdistribution.UpdateProgress
 import zone.ien.firebase.example.ui.theme.AppTheme
 import zone.ien.firebase.example.util.isIos
-import zone.ien.utils.ui.wrapper.M3RootWrapper
+import zone.ien.utils.ui.wrapper.IenRootWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,7 +76,7 @@ fun AppDistributionScreen(
         logs.add(msg)
     }
 
-    M3RootWrapper {
+    IenRootWrapper {
         AppTheme {
             Scaffold(
                 topBar = {
