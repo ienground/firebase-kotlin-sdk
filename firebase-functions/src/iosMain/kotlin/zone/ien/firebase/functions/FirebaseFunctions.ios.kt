@@ -16,6 +16,16 @@ actual class FirebaseFunctions private constructor(private val iosFunctions: FIR
         return HttpsCallableReference(iosFunctions.HTTPSCallableWithURL(nsUrl))
     }
 
+    actual fun httpsCallable(nameOrUrl: String): HttpsCallableReference =
+        if (nameOrUrl.startsWith("http://") || nameOrUrl.startsWith("https://")) {
+            getHttpsCallableFromUrl(nameOrUrl)
+        } else {
+            getHttpsCallable(nameOrUrl)
+        }
+
+    actual operator fun get(nameOrUrl: String): HttpsCallableReference =
+        httpsCallable(nameOrUrl)
+
     actual fun useEmulator(host: String, port: Int) {
         iosFunctions.useEmulatorWithHost(host, port.toLong())
     }

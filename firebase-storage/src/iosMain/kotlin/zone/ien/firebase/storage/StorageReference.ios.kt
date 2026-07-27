@@ -49,6 +49,14 @@ actual class StorageReference(private val iosReference: FIRStorageReference) {
     actual val root: StorageReference
         get() = StorageReference(iosReference.root())
 
+    actual override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is StorageReference) return false
+        return bucket == other.bucket && path == other.path
+    }
+
+    actual override fun hashCode(): Int = (bucket + path).hashCode()
+
     actual fun child(path: String): StorageReference {
         return StorageReference(iosReference.child(path))
     }
@@ -75,30 +83,32 @@ actual class StorageReference(private val iosReference: FIRStorageReference) {
         }
     }
 
-    actual fun putBytes(data: ByteArray, metadata: StorageMetadata?): UploadTask {
+    actual suspend fun putBytes(data: ByteArray, metadata: StorageMetadata?) {
         val nsData = data.toNSData()
         val iosMetadata = metadata?.toIos()
         val iosTask = iosReference.putData(nsData, metadata = iosMetadata) { _, _ -> }
-        return UploadTask(iosTask)
+        UploadTask(iosTask).await()
     }
 
-    actual fun putData(data: Data, metadata: StorageMetadata?): UploadTask {
+    actual suspend fun putData(data: Data, metadata: StorageMetadata?) {
         val iosMetadata = metadata?.toIos()
         val iosTask = iosReference.putData(data.nsData, metadata = iosMetadata) { _, _ -> }
-        return UploadTask(iosTask)
+        UploadTask(iosTask).await()
     }
-    actual fun putFile(filePath: String, metadata: StorageMetadata?): UploadTask {
+
+    actual suspend fun putFile(filePath: String, metadata: StorageMetadata?) {
         val nsUrl = NSURL.fileURLWithPath(filePath)
         val iosMetadata = metadata?.toIos()
         val iosTask = iosReference.putFile(nsUrl, metadata = iosMetadata) { _, _ -> }
-        return UploadTask(iosTask)
+        UploadTask(iosTask).await()
     }
 
-    actual fun putFile(file: File, metadata: StorageMetadata?): UploadTask {
+    actual suspend fun putFile(file: File, metadata: StorageMetadata?) {
         val iosMetadata = metadata?.toIos()
         val iosTask = iosReference.putFile(file.url, metadata = iosMetadata) { _, _ -> }
-        return UploadTask(iosTask)
+        UploadTask(iosTask).await()
     }
+
     actual suspend fun getData(maxDownloadSizeBytes: Long): ByteArray = suspendCancellableCoroutine { cont ->
         iosReference.dataWithMaxSize(maxDownloadSizeBytes) { nsData, error ->
             if (error != null) {
@@ -125,6 +135,7 @@ actual class StorageReference(private val iosReference: FIRStorageReference) {
         val iosTask = iosReference.writeToFile(file.url) { _, _ -> }
         return DownloadTask(iosTask)
     }
+
     actual suspend fun getMetadata(): StorageMetadata = suspendCancellableCoroutine { cont ->
         iosReference.metadataWithCompletion { metadata, error ->
             if (error != null) {

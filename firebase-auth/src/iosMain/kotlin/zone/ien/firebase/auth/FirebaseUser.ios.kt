@@ -148,6 +148,20 @@ public actual class FirebaseUser internal constructor(
         }
     }
 
+    public actual suspend fun reauthenticateAndRetrieveData(credential: AuthCredential): AuthResult {
+        return suspendCancellableCoroutine { continuation ->
+            iosUser.reauthenticateWithCredential(credential.iosCredential) { result, error ->
+                if (error != null) {
+                    continuation.resumeWithException(FirebaseAuthException(error.localizedDescription, null))
+                } else if (result != null) {
+                    continuation.resume(AuthResult(result))
+                } else {
+                    continuation.resumeWithException(FirebaseAuthException("AuthResult is null after reauthenticate", null))
+                }
+            }
+        }
+    }
+
     internal companion object {
         fun create(iosUser: FIRUser?): FirebaseUser? =
             iosUser?.let { FirebaseUser(it) }

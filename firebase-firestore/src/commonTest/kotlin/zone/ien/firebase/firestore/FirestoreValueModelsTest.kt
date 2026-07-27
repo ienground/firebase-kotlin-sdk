@@ -20,6 +20,30 @@ class FirestoreValueModelsTest {
     }
 
     @Test
+    fun castValue는_Number_타입_간_유연한_형변환을_지원한다() {
+        val longVal: Any = 10L
+        assertEquals(10, castValue<Int>(longVal))
+        assertEquals(10L, castValue<Long>(longVal))
+        assertEquals(10.0, castValue<Double>(longVal))
+        assertEquals(10.0f, castValue<Float>(longVal))
+
+        val doubleVal: Any = 10.5
+        assertEquals(10, castValue<Int>(doubleVal))
+        assertEquals(10.5f, castValue<Float>(doubleVal))
+    }
+
+    @Test
+    fun Timestamp는_밀리초로부터_생성할_수_있다() {
+        val tsLong = Timestamp.fromMilliseconds(1700000500L)
+        assertEquals(1700000L, tsLong.seconds)
+        assertEquals(500_000_000, tsLong.nanoseconds)
+
+        val tsDouble = Timestamp.fromMilliseconds(1700000500.0)
+        assertEquals(1700000L, tsDouble.seconds)
+        assertEquals(500_000_000, tsDouble.nanoseconds)
+    }
+
+    @Test
     fun FieldValue는_쓰기_변환에_필요한_연산값을_보존한다() {
         assertEquals(FieldValue.Operation.Delete, FieldValue.delete().operation)
         assertEquals(FieldValue.Operation.Delete, FieldValue.delete.operation)
@@ -74,3 +98,12 @@ class FirestoreValueModelsTest {
         ).forEach { it.hashCode() }
     }
 }
+
+    @Test
+    fun DocumentReference는_equals와_hashCode를_재정의한다() {
+        val equalsMethod = DocumentReference::class.members.find { it.name == "equals" }
+        val hashCodeMethod = DocumentReference::class.members.find { it.name == "hashCode" }
+
+        assertTrue(equalsMethod != null, "DocumentReference must override equals")
+        assertTrue(hashCodeMethod != null, "DocumentReference must override hashCode")
+    }

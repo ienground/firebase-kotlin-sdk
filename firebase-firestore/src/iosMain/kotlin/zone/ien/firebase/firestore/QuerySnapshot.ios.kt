@@ -8,6 +8,15 @@ import swiftPMImport.zone.ien.firebase.firebase.firestore.FIRQuerySnapshot
 
 @OptIn(ExperimentalForeignApi::class)
 actual class QuerySnapshot(private val iosSnapshot: FIRQuerySnapshot) {
+    actual val documents: List<DocumentSnapshot>
+        get() = getDocuments()
+
+    actual val documentChanges: List<DocumentChange>
+        get() = getDocumentChanges()
+
+    actual val metadata: SnapshotMetadata
+        get() = getMetadata()
+
     actual fun getDocuments(): List<DocumentSnapshot> {
         val nativeDocs = iosSnapshot.documents as List<FIRDocumentSnapshot>
         return nativeDocs.map { DocumentSnapshot(it) }

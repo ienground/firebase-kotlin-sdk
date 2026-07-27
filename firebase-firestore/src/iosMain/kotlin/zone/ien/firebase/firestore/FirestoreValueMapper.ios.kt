@@ -4,10 +4,12 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSNull
 import swiftPMImport.zone.ien.firebase.firebase.common.FIRTimestamp
 import swiftPMImport.zone.ien.firebase.firebase.firestore.FIRFieldValue
+import swiftPMImport.zone.ien.firebase.firebase.firestore.FIRDocumentReference
 
 @OptIn(ExperimentalForeignApi::class)
 internal fun Any?.toIosValue(): Any = when (this) {
     null -> NSNull()
+    is DocumentReference -> iosDocument
     is Timestamp -> FIRTimestamp(seconds = seconds, nanoseconds = nanoseconds)
     is FieldValue -> when (val operation = operation) {
         FieldValue.Operation.Delete -> FIRFieldValue.fieldValueForDelete()
@@ -38,7 +40,9 @@ internal fun Map<String, Any?>.toIosData(): Map<Any?, *> =
 @OptIn(ExperimentalForeignApi::class)
 internal fun Any?.toCommonValue(): Any? = when (this) {
     null, is NSNull -> null
+    is FIRDocumentReference -> DocumentReference(this)
     is FIRTimestamp -> Timestamp(seconds, nanoseconds)
+    is Long -> if (this in Int.MIN_VALUE.toLong()..Int.MAX_VALUE.toLong()) this.toInt() else this
     is Map<*, *> -> entries.associate { (key, value) ->
         require(key is String) { "Firestore map keys must be strings." }
         key to value.toCommonValue()

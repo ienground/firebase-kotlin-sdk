@@ -32,6 +32,16 @@ data class Timestamp(
             val nanos = ((currentMillis % 1000) * 1_000_000).toInt()
             return Timestamp(seconds, if (nanos < 0) nanos + 1_000_000_000 else nanos)
         }
+
+        fun fromMilliseconds(milliseconds: Double): Timestamp = fromMilliseconds(milliseconds.toLong())
+
+        fun fromMilliseconds(milliseconds: Long): Timestamp {
+            val seconds = milliseconds / 1000
+            val nanos = ((milliseconds % 1000) * 1_000_000).toInt()
+            val adjustedNanos = if (nanos < 0) nanos + 1_000_000_000 else nanos
+            val adjustedSeconds = if (nanos < 0) seconds - 1 else seconds
+            return Timestamp(adjustedSeconds, adjustedNanos)
+        }
     }
 }
 

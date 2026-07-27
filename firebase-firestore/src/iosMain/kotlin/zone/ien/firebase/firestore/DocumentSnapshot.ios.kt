@@ -5,6 +5,15 @@ import swiftPMImport.zone.ien.firebase.firebase.firestore.FIRDocumentSnapshot
 
 @OptIn(ExperimentalForeignApi::class)
 actual class DocumentSnapshot(private val iosSnapshot: FIRDocumentSnapshot) {
+    actual val id: String
+        get() = getId()
+
+    actual val exists: Boolean
+        get() = getExists()
+
+    actual val metadata: SnapshotMetadata
+        get() = getMetadata()
+
     actual val reference: DocumentReference
         get() = DocumentReference(iosSnapshot.reference)
 
@@ -17,12 +26,14 @@ actual class DocumentSnapshot(private val iosSnapshot: FIRDocumentSnapshot) {
         return (data as Map<String, Any?>).mapValues { (_, value) -> value.toCommonValue() }
     }
 
-    actual fun get(field: String): Any? {
-        return iosSnapshot.valueForField(field).toCommonValue()
+    @Suppress("UNCHECKED_CAST")
+    actual fun <T> get(field: String): T {
+        return iosSnapshot.valueForField(field).toCommonValue() as T
     }
 
-    actual fun get(field: FieldPath): Any? {
-        return iosSnapshot.valueForField(field.nativePath()).toCommonValue()
+    @Suppress("UNCHECKED_CAST")
+    actual fun <T> get(field: FieldPath): T {
+        return iosSnapshot.valueForField(field.nativePath()).toCommonValue() as T
     }
 
     actual fun getMetadata(): SnapshotMetadata = iosSnapshot.metadata.toCommonMetadata()
