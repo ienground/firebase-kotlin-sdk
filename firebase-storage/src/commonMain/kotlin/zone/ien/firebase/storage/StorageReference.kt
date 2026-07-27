@@ -7,15 +7,18 @@ expect class StorageReference {
     val parent: StorageReference?
     val root: StorageReference
 
+    override fun equals(other: Any?): Boolean
+    override fun hashCode(): Int
+
     fun child(path: String): StorageReference
    
     suspend fun getDownloadUrl(): String
     suspend fun delete()
 
-    fun putBytes(data: ByteArray, metadata: StorageMetadata? = null): UploadTask
-    fun putData(data: Data, metadata: StorageMetadata? = null): UploadTask
-    fun putFile(filePath: String, metadata: StorageMetadata? = null): UploadTask
-    fun putFile(file: File, metadata: StorageMetadata? = null): UploadTask
+    suspend fun putBytes(data: ByteArray, metadata: StorageMetadata? = null)
+    suspend fun putData(data: Data, metadata: StorageMetadata? = null)
+    suspend fun putFile(filePath: String, metadata: StorageMetadata? = null)
+    suspend fun putFile(file: File, metadata: StorageMetadata? = null)
 
     suspend fun getData(maxDownloadSizeBytes: Long): ByteArray
     suspend fun getBytes(maxDownloadSizeBytes: Long): ByteArray

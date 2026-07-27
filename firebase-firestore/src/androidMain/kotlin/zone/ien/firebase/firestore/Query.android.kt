@@ -12,6 +12,17 @@ actual open class Query(private val androidQuery: AndroidQuery) {
     actual val firestore: FirebaseFirestore
         get() = FirebaseFirestore(androidQuery.firestore)
 
+    actual val snapshots: Flow<QuerySnapshot>
+        get() = snapshots()
+
+    actual override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Query) return false
+        return androidQuery == other.androidQuery
+    }
+
+    actual override fun hashCode(): Int = androidQuery.hashCode()
+
     actual suspend fun get(): QuerySnapshot = get(Source.DEFAULT)
 
     actual suspend fun get(source: Source): QuerySnapshot {

@@ -17,4 +17,5 @@ public expect class FirebaseUser {
     public suspend fun updateEmail(email: String)
     public suspend fun updatePassword(password: String)
     public suspend fun reauthenticate(credential: AuthCredential)
+    public suspend fun reauthenticateAndRetrieveData(credential: AuthCredential): AuthResult
 }

@@ -20,4 +20,6 @@ actual class HttpsCallableReference(private val androidReference: AndroidHttpsCa
             throw FirebaseFunctionsException(e)
         }
     }
+
+    actual suspend operator fun invoke(data: Any?): HttpsCallableResult = call(data)
 }

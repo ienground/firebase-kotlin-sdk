@@ -18,6 +18,19 @@ actual class DocumentReference(internal val androidDocument: AndroidDocumentRefe
     actual val firestore: FirebaseFirestore
         get() = FirebaseFirestore(androidDocument.firestore)
 
+    actual val snapshots: Flow<DocumentSnapshot>
+        get() = snapshots()
+
+    actual override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is DocumentReference) return false
+        return androidDocument == other.androidDocument
+    }
+
+    actual override fun hashCode(): Int {
+        return androidDocument.hashCode()
+    }
+
     actual suspend fun set(data: Map<String, Any?>) {
         androidDocument.set(data.toAndroidData()).await()
     }
@@ -58,13 +71,17 @@ actual class DocumentReference(internal val androidDocument: AndroidDocumentRefe
         androidDocument.delete().await()
     }
 
+    actual fun collection(collectionPath: String): CollectionReference {
+        return CollectionReference(androidDocument.collection(collectionPath))
+    }
+
     actual suspend fun get(): DocumentSnapshot = get(Source.DEFAULT)
 
     actual suspend fun get(source: Source): DocumentSnapshot {
         return DocumentSnapshot(androidDocument.get(source.toAndroidSource()).await())
     }
 
-    actual fun snapshots(): Flow<DocumentSnapshot?> = snapshots(
+    actual fun snapshots(): Flow<DocumentSnapshot> = snapshots(
         includeMetadataChanges = false,
         source = ListenSource.DEFAULT
     )
@@ -72,14 +89,16 @@ actual class DocumentReference(internal val androidDocument: AndroidDocumentRefe
     actual fun snapshots(
         includeMetadataChanges: Boolean,
         source: ListenSource
-    ): Flow<DocumentSnapshot?> = callbackFlow {
+    ): Flow<DocumentSnapshot> = callbackFlow {
         val options = snapshotListenOptions(includeMetadataChanges, source)
         val listener = androidDocument.addSnapshotListener(options) { snapshot, error ->
             if (error != null) {
                 close(error)
                 return@addSnapshotListener
             }
-            trySend(snapshot?.let { DocumentSnapshot(it) })
+            if (snapshot != null) {
+                trySend(DocumentSnapshot(snapshot))
+            }
         }
         awaitClose {
             listener.remove()

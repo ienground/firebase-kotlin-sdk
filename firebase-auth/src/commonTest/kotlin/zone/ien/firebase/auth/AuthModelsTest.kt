@@ -45,4 +45,15 @@ class AuthModelsTest {
 
         assertEquals("apple.com", provider.providerId)
     }
+
+    @Test
+    fun Auth_호환성_확장함수_및_프로퍼티가_정상_참조된다() {
+        val authStateChangedProp = FirebaseAuth::authStateChanged
+        val credentialFn = EmailAuthProvider::credential
+        val reauthFn = FirebaseUser::reauthenticateAndRetrieveData
+
+        assertEquals("authStateChanged", authStateChangedProp.name)
+        assertEquals("credential", credentialFn.name)
+        assertEquals("reauthenticateAndRetrieveData", reauthFn.name)
+    }
 }

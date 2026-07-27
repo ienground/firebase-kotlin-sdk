@@ -9,6 +9,10 @@ expect class DocumentReference {
     val path: String
     val parent: CollectionReference
     val firestore: FirebaseFirestore
+    val snapshots: Flow<DocumentSnapshot>
+
+    override fun equals(other: Any?): Boolean
+    override fun hashCode(): Int
 
     suspend fun set(data: Map<String, Any?>)
     suspend fun set(data: Map<String, Any?>, merge: Boolean)
@@ -20,26 +24,31 @@ expect class DocumentReference {
     suspend fun update(field: FieldPath, value: Any?, vararg moreFieldsAndValues: Any?)
     suspend fun delete()
 
+    fun collection(collectionPath: String): CollectionReference
+
     suspend fun get(): DocumentSnapshot
     suspend fun get(source: Source): DocumentSnapshot
 
-    fun snapshots(): Flow<DocumentSnapshot?>
+    fun snapshots(): Flow<DocumentSnapshot>
     fun snapshots(
         includeMetadataChanges: Boolean,
         source: ListenSource
-    ): Flow<DocumentSnapshot?>
+    ): Flow<DocumentSnapshot>
 }
 
 fun DocumentReference.getId(): String = id
 fun DocumentReference.getPath(): String = path
 
-fun DocumentReference.getSnapshots(cache: Boolean = true): Flow<DocumentSnapshot?> =
+fun DocumentReference.getSnapshots(cache: Boolean = true): Flow<DocumentSnapshot> =
     snapshots(includeMetadataChanges = !cache, source = ListenSource.DEFAULT)
-        .filter { doc -> doc == null || !doc.metadata.isFromCache || cache }
+        .filter { doc -> !doc.metadata.isFromCache || cache }
 
 
-fun DocumentReference.snapshots(includeMetadataChanges: Boolean): Flow<DocumentSnapshot?> =
+fun DocumentReference.snapshots(includeMetadataChanges: Boolean): Flow<DocumentSnapshot> =
     snapshots(includeMetadataChanges = includeMetadataChanges, source = ListenSource.DEFAULT)
 
-fun DocumentReference.snapshots(source: ListenSource): Flow<DocumentSnapshot?> =
+fun DocumentReference.snapshots(source: ListenSource): Flow<DocumentSnapshot> =
     snapshots(includeMetadataChanges = false, source = source)
+
+val DocumentReference.snapshots: Flow<DocumentSnapshot>
+    get() = snapshots

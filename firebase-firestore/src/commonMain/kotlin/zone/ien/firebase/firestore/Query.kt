@@ -8,6 +8,8 @@ enum class QueryDirection {
     DESCENDING
 }
 
+typealias Direction = QueryDirection
+
 enum class WhereOperator {
     EQUAL,
     NOT_EQUAL,
@@ -23,6 +25,11 @@ enum class WhereOperator {
 
 expect open class Query {
     val firestore: FirebaseFirestore
+    val snapshots: Flow<QuerySnapshot>
+
+    override fun equals(other: Any?): Boolean
+    override fun hashCode(): Int
+
     suspend fun get(): QuerySnapshot
     suspend fun get(source: Source): QuerySnapshot
     fun snapshots(): Flow<QuerySnapshot>
@@ -65,8 +72,8 @@ fun Query.whereGreaterThan(field: String, value: Any): Query = where(field, Wher
 fun Query.whereGreaterThanOrEqualTo(field: String, value: Any): Query = where(field, WhereOperator.GREATER_THAN_OR_EQUAL, value)
 fun Query.whereArrayContains(field: String, value: Any): Query = where(field, WhereOperator.ARRAY_CONTAINS, value)
 fun Query.whereArrayContainsAny(field: String, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
-fun Query.whereInArray(field: String, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
-fun Query.inArray(field: String, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
+fun Query.whereInArray(field: String, values: List<Any>): Query = where(field, WhereOperator.IN, values)
+fun Query.inArray(field: String, values: List<Any>): Query = where(field, WhereOperator.IN, values)
 fun Query.whereIn(field: String, values: List<Any>): Query = where(field, WhereOperator.IN, values)
 fun Query.whereNotIn(field: String, values: List<Any>): Query = where(field, WhereOperator.NOT_IN, values)
 
@@ -78,8 +85,8 @@ fun Query.whereGreaterThan(field: FieldPath, value: Any): Query = where(field, W
 fun Query.whereGreaterThanOrEqualTo(field: FieldPath, value: Any): Query = where(field, WhereOperator.GREATER_THAN_OR_EQUAL, value)
 fun Query.whereArrayContains(field: FieldPath, value: Any): Query = where(field, WhereOperator.ARRAY_CONTAINS, value)
 fun Query.whereArrayContainsAny(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
-fun Query.whereInArray(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
-fun Query.inArray(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.ARRAY_CONTAINS_ANY, values)
+fun Query.whereInArray(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.IN, values)
+fun Query.inArray(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.IN, values)
 fun Query.whereIn(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.IN, values)
 fun Query.whereNotIn(field: FieldPath, values: List<Any>): Query = where(field, WhereOperator.NOT_IN, values)
 
@@ -90,6 +97,7 @@ fun Query.snapshots(includeMetadataChanges: Boolean): Flow<QuerySnapshot> =
 fun Query.snapshots(source: ListenSource): Flow<QuerySnapshot> =
     snapshots(includeMetadataChanges = false, source = source)
 
+
 class QueryFilterBuilder(val query: Query) {
     infix fun FieldPath.inArray(values: List<Any>): Query = query.whereInArray(this, values)
     infix fun String.inArray(values: List<Any>): Query = query.whereInArray(this, values)
@@ -99,10 +107,23 @@ class QueryFilterBuilder(val query: Query) {
     infix fun String.notEqualTo(value: Any?): Query = query.whereNotEqualTo(this, value)
     infix fun FieldPath.lessThan(value: Any): Query = query.whereLessThan(this, value)
     infix fun String.lessThan(value: Any): Query = query.whereLessThan(this, value)
+    infix fun FieldPath.lessThanOrEqualTo(value: Any): Query = query.whereLessThanOrEqualTo(this, value)
+    infix fun String.lessThanOrEqualTo(value: Any): Query = query.whereLessThanOrEqualTo(this, value)
     infix fun FieldPath.greaterThan(value: Any): Query = query.whereGreaterThan(this, value)
     infix fun String.greaterThan(value: Any): Query = query.whereGreaterThan(this, value)
+    infix fun FieldPath.greaterThanOrEqualTo(value: Any): Query = query.whereGreaterThanOrEqualTo(this, value)
+    infix fun String.greaterThanOrEqualTo(value: Any): Query = query.whereGreaterThanOrEqualTo(this, value)
     infix fun FieldPath.arrayContains(value: Any): Query = query.whereArrayContains(this, value)
     infix fun String.arrayContains(value: Any): Query = query.whereArrayContains(this, value)
+    infix fun FieldPath.arrayContainsAny(values: List<Any>): Query = query.whereArrayContainsAny(this, values)
+    infix fun String.arrayContainsAny(values: List<Any>): Query = query.whereArrayContainsAny(this, values)
+    infix fun FieldPath.whereIn(values: List<Any>): Query = query.whereIn(this, values)
+    infix fun String.whereIn(values: List<Any>): Query = query.whereIn(this, values)
+    infix fun FieldPath.whereNotIn(values: List<Any>): Query = query.whereNotIn(this, values)
+    infix fun String.whereNotIn(values: List<Any>): Query = query.whereNotIn(this, values)
 }
 
 fun Query.where(block: QueryFilterBuilder.() -> Query): Query = QueryFilterBuilder(this).block()
+
+val Query.snapshots: Flow<QuerySnapshot>
+    get() = snapshots

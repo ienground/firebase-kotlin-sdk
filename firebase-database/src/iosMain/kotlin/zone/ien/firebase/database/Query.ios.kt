@@ -12,6 +12,14 @@ import swiftPMImport.zone.ien.firebase.firebase.database.FIRDataEventType
 
 @OptIn(ExperimentalForeignApi::class)
 public actual open class Query(private val iosQuery: FIRDatabaseQuery) {
+    public actual override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Query) return false
+        return iosQuery.isEqual(other.iosQuery)
+    }
+
+    public actual override fun hashCode(): Int = iosQuery.hash.toInt()
+
     public actual suspend fun get(): DataSnapshot = suspendCancellableCoroutine { cont ->
         iosQuery.observeSingleEventOfType(
             FIRDataEventType.FIRDataEventTypeValue,

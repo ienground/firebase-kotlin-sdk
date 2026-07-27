@@ -28,3 +28,6 @@ public val Firebase.auth: FirebaseAuth
 
 public fun Firebase.auth(app: FirebaseApp): FirebaseAuth =
     FirebaseAuth.getInstance(app)
+
+public val FirebaseAuth.authStateChanged: Flow<FirebaseUser?>
+    get() = authStateFlow

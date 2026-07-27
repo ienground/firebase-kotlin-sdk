@@ -17,6 +17,17 @@ actual open class Query(private val iosQuery: FIRQuery) {
     actual val firestore: FirebaseFirestore
         get() = FirebaseFirestore(iosQuery.firestore)
 
+    actual val snapshots: Flow<QuerySnapshot>
+        get() = snapshots()
+
+    actual override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Query) return false
+        return iosQuery.isEqual(other.iosQuery)
+    }
+
+    actual override fun hashCode(): Int = iosQuery.hash.toInt()
+
     actual suspend fun get(): QuerySnapshot = get(Source.DEFAULT)
 
     actual suspend fun get(source: Source): QuerySnapshot = suspendCancellableCoroutine { cont ->

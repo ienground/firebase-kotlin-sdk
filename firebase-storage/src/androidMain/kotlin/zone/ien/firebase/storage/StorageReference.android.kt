@@ -21,6 +21,14 @@ actual class StorageReference(private val androidReference: AndroidStorageRefere
     actual val root: StorageReference
         get() = StorageReference(androidReference.root)
 
+    actual override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is StorageReference) return false
+        return androidReference == other.androidReference
+    }
+
+    actual override fun hashCode(): Int = androidReference.hashCode()
+
     actual fun child(path: String): StorageReference {
         return StorageReference(androidReference.child(path))
     }
@@ -33,37 +41,38 @@ actual class StorageReference(private val androidReference: AndroidStorageRefere
         androidReference.delete().await()
     }
 
-    actual fun putBytes(data: ByteArray, metadata: StorageMetadata?): UploadTask {
+    actual suspend fun putBytes(data: ByteArray, metadata: StorageMetadata?) {
         val androidTask = if (metadata != null) {
             androidReference.putBytes(data, metadata.toAndroid())
         } else {
             androidReference.putBytes(data)
         }
-        return UploadTask(androidTask)
+        androidTask.await()
     }
 
-    actual fun putData(data: Data, metadata: StorageMetadata?): UploadTask {
-        return putBytes(data.rawData, metadata)
+    actual suspend fun putData(data: Data, metadata: StorageMetadata?) {
+        putBytes(data.rawData, metadata)
     }
 
-    actual fun putFile(filePath: String, metadata: StorageMetadata?): UploadTask {
+    actual suspend fun putFile(filePath: String, metadata: StorageMetadata?) {
         val uri = Uri.fromFile(File(filePath))
         val androidTask = if (metadata != null) {
             androidReference.putFile(uri, metadata.toAndroid())
         } else {
             androidReference.putFile(uri)
         }
-        return UploadTask(androidTask)
+        androidTask.await()
     }
 
-    actual fun putFile(file: zone.ien.firebase.storage.File, metadata: StorageMetadata?): UploadTask {
+    actual suspend fun putFile(file: zone.ien.firebase.storage.File, metadata: StorageMetadata?) {
         val androidTask = if (metadata != null) {
             androidReference.putFile(file.uri, metadata.toAndroid())
         } else {
             androidReference.putFile(file.uri)
         }
-        return UploadTask(androidTask)
+        androidTask.await()
     }
+
     actual suspend fun getData(maxDownloadSizeBytes: Long): ByteArray {
         return androidReference.getBytes(maxDownloadSizeBytes).await()
     }
@@ -80,6 +89,7 @@ actual class StorageReference(private val androidReference: AndroidStorageRefere
     actual fun getFile(file: zone.ien.firebase.storage.File): DownloadTask {
         return DownloadTask(androidReference.getFile(file.uri))
     }
+
     actual suspend fun getMetadata(): StorageMetadata {
         return androidReference.metadata.await().toCommon()
     }

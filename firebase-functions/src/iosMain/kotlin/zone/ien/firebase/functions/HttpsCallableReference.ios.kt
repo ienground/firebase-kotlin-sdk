@@ -32,6 +32,8 @@ actual class HttpsCallableReference(private val iosCallable: FIRHTTPSCallable) {
             }
         }
     }
+
+    actual suspend operator fun invoke(data: Any?): HttpsCallableResult = call(data)
 }
 
 private fun mapIosException(error: NSError): FirebaseFunctionsException {
