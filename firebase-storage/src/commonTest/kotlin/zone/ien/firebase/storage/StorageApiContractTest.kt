@@ -49,7 +49,6 @@ class StorageApiContractTest {
         assertTrue(putFileMember != null, "StorageReference must declare putFile")
         assertTrue(putFileMember.isSuspend, "putFile must be a suspend function (gitlive style)")
     }
-}
 
     @Test
     fun StorageReference는_equals와_hashCode를_재정의한다() {
@@ -59,3 +58,4 @@ class StorageApiContractTest {
         assertTrue(equalsMethod != null, "StorageReference must override equals")
         assertTrue(hashCodeMethod != null, "StorageReference must override hashCode")
     }
+}

@@ -97,7 +97,6 @@ class FirestoreValueModelsTest {
             queryMetadata
         ).forEach { it.hashCode() }
     }
-}
 
     @Test
     fun DocumentReference는_equals와_hashCode를_재정의한다() {
@@ -107,3 +106,4 @@ class FirestoreValueModelsTest {
         assertTrue(equalsMethod != null, "DocumentReference must override equals")
         assertTrue(hashCodeMethod != null, "DocumentReference must override hashCode")
     }
+}
