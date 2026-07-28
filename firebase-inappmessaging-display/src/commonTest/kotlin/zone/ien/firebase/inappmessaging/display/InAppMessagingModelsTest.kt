@@ -7,7 +7,7 @@ import kotlin.test.assertNull
 
 class InAppMessagingModelsTest {
     @Test
-    fun 메시지_메타데이터를_값으로_비교한다() {
+    fun testMessageMetadataEqualityByValue() {
         val metadata = InAppMessageMetadata("campaign-1", "신규 사용자", "BANNER")
 
         assertEquals(metadata, metadata.copy())
@@ -15,7 +15,7 @@ class InAppMessagingModelsTest {
     }
 
     @Test
-    fun 표시_리스너는_메시지와_콜백을_전달한다() {
+    fun testDisplayListenerPassesMessageAndCallbacks() {
         val events = mutableListOf<String>()
         val callbacks = object : InAppMessagingDisplayCallbacks {
             override fun impressionDetected() {
@@ -56,7 +56,7 @@ class InAppMessagingModelsTest {
     }
 
     @Test
-    fun 카드_메시지는_렌더링에_필요한_모든_공통_필드를_보존한다() {
+    fun testCardMessagePreservesAllCommonFields() {
         val primaryAction = InAppMessageAction(
             url = "https://example.com/primary",
             button = InAppMessageButton(
@@ -88,7 +88,7 @@ class InAppMessagingModelsTest {
     }
 
     @Test
-    fun 배너_모달_이미지전용_메시지를_구분한다() {
+    fun testDistinguishesBannerModalAndImageOnlyMessages() {
         val campaign = InAppMessageCampaign("campaign-1", "캠페인", false)
         val banner: InAppDisplayMessage = InAppDisplayMessage.Banner(
             campaign = campaign,
@@ -110,7 +110,7 @@ class InAppMessagingModelsTest {
     }
 
     @Test
-    fun 클릭_콜백은_실제_action을_전달하면서_기존_noarg_구현도_호환한다() {
+    fun testClickCallbackPassesActionAndSupportsNoArgFallback() {
         val events = mutableListOf<String>()
         val action = InAppMessageAction(url = "https://example.com")
         val legacyCallbacks = object : InAppMessagingDisplayCallbacks {
@@ -139,7 +139,7 @@ class InAppMessagingModelsTest {
     }
 
     @Test
-    fun 클릭은_메시지에_포함된_action만_허용하고_null은_무시한다() {
+    fun testClickAllowsOnlyMessageActionsAndIgnoresNull() {
         val primary = InAppMessageAction(url = "https://example.com/primary")
         val message = InAppDisplayMessage.Banner(
             campaign = InAppMessageCampaign("campaign-1", "캠페인", false),

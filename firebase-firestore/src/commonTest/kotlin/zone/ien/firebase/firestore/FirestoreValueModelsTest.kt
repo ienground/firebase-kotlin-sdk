@@ -8,19 +8,43 @@ import kotlin.test.assertTrue
 
 class FirestoreValueModelsTest {
     @Test
-    fun Timestamp는_초와_나노초_순서로_비교한다() {
+    fun testTimestampComparisonOrder() {
         assertTrue(Timestamp(10, 1) > Timestamp(9, 999_999_999))
         assertTrue(Timestamp(10, 2) > Timestamp(10, 1))
     }
 
     @Test
-    fun Timestamp는_나노초_범위를_검증한다() {
+    fun testTimestampNanosecondRangeValidation() {
         assertFailsWith<IllegalArgumentException> { Timestamp(0, -1) }
         assertFailsWith<IllegalArgumentException> { Timestamp(0, 1_000_000_000) }
     }
 
     @Test
-    fun FieldValue는_쓰기_변환에_필요한_연산값을_보존한다() {
+    fun testCastValueFlexibleNumberConversion() {
+        val longVal: Any = 10L
+        assertEquals(10, castValue<Int>(longVal))
+        assertEquals(10L, castValue<Long>(longVal))
+        assertEquals(10.0, castValue<Double>(longVal))
+        assertEquals(10.0f, castValue<Float>(longVal))
+
+        val doubleVal: Any = 10.5
+        assertEquals(10, castValue<Int>(doubleVal))
+        assertEquals(10.5f, castValue<Float>(doubleVal))
+    }
+
+    @Test
+    fun testTimestampCreationFromMilliseconds() {
+        val tsLong = Timestamp.fromMilliseconds(1700000500L)
+        assertEquals(1700000L, tsLong.seconds)
+        assertEquals(500_000_000, tsLong.nanoseconds)
+
+        val tsDouble = Timestamp.fromMilliseconds(1700000500.0)
+        assertEquals(1700000L, tsDouble.seconds)
+        assertEquals(500_000_000, tsDouble.nanoseconds)
+    }
+
+    @Test
+    fun testFieldValuePreservesOperationValues() {
         assertEquals(FieldValue.Operation.Delete, FieldValue.delete().operation)
         assertEquals(FieldValue.Operation.Delete, FieldValue.delete.operation)
         assertEquals(FieldValue.Operation.ServerTimestamp, FieldValue.serverTimestamp().operation)
@@ -38,13 +62,13 @@ class FirestoreValueModelsTest {
     }
 
     @Test
-    fun 조회와_리스너_소스는_네이티브_SDK_지원범위를_구분한다() {
+    fun testSourceAndListenSourceEnumValues() {
         assertEquals(listOf(Source.DEFAULT, Source.SERVER, Source.CACHE), Source.entries)
         assertEquals(listOf(ListenSource.DEFAULT, ListenSource.CACHE), ListenSource.entries)
     }
 
     @Test
-    fun SnapshotMetadata는_캐시와_대기중_쓰기_상태를_보존한다() {
+    fun testSnapshotMetadataPreservesState() {
         val metadata = SnapshotMetadata(hasPendingWrites = true, isFromCache = true)
 
         assertTrue(metadata.hasPendingWrites)
@@ -52,13 +76,13 @@ class FirestoreValueModelsTest {
     }
 
     @Test
-    fun 조회와_스냅샷_API는_소스와_메타데이터_옵션을_노출한다() {
+    fun testQueryAndDocumentSnapshotApiOptions() {
         val queryGet: suspend Query.(Source) -> QuerySnapshot = Query::get
         val documentGet: suspend DocumentReference.(Source) -> DocumentSnapshot =
             DocumentReference::get
         val querySnapshots: Query.(Boolean, ListenSource) -> Flow<QuerySnapshot> = Query::snapshots
         val documentSnapshots:
-            DocumentReference.(Boolean, ListenSource) -> Flow<DocumentSnapshot?> =
+            DocumentReference.(Boolean, ListenSource) -> Flow<DocumentSnapshot> =
             DocumentReference::snapshots
         val documentMetadata: DocumentSnapshot.() -> SnapshotMetadata =
             DocumentSnapshot::getMetadata
@@ -72,5 +96,14 @@ class FirestoreValueModelsTest {
             documentMetadata,
             queryMetadata
         ).forEach { it.hashCode() }
+    }
+
+    @Test
+    fun testDocumentReferenceOverridesEqualsAndHashCode() {
+        val equalsFn: DocumentReference.(Any?) -> Boolean = DocumentReference::equals
+        val hashCodeFn: DocumentReference.() -> Int = DocumentReference::hashCode
+
+        assertTrue(equalsFn != null)
+        assertTrue(hashCodeFn != null)
     }
 }

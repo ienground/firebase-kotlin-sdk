@@ -15,3 +15,6 @@ expect class FirebaseStorage {
 
 val Firebase.storage: FirebaseStorage
     get() = FirebaseStorage.getInstance()
+
+fun FirebaseStorage.reference(location: String): StorageReference =
+    getReference(location)

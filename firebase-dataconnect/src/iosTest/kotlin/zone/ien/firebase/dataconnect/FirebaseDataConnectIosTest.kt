@@ -6,7 +6,7 @@ import kotlin.test.assertSame
 
 class FirebaseDataConnectIosTest {
     @Test
-    fun 동일한_설정은_동일한_인스턴스를_반환한다() {
+    fun testSameConfigReturnsSameInstance() {
         val config = ConnectorConfig("orders", "asia-northeast3", "mobile")
 
         val first = FirebaseDataConnect.getInstance(config)
@@ -16,7 +16,7 @@ class FirebaseDataConnectIosTest {
     }
 
     @Test
-    fun 서로_다른_설정은_별도_인스턴스를_반환한다() {
+    fun testDifferentConfigsReturnSeparateInstances() {
         val first = FirebaseDataConnect.getInstance(
             ConnectorConfig("orders", "asia-northeast3", "mobile")
         )
@@ -29,7 +29,7 @@ class FirebaseDataConnectIosTest {
     }
 
     @Test
-    fun 에뮬레이터_주소를_메모리에_보존한다() {
+    fun testPreservesEmulatorAddressInMemory() {
         val dataConnect = FirebaseDataConnect.getInstance(
             ConnectorConfig("payments", "asia-northeast3", "ios-test")
         )

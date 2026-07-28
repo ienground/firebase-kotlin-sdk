@@ -9,6 +9,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
 public actual open class Query(private val androidQuery: AndroidQuery) {
+    public actual override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Query) return false
+        return androidQuery == other.androidQuery
+    }
+
+    public actual override fun hashCode(): Int = androidQuery.hashCode()
+
     public actual suspend fun get(): DataSnapshot {
         return DataSnapshot(androidQuery.get().await())
     }

@@ -7,7 +7,7 @@ import kotlin.test.assertSame
 
 class OnDeviceStatusTest {
     @Test
-    fun 다운로드_시작과_진행_바이트를_보존한다() {
+    fun testPreservesDownloadStartAndProgressBytes() {
         val started: DownloadStatus = DownloadStarted(1_024)
         val progress: DownloadStatus = DownloadInProgress(512)
 
@@ -16,12 +16,12 @@ class OnDeviceStatusTest {
     }
 
     @Test
-    fun 다운로드_완료_상태를_생성한다() {
+    fun testCreatesDownloadCompletedStatus() {
         assertIs<DownloadCompleted>(DownloadCompleted())
     }
 
     @Test
-    fun 다운로드_실패는_원인_예외를_보존한다() {
+    fun testDownloadFailedPreservesCauseException() {
         val cause = IllegalStateException("다운로드 실패")
         val failed: DownloadStatus = DownloadFailed(cause)
 
@@ -29,7 +29,7 @@ class OnDeviceStatusTest {
     }
 
     @Test
-    fun 모델_상태는_지원하는_항목을_모두_제공한다() {
+    fun testModelStatusProvidesAllSupportedValues() {
         assertEquals(
             listOf("AVAILABLE", "DOWNLOADABLE", "DOWNLOADING", "UNAVAILABLE"),
             OnDeviceModelStatus.entries.map { it.name }

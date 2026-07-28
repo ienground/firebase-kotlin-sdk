@@ -7,4 +7,7 @@ import swiftPMImport.zone.ien.firebase.firebase.functions.FIRHTTPSCallableResult
 actual class HttpsCallableResult(private val iosResult: FIRHTTPSCallableResult) {
     actual val data: Any?
         get() = iosResult.data()
+
+    @Suppress("UNCHECKED_CAST")
+    actual fun <T> data(): T = data as T
 }

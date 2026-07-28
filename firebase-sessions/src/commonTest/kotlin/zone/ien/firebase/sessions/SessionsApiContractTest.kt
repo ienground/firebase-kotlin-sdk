@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class SessionsApiContractTest {
     @Test
-    fun 세션_타입이_공통_API에_노출된다() {
+    fun testSessionsTypesExposedInCommonApi() {
         assertEquals("FirebaseSessions", FirebaseSessions::class.simpleName)
     }
 }

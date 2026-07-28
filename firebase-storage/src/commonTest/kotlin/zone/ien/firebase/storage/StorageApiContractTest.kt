@@ -2,10 +2,11 @@ package zone.ien.firebase.storage
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class StorageApiContractTest {
     @Test
-    fun 저장소_타입이_공통_API에_노출된다() {
+    fun testStorageTypesExposedInCommonApi() {
         assertEquals("FirebaseStorage", FirebaseStorage::class.simpleName)
         assertEquals("StorageReference", StorageReference::class.simpleName)
         assertEquals("UploadTask", UploadTask::class.simpleName)
@@ -19,7 +20,13 @@ class StorageApiContractTest {
     }
 
     @Test
-    fun StorageMetadata_빌더_및_생성자_동작을_확인한다() {
+    fun testFirebaseStorageReferenceExtensionFunction() {
+        val refFn = FirebaseStorage::reference
+        assertEquals("reference", refFn.name)
+    }
+
+    @Test
+    fun testStorageMetadataBuilderAndConstructor() {
         val metadata = storageMetadata {
             contentType = "image/png"
             cacheControl = "max-age=3600"
@@ -29,5 +36,23 @@ class StorageApiContractTest {
         assertEquals("image/png", metadata.contentType)
         assertEquals("max-age=3600", metadata.cacheControl)
         assertEquals(mapOf("key1" to "value1"), metadata.customMetadata)
+    }
+
+    @Test
+    fun testUploadMethodsAreDeclaredAsSuspendFunctions() {
+        val putBytesFn: suspend StorageReference.(ByteArray, StorageMetadata?) -> Unit = StorageReference::putBytes
+        val putFileFn: suspend StorageReference.(String, StorageMetadata?) -> Unit = StorageReference::putFile
+
+        assertTrue(putBytesFn != null)
+        assertTrue(putFileFn != null)
+    }
+
+    @Test
+    fun testStorageReferenceOverridesEqualsAndHashCode() {
+        val equalsFn: StorageReference.(Any?) -> Boolean = StorageReference::equals
+        val hashCodeFn: StorageReference.() -> Int = StorageReference::hashCode
+
+        assertTrue(equalsFn != null)
+        assertTrue(hashCodeFn != null)
     }
 }

@@ -6,7 +6,7 @@ import kotlin.test.assertSame
 
 class AppCheckExceptionTest {
     @Test
-    fun 앱체크_예외는_메시지와_원인을_보존한다() {
+    fun testAppCheckExceptionPreservesMessageAndCause() {
         val cause = IllegalArgumentException("잘못된 토큰")
         val exception = AppCheckException("검증 실패", cause)
 

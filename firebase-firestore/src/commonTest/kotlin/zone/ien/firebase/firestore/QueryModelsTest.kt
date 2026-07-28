@@ -7,11 +7,11 @@ import kotlin.test.assertNotNull
 
 class QueryModelsTest {
     @Test
-    fun 공통_계약에서_기존_무인자_get과_snapshots를_호출할_수_있다() {
+    fun testQueryAndDocumentReferenceGetAndSnapshotsDefaults() {
         val queryGet: suspend (Query) -> QuerySnapshot = { it.get() }
         val querySnapshots: (Query) -> Flow<QuerySnapshot> = { it.snapshots() }
         val documentGet: suspend (DocumentReference) -> DocumentSnapshot = { it.get() }
-        val documentSnapshots: (DocumentReference) -> Flow<DocumentSnapshot?> = { it.snapshots() }
+        val documentSnapshots: (DocumentReference) -> Flow<DocumentSnapshot> = { it.snapshots() }
 
         assertNotNull(queryGet)
         assertNotNull(querySnapshots)
@@ -20,12 +20,14 @@ class QueryModelsTest {
     }
 
     @Test
-    fun 정렬_방향은_오름차순과_내림차순을_제공한다() {
+    fun testQueryDirectionEnumValues() {
         assertEquals(listOf("ASCENDING", "DESCENDING"), QueryDirection.entries.map { it.name })
+        assertEquals(Direction.ASCENDING, QueryDirection.ASCENDING)
+        assertEquals(Direction.DESCENDING, QueryDirection.DESCENDING)
     }
 
     @Test
-    fun 조건_연산자는_지원하는_항목을_모두_제공한다() {
+    fun testFilterOperatorEnumValues() {
         assertEquals(
             listOf(
                 "EQUAL",
@@ -64,8 +66,30 @@ class QueryModelsTest {
     @Test
     fun snapshots_단일_인자_오버로드가_정상_참조된다() {
         val querySnapshotsOneArg: (Query, Boolean) -> Flow<QuerySnapshot> = { q, b -> q.snapshots(b) }
-        val docSnapshotsOneArg: (DocumentReference, Boolean) -> Flow<DocumentSnapshot?> = { d, b -> d.snapshots(b) }
+        val docSnapshotsOneArg: (DocumentReference, Boolean) -> Flow<DocumentSnapshot> = { d, b -> d.snapshots(b) }
         assertNotNull(querySnapshotsOneArg)
         assertNotNull(docSnapshotsOneArg)
+    }
+
+    @Test
+    fun snapshots_프로퍼티_접근이_가능하다() {
+        val querySnapshotsProp: (Query) -> Flow<QuerySnapshot> = { it.snapshots }
+        val docSnapshotsProp: (DocumentReference) -> Flow<DocumentSnapshot> = { it.snapshots }
+        assertNotNull(querySnapshotsProp)
+        assertNotNull(docSnapshotsProp)
+    }
+
+    @Test
+    fun DocumentReference_collection_호출이_가능하다() {
+        val docRefColl: (DocumentReference, String) -> CollectionReference = DocumentReference::collection
+        assertNotNull(docRefColl)
+    }
+
+    @Test
+    fun DocumentSnapshot_get_제네릭_호출이_가능하다() {
+        val getStr: DocumentSnapshot.(String) -> Any? = { get<Any?>(it) }
+        val getFp: DocumentSnapshot.(FieldPath) -> Any? = { get<Any?>(it) }
+        assertNotNull(getStr)
+        assertNotNull(getFp)
     }
 }

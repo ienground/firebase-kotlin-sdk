@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class DynamicLoadingApiContractTest {
     @Test
-    fun 동적_로딩_등록자가_공통_API에_노출된다() {
+    fun testDynamicLoadingRegistrarExposedInCommonApi() {
         assertEquals("DynamicLoadingRegistrar", DynamicLoadingRegistrar::class.simpleName)
     }
 }

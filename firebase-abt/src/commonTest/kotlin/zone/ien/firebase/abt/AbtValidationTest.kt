@@ -6,7 +6,7 @@ import kotlin.test.assertFailsWith
 
 class AbtValidationTest {
     @Test
-    fun 지원하는_origin과_legacy_alias만_허용한다() {
+    fun testAllowsSupportedOriginsAndLegacyAliasesOnly() {
         assertEquals("frc", normalizeAbtOriginService("frc"))
         assertEquals("fiam", normalizeAbtOriginService("fiam"))
         assertEquals("frc", normalizeAbtOriginService("remote-config"))
@@ -29,7 +29,7 @@ class AbtValidationTest {
     }
 
     @Test
-    fun 시작_시각과_시간값의_형식을_검증한다() {
+    fun testValidatesStartTimeAndDurationFormat() {
         listOf(
             "2026-02-30T00:00:00",
             "2026-07-26 00:00:00",

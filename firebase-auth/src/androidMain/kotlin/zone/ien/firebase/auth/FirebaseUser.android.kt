@@ -73,6 +73,11 @@ public actual class FirebaseUser internal constructor(
         androidUser.reauthenticate(credential.androidCredential).await()
     }
 
+    public actual suspend fun reauthenticateAndRetrieveData(credential: AuthCredential): AuthResult {
+        val result = androidUser.reauthenticateAndRetrieveData(credential.androidCredential).await()
+        return AuthResult(result)
+    }
+
     internal companion object {
         fun create(androidUser: AndroidFirebaseUser?): FirebaseUser? =
             androidUser?.let { FirebaseUser(it) }

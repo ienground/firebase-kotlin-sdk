@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class FirebaseFunctionsCodeTest {
     @Test
-    fun 함수_오류_코드는_gRPC_상태를_모두_제공한다() {
+    fun testFunctionsErrorCodeProvidesAllGrpcStatuses() {
         assertEquals(
             listOf(
                 "OK",
@@ -28,5 +28,23 @@ class FirebaseFunctionsCodeTest {
             ),
             FirebaseFunctionsException.Code.entries.map { it.name }
         )
+    }
+
+    @Test
+    fun effectiveCode_프로퍼티가_정상_참조된다() {
+        val prop = FirebaseFunctionsException::effectiveCode
+        assertEquals("effectiveCode", prop.name)
+    }
+
+    @Test
+    fun Functions_확장_함수_및_오퍼레이터가_정상_참조된다() {
+        val callableExtFn = FirebaseFunctions::httpsCallable
+        val getOpFn = FirebaseFunctions::get
+        val invokeOpFn = HttpsCallableReference::invoke
+        val dataExtFn: HttpsCallableResult.() -> Any? = { data<Any?>() }
+
+        assertEquals("httpsCallable", callableExtFn.name)
+        assertEquals("get", getOpFn.name)
+        assertEquals("invoke", invokeOpFn.name)
     }
 }

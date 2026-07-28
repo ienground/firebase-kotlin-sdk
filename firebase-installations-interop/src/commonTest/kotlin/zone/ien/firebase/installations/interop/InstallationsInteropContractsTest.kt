@@ -16,7 +16,7 @@ class InstallationsInteropContractsTest {
     }
 
     @Test
-    fun 등록_핸들은_해제_동작을_노출한다() {
+    fun testRegistrationHandleExposesUnregister() {
         var unregistered = false
         val handle = object : FidListenerHandle {
             override fun unregister() {
@@ -30,7 +30,7 @@ class InstallationsInteropContractsTest {
     }
 
     @Test
-    fun 토큰_결과_계약은_토큰과_만료시각을_제공한다() {
+    fun testTokenResultContractProvidesTokenAndExpiration() {
         val result = object : InstallationTokenResult {
             override val token = "token"
             override val tokenExpirationTimestamp = 3_600L

@@ -13,7 +13,7 @@ import kotlin.test.assertFalse
 
 class MessagingModelsTest {
     @Test
-    fun 알림과_데이터_메시지를_구성한다() {
+    fun testConstructsNotificationAndDataMessage() {
         val notification = Notification("제목", "본문")
         val message = RemoteMessage(mapOf("route" to "inbox"), notification)
 
@@ -23,7 +23,7 @@ class MessagingModelsTest {
     }
 
     @Test
-    fun 알림이_없는_데이터_메시지를_지원한다() {
+    fun testSupportsDataOnlyMessageWithoutNotification() {
         val message = RemoteMessage(emptyMap(), null)
 
         assertNull(message.notification)
@@ -31,7 +31,7 @@ class MessagingModelsTest {
     }
 
     @Test
-    fun 수신_메시지의_전달_메타데이터를_보존한다() {
+    fun testPreservesIncomingMessageDeliveryMetadata() {
         val message = RemoteMessage(
             data = mapOf("route" to "inbox"),
             notification = Notification("제목", "본문"),
@@ -56,7 +56,7 @@ class MessagingModelsTest {
     }
 
     @Test
-    fun 수신_메시지_이벤트를_흐름으로_전달한다() = runBlocking {
+    fun testEmitsIncomingMessageEventsAsFlow() = runBlocking {
         val expected = RemoteMessage(data = mapOf("route" to "inbox"), notification = null)
         val received = async(start = CoroutineStart.UNDISPATCHED) {
             MessagingEventDispatcher.messages.first()
@@ -68,7 +68,7 @@ class MessagingModelsTest {
     }
 
     @Test
-    fun 새_토큰_이벤트를_흐름으로_전달한다() = runBlocking {
+    fun testEmitsNewTokenEventsAsFlow() = runBlocking {
         val events = MessagingEventBuffer(messageCapacity = 1)
         val received = async(start = CoroutineStart.UNDISPATCHED) {
             events.tokenUpdates.first()
@@ -80,7 +80,7 @@ class MessagingModelsTest {
     }
 
     @Test
-    fun 수집자가_없어도_최대_용량까지_메시지를_보존하고_초과분은_명시적으로_알린다() = runBlocking {
+    fun testBuffersMessagesUpToCapacityWhenNoCollector() = runBlocking {
         val events = MessagingEventBuffer(messageCapacity = 2)
 
         assertEquals(
@@ -100,7 +100,7 @@ class MessagingModelsTest {
     }
 
     @Test
-    fun 토큰_업데이트는_마지막_값을_새_수집자에게_재전달한다() = runBlocking {
+    fun testReplaysLastTokenUpdateToNewCollector() = runBlocking {
         val events = MessagingEventBuffer(messageCapacity = 1)
 
         events.emitToken("latest-token")
@@ -109,7 +109,7 @@ class MessagingModelsTest {
     }
 
     @Test
-    fun 토큰_흐름은_수집을_시작할_때_현재_토큰을_먼저_조회한다() = runBlocking {
+    fun testQueriesCurrentTokenFirstWhenCollectingTokenFlow() = runBlocking {
         val events = MessagingEventBuffer(messageCapacity = 1)
 
         val token = seededTokenUpdates(
@@ -121,7 +121,7 @@ class MessagingModelsTest {
     }
 
     @Test
-    fun 현재_토큰_조회가_실패해도_이후_업데이트를_계속_수신한다() = runBlocking {
+    fun testContinuesReceivingUpdatesEvenIfCurrentTokenQueryFails() = runBlocking {
         val events = MessagingEventBuffer(messageCapacity = 1)
         val received = async(start = CoroutineStart.UNDISPATCHED) {
             seededTokenUpdates(
@@ -136,7 +136,7 @@ class MessagingModelsTest {
     }
 
     @Test
-    fun 현재_토큰_seed가_기존_replay를_대체해_이전_토큰이_다시_나오지_않는다() = runBlocking {
+    fun testTokenSeedReplacesPreviousReplayValue() = runBlocking {
         val events = MessagingEventBuffer(messageCapacity = 1)
         events.emitToken("stale-token")
 

@@ -1,8 +1,21 @@
 package zone.ien.firebase.firestore
 
+import kotlin.jvm.JvmName
 import com.google.firebase.firestore.DocumentSnapshot as AndroidDocumentSnapshot
 
 actual class DocumentSnapshot(private val androidSnapshot: AndroidDocumentSnapshot) {
+    @get:JvmName("id")
+    actual val id: String
+        get() = getId()
+
+    @get:JvmName("exists")
+    actual val exists: Boolean
+        get() = getExists()
+
+    @get:JvmName("metadata")
+    actual val metadata: SnapshotMetadata
+        get() = getMetadata()
+
     actual val reference: DocumentReference
         get() = DocumentReference(androidSnapshot.reference)
 
@@ -14,13 +27,15 @@ actual class DocumentSnapshot(private val androidSnapshot: AndroidDocumentSnapsh
         return data.mapValues { (_, value) -> value.toCommonValue() }
     }
 
-    actual fun get(field: String): Any? {
-        return androidSnapshot.get(field).toCommonValue()
+    @Suppress("UNCHECKED_CAST")
+    actual fun <T> get(field: String): T {
+        return androidSnapshot.get(field).toCommonValue() as T
     }
 
-    actual fun get(field: FieldPath): Any? {
+    @Suppress("UNCHECKED_CAST")
+    actual fun <T> get(field: FieldPath): T {
         val fp = field.nativePath() as com.google.firebase.firestore.FieldPath
-        return androidSnapshot.get(fp).toCommonValue()
+        return androidSnapshot.get(fp).toCommonValue() as T
     }
 
     actual fun getMetadata(): SnapshotMetadata {

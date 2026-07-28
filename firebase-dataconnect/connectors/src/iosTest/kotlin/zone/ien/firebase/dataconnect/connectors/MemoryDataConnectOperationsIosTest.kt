@@ -22,7 +22,7 @@ import zone.ien.firebase.dataconnect.DataConnectRequestStatus
 
 class MemoryDataConnectOperationsIosTest {
     @Test
-    fun 명시적으로_seed된_query만_cache_policy로_실행한다() = runBlocking {
+    fun testExecutesOnlyExplicitlySeededQueryWithCachePolicy() = runBlocking {
         val connector = DefaultFirebaseDataConnectConnector.getInstance(
             ConnectorConfig("movies", "us-central1", "movie-connector")
         )
@@ -84,7 +84,7 @@ class MemoryDataConnectOperationsIosTest {
     }
 
     @Test
-    fun 동일한_seed_결과도_execution_id로_각_구독_이벤트를_구분한다() = runBlocking {
+    fun testSameSeedResultsDistinguishedByExecutionId() = runBlocking {
         val operation = GeneratedConnector.instance.operations.seededQuery<String, Unit>(
             operationName = "GetMovie",
             seedData = "Arrival"
@@ -100,7 +100,7 @@ class MemoryDataConnectOperationsIosTest {
     }
 
     @Test
-    fun 느린_구독자가_여러_execute를_막지_않는다() = runBlocking {
+    fun testSlowSubscriberDoesNotBlockMultipleExecutes() = runBlocking {
         val reference = GeneratedConnector.instance.operations
             .seededQuery<String, Unit>("GetMovie", "Arrival")
             .ref(Unit)

@@ -13,6 +13,16 @@ actual class FirebaseFunctions(private val androidFunctions: AndroidFirebaseFunc
         return HttpsCallableReference(androidFunctions.getHttpsCallableFromUrl(java.net.URL(url)))
     }
 
+    actual fun httpsCallable(nameOrUrl: String): HttpsCallableReference =
+        if (nameOrUrl.startsWith("http://") || nameOrUrl.startsWith("https://")) {
+            getHttpsCallableFromUrl(nameOrUrl)
+        } else {
+            getHttpsCallable(nameOrUrl)
+        }
+
+    actual operator fun get(nameOrUrl: String): HttpsCallableReference =
+        httpsCallable(nameOrUrl)
+
     actual fun useEmulator(host: String, port: Int) {
         androidFunctions.useEmulator(host, port)
     }

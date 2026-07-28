@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class RecaptchaApiContractTest {
     @Test
-    fun 리캡차_팩토리가_공통_API에_노출된다() {
+    fun testRecaptchaFactoryExposedInCommonApi() {
         assertEquals(
             "RecaptchaAppCheckProviderFactory",
             RecaptchaAppCheckProviderFactory::class.simpleName

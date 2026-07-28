@@ -3,6 +3,9 @@ package zone.ien.firebase.database
 import kotlinx.coroutines.flow.Flow
 
 public expect open class Query {
+    public override fun equals(other: Any?): Boolean
+    public override fun hashCode(): Int
+
     public suspend fun get(): DataSnapshot
     public fun snapshots(): Flow<DataSnapshot>
 

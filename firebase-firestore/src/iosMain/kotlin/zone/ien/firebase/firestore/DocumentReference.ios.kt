@@ -21,6 +21,19 @@ actual class DocumentReference(internal val iosDocument: FIRDocumentReference) {
     actual val firestore: FirebaseFirestore
         get() = FirebaseFirestore(iosDocument.firestore)
 
+    actual val snapshots: Flow<DocumentSnapshot>
+        get() = snapshots()
+
+    actual override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is DocumentReference) return false
+        return iosDocument.isEqual(other.iosDocument) || path == other.path
+    }
+
+    actual override fun hashCode(): Int {
+        return path.hashCode()
+    }
+
     actual suspend fun set(data: Map<String, Any?>) = suspendCancellableCoroutine<Unit> { cont ->
         iosDocument.setData(data.toIosData()) { error ->
             if (error != null) {
@@ -92,6 +105,10 @@ actual class DocumentReference(internal val iosDocument: FIRDocumentReference) {
         }
     }
 
+    actual fun collection(collectionPath: String): CollectionReference {
+        return CollectionReference(iosDocument.collectionWithPath(collectionPath))
+    }
+
     actual suspend fun get(): DocumentSnapshot = get(Source.DEFAULT)
 
     actual suspend fun get(source: Source): DocumentSnapshot = suspendCancellableCoroutine { cont ->
@@ -106,7 +123,7 @@ actual class DocumentReference(internal val iosDocument: FIRDocumentReference) {
         }
     }
 
-    actual fun snapshots(): Flow<DocumentSnapshot?> = snapshots(
+    actual fun snapshots(): Flow<DocumentSnapshot> = snapshots(
         includeMetadataChanges = false,
         source = ListenSource.DEFAULT
     )
@@ -114,14 +131,16 @@ actual class DocumentReference(internal val iosDocument: FIRDocumentReference) {
     actual fun snapshots(
         includeMetadataChanges: Boolean,
         source: ListenSource
-    ): Flow<DocumentSnapshot?> = callbackFlow {
+    ): Flow<DocumentSnapshot> = callbackFlow {
         val options = snapshotListenOptions(includeMetadataChanges, source)
         val handle = iosDocument.addSnapshotListenerWithOptions(options) { snapshot, error ->
             if (error != null) {
                 close(RuntimeException(error.localizedDescription))
                 return@addSnapshotListenerWithOptions
             }
-            trySend(snapshot?.let { DocumentSnapshot(it) })
+            if (snapshot != null) {
+                trySend(DocumentSnapshot(snapshot))
+            }
         }
         awaitClose {
             handle.remove()

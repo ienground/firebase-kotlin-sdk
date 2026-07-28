@@ -11,3 +11,6 @@ expect class FirebaseFunctionsException : Exception {
         INTERNAL, UNAVAILABLE, DATA_LOSS, UNAUTHENTICATED
     }
 }
+
+val FirebaseFunctionsException.effectiveCode: FirebaseFunctionsException.Code
+    get() = code

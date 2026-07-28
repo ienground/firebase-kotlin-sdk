@@ -6,6 +6,8 @@ import zone.ien.firebase.FirebaseApp
 expect class FirebaseFunctions {
     fun getHttpsCallable(name: String): HttpsCallableReference
     fun getHttpsCallableFromUrl(url: String): HttpsCallableReference
+    fun httpsCallable(nameOrUrl: String): HttpsCallableReference
+    operator fun get(nameOrUrl: String): HttpsCallableReference
     fun useEmulator(host: String, port: Int)
 
     companion object {
