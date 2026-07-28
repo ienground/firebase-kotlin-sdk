@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class TransportApiContractTest {
     @Test
-    fun 전송_API_타입이_공통에_노출된다() {
+    fun testTransportApiTypesExposedInCommonApi() {
         assertEquals("Encoding", Encoding::class.simpleName)
         assertEquals("Event", Event::class.simpleName)
         assertEquals("Transport", Transport::class.simpleName)
@@ -14,7 +14,7 @@ class TransportApiContractTest {
     }
 
     @Test
-    fun 우선순위는_지원하는_항목을_모두_제공한다() {
+    fun testPriorityProvidesAllSupportedValues() {
         assertEquals(
             listOf("DEFAULT", "VERY_LOW", "HIGHEST"),
             Priority.entries.map { it.name }

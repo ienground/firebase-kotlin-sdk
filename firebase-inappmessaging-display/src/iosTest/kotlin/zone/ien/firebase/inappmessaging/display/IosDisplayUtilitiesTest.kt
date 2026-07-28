@@ -28,7 +28,7 @@ class IosDisplayUtilitiesTest {
     }
 
     @Test
-    fun 표시_리스너는_dispatcher가_실행할_때까지_호출하지_않는다() {
+    fun testDisplayListenerNotCalledUntilDispatcherExecutes() {
         var scheduled: (() -> Unit)? = null
         var listenerCalled = false
         val dispatcher = IosDisplayListenerDispatcher { block -> scheduled = block }
@@ -54,7 +54,7 @@ class IosDisplayUtilitiesTest {
     }
 
     @Test
-    fun 기본_dispatcher는_표시_리스너를_main_thread에서_호출한다() {
+    fun testDefaultDispatcherCallsDisplayListenerOnMainThread() {
         var listenerCalled = false
         var calledOnMainThread = false
         val dispatcher = IosDisplayListenerDispatcher()

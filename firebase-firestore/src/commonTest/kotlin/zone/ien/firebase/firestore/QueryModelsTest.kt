@@ -7,7 +7,7 @@ import kotlin.test.assertNotNull
 
 class QueryModelsTest {
     @Test
-    fun 공통_계약에서_기존_무인자_get과_snapshots를_호출할_수_있다() {
+    fun testQueryAndDocumentReferenceGetAndSnapshotsDefaults() {
         val queryGet: suspend (Query) -> QuerySnapshot = { it.get() }
         val querySnapshots: (Query) -> Flow<QuerySnapshot> = { it.snapshots() }
         val documentGet: suspend (DocumentReference) -> DocumentSnapshot = { it.get() }
@@ -20,14 +20,14 @@ class QueryModelsTest {
     }
 
     @Test
-    fun 정렬_방향은_오름차순과_내림차순을_제공한다() {
+    fun testQueryDirectionEnumValues() {
         assertEquals(listOf("ASCENDING", "DESCENDING"), QueryDirection.entries.map { it.name })
         assertEquals(Direction.ASCENDING, QueryDirection.ASCENDING)
         assertEquals(Direction.DESCENDING, QueryDirection.DESCENDING)
     }
 
     @Test
-    fun 조건_연산자는_지원하는_항목을_모두_제공한다() {
+    fun testFilterOperatorEnumValues() {
         assertEquals(
             listOf(
                 "EQUAL",

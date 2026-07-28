@@ -52,7 +52,7 @@ class ConnectorContractTest {
     }
 
     @Test
-    fun 생성형_커넥터가_사용할_설정값을_구분한다() {
+    fun testGeneratedConnectorDistinguishesConfigValues() {
         val production = ConnectorConfig("orders", "asia-northeast3", "mobile")
         val emulator = production.copy(location = "local")
 
@@ -62,7 +62,7 @@ class ConnectorContractTest {
     }
 
     @Test
-    fun 동시_실행에_고유_id를_원자적으로_발급한다() = runBlocking {
+    fun testAtomicallyIssuesUniqueIdForConcurrentExecutions() = runBlocking {
         repeat(10) {
             val tracker = DataConnectRequestStateTracker("GetMovie", Unit)
             val ready = Channel<Unit>(capacity = 100)
@@ -85,7 +85,7 @@ class ConnectorContractTest {
     }
 
     @Test
-    fun 이전_실행의_늦은_완료가_최신_상태를_덮지_않는다() {
+    fun testLateCompletionOfPreviousExecutionDoesNotOverwriteLatestState() {
         val tracker = DataConnectRequestStateTracker("GetMovie", Unit)
         val first = tracker.begin(null)
         val second = tracker.begin(null)
@@ -97,7 +97,7 @@ class ConnectorContractTest {
     }
 
     @Test
-    fun 구독_이벤트_순번은_execute_상태와_독립적이다() {
+    fun testSubscriptionEventSequenceIsIndependentOfExecuteState() {
         val tracker = DataConnectRequestStateTracker("GetMovie", Unit)
         val events = DataConnectSubscriptionEventSequence()
 

@@ -6,7 +6,7 @@ import kotlin.test.assertNull
 
 class AppDistributionModelsTest {
     @Test
-    fun 릴리스_정보를_보존한다() {
+    fun testAppDistributionReleasePreservesInfo() {
         val release = AppDistributionRelease("2.1.0", 21, null, "APK")
 
         assertEquals("2.1.0", release.displayVersion)
@@ -16,7 +16,7 @@ class AppDistributionModelsTest {
     }
 
     @Test
-    fun 업데이트_진행률을_보존한다() {
+    fun testAppDistributionUpdateProgressPreservesValues() {
         val progress = UpdateProgress(512, 1_024, UpdateStatus.DOWNLOADING)
 
         assertEquals(512L, progress.apkBytesDownloaded)
@@ -25,7 +25,7 @@ class AppDistributionModelsTest {
     }
 
     @Test
-    fun 예외는_메시지와_상태를_보존한다() {
+    fun testAppDistributionExceptionPreservesMessageAndState() {
         val exception = FirebaseAppDistributionException(
             "인증 실패",
             FirebaseAppDistributionException.Status.AUTHENTICATION_FAILURE

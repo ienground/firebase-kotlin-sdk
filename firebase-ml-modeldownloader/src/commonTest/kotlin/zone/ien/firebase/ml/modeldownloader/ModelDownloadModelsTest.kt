@@ -7,7 +7,7 @@ import kotlin.test.assertTrue
 
 class ModelDownloadModelsTest {
     @Test
-    fun 다운로드_조건의_기본값은_모두_비활성이다() {
+    fun testDownloadConditionsDefaultsDisabled() {
         val conditions = CustomModelDownloadConditions.Builder().build()
 
         assertFalse(conditions.requireWifi)
@@ -16,7 +16,7 @@ class ModelDownloadModelsTest {
     }
 
     @Test
-    fun 다운로드_조건을_조합할_수_있다() {
+    fun testCanCombineDownloadConditions() {
         val conditions = CustomModelDownloadConditions.Builder()
             .requireWifi()
             .requireDeviceIdle()
@@ -29,7 +29,7 @@ class ModelDownloadModelsTest {
     }
 
     @Test
-    fun 다운로드_유형은_지원하는_항목을_모두_제공한다() {
+    fun testDownloadTypeProvidesAllSupportedValues() {
         assertEquals(
             listOf("LOCAL_MODEL", "LOCAL_MODEL_UPDATE_IN_BACKGROUND", "LATEST_MODEL"),
             DownloadType.entries.map { it.name }

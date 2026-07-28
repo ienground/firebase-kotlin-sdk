@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class FirebaseRemoteConfigModelsTest {
     @Test
-    fun 설정_빌더는_기본값을_사용한다() {
+    fun testRemoteConfigSettingsBuilderUsesDefaultValues() {
         val settings = FirebaseRemoteConfigSettings.Builder().build()
 
         assertEquals(43_200L, settings.minimumFetchIntervalInSeconds)
@@ -13,7 +13,7 @@ class FirebaseRemoteConfigModelsTest {
     }
 
     @Test
-    fun 설정_빌더는_지정값과_연쇄_호출을_보존한다() {
+    fun testRemoteConfigSettingsBuilderPreservesCustomValuesAndChaining() {
         val settings = FirebaseRemoteConfigSettings.Builder()
             .setMinimumFetchIntervalInSeconds(0)
             .setFetchTimeoutInSeconds(15)
@@ -24,7 +24,7 @@ class FirebaseRemoteConfigModelsTest {
     }
 
     @Test
-    fun 상태와_값_출처는_지원하는_항목을_모두_제공한다() {
+    fun testRemoteConfigEnumsProvideAllSupportedValues() {
         assertEquals(
             listOf("SUCCESS", "FAILURE", "THROTTLED", "NO_FETCH_YET"),
             FetchStatus.entries.map { it.name }

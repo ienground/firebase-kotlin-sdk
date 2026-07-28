@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class DataConnectOperationContractTest {
     @Test
-    fun 쿼리_결과가_요청과_데이터_출처를_보존한다() {
+    fun testQueryResultPreservesRequestAndDataOrigin() {
         val result = DataConnectQueryResult(
             operationName = "GetMovie",
             variables = mapOf("id" to "movie-1"),

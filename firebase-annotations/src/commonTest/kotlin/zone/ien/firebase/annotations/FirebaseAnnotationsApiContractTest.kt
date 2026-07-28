@@ -9,7 +9,7 @@ import zone.ien.firebase.annotations.concurrent.UiThread
 
 class FirebaseAnnotationsApiContractTest {
     @Test
-    fun 공개_어노테이션이_모두_노출된다() {
+    fun testPublicAnnotationsExposed() {
         assertEquals(
             listOf("PreviewApi", "DeferredApi", "Background", "Blocking", "Lightweight", "UiThread"),
             listOf(

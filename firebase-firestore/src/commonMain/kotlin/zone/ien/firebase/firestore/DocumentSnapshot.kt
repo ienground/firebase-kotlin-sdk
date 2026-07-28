@@ -34,16 +34,14 @@ inline fun <reified T> castValue(value: Any?): T {
     if (value is T) return value
 
     if (value is Number) {
-        val converted: Any = when (T::class) {
-            Int::class -> value.toInt()
-            Long::class -> value.toLong()
-            Double::class -> value.toDouble()
-            Float::class -> value.toFloat()
-            Short::class -> value.toShort()
-            Byte::class -> value.toByte()
-            else -> value
+        when (T::class) {
+            Int::class -> return value.toInt() as T
+            Long::class -> return value.toLong() as T
+            Double::class -> return value.toDouble() as T
+            Float::class -> return value.toFloat() as T
+            Short::class -> return value.toShort() as T
+            Byte::class -> return value.toByte() as T
         }
-        return converted as T
     }
 
     return value as T

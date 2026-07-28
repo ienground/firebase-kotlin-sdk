@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class TransportRuntimeApiContractTest {
     @Test
-    fun 런타임_계약이_공통_API에_노출된다() {
+    fun testRuntimeContractExposedInCommonApi() {
         assertEquals("TransportRuntime", TransportRuntime::class.simpleName)
         assertEquals("Destination", Destination::class.simpleName)
     }

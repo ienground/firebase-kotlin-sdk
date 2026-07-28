@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class DataTransportApiContractTest {
     @Test
-    fun 전송_등록자가_공통_API에_노출된다() {
+    fun testTransportRegistrarExposedInCommonApi() {
         assertEquals("TransportRegistrar", TransportRegistrar::class.simpleName)
     }
 }

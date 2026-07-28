@@ -7,7 +7,7 @@ import kotlin.test.assertTrue
 
 class FirebaseModelDownloaderIosTest {
     @Test
-    fun 모델을_받으면_메모리_목록에_저장한다() = runBlocking {
+    fun testSavesDownloadedModelToMemoryList() = runBlocking {
         val downloader = FirebaseModelDownloader.instance
         val modelName = "ios-test-model"
         downloader.deleteDownloadedModel(modelName)
@@ -20,7 +20,7 @@ class FirebaseModelDownloaderIosTest {
     }
 
     @Test
-    fun 저장된_모델을_삭제한다() = runBlocking {
+    fun testDeletesSavedModel() = runBlocking {
         val downloader = FirebaseModelDownloader.instance
         val modelName = "ios-delete-model"
         downloader.getModel(modelName, DownloadType.LOCAL_MODEL, null)

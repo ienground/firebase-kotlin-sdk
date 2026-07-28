@@ -18,7 +18,7 @@ import zone.ien.firebase.installations.interop.InstallationTokenResult as Intero
 
 class InstallationTokenResultTest {
     @Test
-    fun 토큰_정보를_보존하고_상호운용_계약을_구현한다() {
+    fun testInstallationTokenResultPreservesTokenAndImplementsContract() {
         val result: InteropTokenResult = InstallationTokenResult(
             token = "token",
             tokenExpirationTimestamp = 2_000,
@@ -31,7 +31,7 @@ class InstallationTokenResultTest {
     }
 
     @Test
-    fun 공식_생성_시각_지원_여부를_구분한다() {
+    fun testDistinguishesOfficialCreationTimestampSupport() {
         val supported = InstallationTokenResult(
             token = "android-token",
             tokenExpirationTimestamp = 2_000,
@@ -48,7 +48,7 @@ class InstallationTokenResultTest {
     }
 
     @Test
-    fun 공개_시간_속성은_epoch_milliseconds_계약을_명시한다() {
+    fun testPublicTimePropertiesSpecifyEpochMillisecondsContract() {
         val result = InstallationTokenResult(
             token = "token",
             tokenExpirationTimestamp = 1_710_003_600_000,
@@ -80,7 +80,7 @@ class InstallationTokenResultTest {
     }
 
     @Test
-    fun 한_리스너의_예외가_다른_리스너의_알림을_막지_않는다() {
+    fun testListenerExceptionDoesNotBlockOtherListeners() {
         val state = FidMemoryState()
         val received = mutableListOf<String>()
         state.registerFidListener(FidListener { error("listener failure") })
@@ -92,7 +92,7 @@ class InstallationTokenResultTest {
     }
 
     @Test
-    fun 동일한_앱은_같은_인스턴스와_FID_상태를_공유한다() {
+    fun testSameAppSharesInstanceAndFidState() {
         val cache = IdentityInstanceCache<Any>()
         var creationCount = 0
 
@@ -107,7 +107,7 @@ class InstallationTokenResultTest {
 
     @OptIn(ExperimentalAtomicApi::class)
     @Test
-    fun 동시에_등록한_모든_리스너가_유실_없이_알림을_받는다() = runBlocking {
+    fun testAllConcurrentlyRegisteredListenersReceiveNotifications() = runBlocking {
         val state = FidMemoryState()
         val callbackCount = AtomicInt(0)
         val start = CompletableDeferred<Unit>()

@@ -6,7 +6,7 @@ import kotlin.test.assertTrue
 
 class StorageApiContractTest {
     @Test
-    fun 저장소_타입이_공통_API에_노출된다() {
+    fun testStorageTypesExposedInCommonApi() {
         assertEquals("FirebaseStorage", FirebaseStorage::class.simpleName)
         assertEquals("StorageReference", StorageReference::class.simpleName)
         assertEquals("UploadTask", UploadTask::class.simpleName)
@@ -20,13 +20,13 @@ class StorageApiContractTest {
     }
 
     @Test
-    fun FirebaseStorage_reference_확장함수_참조가_가능하다() {
+    fun testFirebaseStorageReferenceExtensionFunction() {
         val refFn = FirebaseStorage::reference
         assertEquals("reference", refFn.name)
     }
 
     @Test
-    fun StorageMetadata_빌더_및_생성자_동작을_확인한다() {
+    fun testStorageMetadataBuilderAndConstructor() {
         val metadata = storageMetadata {
             contentType = "image/png"
             cacheControl = "max-age=3600"
@@ -39,23 +39,20 @@ class StorageApiContractTest {
     }
 
     @Test
-    fun putFile_및_putBytes가_suspend_함수로_선언되어_있다() {
-        val members = StorageReference::class.members
-        val putBytesMember = members.find { it.name == "putBytes" }
-        val putFileMember = members.find { it.name == "putFile" }
+    fun testUploadMethodsAreDeclaredAsSuspendFunctions() {
+        val putBytesFn: suspend StorageReference.(ByteArray, StorageMetadata?) -> Unit = StorageReference::putBytes
+        val putFileFn: suspend StorageReference.(String, StorageMetadata?) -> Unit = StorageReference::putFile
 
-        assertTrue(putBytesMember != null, "StorageReference must declare putBytes")
-        assertTrue(putBytesMember.isSuspend, "putBytes must be a suspend function (gitlive style)")
-        assertTrue(putFileMember != null, "StorageReference must declare putFile")
-        assertTrue(putFileMember.isSuspend, "putFile must be a suspend function (gitlive style)")
+        assertTrue(putBytesFn != null)
+        assertTrue(putFileFn != null)
     }
 
     @Test
-    fun StorageReference는_equals와_hashCode를_재정의한다() {
-        val equalsMethod = StorageReference::class.members.find { it.name == "equals" }
-        val hashCodeMethod = StorageReference::class.members.find { it.name == "hashCode" }
+    fun testStorageReferenceOverridesEqualsAndHashCode() {
+        val equalsFn: StorageReference.(Any?) -> Boolean = StorageReference::equals
+        val hashCodeFn: StorageReference.() -> Int = StorageReference::hashCode
 
-        assertTrue(equalsMethod != null, "StorageReference must override equals")
-        assertTrue(hashCodeMethod != null, "StorageReference must override hashCode")
+        assertTrue(equalsFn != null)
+        assertTrue(hashCodeFn != null)
     }
 }

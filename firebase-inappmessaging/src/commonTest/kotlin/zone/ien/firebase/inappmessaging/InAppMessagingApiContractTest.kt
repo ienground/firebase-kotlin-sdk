@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class InAppMessagingApiContractTest {
     @Test
-    fun 인앱_메시징_타입이_공통_API에_노출된다() {
+    fun testInAppMessagingTypesExposedInCommonApi() {
         assertEquals("FirebaseInAppMessaging", FirebaseInAppMessaging::class.simpleName)
     }
 }

@@ -8,7 +8,7 @@ import kotlin.test.assertTrue
 
 class FirebaseABTestingIosTest {
     @Test
-    fun 요청된_실험은_메모리에_기록하지만_적용된_실험으로_보고하지_않는다() {
+    fun testRecordedExperimentNotReportedAsApplied() {
         val testing = FirebaseABTesting("frc")
 
         testing.replaceAllExperiments(
@@ -43,7 +43,7 @@ class FirebaseABTestingIosTest {
     }
 
     @Test
-    fun 실험_목록을_모두_제거한다() {
+    fun testClearsAllExperiments() {
         val testing = FirebaseABTesting("frc")
         testing.replaceAllExperiments(
             listOf(validExperiment()),
@@ -58,7 +58,7 @@ class FirebaseABTestingIosTest {
     }
 
     @Test
-    fun 필수_실험_필드가_누락되면_거부한다() {
+    fun testRejectsMissingRequiredExperimentFields() {
         val testing = FirebaseABTesting("frc")
 
         assertFailsWith<AbtException> {
@@ -67,7 +67,7 @@ class FirebaseABTestingIosTest {
     }
 
     @Test
-    fun 생성_시_고정된_origin과_다른_기존_overload_호출을_거부한다() {
+    fun testRejectsDifferentOriginInOverloadCall() {
         val testing = FirebaseABTesting("frc")
 
         assertEquals("frc", testing.originService)

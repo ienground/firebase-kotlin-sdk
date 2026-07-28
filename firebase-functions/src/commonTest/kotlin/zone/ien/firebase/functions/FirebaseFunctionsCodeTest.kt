@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class FirebaseFunctionsCodeTest {
     @Test
-    fun 함수_오류_코드는_gRPC_상태를_모두_제공한다() {
+    fun testFunctionsErrorCodeProvidesAllGrpcStatuses() {
         assertEquals(
             listOf(
                 "OK",
