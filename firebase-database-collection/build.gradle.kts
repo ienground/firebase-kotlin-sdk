@@ -43,7 +43,7 @@ kotlin {
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
-            api("com.google.firebase:firebase-database-collection:18.0.1")
+            api("com.google.firebase:firebase-database-collection:19.0.0")
         }
 
         val androidMain by getting {

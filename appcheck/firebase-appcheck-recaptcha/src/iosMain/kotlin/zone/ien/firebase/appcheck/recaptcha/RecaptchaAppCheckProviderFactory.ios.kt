@@ -11,7 +11,7 @@ public actual class RecaptchaAppCheckProviderFactory : AppCheckProviderFactory {
         get() = throw UnsupportedOperationException("RecaptchaAppCheckProviderFactory is not supported on iOS. Apple platforms use AppAttest/DeviceCheck instead.")
 
     public actual companion object {
-        public actual fun getInstance(): RecaptchaAppCheckProviderFactory {
+        public actual fun getInstance(siteKey: String): RecaptchaAppCheckProviderFactory {
             throw UnsupportedOperationException("RecaptchaAppCheckProviderFactory is not supported on iOS. Apple platforms use AppAttest/DeviceCheck instead.")
         }
     }

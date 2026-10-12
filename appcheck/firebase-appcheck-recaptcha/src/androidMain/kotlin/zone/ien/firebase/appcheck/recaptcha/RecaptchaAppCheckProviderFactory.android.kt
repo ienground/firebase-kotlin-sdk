@@ -15,8 +15,8 @@ public actual class RecaptchaAppCheckProviderFactory private actual constructor(
         get() = androidRecaptchaFactory
 
     public actual companion object {
-        public actual fun getInstance(): RecaptchaAppCheckProviderFactory {
-            return RecaptchaAppCheckProviderFactory(AndroidRecaptchaAppCheckProviderFactory.getInstance())
+        public actual fun getInstance(siteKey: String): RecaptchaAppCheckProviderFactory {
+            return RecaptchaAppCheckProviderFactory(AndroidRecaptchaAppCheckProviderFactory.getInstance(siteKey))
         }
     }
 }

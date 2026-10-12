@@ -4,10 +4,10 @@ import zone.ien.firebase.appcheck.FirebaseAppCheck
 import zone.ien.firebase.appcheck.recaptcha.RecaptchaAppCheckProviderFactory
 
 public object AppCheckRecaptchaTest {
-    public fun verifyRecaptchaContract() {
+    public fun verifyRecaptchaContract(siteKey: String) {
         try {
             // 1. Verify compilation & runtime access to RecaptchaAppCheckProviderFactory
-            val factory = RecaptchaAppCheckProviderFactory.getInstance()
+            val factory = RecaptchaAppCheckProviderFactory.getInstance(siteKey)
             println("RecaptchaAppCheckProviderFactory instance obtained successfully.")
 
             // 2. Verify installation flow

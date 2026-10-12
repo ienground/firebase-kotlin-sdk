@@ -8,8 +8,10 @@ public actual class TransportRuntime internal constructor(
     internal val androidRuntime: com.google.android.datatransport.runtime.TransportRuntime
 ) {
     public actual fun newFactory(destinationName: String): TransportFactory {
-        val androidFactory = androidRuntime.newFactory(destinationName)
-        return AndroidTransportFactoryWrapper(androidFactory)
+        return newFactory(object : Destination {
+            override val name: String = destinationName
+            override val extras: ByteArray? = null
+        })
     }
 
     public actual fun newFactory(destination: Destination): TransportFactory {

@@ -27,6 +27,7 @@ kotlin {
         androidMain {
             dependencies {
                 api(libs.firebase.android.protolite.well.known.types)
+                implementation(libs.protobuf.javalite)
             }
         }
         iosMain {
