@@ -27,6 +27,6 @@ example/iosApp/iosApp/GoogleService-Info.plist
 
 # SwiftPM Local Cache Build Directories
 .build/
-example/iosApp/KotlinMultiplatformLinkedPackage
+example/iosApp/KotlinMultiplatformLinkedPackage/.build/
 /example/androidApp/release/
 example/iosApp/Configuration/LocalConfig.xcconfig
