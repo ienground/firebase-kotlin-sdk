@@ -1,5 +1,6 @@
 package zone.ien.firebase.dataconnect.connectors
 
+import com.google.firebase.annotations.InternalForInheritanceFirebaseApi
 import com.google.firebase.dataconnect.DataConnectOperationException as AndroidOperationException
 import com.google.firebase.dataconnect.DataConnectOperationFailureResponse as AndroidFailureResponse
 import com.google.firebase.dataconnect.DataConnectPathSegment as AndroidPathSegment
@@ -43,12 +44,14 @@ class AndroidDataConnectErrorMappingTest {
         assertSame(cancellation, mapAndroidFailure("GetMovie", cancellation))
     }
 
+    @OptIn(InternalForInheritanceFirebaseApi::class)
     private data class TestFailureResponse(
         override val rawData: Map<String, Any?>?,
         override val data: String?,
         override val errors: List<AndroidFailureResponse.ErrorInfo>
     ) : AndroidFailureResponse<String>
 
+    @OptIn(InternalForInheritanceFirebaseApi::class)
     private data class TestErrorInfo(
         override val message: String,
         override val path: List<AndroidPathSegment>
