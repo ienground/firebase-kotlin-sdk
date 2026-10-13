@@ -57,6 +57,7 @@ kotlin {
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
             api(libs.firebase.android.appcheck.interop)
+            implementation(libs.play.services.tasks)
         }
 
         val androidMain by getting {

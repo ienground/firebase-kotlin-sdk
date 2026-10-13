@@ -77,7 +77,7 @@ public actual interface TransportFactory {
 }
 public class AndroidTransportFactoryWrapper(private val androidFactory: com.google.android.datatransport.TransportFactory) : TransportFactory {
     override fun <T : Any> getTransport(name: String, payloadType: KClass<T>, transformer: Transformer<T, ByteArray>): Transport<T> =
-        AndroidTransportWrapper(androidFactory.getTransport(name, payloadType.javaObjectType, AndroidTransformerAdapter(transformer)))
+        AndroidTransportWrapper(androidFactory.getTransport(name, payloadType.javaObjectType, com.google.android.datatransport.Encoding.of("proto"), AndroidTransformerAdapter(transformer)))
     override fun <T : Any> getTransport(name: String, payloadType: KClass<T>, encoding: Encoding, transformer: Transformer<T, ByteArray>): Transport<T> =
         AndroidTransportWrapper(androidFactory.getTransport(name, payloadType.javaObjectType, com.google.android.datatransport.Encoding.of(encoding.name), AndroidTransformerAdapter(transformer)))
 }

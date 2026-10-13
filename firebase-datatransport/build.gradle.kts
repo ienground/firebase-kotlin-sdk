@@ -44,7 +44,7 @@ kotlin {
 
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.firebase.android.bom))
-            api("com.google.firebase:firebase-datatransport:20.0.1")
+            api("com.google.firebase:firebase-datatransport:21.0.0")
         }
 
         val androidMain by getting {

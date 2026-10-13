@@ -16,13 +16,22 @@ jobs:
       matrix:
         include:
           - target: iosSimulatorArm64Test
-            os: macos-26
+            os: xcode-27
           - target: testAndroidHostTest
             os: ubuntu-latest
     runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v4.1.7
+    - name: Xcode 27 버전 확인
+      if: matrix.target == 'iosSimulatorArm64Test'
+      run: |
+        xcode_output="$(xcodebuild -version)"
+        echo "$xcode_output"
+        if ! echo "$xcode_output" | grep -Eq '^Xcode 27\.'; then
+          echo "Xcode 27 환경이 필요합니다." >&2
+          exit 1
+        fi
     - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
