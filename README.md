@@ -8,7 +8,7 @@
 
 
 [![Sonatype Central](https://maven-badges.sml.io/sonatype-central/zone.ien.firebase/firebase-common/badge.svg?style=flat&subject=Sonatype%20Central&color=blue)](https://maven-badges.sml.io/sonatype-central/zone.ien.firebase/firebase-common)
-[![Kotlin](https://img.shields.io/badge/kotlin-2.4.10-blue.svg)](https://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.4.21-blue.svg)](https://kotlinlang.org)
 [![Platform](https://img.shields.io/badge/platform-android%20%7C%20ios-lightgrey.svg)](https://kotlinlang.org/docs/multiplatform.html)
 
 A Kotlin Multiplatform (KMP) wrapper around Firebase platform SDKs, designed to expose native Kotlin-first APIs for Android and iOS projects.
@@ -25,29 +25,54 @@ A Kotlin Multiplatform (KMP) wrapper around Firebase platform SDKs, designed to 
 
 | Firebase Feature | Android Support | Android SDK Version | iOS Support | iOS SDK Version | Completion Rate | Under the Hood |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| **Authentication** (`firebase-auth`) | 🟢 Yes | `24.2.0` | 🟢 Yes | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK |
-| **Cloud Firestore** (`firebase-firestore`) | 🟢 Yes | `26.4.1` | 🟢 Yes | `12.14.0` | **92%** | Native GMS / iOS SwiftPM SDK, including query builders |
-| **Realtime Database** (`firebase-database`) | 🟢 Yes | `22.0.1` | 🟢 Yes | `12.14.0` | **85%** | Native GMS / iOS SwiftPM SDK |
-| **Cloud Storage** (`firebase-storage`) | 🟢 Yes | `22.0.1` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK |
-| **Cloud Functions** (`firebase-functions`) | 🟢 Yes | `22.1.1` | 🟢 Yes | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK |
-| **Remote Config** (`firebase-config`) | 🟢 Yes | BoM `34.16.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK |
-| **Crashlytics** (`firebase-crashlytics`) | 🟢 Yes | `20.1.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK |
-| **Cloud Messaging** (`firebase-messaging`) | 🟢 Yes | `25.1.1` | 🟢 Yes | `12.14.0` | **85%** | Native SDK delegation with process-global message and token flows |
-| **Performance Monitoring** (`firebase-perf`) | 🟢 Yes | `22.0.6` | 🟢 Yes | `12.14.0` | **80%** | Native GMS / iOS SwiftPM SDK |
-| **Installations** (`firebase-installations`) | 🟢 Yes | `19.1.2` | 🟢 Yes | `12.14.0` | **95%** | Native SDK delegation; iOS FID listeners and cache clearing are memory-backed |
-| **App Check** (`firebase-appcheck`) | 🟢 Yes | `19.3.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK |
-| **A/B Testing** (`firebase-abt`) | 🟢 Yes | `23.0.1` | 🟡 Partial | Memory actual | **85%** (iOS Partial) | Android native delegate/factory; iOS records requested experiments without applying them |
-| **Sessions** (`firebase-sessions`) | 🟢 Yes | `3.0.7` | 🟢 Yes | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK (Background session telemetry auto-runs) |
+| **Authentication** (`firebase-auth`) | 🟢 Yes | `25.0.0` | 🟢 Yes | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK |
+| **Cloud Firestore** (`firebase-firestore`) | 🟢 Yes | `27.0.0` | 🟢 Yes | `12.14.0` | **92%** | Native GMS / iOS SwiftPM SDK, including query builders |
+| **Realtime Database** (`firebase-database`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `12.14.0` | **85%** | Native GMS / iOS SwiftPM SDK |
+| **Cloud Storage** (`firebase-storage`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK |
+| **Cloud Functions** (`firebase-functions`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK |
+| **Remote Config** (`firebase-config`) | 🟢 Yes | BoM `35.0.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK |
+| **Crashlytics** (`firebase-crashlytics`) | 🟢 Yes | `21.0.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK |
+| **Cloud Messaging** (`firebase-messaging`) | 🟢 Yes | `26.0.0` | 🟢 Yes | `12.14.0` | **85%** | Native SDK delegation with process-global message and token flows |
+| **Performance Monitoring** (`firebase-perf`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `12.14.0` | **80%** | Native GMS / iOS SwiftPM SDK |
+| **Installations** (`firebase-installations`) | 🟢 Yes | `20.0.0` | 🟢 Yes | `12.14.0` | **95%** | Native SDK delegation; iOS FID listeners and cache clearing are memory-backed |
+| **App Check** (`firebase-appcheck`) | 🟢 Yes | `20.0.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK |
+| **A/B Testing** (`firebase-abt`) | 🟢 Yes | `24.0.0` | 🟡 Partial | Memory actual | **85%** (iOS Partial) | Android native delegate/factory; iOS records requested experiments without applying them |
+| **Sessions** (`firebase-sessions`) | 🟢 Yes | `4.0.0` | 🟢 Yes | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK (Background session telemetry auto-runs) |
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 Yes | N/A | 🟢 Yes | N/A | **95%** | Pure Kotlin serialization pipeline |
-| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 Yes | `26.0.2` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Memory-based custom model simulation (no live native model downloading) |
-| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 Yes | `17.14.0` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Memory-based custom Gemini content simulation (no live native AI model dispatching) |
-| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 Yes | `16.0.0-beta04` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Memory-based on-device custom Gemini content simulation (no live native on-device model dispatching) |
-| **App Distribution** (`firebase-appdistribution`) | 🟢 Yes | `16.0.0-beta20` | 🟡 Partial | `12.14.0` | **80%** (iOS Partial) | Tester sign-in and update checks (no in-app progress monitoring) |
-| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 Yes | `17.3.2` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Android generated-operation delegate; iOS seeded-cache memory operations only |
-| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 Yes | `22.0.3` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK (Core API delegate) |
-| **In-App Messaging Display** (`firebase-inappmessaging-display`) | 🟢 Yes | `22.0.3` | 🟢 Yes | `12.14.0` | **90%** | Native custom display delegates with typed card, banner, modal, and image-only models |
+| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 Yes | `26.1.1` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Memory-based custom model simulation (no live native model downloading) |
+| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 Yes | `18.0.0` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Memory-based custom Gemini content simulation (no live native AI model dispatching) |
+| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 Yes | `16.0.0-beta06` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Memory-based on-device custom Gemini content simulation (no live native on-device model dispatching) |
+| **App Distribution** (`firebase-appdistribution`) | 🟢 Yes | `16.0.0-beta21` | 🟡 Partial | `12.14.0` | **80%** (iOS Partial) | Tester sign-in and update checks (no in-app progress monitoring) |
+| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 Yes | `18.0.0` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Android generated-operation delegate; iOS seeded-cache memory operations only |
+| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK (Core API delegate) |
+| **In-App Messaging Display** (`firebase-inappmessaging-display`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `12.14.0` | **90%** | Native custom display delegates with typed card, banner, modal, and image-only models |
 
-Android versions are read from `gradle/libs.versions.toml`; BoM-managed rows use Firebase Android BoM `34.16.0`. iOS native rows use Firebase Apple SDK `12.14.0`; rows marked `Memory actual` do not link the native Apple SDK from common KMP code.
+Android versions are read from `gradle/libs.versions.toml`; BoM-managed rows use Firebase Android BoM `35.0.0`. iOS native rows use Firebase Apple SDK `12.14.0`; rows marked `Memory actual` do not link the native Apple SDK from common KMP code.
+
+---
+
+## Dependencies & Build Environment
+
+The versions below reflect the current repository configuration in `gradle/libs.versions.toml`, the Gradle Wrapper, and module build scripts. Library versions follow the `YYYY.MM.0` format.
+
+| Component | Configured Version |
+| :--- | :--- |
+| Library | `2026.10.0` |
+| Kotlin | `2.4.21` |
+| Gradle | `9.7.0` |
+| Android Gradle Plugin | `9.3.1` |
+| JDK / JVM target | `17` |
+| Android minSdk | `29` |
+| Android compileSdk / targetSdk | `37 / 37` |
+| Firebase Android BoM | `35.0.0` |
+| Firebase Apple SDK (SwiftPM) | `12.14.0` |
+| kotlinx.coroutines | `1.11.0` |
+| Android DataTransport | `5.0.0` |
+| Protobuf javalite | `4.36.2` |
+| Google Services Plugin | `4.5.0` |
+| Firebase Crashlytics Gradle Plugin | `3.0.8` |
+| Compose Multiplatform (sample app) | `1.12.1` |
+| Navigation3 (sample app) | `1.1.2` |
 
 ---
 
@@ -60,11 +85,11 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Core Common Firebase APIs
-            implementation("zone.ien.firebase:firebase-common:1.0.0-beta03")
+            implementation("zone.ien.firebase:firebase-common:2026.10.0")
             
             // Add required feature wrappers
-            implementation("zone.ien.firebase:firebase-auth:1.0.0-beta03")
-            implementation("zone.ien.firebase:firebase-firestore:1.0.0-beta03")
+            implementation("zone.ien.firebase:firebase-auth:2026.10.0")
+            implementation("zone.ien.firebase:firebase-firestore:2026.10.0")
         }
     }
 }
@@ -79,17 +104,17 @@ Ensure your root `build.gradle.kts` applies the Google Services plugin, and your
 This library uses native Swift Package Manager linkage for Apple builds. Make sure the native Xcode package dependencies are resolved during the build pipeline:
 ```bash
 # Resolve SPM dependencies under the iOS build step
-xcodebuild -resolvePackageDependencies -workspace iosApp.xcworkspace -scheme iosApp
+xcodebuild -resolvePackageDependencies -project example/iosApp/iosApp.xcodeproj -scheme iosApp
 ```
 
 > [!IMPORTANT]
-> **Minimum Kotlin Version**: This SwiftPM import feature relies on the official Swift Package Manager integration introduced in **Kotlin 2.4.0** (utilizing the new native `swiftPMDependencies` DSL). Therefore, **Kotlin 2.4.0 or higher is strictly required** as the minimum compiler version to compile and link this library's iOS targets.
+> **Kotlin Version**: This repository uses **Kotlin 2.4.21** and the `swiftPMDependencies` DSL for iOS SDK integration. Use the same Kotlin version as the repository when compiling and linking iOS targets from source.
 
 ---
 
 ## Running the Sample App
 
-The repository includes a Kotlin Multiplatform Compose sample application located in the [example](file:///Users/ienground/IEN_DATA/Developments/AndroidLibrary/firebase-kotlin-sdk/example) directory.
+The repository includes a Kotlin Multiplatform Compose sample application located in the [example](example) directory.
 
 To build and run the sample application successfully, you must provide your own Firebase configuration files:
 1. **Android**: Place your own `google-services.json` inside the `example/androidApp/` directory.

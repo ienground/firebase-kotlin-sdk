@@ -8,7 +8,7 @@
 
 
 [![Sonatype Central](https://maven-badges.sml.io/sonatype-central/zone.ien.firebase/firebase-common/badge.svg?style=flat&subject=Sonatype%20Central&color=blue)](https://maven-badges.sml.io/sonatype-central/zone.ien.firebase/firebase-common)
-[![Kotlin](https://img.shields.io/badge/kotlin-2.4.10-blue.svg)](https://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.4.21-blue.svg)](https://kotlinlang.org)
 [![Platform](https://img.shields.io/badge/platform-android%20%7C%20ios-lightgrey.svg)](https://kotlinlang.org/docs/multiplatform.html)
 
 공식 Firebase 플랫폼 SDK들을 Kotlin Multiplatform(KMP) 환경에서 자연스럽게 사용할 수 있도록 감싸 안은, Kotlin-first 설계 기반의 Android 및 iOS용 래퍼 라이브러리입니다.
@@ -25,29 +25,54 @@
 
 | Firebase 기능 명칭 | Android 지원 | Android SDK 버전 | iOS 지원 | iOS SDK 버전 | 완성도 | 내부 구현 메커니즘 |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| **Authentication** (`firebase-auth`) | 🟢 지원 | `24.2.0` | 🟢 지원 | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Firestore** (`firebase-firestore`) | 🟢 지원 | `26.4.1` | 🟢 지원 | `12.14.0` | **92%** | Native GMS / iOS SwiftPM SDK 위임, 쿼리 빌더 포함 |
-| **Realtime Database** (`firebase-database`) | 🟢 지원 | `22.0.1` | 🟢 지원 | `12.14.0` | **85%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Storage** (`firebase-storage`) | 🟢 지원 | `22.0.1` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Functions** (`firebase-functions`) | 🟢 지원 | `22.1.1` | 🟢 지원 | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Remote Config** (`firebase-config`) | 🟢 지원 | BoM `34.16.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Crashlytics** (`firebase-crashlytics`) | 🟢 지원 | `20.1.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Messaging** (`firebase-messaging`) | 🟢 지원 | `25.1.1` | 🟢 지원 | `12.14.0` | **85%** | 네이티브 SDK 위임 및 프로세스 전역 메시지·토큰 Flow |
-| **Performance Monitoring** (`firebase-perf`) | 🟢 지원 | `22.0.6` | 🟢 지원 | `12.14.0` | **80%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Installations** (`firebase-installations`) | 🟢 지원 | `19.1.2` | 🟢 지원 | `12.14.0` | **95%** | 네이티브 SDK 위임, iOS FID 리스너·캐시 해제는 메모리 기반 |
-| **App Check** (`firebase-appcheck`) | 🟢 지원 | `19.3.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **A/B Testing** (`firebase-abt`) | 🟢 지원 | `23.0.1` | 🟡 부분 지원 | Memory actual | **85%** (iOS Partial) | Android 네이티브 delegate/factory, iOS는 요청 실험만 기록 |
-| **Sessions** (`firebase-sessions`) | 🟢 지원 | `3.0.7` | 🟢 지원 | `12.14.0` | **95%** | iOS SwiftPM SDK 링킹 완료, 백그라운드 세션 텔레메트리 자동 동작 |
+| **Authentication** (`firebase-auth`) | 🟢 지원 | `25.0.0` | 🟢 지원 | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Firestore** (`firebase-firestore`) | 🟢 지원 | `27.0.0` | 🟢 지원 | `12.14.0` | **92%** | Native GMS / iOS SwiftPM SDK 위임, 쿼리 빌더 포함 |
+| **Realtime Database** (`firebase-database`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `12.14.0` | **85%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Storage** (`firebase-storage`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Functions** (`firebase-functions`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Remote Config** (`firebase-config`) | 🟢 지원 | BoM `35.0.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Crashlytics** (`firebase-crashlytics`) | 🟢 지원 | `21.0.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Messaging** (`firebase-messaging`) | 🟢 지원 | `26.0.0` | 🟢 지원 | `12.14.0` | **85%** | 네이티브 SDK 위임 및 프로세스 전역 메시지·토큰 Flow |
+| **Performance Monitoring** (`firebase-perf`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `12.14.0` | **80%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Installations** (`firebase-installations`) | 🟢 지원 | `20.0.0` | 🟢 지원 | `12.14.0` | **95%** | 네이티브 SDK 위임, iOS FID 리스너·캐시 해제는 메모리 기반 |
+| **App Check** (`firebase-appcheck`) | 🟢 지원 | `20.0.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **A/B Testing** (`firebase-abt`) | 🟢 지원 | `24.0.0` | 🟡 부분 지원 | Memory actual | **85%** (iOS Partial) | Android 네이티브 delegate/factory, iOS는 요청 실험만 기록 |
+| **Sessions** (`firebase-sessions`) | 🟢 지원 | `4.0.0` | 🟢 지원 | `12.14.0` | **95%** | iOS SwiftPM SDK 링킹 완료, 백그라운드 세션 텔레메트리 자동 동작 |
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 지원 | N/A | 🟢 지원 | N/A | **95%** | Pure Kotlin 직렬화 파이프라인 |
-| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | `26.0.2` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 모델 조회/삭제 시뮬레이션 지원, 네이티브 링킹 미지원 |
-| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | `17.14.0` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 가상 Gemini 응답 시뮬레이터 지원, 네이티브 링킹 미지원 |
-| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | `16.0.0-beta04` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 가상 온디바이스/하이브리드 AI 추론 시뮬레이션 지원, 네이티브 링킹 미지원 |
-| **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | `16.0.0-beta20` | 🟡 부분 지원 | `12.14.0` | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원, 진행률 추적 미지원 |
-| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | `17.3.2` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | Android 생성 operation 위임, iOS는 시드 캐시 메모리 operation만 지원 |
-| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | `22.0.3` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임, Core 기능 실제 구현 |
-| **In-App Messaging Display** (`firebase-inappmessaging-display`) | 🟢 지원 | `22.0.3` | 🟢 지원 | `12.14.0` | **90%** | 네이티브 custom display delegate와 typed 카드·배너·모달·이미지 전용 모델 |
+| **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | `26.1.1` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 모델 조회/삭제 시뮬레이션 지원, 네이티브 링킹 미지원 |
+| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | `18.0.0` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 가상 Gemini 응답 시뮬레이터 지원, 네이티브 링킹 미지원 |
+| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | `16.0.0-beta06` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 가상 온디바이스/하이브리드 AI 추론 시뮬레이션 지원, 네이티브 링킹 미지원 |
+| **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | `16.0.0-beta21` | 🟡 부분 지원 | `12.14.0` | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원, 진행률 추적 미지원 |
+| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | `18.0.0` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | Android 생성 operation 위임, iOS는 시드 캐시 메모리 operation만 지원 |
+| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임, Core 기능 실제 구현 |
+| **In-App Messaging Display** (`firebase-inappmessaging-display`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `12.14.0` | **90%** | 네이티브 custom display delegate와 typed 카드·배너·모달·이미지 전용 모델 |
 
-Android 버전은 `gradle/libs.versions.toml` 기준입니다. BoM 관리 항목은 Firebase Android BoM `34.16.0`을 표기했습니다. iOS 네이티브 연동 항목은 Firebase Apple SDK `12.14.0` 기준이며, `Memory actual` 항목은 KMP 공통 코드에서 Apple 네이티브 SDK를 직접 링크하지 않습니다.
+Android 버전은 `gradle/libs.versions.toml` 기준입니다. BoM 관리 항목은 Firebase Android BoM `35.0.0`을 표기했습니다. iOS 네이티브 연동 항목은 Firebase Apple SDK `12.14.0` 기준이며, `Memory actual` 항목은 KMP 공통 코드에서 Apple 네이티브 SDK를 직접 링크하지 않습니다.
+
+---
+
+## 의존성 및 빌드 환경
+
+아래 버전은 현재 저장소의 `gradle/libs.versions.toml`, Gradle Wrapper 및 모듈 빌드 설정 기준입니다. 라이브러리 버전은 `YYYY.MM.0` 형식을 사용합니다.
+
+| 항목 | 설정 버전 |
+| :--- | :--- |
+| 라이브러리 | `2026.10.0` |
+| Kotlin | `2.4.21` |
+| Gradle | `9.7.0` |
+| Android Gradle Plugin | `9.3.1` |
+| JDK / JVM target | `17` |
+| Android minSdk | `29` |
+| Android compileSdk / targetSdk | `37 / 37` |
+| Firebase Android BoM | `35.0.0` |
+| Firebase Apple SDK (SwiftPM) | `12.14.0` |
+| kotlinx.coroutines | `1.11.0` |
+| Android DataTransport | `5.0.0` |
+| Protobuf javalite | `4.36.2` |
+| Google Services Plugin | `4.5.0` |
+| Firebase Crashlytics Gradle Plugin | `3.0.8` |
+| Compose Multiplatform (샘플 앱) | `1.12.1` |
+| Navigation3 (샘플 앱) | `1.1.2` |
 
 ---
 
@@ -60,11 +85,11 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Core Common Firebase 기본 모듈
-            implementation("zone.ien.firebase:firebase-common:1.0.0-beta03")
+            implementation("zone.ien.firebase:firebase-common:2026.10.0")
             
             // 사용하고자 하는 기능 래퍼 추가
-            implementation("zone.ien.firebase:firebase-auth:1.0.0-beta03")
-            implementation("zone.ien.firebase:firebase-firestore:1.0.0-beta03")
+            implementation("zone.ien.firebase:firebase-auth:2026.10.0")
+            implementation("zone.ien.firebase:firebase-firestore:2026.10.0")
         }
     }
 }
@@ -79,17 +104,17 @@ kotlin {
 본 라이브러리는 Apple 타겟 빌드 시 Xcode Swift Package Manager를 통한 네이티브 링킹을 지원합니다. iOS 빌드 파이프라인에서 의존성이 정상 해결되도록 해소 명령을 함께 실행해 줍니다:
 ```bash
 # iOS 빌드 단계 수행 전 SPM 의존성 리졸브 실행
-xcodebuild -resolvePackageDependencies -workspace iosApp.xcworkspace -scheme iosApp
+xcodebuild -resolvePackageDependencies -project example/iosApp/iosApp.xcodeproj -scheme iosApp
 ```
 
 > [!IMPORTANT]
-> **최소 Kotlin 버전 요구사항**: 본 라이브러리의 SwiftPM 연동 및 가져오기 기법은 **Kotlin 2.4.0**부터 정식 도입된 새로운 `swiftPMDependencies` DSL 기능을 기반으로 구현되었습니다. 따라서, iOS 타겟을 컴파일하고 링킹하기 위해서는 **Kotlin 2.4.0 이상의 컴파일러 버전이 필수로 요구**됩니다.
+> **Kotlin 버전**: 현재 저장소는 **Kotlin 2.4.21**과 `swiftPMDependencies` DSL을 사용해 iOS SDK를 연동합니다. iOS 타겟을 소스에서 컴파일하고 링킹할 때는 저장소와 동일한 Kotlin 버전을 사용해 주세요.
 
 ---
 
 ## 샘플 앱 실행 방법 (Running the Sample App)
 
-이 저장소에는 [example](file:///Users/ienground/IEN_DATA/Developments/AndroidLibrary/firebase-kotlin-sdk/example) 디렉터리에 위치한 Kotlin Multiplatform Compose 샘플 애플리케이션이 포함되어 있습니다.
+이 저장소에는 [example](example) 디렉터리에 위치한 Kotlin Multiplatform Compose 샘플 애플리케이션이 포함되어 있습니다.
 
 샘플 앱을 성공적으로 빌드하고 직접 테스트해 보려면, 본인의 Firebase 설정 파일을 추가해야 합니다:
 1. **안드로이드 (Android)**: 본인의 `google-services.json` 파일을 `example/androidApp/` 디렉터리 내부에 추가하십시오.
