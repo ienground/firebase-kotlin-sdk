@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -48,7 +48,7 @@ fun PlaceholderScreen(
 
                 navigationIcon = { IenBackButton(onClick = onBack) },
                 title = {
-                    IenText(
+                    Text(
                         text = title,
                         style = IenTheme.typography.title1,
                         color = IenTheme.colors.textPrimary
@@ -72,13 +72,13 @@ fun PlaceholderScreen(
                 
                 shape = ContinuousRoundedRectangle(16.dp)) {
                 Column(modifier = Modifier.padding(24.dp)) {
-                    IenText(
+                    Text(
                         text = "Placeholder Screen",
                         style = IenTheme.typography.title2,
                         color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(12.dp))
-                    IenText(
+                    Text(
                         text = description,
                         style = IenTheme.typography.body1,
                         color = IenTheme.colors.textPrimary.copy(alpha = 0.8f)

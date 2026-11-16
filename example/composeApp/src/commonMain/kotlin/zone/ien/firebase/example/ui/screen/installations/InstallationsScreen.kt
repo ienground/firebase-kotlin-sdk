@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -90,7 +90,7 @@ fun InstallationsScreen(
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Firebase Installations", fontWeight = FontWeight.Bold) },
+                title = { Text("Firebase Installations", fontWeight = FontWeight.Bold) },
                 navigationIcon = { IenBackButton(onClick = onNavigateBack) })
         }
     ) { innerPadding ->
@@ -117,14 +117,14 @@ fun InstallationsScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "ℹ️ Connectivity Requirements",
                         
                         fontWeight = FontWeight.Bold,
                         color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(6.dp))
-                    IenText(
+                    Text(
                         text = "Firebase Installations APIs require a valid google-services configuration, " +
                                "active network connection, and a initialized FirebaseApp instance.",
                         
@@ -142,22 +142,22 @@ fun InstallationsScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    IenText(
+                    Text(
                         text = "Installation Info",
                         
                         fontWeight = FontWeight.Bold
                     )
 
                     Column {
-                        IenText("Installation ID:",  fontWeight = FontWeight.SemiBold, color = primaryColor)
-                        IenText(installationId, )
+                        Text("Installation ID:",  fontWeight = FontWeight.SemiBold, color = primaryColor)
+                        Text(installationId, )
                     }
 
-                    IenDivider()
+                    IenDivider.Horizontal()
 
                     Column {
-                        IenText("Auth Token:",  fontWeight = FontWeight.SemiBold, color = primaryColor)
-                        IenText(authToken, )
+                        Text("Auth Token:",  fontWeight = FontWeight.SemiBold, color = primaryColor)
+                        Text(authToken, )
                     }
 
                     Row(
@@ -165,12 +165,12 @@ fun InstallationsScreen(
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            IenText("Expires At:",  fontWeight = FontWeight.SemiBold)
-                            IenText(tokenExpiresAt, )
+                            Text("Expires At:",  fontWeight = FontWeight.SemiBold)
+                            Text(tokenExpiresAt, )
                         }
                         Column(modifier = Modifier.weight(1f)) {
-                            IenText("Created At:",  fontWeight = FontWeight.SemiBold)
-                            IenText(tokenCreatedAt, )
+                            Text("Created At:",  fontWeight = FontWeight.SemiBold)
+                            Text(tokenCreatedAt, )
                         }
                     }
                 }
@@ -182,7 +182,7 @@ fun InstallationsScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "API Actions",
                         
                         fontWeight = FontWeight.Bold
@@ -204,7 +204,7 @@ fun InstallationsScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Get Installation ID")
+                        Text("Get Installation ID")
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -214,7 +214,7 @@ fun InstallationsScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        IenText("Force Refresh Token:", )
+                        Text("Force Refresh Token:", )
                         IenSwitch(
                             checked = forceRefresh,
                             onCheckedChange = { forceRefresh = it }
@@ -244,16 +244,16 @@ fun InstallationsScreen(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         ) {
-                        IenText("Get Auth Token")
+                        Text("Get Auth Token")
                     }
 
-                    IenDivider(modifier = Modifier.padding(vertical = 12.dp))
+                    IenDivider.Horizontal(modifier = Modifier.padding(vertical = 12.dp))
 
                     IenButton(
                         onClick = { showDeleteConfirmDialog = true },
                         modifier = Modifier.fillMaxWidth(),
                         ) {
-                        IenText("Delete Installation Instance")
+                        Text("Delete Installation Instance")
                     }
                 }
             }
@@ -265,14 +265,14 @@ fun InstallationsScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "Console Logs",
                         
                         fontWeight = FontWeight.Bold,
                         color = primaryColor
                     )
                     Spacer(modifier = Modifier.height(6.dp))
-                    IenText(
+                    Text(
                         text = logMessage,
                         style = LocalTextStyle.current.copy(fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace),
                         color = IenTheme.colors.textSecondary

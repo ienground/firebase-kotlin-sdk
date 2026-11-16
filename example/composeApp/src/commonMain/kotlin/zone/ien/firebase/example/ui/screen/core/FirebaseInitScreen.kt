@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -72,7 +72,7 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
             IenTopAppBar(
                 navigationIcon = { IenBackButton(onClick = onBack) },
                 title = {
-                    IenText(
+                    Text(
                         text = "Firebase Core Init",
                         style = IenTheme.typography.title1,
                         color = IenTheme.colors.textPrimary
@@ -93,13 +93,13 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
                 shape = ContinuousRoundedRectangle(16.dp)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
-                    IenText(
+                    Text(
                         text = "Core Setup Status",
                         style = IenTheme.typography.body1,
                         color = IenTheme.colors.textPrimary.copy(alpha = 0.6f)
                     )
                     Spacer(modifier = Modifier.height(6.dp))
-                    IenText(
+                    Text(
                         text = statusText,
                         style = IenTheme.typography.title1,
                         color = when (AppStateManager.initState) {
@@ -110,7 +110,7 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
                         }
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    IenText(
+                    Text(
                         text = detailMessage,
                         style = IenTheme.typography.body2,
                         color = IenTheme.colors.textPrimary.copy(alpha = 0.8f)
@@ -154,7 +154,7 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
                 state = IenButtonState(enabled = !isInitializing && !isInitialized),
 
             ) {
-                IenText(
+                Text(
                     text = when {
                         isInitializing -> "Initializing..."
                         isInitialized -> "Initialized (Double Tap Prevented)"
@@ -166,7 +166,7 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
             Spacer(modifier = Modifier.height(32.dp))
 
             // Platform File Rules Description
-            IenText(
+            Text(
                 text = "Platform Configuration Instructions",
                 style = IenTheme.typography.title2,
                 color = IenTheme.colors.textPrimary
@@ -177,13 +177,13 @@ fun FirebaseInitScreen(context: FirebasePlatformContext, onBack: () -> Unit) {
                 
                 shape = ContinuousRoundedRectangle(12.dp)) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "Android:\nMust place 'google-services.json' in 'example/androidApp/' directory. Initialization is constrained to run only in the Main Process to prevent secondary process memory crashes.",
                         style = IenTheme.typography.body2,
                         color = IenTheme.colors.textPrimary.copy(alpha = 0.7f)
                     )
                     Spacer(modifier = Modifier.height(12.dp))
-                    IenText(
+                    Text(
                         text = "iOS:\nMust place 'GoogleService-Info.plist' inside 'example/iosApp/iosApp/' directory and register it as an Xcode project bundle resource.",
                         style = IenTheme.typography.body2,
                         color = IenTheme.colors.textPrimary.copy(alpha = 0.7f)

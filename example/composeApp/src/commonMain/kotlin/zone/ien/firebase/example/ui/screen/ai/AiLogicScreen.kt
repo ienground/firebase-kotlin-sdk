@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -79,7 +79,7 @@ fun AiLogicScreen(
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Firebase AI Logic") },
+                title = { Text("Firebase AI Logic") },
                 navigationIcon = { IenBackButton(onClick = onNavigateBack) }
             )
         }
@@ -100,13 +100,13 @@ fun AiLogicScreen(
                         .background(IenTheme.colors.brandWeak)
                         .padding(12.dp)
                 ) {
-                    IenText(
+                    Text(
                         text = "ℹ️ iOS cinterop Bridge Notice",
                         style = IenTheme.typography.title2,
                         color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    IenText(
+                    Text(
                         text = "Firebase AI Logic iOS SDK is Swift-only and cannot be linked directly into KMP via cinterop. This KMP wrapper runs in memory-only mode on iOS (acting as a model simulation engine). To connect to live Vertex AI backend services, integrate the native Swift SDK inside your native iOS target codebase.",
                         style = IenTheme.typography.body2,
                         color = IenTheme.colors.brand
@@ -122,7 +122,7 @@ fun AiLogicScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    IenText(
+                    Text(
                         text = "Model Settings",
                         style = IenTheme.typography.title2,
                         color = if (isSupported) IenTheme.colors.textSecondary else Color.Gray
@@ -189,12 +189,12 @@ fun AiLogicScreen(
                         strokeWidth = 2.dp
                     )
                 } else {
-                    IenText("Generate Content")
+                    Text("Generate Content")
                 }
             }
 
             // Output Console Card
-            IenText(
+            Text(
                 text = "Console Output",
                 style = IenTheme.typography.title2
             )
@@ -212,7 +212,7 @@ fun AiLogicScreen(
                         .fillMaxSize()
                         .verticalScroll(consoleScrollState)
                 ) {
-                    IenText(
+                    Text(
                         text = consoleLogs,
                         color = Color.Green,
                         style = IenTheme.typography.body2.copy(

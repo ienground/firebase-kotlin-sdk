@@ -25,29 +25,29 @@
 
 | Firebase 기능 명칭 | Android 지원 | Android SDK 버전 | iOS 지원 | iOS SDK 버전 | 완성도 | 내부 구현 메커니즘 |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| **Authentication** (`firebase-auth`) | 🟢 지원 | `25.0.0` | 🟢 지원 | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Firestore** (`firebase-firestore`) | 🟢 지원 | `27.0.0` | 🟢 지원 | `12.14.0` | **92%** | Native GMS / iOS SwiftPM SDK 위임, 쿼리 빌더 포함 |
-| **Realtime Database** (`firebase-database`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `12.14.0` | **85%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Storage** (`firebase-storage`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Functions** (`firebase-functions`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Remote Config** (`firebase-config`) | 🟢 지원 | BoM `35.0.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Crashlytics** (`firebase-crashlytics`) | 🟢 지원 | `21.0.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Cloud Messaging** (`firebase-messaging`) | 🟢 지원 | `26.0.0` | 🟢 지원 | `12.14.0` | **85%** | 네이티브 SDK 위임 및 프로세스 전역 메시지·토큰 Flow |
-| **Performance Monitoring** (`firebase-perf`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `12.14.0` | **80%** | Native GMS / iOS SwiftPM SDK 위임 |
-| **Installations** (`firebase-installations`) | 🟢 지원 | `20.0.0` | 🟢 지원 | `12.14.0` | **95%** | 네이티브 SDK 위임, iOS FID 리스너·캐시 해제는 메모리 기반 |
-| **App Check** (`firebase-appcheck`) | 🟢 지원 | `20.0.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Authentication** (`firebase-auth`) | 🟢 지원 | `25.0.0` | 🟢 지원 | `13.1.1` | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Firestore** (`firebase-firestore`) | 🟢 지원 | `27.2.0` | 🟢 지원 | `13.1.1` | **92%** | Native GMS / iOS SwiftPM SDK 위임, 쿼리 빌더 포함 |
+| **Realtime Database** (`firebase-database`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `13.1.1` | **85%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Storage** (`firebase-storage`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `13.1.1` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Functions** (`firebase-functions`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `13.1.1` | **95%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Remote Config** (`firebase-config`) | 🟢 지원 | BoM `35.2.0` | 🟢 지원 | `13.1.1` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Crashlytics** (`firebase-crashlytics`) | 🟢 지원 | `21.1.0` | 🟢 지원 | `13.1.1` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Cloud Messaging** (`firebase-messaging`) | 🟢 지원 | `26.0.2` | 🟢 지원 | `13.1.1` | **85%** | 네이티브 SDK 위임 및 프로세스 전역 메시지·토큰 Flow |
+| **Performance Monitoring** (`firebase-perf`) | 🟢 지원 | `23.0.1` | 🟢 지원 | `13.1.1` | **80%** | Native GMS / iOS SwiftPM SDK 위임 |
+| **Installations** (`firebase-installations`) | 🟢 지원 | `20.0.0` | 🟢 지원 | `13.1.1` | **95%** | 네이티브 SDK 위임, iOS FID 리스너·캐시 해제는 메모리 기반 |
+| **App Check** (`firebase-appcheck`) | 🟢 지원 | `20.1.0` | 🟢 지원 | `13.1.1` | **90%** | Native GMS / iOS SwiftPM SDK 위임 |
 | **A/B Testing** (`firebase-abt`) | 🟢 지원 | `24.0.0` | 🟡 부분 지원 | Memory actual | **85%** (iOS Partial) | Android 네이티브 delegate/factory, iOS는 요청 실험만 기록 |
-| **Sessions** (`firebase-sessions`) | 🟢 지원 | `4.0.0` | 🟢 지원 | `12.14.0` | **95%** | iOS SwiftPM SDK 링킹 완료, 백그라운드 세션 텔레메트리 자동 동작 |
+| **Sessions** (`firebase-sessions`) | 🟢 지원 | `4.0.2` | 🟢 지원 | `13.1.1` | **95%** | iOS SwiftPM SDK 링킹 완료, 백그라운드 세션 텔레메트리 자동 동작 |
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 지원 | N/A | 🟢 지원 | N/A | **95%** | Pure Kotlin 직렬화 파이프라인 |
 | **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 지원 | `26.1.1` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 모델 조회/삭제 시뮬레이션 지원, 네이티브 링킹 미지원 |
-| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | `18.0.0` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 가상 Gemini 응답 시뮬레이터 지원, 네이티브 링킹 미지원 |
-| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | `16.0.0-beta06` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 가상 온디바이스/하이브리드 AI 추론 시뮬레이션 지원, 네이티브 링킹 미지원 |
-| **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | `16.0.0-beta21` | 🟡 부분 지원 | `12.14.0` | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원, 진행률 추적 미지원 |
-| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | `18.0.0` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | Android 생성 operation 위임, iOS는 시드 캐시 메모리 operation만 지원 |
-| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK 위임, Core 기능 실제 구현 |
-| **In-App Messaging Display** (`firebase-inappmessaging-display`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `12.14.0` | **90%** | 네이티브 custom display delegate와 typed 카드·배너·모달·이미지 전용 모델 |
+| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 지원 | `18.2.0` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 가상 Gemini 응답 시뮬레이터 지원, 네이티브 링킹 미지원 |
+| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 지원 | `16.0.0-beta08` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | iOS 메모리 기반 가상 온디바이스/하이브리드 AI 추론 시뮬레이션 지원, 네이티브 링킹 미지원 |
+| **App Distribution** (`firebase-appdistribution`) | 🟢 지원 | `16.0.0-beta21` | 🟡 부분 지원 | `13.1.1` | **80%** (iOS Partial) | iOS 테스터 로그인 및 업데이트 확인 지원, 진행률 추적 미지원 |
+| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 지원 | `18.0.1` | 🟡 부분 지원 | Memory actual | **80%** (iOS Partial) | Android 생성 operation 위임, iOS는 시드 캐시 메모리 operation만 지원 |
+| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `13.1.1` | **90%** | Native GMS / iOS SwiftPM SDK 위임, Core 기능 실제 구현 |
+| **In-App Messaging Display** (`firebase-inappmessaging-display`) | 🟢 지원 | `23.0.0` | 🟢 지원 | `13.1.1` | **90%** | 네이티브 custom display delegate와 typed 카드·배너·모달·이미지 전용 모델 |
 
-Android 버전은 `gradle/libs.versions.toml` 기준입니다. BoM 관리 항목은 Firebase Android BoM `35.0.0`을 표기했습니다. iOS 네이티브 연동 항목은 Firebase Apple SDK `12.14.0` 기준이며, `Memory actual` 항목은 KMP 공통 코드에서 Apple 네이티브 SDK를 직접 링크하지 않습니다.
+Android 버전은 `gradle/libs.versions.toml` 기준입니다. BoM 관리 항목은 Firebase Android BoM `35.2.0`을 표기했습니다. iOS 네이티브 연동 항목은 Firebase Apple SDK `13.1.1` 기준이며, `Memory actual` 항목은 KMP 공통 코드에서 Apple 네이티브 SDK를 직접 링크하지 않습니다.
 
 ---
 
@@ -64,15 +64,15 @@ Android 버전은 `gradle/libs.versions.toml` 기준입니다. BoM 관리 항목
 | JDK / JVM target | `17` |
 | Android minSdk | `29` |
 | Android compileSdk / targetSdk | `37 / 37` |
-| Firebase Android BoM | `35.0.0` |
-| Firebase Apple SDK (SwiftPM) | `12.14.0` |
+| Firebase Android BoM | `35.2.0` |
+| Firebase Apple SDK (SwiftPM) | `13.1.1` |
 | kotlinx.coroutines | `1.11.0` |
 | Android DataTransport | `5.0.0` |
 | Protobuf javalite | `4.36.2` |
-| Google Services Plugin | `4.5.0` |
+| Google Services Plugin | `4.6.0` |
 | Firebase Crashlytics Gradle Plugin | `3.0.8` |
-| Compose Multiplatform (샘플 앱) | `1.12.1` |
-| Navigation3 (샘플 앱) | `1.1.2` |
+| Compose Multiplatform (샘플 앱) | `1.12.2` |
+| Navigation3 (샘플 앱) | `1.2.0` |
 
 ---
 
@@ -189,6 +189,7 @@ val users = db.collection("users")
 - **실시간 이벤트 관찰 (Observers)**: 모든 실시간 변경 리스너는 코틀린의 `Flow<T>` 스트림으로 노출됩니다. 기존의 콜백 등록 코드를 코루틴 스코프 내의 `.collect { ... }` 로직으로 전환하십시오.
 - **iOS 미지원 Stub 예외 해소 (Memory-based Actual)**: cinterop 제약으로 인해 iOS 바이너리가 직접 링크되지 못하는 일부 모듈들(AI Logic, Data Connect, ML Model Downloader 등)에 대해서도 런타임 크래시(`UnsupportedOperationException`)를 원천적으로 제거하고, 메모리 수준에서 인스턴스 획득 및 A/B 테스팅 구독 상태를 저장/반환하는 "메모리 보존 실제 인스턴스(Memory-based Actual)"로 전환하여 공통 컴파일 형상과 호출 안정성을 지켰습니다.
 - **Messaging 브리지**: `messages`는 프로세스 전역이지만 Android `tokenUpdates` replay state는 Firebase app identity별로 분리됩니다. `firebase_messaging_service_enabled=true`로 선택형 `FirebaseMessagingService`를 활성화하거나 기존 서비스의 콜백을 `FirebaseMessagingServiceBridge`로 전달하며, `onNewToken`은 기본 app을 갱신합니다. iOS `tokenUpdates`는 기본 app 전용이고, 호스트 앱이 APNs `userInfo`를 `remoteMessageFromUserInfo`로 변환한 뒤 `handleMessage`를 호출해야 합니다.
+- **Apple SDK 13 / FCM FID 등록**: SwiftPM 연동에는 Xcode 26.2 이상이 필요합니다. iOS 전용 `FirebaseMessaging.isInstallationIdEnabled`, `register()`, `unregister()`를 제공합니다. `Info.plist`의 `FirebaseMessagingInstallationIdEnabled=true`로 FID 모드를 선택한 경우 `register()`로 등록하고 `FirebaseInstallations.instance.getId()` 또는 네이티브 `MessagingDelegate.messaging(_:didReceiveRegistration:)`에서 FID를 받습니다. 이 모드에서는 기존 `getToken()`, `deleteToken()`, `tokenUpdates`를 사용할 수 없습니다. 기존 서버의 FCM 토큰 연동을 보존하도록 샘플 앱은 기본 토큰 모드를 유지합니다. Apple SDK의 토큰 API는 deprecated 상태지만 호환성을 위해 래퍼에 남겨 두었습니다.
 - **Installations 시간 계약**: `tokenExpirationTimestamp`와 `tokenCreationTimestamp`는 Unix epoch milliseconds이며 명시적 `...TimestampMillis` 별칭도 같은 값을 제공합니다. Android의 duration/epoch seconds는 플랫폼 경계에서 변환합니다. Apple 결과는 생성 시각을 제공하지 않으므로 iOS의 `hasTokenCreationTimestamp`는 `false`입니다.
 - **A/B Testing 적용 상태**: Android는 고정 origin(`frc` 또는 `fiam`)에 대한 공식 ABT 컴포넌트를 만들고 검증된 실험을 적용합니다. iOS는 요청된 실험을 기록하고 `RECORDED_NOT_APPLIED`를 반환하며 네이티브 실험을 적용하지 않습니다.
 - **In-App Messaging Display 모델**: Android와 iOS custom display delegate는 네이티브 카드·배너·모달·이미지 전용 메시지를 typed 공통 display 모델로 변환하고 display 콜백을 전달합니다.
@@ -246,11 +247,11 @@ iOS memory adapter는 seeded descriptor만 제공하며 가짜 서버 성공을 
 ### Model Downloader iOS 연동 제약사항
 
 1. **Swift 전용 라이브러리 및 cinterop 제약**:
-   Google 공식 iOS `FirebaseMLModelDownloader` SDK는 Swift로만 구현되어 있으며, Objective-C 호환 헤더가 존재하지 않습니다. 이로 인해 Kotlin/Native의 cinterop 컴파일 도구가 이를 해석하지 못해 네이티브 바이너리 직접 링킹이 불가능합니다.
+   기존 iOS `FirebaseMLModelDownloader`는 Swift-only SDK였으며 Firebase Apple SDK 13에서 제거되었습니다. 현재 SwiftPM 의존성에는 이 제품을 추가할 수 없고, KMP iOS 구현은 기존 메모리 보존 모드를 유지합니다.
 2. **KMP 내부 동작 (메모리 보존 모드)**:
    KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. 모델 요청(`getModel`), 모델 목록 조회(`listDownloadedModels`), 모델 제거(`deleteDownloadedModel`) 기능은 iOS 상에서도 안전하게 로컬 메모리 리스트에 가상 모델을 보존하며 정상 실행됩니다.
 3. **실제 모델 파일 다운로드 처리**:
-   iOS 실제 디바이스 및 시뮬레이터에서 서버로부터 TFLite 모델 파일을 물리적으로 다운로드하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase ML Swift SDK를 직접 호출하여 사용해야 합니다.
+   실제 TFLite 모델 파일의 다운로드·저장은 호스트 iOS 앱에서 별도로 구현해야 합니다. Firebase Apple SDK 13의 Firebase ML Swift SDK로 다운로드할 수 있다고 가정해서는 안 됩니다.
 
 ### AI Logic iOS 연동 제약사항
 
@@ -259,7 +260,7 @@ iOS memory adapter는 seeded descriptor만 제공하며 가짜 서버 성공을 
 2. **KMP 내부 동작 (메모리 보존 모드)**:
    KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. `generativeModel` 획득 및 `generateContent(prompt)` 호출은 iOS 상에서도 안전하게 1.5초 지연(delay) 후 프롬프트를 담아낸 가상의 답변 텍스트를 돌려주는 모의 엔진(Mock Engine)으로 정상 실행됩니다.
 3. **실제 Gemini Cloud 및 Vertex AI API 통신 처리**:
-   iOS 실제 디바이스 및 시뮬레이터에서 Vertex AI 클라우드 백엔드와 통신하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase AI Swift SDK를 직접 호출하여 사용해야 합니다.
+   iOS 실제 디바이스 및 시뮬레이터에서 Vertex AI 클라우드 백엔드와 통신하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 `FirebaseAILogic` 제품과 `import FirebaseAILogic`을 사용해야 합니다. Firebase Apple SDK 13에서는 기존 `FirebaseAI` 제품이 제거되었습니다.
 
 ### AI On-Device iOS 연동 제약사항
 
@@ -268,7 +269,7 @@ iOS memory adapter는 seeded descriptor만 제공하며 가짜 서버 성공을 
 2. **KMP 내부 동작 (메모리 보존 모드)**:
    KMP 공통 코드 단에서 컴파일을 보장하고 런타임 크래시를 유발하지 않도록, iOS의 actual 구현체는 **"메모리 보존 모드(Memory-based Actual)"** 로 빌드됩니다. `OnDeviceConfig` 와 함께 `generativeModel`을 획득하고 `generateContent(prompt)`를 호출하면, iOS 상에서도 안전하게 추론 모드(PREFER_ON_DEVICE, PREFER_IN_CLOUD, ONLY_ON_DEVICE) 설정을 분석하여 가상의 시뮬레이션 결과를 돌려줍니다.
 3. **실제 온디바이스(Apple Intelligence) AI 추론 처리**:
-   iOS 실제 디바이스 및 시뮬레이터에서 Apple Intelligence 기반 온디바이스 추론 및 하이브리드 기능을 완전히 활용하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 Firebase AI Swift SDK를 직접 호출하여 사용해야 합니다.
+   iOS 실제 디바이스 및 시뮬레이터에서 Apple Intelligence 기반 온디바이스 추론 및 하이브리드 기능을 완전히 활용하려면, KMP 공통 코드 대신 iOS 네이티브 Swift 앱 영역에서 `FirebaseAILogic` 제품과 `import FirebaseAILogic`을 사용해야 합니다. Firebase Apple SDK 13에서는 기존 `FirebaseAI` 제품이 제거되었습니다.
 
 **대처 가이드**: 공통 소스셋이나 프리젠테이션 레이어에서 플랫폼 구별 플래그를 통해 호출 코드를 안전하게 보호해 주십시오:
 ```kotlin

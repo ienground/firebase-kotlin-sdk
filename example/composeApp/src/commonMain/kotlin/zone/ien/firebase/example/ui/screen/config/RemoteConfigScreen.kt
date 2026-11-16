@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -99,7 +99,7 @@ fun RemoteConfigScreen(
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Remote Config", fontWeight = FontWeight.Bold) },
+                title = { Text("Remote Config", fontWeight = FontWeight.Bold) },
                 navigationIcon = { IenBackButton(onClick = onNavigateBack) }
             )
         }
@@ -112,7 +112,7 @@ fun RemoteConfigScreen(
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            IenText(
+            Text(
                 text = "Firebase Remote Config Demo",
                 
                 fontWeight = FontWeight.Bold,
@@ -125,13 +125,13 @@ fun RemoteConfigScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         "⚠️ Warnings and Usage Instructions",
                         fontWeight = FontWeight.Bold,
                         color = IenTheme.colors.danger
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(
+                    Text(
                         "1. To test the Real-time Config Update feature locally, change template configurations in the Firebase Console and 'Publish' them.\n" +
                         "2. Firebase Core must be initialized beforehand. Fetch and Activate latency may vary depending on network connectivity.\n" +
                         "3. Calling Fetch more frequently than the minimumFetchInterval can cause THROTTLED exceptions from the server.",
@@ -146,8 +146,8 @@ fun RemoteConfigScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    IenText("1. Local Defaults Configuration", fontWeight = FontWeight.Bold)
-                    IenText("Sets local fallback defaults based on code.", )
+                    Text("1. Local Defaults Configuration", fontWeight = FontWeight.Bold)
+                    Text("Sets local fallback defaults based on code.", )
                     IenButton(
                         onClick = {
                             coroutineScope.launch {
@@ -165,7 +165,7 @@ fun RemoteConfigScreen(
                             }
                         }
                     ) {
-                        IenText("Set Defaults")
+                        Text("Set Defaults")
                     }
                 }
             }
@@ -175,7 +175,7 @@ fun RemoteConfigScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    IenText("2. Config Settings Modification", fontWeight = FontWeight.Bold)
+                    Text("2. Config Settings Modification", fontWeight = FontWeight.Bold)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -210,7 +210,7 @@ fun RemoteConfigScreen(
                             }
                         }
                     ) {
-                        IenText("Update Settings")
+                        Text("Update Settings")
                     }
                 }
             }
@@ -220,8 +220,8 @@ fun RemoteConfigScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    IenText("3. Fetch & Activate Control", fontWeight = FontWeight.Bold)
-                    IenText("Fetch the latest remote configuration from server and activate to local template.", )
+                    Text("3. Fetch & Activate Control", fontWeight = FontWeight.Bold)
+                    Text("Fetch the latest remote configuration from server and activate to local template.", )
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -242,7 +242,7 @@ fun RemoteConfigScreen(
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Fetch")
+                            Text("Fetch")
                         }
 
                         IenButton(
@@ -260,7 +260,7 @@ fun RemoteConfigScreen(
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Activate")
+                            Text("Activate")
                         }
                     }
 
@@ -279,12 +279,12 @@ fun RemoteConfigScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Fetch and Activate")
+                        Text("Fetch and Activate")
                     }
 
-                    IenDivider(modifier = Modifier.padding(vertical = 4.dp))
-                    IenText("Last Fetch Status: $lastFetchStatus", )
-                    IenText("Last Fetch Time: $lastFetchTime", )
+                    IenDivider.Horizontal(modifier = Modifier.padding(vertical = 4.dp))
+                    Text("Last Fetch Status: $lastFetchStatus", )
+                    Text("Last Fetch Time: $lastFetchTime", )
                 }
             }
 
@@ -293,8 +293,8 @@ fun RemoteConfigScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    IenText("4. Real-time Config Update Listener", fontWeight = FontWeight.Bold)
-                    IenText("Detect real-time template update events from the remote backend.", )
+                    Text("4. Real-time Config Update Listener", fontWeight = FontWeight.Bold)
+                    Text("Detect real-time template update events from the remote backend.", )
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -325,17 +325,17 @@ fun RemoteConfigScreen(
                                 }
                             },
                         ) {
-                            IenText(if (isListening) "Disconnect Listener" else "Connect Listener")
+                            Text(if (isListening) "Disconnect Listener" else "Connect Listener")
                         }
 
-                        IenText(
+                        Text(
                             text = if (isListening) "🟢 Connected" else "🔴 Disconnected",
                             fontWeight = FontWeight.Bold
                         )
                     }
 
                     if (updatedKeysLog.isNotEmpty()) {
-                        IenText(updatedKeysLog,  color = primaryColor)
+                        Text(updatedKeysLog,  color = primaryColor)
                     }
                 }
             }
@@ -345,7 +345,7 @@ fun RemoteConfigScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    IenText("5. Config Value Query (Typed Accessors)", fontWeight = FontWeight.Bold)
+                    Text("5. Config Value Query (Typed Accessors)", fontWeight = FontWeight.Bold)
 
                     IenTextField(
                         value = testKey,
@@ -370,15 +370,15 @@ fun RemoteConfigScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Query Value")
+                        Text("Query Value")
                     }
 
-                    IenDivider(modifier = Modifier.padding(vertical = 4.dp))
-                    IenText("String Value: $fetchedStringValue", )
-                    IenText("Boolean Value: $fetchedBooleanValue", )
-                    IenText("Long Value: $fetchedLongValue", )
-                    IenText("Double Value: $fetchedDoubleValue", )
-                    IenText("Value Source: $valueSource",  fontWeight = FontWeight.Bold)
+                    IenDivider.Horizontal(modifier = Modifier.padding(vertical = 4.dp))
+                    Text("String Value: $fetchedStringValue", )
+                    Text("Boolean Value: $fetchedBooleanValue", )
+                    Text("Long Value: $fetchedLongValue", )
+                    Text("Double Value: $fetchedDoubleValue", )
+                    Text("Value Source: $valueSource",  fontWeight = FontWeight.Bold)
                 }
             }
 
@@ -388,9 +388,9 @@ fun RemoteConfigScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText("📜 Execution Console Log", fontWeight = FontWeight.Bold)
+                    Text("📜 Execution Console Log", fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(logMessage, )
+                    Text(logMessage, )
                 }
             }
         }

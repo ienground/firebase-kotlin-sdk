@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -83,7 +83,7 @@ fun EncodersScreen(
             IenScaffold(
                 topBar = {
                     IenTopAppBar(
-                        title = { IenText("Encoders Core Contract") },
+                        title = { Text("Encoders Core Contract") },
                         navigationIcon = { IenBackButton(onClick = onBack) }
                     )
                 }
@@ -96,12 +96,12 @@ fun EncodersScreen(
                         .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    IenText(
+                    Text(
                         text = "JSON & Reflective Serialization Verification",
                         style = IenTheme.typography.title2
                     )
 
-                    IenText(
+                    Text(
                         text = "This screen executes the newly created KMP modules. It registers standard builders, verifies reflective field discovery on JVM, and tests explicit registration fallback on iOS.",
                         style = IenTheme.typography.body1
                     )
@@ -155,10 +155,10 @@ fun EncodersScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Run Serialization Sim")
+                        Text("Run Serialization Sim")
                     }
 
-                    IenText(
+                    Text(
                         text = "Simulation Console Logs",
                         style = IenTheme.typography.title3
                     )
@@ -173,10 +173,10 @@ fun EncodersScreen(
                             .verticalScroll(rememberScrollState())
                     ) {
                         if (logs.isEmpty()) {
-                            IenText("Press Run to initiate JSON output simulation.", color = Color.Gray, style = IenTheme.typography.body2)
+                            Text("Press Run to initiate JSON output simulation.", color = Color.Gray, style = IenTheme.typography.body2)
                         } else {
                             logs.forEach { logLine ->
-                                IenText("> $logLine", color = IenTheme.colors.brand, style = IenTheme.typography.body2)
+                                Text("> $logLine", color = IenTheme.colors.brand, style = IenTheme.typography.body2)
                             }
                         }
                     }
@@ -185,7 +185,7 @@ fun EncodersScreen(
                         onClick = { logs.clear() },
                         modifier = Modifier.align(Alignment.End)
                     ) {
-                        IenText("Clear Logs")
+                        Text("Clear Logs")
                     }
                 }
             }

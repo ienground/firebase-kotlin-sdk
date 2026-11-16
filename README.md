@@ -25,29 +25,29 @@ A Kotlin Multiplatform (KMP) wrapper around Firebase platform SDKs, designed to 
 
 | Firebase Feature | Android Support | Android SDK Version | iOS Support | iOS SDK Version | Completion Rate | Under the Hood |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| **Authentication** (`firebase-auth`) | 🟢 Yes | `25.0.0` | 🟢 Yes | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK |
-| **Cloud Firestore** (`firebase-firestore`) | 🟢 Yes | `27.0.0` | 🟢 Yes | `12.14.0` | **92%** | Native GMS / iOS SwiftPM SDK, including query builders |
-| **Realtime Database** (`firebase-database`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `12.14.0` | **85%** | Native GMS / iOS SwiftPM SDK |
-| **Cloud Storage** (`firebase-storage`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK |
-| **Cloud Functions** (`firebase-functions`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK |
-| **Remote Config** (`firebase-config`) | 🟢 Yes | BoM `35.0.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK |
-| **Crashlytics** (`firebase-crashlytics`) | 🟢 Yes | `21.0.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK |
-| **Cloud Messaging** (`firebase-messaging`) | 🟢 Yes | `26.0.0` | 🟢 Yes | `12.14.0` | **85%** | Native SDK delegation with process-global message and token flows |
-| **Performance Monitoring** (`firebase-perf`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `12.14.0` | **80%** | Native GMS / iOS SwiftPM SDK |
-| **Installations** (`firebase-installations`) | 🟢 Yes | `20.0.0` | 🟢 Yes | `12.14.0` | **95%** | Native SDK delegation; iOS FID listeners and cache clearing are memory-backed |
-| **App Check** (`firebase-appcheck`) | 🟢 Yes | `20.0.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK |
+| **Authentication** (`firebase-auth`) | 🟢 Yes | `25.0.0` | 🟢 Yes | `13.1.1` | **95%** | Native GMS / iOS SwiftPM SDK |
+| **Cloud Firestore** (`firebase-firestore`) | 🟢 Yes | `27.2.0` | 🟢 Yes | `13.1.1` | **92%** | Native GMS / iOS SwiftPM SDK, including query builders |
+| **Realtime Database** (`firebase-database`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `13.1.1` | **85%** | Native GMS / iOS SwiftPM SDK |
+| **Cloud Storage** (`firebase-storage`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `13.1.1` | **90%** | Native GMS / iOS SwiftPM SDK |
+| **Cloud Functions** (`firebase-functions`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `13.1.1` | **95%** | Native GMS / iOS SwiftPM SDK |
+| **Remote Config** (`firebase-config`) | 🟢 Yes | BoM `35.2.0` | 🟢 Yes | `13.1.1` | **90%** | Native GMS / iOS SwiftPM SDK |
+| **Crashlytics** (`firebase-crashlytics`) | 🟢 Yes | `21.1.0` | 🟢 Yes | `13.1.1` | **90%** | Native GMS / iOS SwiftPM SDK |
+| **Cloud Messaging** (`firebase-messaging`) | 🟢 Yes | `26.0.2` | 🟢 Yes | `13.1.1` | **85%** | Native SDK delegation with process-global message and token flows |
+| **Performance Monitoring** (`firebase-perf`) | 🟢 Yes | `23.0.1` | 🟢 Yes | `13.1.1` | **80%** | Native GMS / iOS SwiftPM SDK |
+| **Installations** (`firebase-installations`) | 🟢 Yes | `20.0.0` | 🟢 Yes | `13.1.1` | **95%** | Native SDK delegation; iOS FID listeners and cache clearing are memory-backed |
+| **App Check** (`firebase-appcheck`) | 🟢 Yes | `20.1.0` | 🟢 Yes | `13.1.1` | **90%** | Native GMS / iOS SwiftPM SDK |
 | **A/B Testing** (`firebase-abt`) | 🟢 Yes | `24.0.0` | 🟡 Partial | Memory actual | **85%** (iOS Partial) | Android native delegate/factory; iOS records requested experiments without applying them |
-| **Sessions** (`firebase-sessions`) | 🟢 Yes | `4.0.0` | 🟢 Yes | `12.14.0` | **95%** | Native GMS / iOS SwiftPM SDK (Background session telemetry auto-runs) |
+| **Sessions** (`firebase-sessions`) | 🟢 Yes | `4.0.2` | 🟢 Yes | `13.1.1` | **95%** | Native GMS / iOS SwiftPM SDK (Background session telemetry auto-runs) |
 | **Encoders & Decoders** (`firebase-encoders`) | 🟢 Yes | N/A | 🟢 Yes | N/A | **95%** | Pure Kotlin serialization pipeline |
 | **Model Downloader** (`firebase-ml-modeldownloader`)| 🟢 Yes | `26.1.1` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Memory-based custom model simulation (no live native model downloading) |
-| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 Yes | `18.0.0` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Memory-based custom Gemini content simulation (no live native AI model dispatching) |
-| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 Yes | `16.0.0-beta06` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Memory-based on-device custom Gemini content simulation (no live native on-device model dispatching) |
-| **App Distribution** (`firebase-appdistribution`) | 🟢 Yes | `16.0.0-beta21` | 🟡 Partial | `12.14.0` | **80%** (iOS Partial) | Tester sign-in and update checks (no in-app progress monitoring) |
-| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 Yes | `18.0.0` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Android generated-operation delegate; iOS seeded-cache memory operations only |
-| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `12.14.0` | **90%** | Native GMS / iOS SwiftPM SDK (Core API delegate) |
-| **In-App Messaging Display** (`firebase-inappmessaging-display`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `12.14.0` | **90%** | Native custom display delegates with typed card, banner, modal, and image-only models |
+| **AI Logic (Gemini Cloud)** (`firebase-ai`) | 🟢 Yes | `18.2.0` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Memory-based custom Gemini content simulation (no live native AI model dispatching) |
+| **AI On-Device (Gemini Nano)** (`firebase-ai-ondevice`)| 🟢 Yes | `16.0.0-beta08` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Memory-based on-device custom Gemini content simulation (no live native on-device model dispatching) |
+| **App Distribution** (`firebase-appdistribution`) | 🟢 Yes | `16.0.0-beta21` | 🟡 Partial | `13.1.1` | **80%** (iOS Partial) | Tester sign-in and update checks (no in-app progress monitoring) |
+| **Data Connect (GraphQL)** (`firebase-dataconnect`) | 🟢 Yes | `18.0.1` | 🟡 Partial | Memory actual | **80%** (iOS Partial) | Android generated-operation delegate; iOS seeded-cache memory operations only |
+| **In-App Messaging** (`firebase-inappmessaging`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `13.1.1` | **90%** | Native GMS / iOS SwiftPM SDK (Core API delegate) |
+| **In-App Messaging Display** (`firebase-inappmessaging-display`) | 🟢 Yes | `23.0.0` | 🟢 Yes | `13.1.1` | **90%** | Native custom display delegates with typed card, banner, modal, and image-only models |
 
-Android versions are read from `gradle/libs.versions.toml`; BoM-managed rows use Firebase Android BoM `35.0.0`. iOS native rows use Firebase Apple SDK `12.14.0`; rows marked `Memory actual` do not link the native Apple SDK from common KMP code.
+Android versions are read from `gradle/libs.versions.toml`; BoM-managed rows use Firebase Android BoM `35.2.0`. iOS native rows use Firebase Apple SDK `13.1.1`; rows marked `Memory actual` do not link the native Apple SDK from common KMP code.
 
 ---
 
@@ -64,15 +64,15 @@ The versions below reflect the current repository configuration in `gradle/libs.
 | JDK / JVM target | `17` |
 | Android minSdk | `29` |
 | Android compileSdk / targetSdk | `37 / 37` |
-| Firebase Android BoM | `35.0.0` |
-| Firebase Apple SDK (SwiftPM) | `12.14.0` |
+| Firebase Android BoM | `35.2.0` |
+| Firebase Apple SDK (SwiftPM) | `13.1.1` |
 | kotlinx.coroutines | `1.11.0` |
 | Android DataTransport | `5.0.0` |
 | Protobuf javalite | `4.36.2` |
-| Google Services Plugin | `4.5.0` |
+| Google Services Plugin | `4.6.0` |
 | Firebase Crashlytics Gradle Plugin | `3.0.8` |
-| Compose Multiplatform (sample app) | `1.12.1` |
-| Navigation3 (sample app) | `1.1.2` |
+| Compose Multiplatform (sample app) | `1.12.2` |
+| Navigation3 (sample app) | `1.2.0` |
 
 ---
 
@@ -189,6 +189,7 @@ Rename your packaging imports to adapt to this SDK's namespaces:
 - **Real-time Event Observers**: Event listeners are exposed as pure Kotlin `Flow<T>` streams. Replace older callback attachments with `.collect { ... }` blocks inside your Coroutine lifecycle.
 - **Elimination of iOS Unsupported Stubs (Memory-based Actual)**: To prevent compilation failure and runtime crashes (`UnsupportedOperationException`), several modules (such as AI Logic, Data Connect, ML Model Downloader, etc.) have been migrated to "Memory-based Actuals". These implementations store states and subscriber callbacks locally in memory to preserve API visibility and call flow safety.
 - **Messaging bridge**: `messages` is process-global, while Android `tokenUpdates` replay state is isolated by Firebase app identity. Enable the optional `FirebaseMessagingService` with `firebase_messaging_service_enabled=true`, or forward an existing service's callbacks through `FirebaseMessagingServiceBridge`; `onNewToken` updates the default app. On iOS, `tokenUpdates` remains default-app only, and the host app must convert APNs `userInfo` with `remoteMessageFromUserInfo` before calling `handleMessage`.
+- **Apple SDK 13 / FCM FID 등록**: SwiftPM 연동에는 Xcode 26.2 이상이 필요합니다. iOS 전용 `FirebaseMessaging.isInstallationIdEnabled`, `register()`, `unregister()`를 제공합니다. `Info.plist`의 `FirebaseMessagingInstallationIdEnabled=true`로 FID 모드를 선택한 경우 `register()`로 등록하고 `FirebaseInstallations.instance.getId()` 또는 네이티브 `MessagingDelegate.messaging(_:didReceiveRegistration:)`에서 FID를 받습니다. 이 모드에서는 기존 `getToken()`, `deleteToken()`, `tokenUpdates`를 사용할 수 없습니다. 기존 서버의 FCM 토큰 연동을 보존하도록 샘플 앱은 기본 토큰 모드를 유지합니다. Apple SDK의 토큰 API는 deprecated 상태지만 호환성을 위해 래퍼에 남겨 두었습니다.
 - **Installations timestamp contract**: `tokenExpirationTimestamp` and `tokenCreationTimestamp` are Unix epoch milliseconds; the explicit `...TimestampMillis` aliases expose the same values. Android duration/epoch seconds are normalized at the platform boundary. `hasTokenCreationTimestamp` is false on iOS because the Apple result does not expose creation time.
 - **A/B Testing application status**: Android creates the official ABT component for the fixed `frc` or `fiam` origin and applies validated experiments. iOS records the requested experiments and reports `RECORDED_NOT_APPLIED`; it does not apply native experiments.
 - **In-App Messaging Display models**: Android and iOS custom display delegates convert native card, banner, modal, and image-only messages to the typed common display model and forward display callbacks.
@@ -247,11 +248,11 @@ The iOS memory adapter supplies seeded descriptors; it never reports a fabricate
 ### Model Downloader iOS Integration Constraints
 
 1. **Swift-only Library Limitation**:
-   The official iOS `FirebaseMLModelDownloader` SDK is written strictly in Swift and lacks Objective-C compatibility headers. Consequently, Kotlin/Native cinterop cannot parse the headers or link the binary target.
+   기존 iOS `FirebaseMLModelDownloader`는 Swift-only SDK였으며 Firebase Apple SDK 13에서 제거되었습니다. 현재 SwiftPM 의존성에는 이 제품을 추가할 수 없고, KMP iOS 구현은 기존 메모리 보존 모드를 유지합니다.
 2. **KMP Memory-based Actual**:
    To prevent compilation failure and runtime crashes, the iOS actual implementation for Model Downloader operates in **"Memory-only container mode"**. Requesting a model (`getModel`), listing downloaded models (`listDownloadedModels`), and deleting models (`deleteDownloadedModel`) store and verify states safely inside a local memory registry.
 3. **Live Model Downloads**:
-   To physically download custom TFLite model files on iOS, you must call the Firebase ML Swift SDK directly from your native iOS Swift codebase, rather than KMP common code.
+   실제 TFLite 모델 파일의 다운로드·저장은 호스트 iOS 앱에서 별도로 구현해야 합니다. Firebase Apple SDK 13의 Firebase ML Swift SDK로 다운로드할 수 있다고 가정해서는 안 됩니다.
 
 ### AI Logic iOS Integration Constraints
 
@@ -260,7 +261,7 @@ The iOS memory adapter supplies seeded descriptors; it never reports a fabricate
 2. **KMP Memory-based Actual**:
    To prevent compilation failure and runtime crashes, the iOS actual implementation for AI Logic operates in **"Memory-only container mode"**. Requesting a model (`generativeModel`) and dispatching content generation (`generateContent`) simulate a 1.5s network delay and return a simulated reply including prompt parameters safely.
 3. **Live AI Requests**:
-   To connect to live Vertex AI backend services on iOS, you must call the official Firebase AI Swift SDK directly from your native iOS Swift codebase, rather than KMP common code.
+   iOS 네이티브 Swift 앱 영역에서 `FirebaseAILogic` 제품과 `import FirebaseAILogic`을 사용해야 합니다. Firebase Apple SDK 13에서는 기존 `FirebaseAI` 제품이 제거되었습니다.
 
 ### AI On-Device iOS Integration Constraints
 
@@ -269,7 +270,7 @@ The iOS memory adapter supplies seeded descriptors; it never reports a fabricate
 2. **KMP Memory-based Actual**:
    To prevent compilation failure and runtime crashes, the iOS actual implementation for AI On-Device operates in **"Memory-only container mode"**. Instantiating `generativeModel` with `OnDeviceConfig` and calling `generateContent(prompt)` parse the local `InferenceMode` (PREFER_ON_DEVICE, PREFER_IN_CLOUD, ONLY_ON_DEVICE) configuration safely inside a local memory simulation.
 3. **Live On-Device AI Requests**:
-   To utilize live Apple Intelligence on-device inference or hybrid fallbacks on iOS, you must call the official Firebase AI Swift SDK directly from your native iOS Swift codebase, rather than KMP common code.
+   iOS 네이티브 Swift 앱 영역에서 `FirebaseAILogic` 제품과 `import FirebaseAILogic`을 사용해야 합니다. Firebase Apple SDK 13에서는 기존 `FirebaseAI` 제품이 제거되었습니다.
 
 **Action Needed**: Guard your UI entry points or calls to these services on iOS:
 ```kotlin

@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -41,7 +41,7 @@ public fun PlayIntegrityScreen(onBack: () -> Unit) {
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Play Integrity Provider") },
+                title = { Text("Play Integrity Provider") },
                 navigationIcon = { IenBackButton(onClick = onBack) }
             )
         }
@@ -57,13 +57,13 @@ public fun PlayIntegrityScreen(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "Android Play Integrity App Check",
                         style = IenTheme.typography.title2,
                         color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(
+                    Text(
                         text = "This provider uses Google Play Integrity API to verify the authenticity of your app. This is an Android-exclusive feature.",
                         style = IenTheme.typography.body1
                     )
@@ -74,13 +74,13 @@ public fun PlayIntegrityScreen(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "⚠️ Setup Prerequisites",
                         style = IenTheme.typography.title3,
                         color = IenTheme.colors.danger
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(
+                    Text(
                         text = "1. Enable Play Integrity API in Google Play Console.\n" +
                                "2. Register Play Integrity provider in Firebase Console App Check.\n" +
                                "3. Add your app's SHA-256 fingerprint in Firebase Console settings.",
@@ -108,12 +108,12 @@ public fun PlayIntegrityScreen(onBack: () -> Unit) {
                 },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
-                IenText("Install Play Integrity Provider")
+                Text("Install Play Integrity Provider")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            IenText(
+            Text(
                 text = "Status: $statusText",
                 color = statusColor,
                 style = IenTheme.typography.body1,

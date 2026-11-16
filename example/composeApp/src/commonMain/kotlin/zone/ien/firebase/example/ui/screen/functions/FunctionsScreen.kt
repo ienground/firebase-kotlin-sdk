@@ -35,7 +35,7 @@ import zone.ien.utils.ui.interactive.IenButtonState
 import zone.ien.utils.ui.interactive.IenTextField
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenSurface
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.screen.IenBackButton
 import zone.ien.utils.ui.screen.IenScaffold
 import zone.ien.utils.ui.screen.IenTopAppBar
@@ -80,7 +80,7 @@ fun FunctionsScreen(onBack: () -> Unit) {
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Cloud Functions Demo", fontWeight = FontWeight.Bold) },
+                title = { Text("Cloud Functions Demo", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IenBackButton(onClick = onBack)
                 }
@@ -99,14 +99,14 @@ fun FunctionsScreen(onBack: () -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    IenText(
+                    Text(
                         text = initError,
                         style = IenTheme.typography.body1,
                         color = IenTheme.colors.danger,
                         textAlign = TextAlign.Center
                     )
                     IenButton(onClick = onBack) {
-                        IenText("Go Back")
+                        Text("Go Back")
                     }
                 }
             }
@@ -130,13 +130,13 @@ fun FunctionsScreen(onBack: () -> Unit) {
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        IenText(
+                        Text(
                             text = "Callable Specification",
                             style = IenTheme.typography.title2,
                             color = IenTheme.colors.brand
                         )
-                        IenDivider(color = IenTheme.colors.border)
-                        IenText(
+                        IenDivider.Horizontal(color = IenTheme.colors.border)
+                        Text(
                             text = "Cloud Functions triggers a serverless endpoint. Specify a function name and payload to inspect dynamic call routing.",
                             style = IenTheme.typography.body1,
                             color = IenTheme.colors.textSecondary
@@ -160,7 +160,7 @@ fun FunctionsScreen(onBack: () -> Unit) {
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                IenText("Select Error Code to Simulate:", style = IenTheme.typography.label2)
+                Text("Select Error Code to Simulate:", style = IenTheme.typography.label2)
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
@@ -176,7 +176,7 @@ fun FunctionsScreen(onBack: () -> Unit) {
                                     onClick = { simulatedErrorCode = code },
                                     modifier = Modifier.weight(1f)
                                 ) {
-                                    IenText(
+                                    Text(
                                         text = if (isSelected) "✓ $code" else code,
                                         style = IenTheme.typography.label2
                                     )
@@ -208,7 +208,7 @@ fun FunctionsScreen(onBack: () -> Unit) {
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IenText("Call Function")
+                    Text("Call Function")
                 }
 
                 // Error Simulation Trigger button
@@ -233,7 +233,7 @@ fun FunctionsScreen(onBack: () -> Unit) {
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IenText("Call Function (Trigger Error)")
+                    Text("Call Function (Trigger Error)")
                 }
 
                 IenSurface(
@@ -246,13 +246,13 @@ fun FunctionsScreen(onBack: () -> Unit) {
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
-                        IenText(
+                        Text(
                             text = "Console Output Log",
                             style = IenTheme.typography.label2,
                             color = Color.Gray
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        IenText(
+                        Text(
                             text = logText,
                             style = IenTheme.typography.body1,
                             color = Color.Green

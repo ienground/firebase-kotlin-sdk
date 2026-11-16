@@ -10,7 +10,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -77,7 +77,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Datatransport API Test") },
+                title = { Text("Datatransport API Test") },
                 navigationIcon = { IenBackButton(onClick = onNavigateBack) }
             )
         }
@@ -98,13 +98,13 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                         .background(IenTheme.colors.brand.copy(alpha = 0.1f))
                         .padding(12.dp)
                 ) {
-                    IenText(
+                    Text(
                         text = "⚠️ Simulation Mode (iOS Memory-based)",
                         style = IenTheme.typography.title2,
                         color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    IenText(
+                    Text(
                         text = "Datatransport runs in memory-based simulation mode on iOS. Telemetry event mappings and scheduler callback loops are verified offline without sending network payloads.",
                         style = IenTheme.typography.body2,
                         color = IenTheme.colors.brand
@@ -112,7 +112,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                 }
             }
 
-            IenText(
+            Text(
                 text = "Configure Telemetry Event",
                 style = IenTheme.typography.title2,
                 color = if (isSupported) Color.Unspecified else Color.Gray
@@ -126,7 +126,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            IenText(
+            Text(
                 text = "Priority Level",
                 style = IenTheme.typography.body1,
                 color = if (isSupported) Color.Unspecified else Color.Gray
@@ -150,7 +150,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                             }
                         })
                         Spacer(modifier = Modifier.width(4.dp))
-                        IenText(
+                        Text(
                             text = priority.name,
                             style = IenTheme.typography.body2,
                             color = if (isSupported) Color.Unspecified else Color.Gray
@@ -187,7 +187,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                     state = IenButtonState(enabled = isSupported),
                     modifier = Modifier.weight(1f)
                 ) {
-                    IenText("Verify Event API")
+                    Text("Verify Event API")
                 }
 
                 IenButton(
@@ -218,7 +218,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                     state = IenButtonState(enabled = isSupported),
                     modifier = Modifier.weight(1f)
                 ) {
-                    IenText("Verify Callback API")
+                    Text("Verify Callback API")
                 }
             }
 
@@ -232,7 +232,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    IenText(
+                    Text(
                         text = "CCT Destination Verification",
                         fontWeight = FontWeight.Bold,
                         color = if (isSupported) Color.Unspecified else Color.Gray
@@ -271,7 +271,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                         state = IenButtonState(enabled = isSupported),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Verify CCT Destination")
+                        Text("Verify CCT Destination")
                     }
                 }
             }
@@ -322,13 +322,13 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
 
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IenText("Verify Transport Runtime Pipeline")
+                    Text("Verify Transport Runtime Pipeline")
                 }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            IenText(
+            Text(
                 text = "Verification Output Log",
                 style = IenTheme.typography.title2
             )
@@ -343,14 +343,14 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                     .verticalScroll(rememberScrollState())
             ) {
                 if (logs.isEmpty()) {
-                    IenText(
+                    Text(
                         text = "No action logged yet. Click 'Verify Event API' to test KMP contracts.",
                         style = IenTheme.typography.body2,
                         color = Color.Gray
                     )
                 } else {
                     logs.forEach { logLine ->
-                        IenText(
+                        Text(
                             text = "> $logLine",
                             style = IenTheme.typography.body2,
                             color = IenTheme.colors.brand,
@@ -364,7 +364,7 @@ fun DatatransportScreen(onNavigateBack: () -> Unit) {
                 onClick = { logs.clear() },
                 modifier = Modifier.align(Alignment.End)
             ) {
-                IenText("Clear Log")
+                Text("Clear Log")
             }
         }
     }

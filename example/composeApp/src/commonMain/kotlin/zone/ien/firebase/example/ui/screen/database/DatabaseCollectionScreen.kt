@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -44,7 +44,7 @@ fun DatabaseCollectionScreen(onBack: () -> Unit) {
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Database Collection Demo") },
+                title = { Text("Database Collection Demo") },
                 navigationIcon = { IenBackButton(onClick = onBack) }
             )
         }
@@ -57,7 +57,7 @@ fun DatabaseCollectionScreen(onBack: () -> Unit) {
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            IenText(
+            Text(
                 text = "Demonstrate real-time ImmutableSortedMap storage updates. Keys are alphabetically sorted automatically on insertion.",
                 style = IenTheme.typography.body1,
                 color = IenTheme.colors.textSecondary
@@ -91,7 +91,7 @@ fun DatabaseCollectionScreen(onBack: () -> Unit) {
                     },
                     modifier = Modifier.weight(1f)
                 ) {
-                    IenText("Insert Key")
+                    Text("Insert Key")
                 }
 
                 IenButton(
@@ -104,11 +104,11 @@ fun DatabaseCollectionScreen(onBack: () -> Unit) {
                     
                     modifier = Modifier.weight(1f)
                 ) {
-                    IenText("Remove Key")
+                    Text("Remove Key")
                 }
             }
 
-            IenText("Sorted Collection Entries:", style = IenTheme.typography.title2)
+            Text("Sorted Collection Entries:", style = IenTheme.typography.title2)
 
             IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()
@@ -118,10 +118,10 @@ fun DatabaseCollectionScreen(onBack: () -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     if (sortedMap.isEmpty()) {
-                        IenText("No entries in sorted map.", style = IenTheme.typography.body1)
+                        Text("No entries in sorted map.", style = IenTheme.typography.body1)
                     } else {
                         sortedMap.forEach { entry ->
-                            IenText(
+                            Text(
                                 text = "🔑 ${entry.key} ➔ 📄 ${entry.value}",
                                 style = IenTheme.typography.body1
                             )

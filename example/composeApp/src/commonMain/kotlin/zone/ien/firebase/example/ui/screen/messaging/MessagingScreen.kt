@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -67,7 +67,7 @@ fun MessagingScreen(
             IenScaffold(
                 topBar = {
                     IenTopAppBar(
-                        title = { IenText("Firebase Messaging") },
+                        title = { Text("Firebase Messaging") },
                         navigationIcon = { IenBackButton(onClick = onBack) }
                     )
                 }
@@ -80,12 +80,12 @@ fun MessagingScreen(
                         .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    IenText(
+                    Text(
                         text = "FCM Client SDK Verification Panel",
                         style = IenTheme.typography.title2
                     )
 
-                    IenText(
+                    Text(
                         text = "This screen acts as a developer utility to request and revoke registration tokens or manage topic subscriptions using the KMP wrappers.",
                         style = IenTheme.typography.body1
                     )
@@ -98,9 +98,9 @@ fun MessagingScreen(
                             .background(IenTheme.colors.surfaceVariant)
                             .padding(12.dp)
                     ) {
-                        IenText("Current Token:", style = IenTheme.typography.label2)
+                        Text("Current Token:", style = IenTheme.typography.label2)
                         Spacer(modifier = Modifier.height(4.dp))
-                        IenText(
+                        Text(
                             text = tokenText,
                             style = IenTheme.typography.body2,
                             color = IenTheme.colors.textSecondary
@@ -123,7 +123,7 @@ fun MessagingScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Get FCM Token")
+                        Text("Get FCM Token")
                     }
 
                     IenButton(
@@ -141,11 +141,11 @@ fun MessagingScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Delete FCM Token")
+                        Text("Delete FCM Token")
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText("Android Direct Boot Capability Status", style = IenTheme.typography.title3)
+                    Text("Android Direct Boot Capability Status", style = IenTheme.typography.title3)
                     
                     Column(
                         modifier = Modifier
@@ -155,12 +155,12 @@ fun MessagingScreen(
                             .padding(12.dp)
                     ) {
                         val isDbSupported = remember { FirebaseMessagingDirectBoot.getInstance().isSupported }
-                        IenText(
+                        Text(
                             text = "Direct Boot Supported: ${if (isDbSupported) "🟢 ENABLED (Android Only)" else "🔴 UNAVAILABLE (iOS/No-op)"}",
                             style = IenTheme.typography.body2
                         )
                         Spacer(modifier = Modifier.height(4.dp))
-                        IenText(
+                        Text(
                             text = "Direct Boot Aware components allow device protected storage access prior to user decryption.",
                             style = IenTheme.typography.label2,
                             color = IenTheme.colors.textSecondary.copy(alpha = 0.7f)
@@ -168,7 +168,7 @@ fun MessagingScreen(
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText("Topic Operations", style = IenTheme.typography.title3)
+                    Text("Topic Operations", style = IenTheme.typography.title3)
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -188,7 +188,7 @@ fun MessagingScreen(
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Sub 'news'")
+                            Text("Sub 'news'")
                         }
 
                         IenButton(
@@ -205,12 +205,12 @@ fun MessagingScreen(
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Unsub 'news'")
+                            Text("Unsub 'news'")
                         }
                     }
 
                     // Logs Output
-                    IenText("Event Logs", style = IenTheme.typography.title3)
+                    Text("Event Logs", style = IenTheme.typography.title3)
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -221,10 +221,10 @@ fun MessagingScreen(
                             .verticalScroll(rememberScrollState())
                     ) {
                         if (logs.isEmpty()) {
-                            IenText("Console ready.", color = Color.Gray, style = IenTheme.typography.body2)
+                            Text("Console ready.", color = Color.Gray, style = IenTheme.typography.body2)
                         } else {
                             logs.forEach { logLine ->
-                                IenText("> $logLine", color = IenTheme.colors.brand, style = IenTheme.typography.body2)
+                                Text("> $logLine", color = IenTheme.colors.brand, style = IenTheme.typography.body2)
                             }
                         }
                     }

@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -40,7 +40,7 @@ fun DatabaseScreen(onBack: () -> Unit) {
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Realtime Database Demo") },
+                title = { Text("Realtime Database Demo") },
                 navigationIcon = { IenBackButton(onClick = onBack) }
             )
         }
@@ -53,7 +53,7 @@ fun DatabaseScreen(onBack: () -> Unit) {
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            IenText(
+            Text(
                 text = "Perform key write, sub-child auto-key push, remove, and child update operations via common Database API.",
                 style = IenTheme.typography.body1,
                 color = IenTheme.colors.textSecondary
@@ -77,13 +77,13 @@ fun DatabaseScreen(onBack: () -> Unit) {
                 state = IenButtonState(enabled = !isRunning),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                IenText(if (isRunning) "Running Operations..." else "Run Database Test")
+                Text(if (isRunning) "Running Operations..." else "Run Database Test")
             }
 
             IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth().heightIn(min = 150.dp)
             ) {
-                IenText(
+                Text(
                     text = logs,
                     modifier = Modifier.padding(16.dp),
                     style = IenTheme.typography.body2
