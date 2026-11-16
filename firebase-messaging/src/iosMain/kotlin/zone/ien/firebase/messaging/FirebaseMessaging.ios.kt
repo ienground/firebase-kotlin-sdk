@@ -19,6 +19,44 @@ import kotlin.coroutines.resumeWithException
 @OptIn(ExperimentalForeignApi::class)
 public actual class FirebaseMessaging(private val delegate: FIRMessaging) {
 
+    /** Info.plist의 FirebaseMessagingInstallationIdEnabled 설정 여부입니다. */
+    public val isInstallationIdEnabled: Boolean
+        get() = delegate.isInstallationIdEnabled()
+
+    /**
+     * iOS 앱 인스턴스를 FID로 FCM에 등록합니다.
+     * Info.plist에서 FirebaseMessagingInstallationIdEnabled를 활성화해야 합니다.
+     * 등록된 FID는 FirebaseInstallations.getId() 또는 네이티브 MessagingDelegate에서 조회합니다.
+     * FID 모드에서는 기존 getToken(), deleteToken(), tokenUpdates를 사용하지 않습니다.
+     */
+    public suspend fun register(): Unit = suspendCancellableCoroutine { cont ->
+        delegate.registerWithCompletion { error ->
+            if (cont.isActive) {
+                if (error != null) {
+                    cont.resumeWithException(Exception("FCM registration failed: ${error.localizedDescription}"))
+                } else {
+                    cont.resume(Unit)
+                }
+            }
+        }
+    }
+
+    /**
+     * FID를 삭제하지 않고 FCM 등록을 해제합니다.
+     * 다음 실행에서 자동 등록되지 않게 하려면 isAutoInitEnabled도 false로 설정합니다.
+     */
+    public suspend fun unregister(): Unit = suspendCancellableCoroutine { cont ->
+        delegate.unregisterWithCompletion { error ->
+            if (cont.isActive) {
+                if (error != null) {
+                    cont.resumeWithException(Exception("FCM unregistration failed: ${error.localizedDescription}"))
+                } else {
+                    cont.resume(Unit)
+                }
+            }
+        }
+    }
+
     public actual var isAutoInitEnabled: Boolean
         get() = delegate.isAutoInitEnabled()
         set(value) {

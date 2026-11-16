@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -87,7 +87,7 @@ fun StorageScreen(onBack: () -> Unit) {
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Cloud Storage Demo") },
+                title = { Text("Cloud Storage Demo") },
                 navigationIcon = { IenBackButton(onClick = onBack) })
         }
     ) { padding ->
@@ -103,14 +103,14 @@ fun StorageScreen(onBack: () -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
                 ) {
-                    IenText(
+                    Text(
                         text = initError,
                         style = IenTheme.typography.body1,
                         color = IenTheme.colors.danger,
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center
                     )
                     IenButton(onClick = onBack) {
-                        IenText("Go Back")
+                        Text("Go Back")
                     }
                 }
             }
@@ -134,8 +134,8 @@ fun StorageScreen(onBack: () -> Unit) {
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        IenText("Storage Reference Meta", style = IenTheme.typography.title2, color = IenTheme.colors.brand)
-                        IenDivider(color = IenTheme.colors.textSecondary.copy(alpha = 0.2f))
+                        Text("Storage Reference Meta", style = IenTheme.typography.title2, color = IenTheme.colors.brand)
+                        IenDivider.Horizontal(color = IenTheme.colors.textSecondary.copy(alpha = 0.2f))
                         MetadataRow("Reference Name", refName)
                         MetadataRow("Full Path", refPath)
                         MetadataRow("Bucket Name", refBucket)
@@ -181,7 +181,7 @@ fun StorageScreen(onBack: () -> Unit) {
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IenText("Upload Data with Metadata")
+                    Text("Upload Data with Metadata")
                 }
 
                 // Upload Sample Image button
@@ -205,7 +205,7 @@ fun StorageScreen(onBack: () -> Unit) {
                     
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IenText("Upload Sample Image")
+                    Text("Upload Sample Image")
                 }
 
                 // Storage Operations
@@ -229,7 +229,7 @@ fun StorageScreen(onBack: () -> Unit) {
                         },
                         modifier = Modifier.weight(1f)
                     ) {
-                        IenText("Get Meta")
+                        Text("Get Meta")
                     }
 
                     IenButton(
@@ -248,7 +248,7 @@ fun StorageScreen(onBack: () -> Unit) {
                         },
                         modifier = Modifier.weight(1f)
                     ) {
-                        IenText("GetData")
+                        Text("GetData")
                     }
                 }
 
@@ -272,7 +272,7 @@ fun StorageScreen(onBack: () -> Unit) {
                         },
                         modifier = Modifier.weight(1f)
                     ) {
-                        IenText("Get URL")
+                        Text("Get URL")
                     }
 
                     IenButton(
@@ -292,7 +292,7 @@ fun StorageScreen(onBack: () -> Unit) {
                         
                         modifier = Modifier.weight(1f)
                     ) {
-                        IenText("Delete")
+                        Text("Delete")
                     }
                 }
 
@@ -306,13 +306,13 @@ fun StorageScreen(onBack: () -> Unit) {
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
-                        IenText(
+                        Text(
                             text = "Console Output Log",
                             style = IenTheme.typography.label2,
                             color = Color.Gray
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        IenText(
+                        Text(
                             text = logText,
                             style = IenTheme.typography.body1,
                             color = Color.Green
@@ -330,7 +330,7 @@ private fun MetadataRow(label: String, value: String) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        IenText(text = label, style = IenTheme.typography.body1, color = IenTheme.colors.textSecondary)
-        IenText(text = value, style = IenTheme.typography.body1, color = IenTheme.colors.textPrimary)
+        Text(text = label, style = IenTheme.typography.body1, color = IenTheme.colors.textSecondary)
+        Text(text = value, style = IenTheme.typography.body1, color = IenTheme.colors.textPrimary)
     }
 }

@@ -43,7 +43,7 @@ import zone.ien.utils.ui.interactive.IenButtonState
 import zone.ien.utils.ui.interactive.IenTextField
 import zone.ien.utils.ui.interactive.IenTextFieldState
 import zone.ien.utils.ui.primitives.IenSurface
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.screen.IenBackButton
 import zone.ien.utils.ui.screen.IenScaffold
 import zone.ien.utils.ui.screen.IenTopAppBar
@@ -105,7 +105,7 @@ fun FirestoreScreen(onBack: () -> Unit) {
         topBar = {
             IenTopAppBar(
                 title = {
-                    IenText(
+                    Text(
                         text = "Firestore Testing",
                         style = IenTheme.typography.title1,
                         color = IenTheme.colors.textPrimary
@@ -194,7 +194,7 @@ fun FirestoreScreen(onBack: () -> Unit) {
             }
 
             item {
-                IenText(
+                Text(
                     text = "Live Collection Stream",
                     style = IenTheme.typography.title3,
                     color = IenTheme.colors.textPrimary.copy(alpha = 0.7f)
@@ -220,7 +220,7 @@ private fun AdvancedFeaturesSection(firestore: FirebaseFirestore?) {
         shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            IenText(
+            Text(
                 text = "Advanced Features (Batch, Transaction, Aggregation)",
                 style = IenTheme.typography.title2,
                 color = IenTheme.colors.textPrimary
@@ -247,7 +247,7 @@ private fun AdvancedFeaturesSection(firestore: FirebaseFirestore?) {
                     state = IenButtonState(enabled = isSupported),
                     modifier = Modifier.weight(1f)
                 ) {
-                    IenText("Run Batch")
+                    Text("Run Batch")
                 }
                 IenButton(
                     onClick = {
@@ -270,7 +270,7 @@ private fun AdvancedFeaturesSection(firestore: FirebaseFirestore?) {
                     state = IenButtonState(enabled = isSupported),
                     modifier = Modifier.weight(1f)
                 ) {
-                    IenText("Run Transaction")
+                    Text("Run Transaction")
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -294,11 +294,11 @@ private fun AdvancedFeaturesSection(firestore: FirebaseFirestore?) {
                     state = IenButtonState(enabled = isSupported),
                     modifier = Modifier.weight(1f)
                 ) {
-                    IenText("Aggregate (count/sum/avg)")
+                    Text("Aggregate (count/sum/avg)")
                 }
             }
             Spacer(modifier = Modifier.height(10.dp))
-            IenText(
+            Text(
                 text = statusText,
                 style = IenTheme.typography.body2,
                 color = IenTheme.colors.textPrimary.copy(alpha = 0.85f)
@@ -319,30 +319,30 @@ private fun PlatformStatusCard(
         shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            IenText(
+            Text(
                 text = "Platform Status",
                 style = IenTheme.typography.title2,
                 color = statusColor
             )
             Spacer(modifier = Modifier.height(6.dp))
-            IenText(
+            Text(
                 text = "Android: Supported - delegates to the official Firebase Android Firestore SDK.",
                 style = IenTheme.typography.body2,
                 color = IenTheme.colors.textPrimary
             )
-            IenText(
+            Text(
                 text = "iOS: Supported - delegates to the SwiftPM FirebaseFirestore Objective-C exposed API.",
                 style = IenTheme.typography.body2,
                 color = IenTheme.colors.textPrimary
             )
-            IenText(
+            Text(
                 text = "Query API: where, orderBy, limit, limitToLast, cursors, WriteBatch, Transaction, Aggregate (count/sum/avg) call the real SDK.",
                 style = IenTheme.typography.body2,
                 color = IenTheme.colors.textPrimary
             )
             if (!isSupported || initError != null) {
                 Spacer(modifier = Modifier.height(6.dp))
-                IenText(
+                Text(
                     text = initError ?: "Firestore cannot create an instance on the current target.",
                     style = IenTheme.typography.body2,
                     color = IenTheme.colors.danger
@@ -367,7 +367,7 @@ private fun BasicDocumentSection(
         shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            IenText(
+            Text(
                 text = "Basic Document Read/Write",
                 style = IenTheme.typography.title2,
                 color = IenTheme.colors.textPrimary
@@ -387,7 +387,7 @@ private fun BasicDocumentSection(
                     state = IenButtonState(enabled = isSupported),
                     modifier = Modifier.weight(1f).height(44.dp)
                 ) {
-                    IenText("Write")
+                    Text("Write")
                 }
                 Spacer(modifier = Modifier.width(10.dp))
                 IenButton(
@@ -395,11 +395,11 @@ private fun BasicDocumentSection(
                     state = IenButtonState(enabled = isSupported),
                     modifier = Modifier.weight(1f).height(44.dp)
                 ) {
-                    IenText("Read")
+                    Text("Read")
                 }
             }
             Spacer(modifier = Modifier.height(10.dp))
-            IenText(
+            Text(
                 text = "Result: $singleReadText",
                 style = IenTheme.typography.body1,
                 color = IenTheme.colors.textPrimary
@@ -481,13 +481,13 @@ private fun QueryTestingSection(
         shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            IenText(
+            Text(
                 text = "Query Testing",
                 style = IenTheme.typography.title2,
                 color = IenTheme.colors.textPrimary
             )
             Spacer(modifier = Modifier.height(6.dp))
-            IenText(
+            Text(
                 text = seedStatus,
                 style = IenTheme.typography.body2,
                 color = IenTheme.colors.textPrimary.copy(alpha = 0.75f)
@@ -498,7 +498,7 @@ private fun QueryTestingSection(
                 state = IenButtonState(enabled = isSupported),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                IenText("Reset Seed Data")
+                Text("Reset Seed Data")
             }
             Spacer(modifier = Modifier.height(10.dp))
             IenTextField(
@@ -588,18 +588,18 @@ private fun QueryTestingSection(
                     state = IenButtonState(enabled = isSupported),
                     modifier = Modifier.weight(1f)
                 ) {
-                    IenText("Run Query")
+                    Text("Run Query")
                 }
                 IenButton(
                     onClick = { runQuery(loadMore = true) },
                     state = IenButtonState(enabled = isSupported && lastPageDocuments.isNotEmpty() && !useLimitToLast),
                     modifier = Modifier.weight(1f)
                 ) {
-                    IenText("Next Page")
+                    Text("Next Page")
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
-            IenText(
+            Text(
                 text = resultSummary,
                 style = IenTheme.typography.body2,
                 color = IenTheme.colors.textPrimary.copy(alpha = 0.75f)
@@ -609,7 +609,7 @@ private fun QueryTestingSection(
                 ErrorBox(it)
             }
             Spacer(modifier = Modifier.height(10.dp))
-            IenText(
+            Text(
                 text = "Returned documents: ${results.size}",
                 style = IenTheme.typography.title3,
                 color = IenTheme.colors.textPrimary
@@ -637,12 +637,12 @@ private fun CycleButton(
         modifier = modifier.height(54.dp)
     ) {
         Column {
-            IenText(
+            Text(
                 text = label,
                 style = IenTheme.typography.label2,
                 color = IenTheme.colors.textPrimary.copy(alpha = 0.7f)
             )
-            IenText(
+            Text(
                 text = value,
                 style = IenTheme.typography.body2,
                 color = IenTheme.colors.textPrimary
@@ -660,17 +660,17 @@ private fun ErrorBox(message: String) {
             .background(IenTheme.colors.danger.copy(alpha = 0.12f))
             .padding(10.dp)
     ) {
-        IenText(
+        Text(
             text = "Error",
             style = IenTheme.typography.title3,
             color = IenTheme.colors.danger
         )
-        IenText(
+        Text(
             text = message,
             style = IenTheme.typography.body2,
             color = IenTheme.colors.danger
         )
-        IenText(
+        Text(
             text = "Missing composite indexes, SDK constraints, and unsupported combinations are shown here without being hidden.",
             style = IenTheme.typography.body2,
             color = IenTheme.colors.danger
@@ -686,17 +686,17 @@ private fun QueryResultCard(row: QueryResultRow) {
         shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(10.dp)) {
-            IenText(
+            Text(
                 text = "${row.name} / ${row.category}",
                 style = IenTheme.typography.body1,
                 color = IenTheme.colors.textPrimary
             )
-            IenText(
+            Text(
                 text = "id=${row.id}, score=${row.score}, age=${row.age}, createdAt=${row.createdAt}",
                 style = IenTheme.typography.body2,
                 color = IenTheme.colors.textPrimary.copy(alpha = 0.7f)
             )
-            IenText(
+            Text(
                 text = "tags=${row.tags.joinToString()}",
                 style = IenTheme.typography.body2,
                 color = IenTheme.colors.textPrimary.copy(alpha = 0.7f)
@@ -713,13 +713,13 @@ private fun MessageCard(msg: Message) {
         shape = ContinuousRoundedRectangle(8.dp)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            IenText(
+            Text(
                 text = msg.text,
                 style = IenTheme.typography.body1,
                 color = IenTheme.colors.textPrimary
             )
             Spacer(modifier = Modifier.height(4.dp))
-            IenText(
+            Text(
                 text = "Document=${msg.id}, order=${msg.order}",
                 style = IenTheme.typography.body2,
                 color = IenTheme.colors.textPrimary.copy(alpha = 0.5f)

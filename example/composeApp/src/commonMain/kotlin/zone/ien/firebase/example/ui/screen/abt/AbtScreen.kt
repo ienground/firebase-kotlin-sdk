@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -52,7 +52,7 @@ fun AbtScreen(
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("A/B Testing", fontWeight = FontWeight.Bold) },
+                title = { Text("A/B Testing", fontWeight = FontWeight.Bold) },
                 navigationIcon = { IenBackButton(onClick = onNavigateBack) }
             )
         }
@@ -68,13 +68,13 @@ fun AbtScreen(
             IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "KMP A/B Testing Verification",
                         style = IenTheme.typography.title2,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(
+                    Text(
                         text = "This screen validates the compiled binding classes and exceptions for the ':firebase-abt' KMP wrapper.",
                         style = IenTheme.typography.body1
                     )
@@ -96,7 +96,7 @@ fun AbtScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                IenText("Verify SDK Classes")
+                Text("Verify SDK Classes")
             }
 
             IenButton(
@@ -111,19 +111,19 @@ fun AbtScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                IenText("Trigger and Catch AbtException")
+                Text("Trigger and Catch AbtException")
             }
 
             IenSurface(color = IenTheme.colors.surfaceVariant, 
                 modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "Console Output Logs",
                         style = IenTheme.typography.label1,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(
+                    Text(
                         text = logMessage,
                         style = IenTheme.typography.body1,
                         color = IenTheme.colors.textPrimary

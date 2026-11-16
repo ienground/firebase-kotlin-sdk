@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -87,7 +87,7 @@ fun DataConnectScreen(
             IenScaffold(
                 topBar = {
                     IenTopAppBar(
-                        title = { IenText("Data Connect") },
+                        title = { Text("Data Connect") },
                         navigationIcon = { IenBackButton(onClick = onBack) }
                     )
                 }
@@ -108,13 +108,13 @@ fun DataConnectScreen(
                                 .background(IenTheme.colors.brandWeak)
                                 .padding(12.dp)
                         ) {
-                            IenText(
+                            Text(
                                 text = "ℹ️ iOS cinterop Bridge Notice",
                                 style = IenTheme.typography.title2,
                                 color = IenTheme.colors.brand
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-                            IenText(
+                            Text(
                                 text = "Firebase Data Connect iOS SDK is Swift-only and cannot be linked directly into KMP via cinterop. This KMP wrapper runs in memory-only mode on iOS (acting as a config container). To execute live GraphQL queries, integrate the generated Swift SDK directly inside your native iOS target codebase.",
                                 style = IenTheme.typography.body2,
                                 color = IenTheme.colors.brand
@@ -128,13 +128,13 @@ fun DataConnectScreen(
                                 .background(Color.Red.copy(alpha = 0.1f))
                                 .padding(12.dp)
                         ) {
-                            IenText(
+                            Text(
                                 text = "⚠️ Platform Not Supported",
                                 style = IenTheme.typography.title2,
                                 color = Color.Red
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-                            IenText(
+                            Text(
                                 text = "Data Connect operations are unavailable on this target due to Swift-only cinterop compilation constraints.",
                                 style = IenTheme.typography.body2,
                                 color = Color.Red
@@ -142,7 +142,7 @@ fun DataConnectScreen(
                         }
                     }
 
-                    IenText(
+                    Text(
                         text = "Connector Configuration",
                         style = IenTheme.typography.title2,
                         color = if (isSupported) Color.Unspecified else Color.Gray
@@ -193,7 +193,7 @@ fun DataConnectScreen(
                         state = IenButtonState(enabled = isSupported),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Get Core Runtime Instance")
+                        Text("Get Core Runtime Instance")
                     }
 
                     IenButton(
@@ -211,12 +211,12 @@ fun DataConnectScreen(
                         state = IenButtonState(enabled = isSupported),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Verify Generated Connector Interface")
+                        Text("Verify Generated Connector Interface")
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    IenText(
+                    Text(
                         text = "Local Emulator Setup",
                         style = IenTheme.typography.title2,
                         color = if (isSupported && dataConnectInstance != null) Color.Unspecified else Color.Gray
@@ -264,16 +264,16 @@ fun DataConnectScreen(
                         
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Bind Emulator")
+                        Text("Bind Emulator")
                     }
 
-                    IenText(
+                    Text(
                         text = "Active Status: ${if (dataConnectInstance != null) "INITIALIZED" else "NOT READY"} ${if (isEmulatorBound) "(EMULATOR)" else ""}",
                         style = IenTheme.typography.body1,
                         color = if (dataConnectInstance != null) Color(0xFF2E7D32) else Color.Red
                     )
 
-                    IenText(
+                    Text(
                         text = "Verification Output Log",
                         style = IenTheme.typography.title3
                     )
@@ -288,10 +288,10 @@ fun DataConnectScreen(
                             .verticalScroll(rememberScrollState())
                     ) {
                         if (logs.isEmpty()) {
-                            IenText("No actions performed yet.", color = Color.Gray, style = IenTheme.typography.body2)
+                            Text("No actions performed yet.", color = Color.Gray, style = IenTheme.typography.body2)
                         } else {
                             logs.forEach { logLine ->
-                                IenText("> $logLine", color = IenTheme.colors.brand, style = IenTheme.typography.body2)
+                                Text("> $logLine", color = IenTheme.colors.brand, style = IenTheme.typography.body2)
                             }
                         }
                     }
@@ -300,10 +300,10 @@ fun DataConnectScreen(
                         onClick = { logs.clear() },
                         modifier = Modifier.align(Alignment.End)
                     ) {
-                        IenText("Clear Log")
+                        Text("Clear Log")
                     }
 
-                    IenText(
+                    Text(
                         text = "* Developer Guide:\n1. Core runtime wrapper provides initial config mappings and routing context.\n2. In actual production, GraphQL schemas are queried via client codes generated by Firebase CLI.\n3. Make sure postgres local postgresql engine/emulator is alive when binding emulator.",
                         style = IenTheme.typography.body2,
                         color = Color.Gray

@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -96,7 +96,7 @@ fun ModelDownloaderScreen(
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Model Downloader", fontWeight = FontWeight.Bold) },
+                title = { Text("Model Downloader", fontWeight = FontWeight.Bold) },
                 navigationIcon = { IenBackButton(onClick = onNavigateBack) }
             )
         }
@@ -117,13 +117,13 @@ fun ModelDownloaderScreen(
                         .background(IenTheme.colors.brandWeak)
                         .padding(12.dp)
                 ) {
-                    IenText(
+                    Text(
                         text = "ℹ️ iOS cinterop Bridge Notice",
                         style = IenTheme.typography.title2,
                         color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    IenText(
+                    Text(
                         text = "Firebase Model Downloader iOS SDK is Swift-only and cannot be linked directly into KMP via cinterop. This KMP wrapper runs in memory-only mode on iOS (acting as a model registry). To download actual physical TFLite model files on iOS, integrate the native Swift SDK inside your native iOS target codebase.",
                         style = IenTheme.typography.body2,
                         color = IenTheme.colors.brand
@@ -132,7 +132,7 @@ fun ModelDownloaderScreen(
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
-            IenText(
+            Text(
                 text = "Firebase Remote Model Downloader Demo",
                 
                 fontWeight = FontWeight.Bold,
@@ -145,13 +145,13 @@ fun ModelDownloaderScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         "⚠️ Warnings and Guidelines",
                         fontWeight = FontWeight.Bold,
                         color = IenTheme.colors.danger
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(
+                    Text(
                         "1. A custom TFLite model file with name \"$modelName\" must be uploaded to the Machine Learning tab in the Firebase Console.\n" +
                         "2. On iOS, only the Wi-Fi constraint is respected, charging and idle conditions are treated as no-op.\n" +
                         "3. Model inference using TFLite interpreter is not handled by this module; we only access the model path for validation.",
@@ -171,48 +171,48 @@ fun ModelDownloaderScreen(
             )
 
             // Download Type Selection
-            IenText("Download Type", fontWeight = FontWeight.Bold, color = if (isSupported) primaryColor else Color.Gray)
+            Text("Download Type", fontWeight = FontWeight.Bold, color = if (isSupported) primaryColor else Color.Gray)
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IenDotCheckbox(checked = downloadType == DownloadType.LOCAL_MODEL, onCheckedChange = { if (it) { downloadType = DownloadType.LOCAL_MODEL }
                      })
-                    IenText("LOCAL_MODEL (Local first, download if needed)", color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray)
+                    Text("LOCAL_MODEL (Local first, download if needed)", color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IenDotCheckbox(checked = downloadType == DownloadType.LOCAL_MODEL_UPDATE_IN_BACKGROUND, onCheckedChange = { if (it) { downloadType = DownloadType.LOCAL_MODEL_UPDATE_IN_BACKGROUND }
                      })
-                    IenText("LOCAL_MODEL_UPDATE_IN_BACKGROUND (Background update)", color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray)
+                    Text("LOCAL_MODEL_UPDATE_IN_BACKGROUND (Background update)", color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IenDotCheckbox(checked = downloadType == DownloadType.LATEST_MODEL, onCheckedChange = { if (it) { downloadType = DownloadType.LATEST_MODEL }
                      })
-                    IenText("LATEST_MODEL (Always fetch latest version)", color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray)
+                    Text("LATEST_MODEL (Always fetch latest version)", color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray)
                 }
             }
 
             // Conditions Selection
-            IenText("Download Conditions", fontWeight = FontWeight.Bold, color = if (isSupported) primaryColor else Color.Gray)
+            Text("Download Conditions", fontWeight = FontWeight.Bold, color = if (isSupported) primaryColor else Color.Gray)
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.clickable(enabled = isSupported) { requireWifi = !requireWifi }
                 ) {
                     IenCircleCheckbox(checked = requireWifi, enabled = isSupported, onCheckedChange = null)
-                    IenText("Require Wi-Fi (allowsCellularAccess = false)", color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray)
+                    Text("Require Wi-Fi (allowsCellularAccess = false)", color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray)
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.clickable(enabled = isSupported) { requireCharging = !requireCharging }
                 ) {
                     IenCircleCheckbox(checked = requireCharging, enabled = isSupported, onCheckedChange = null)
-                    IenText("Require Charging (Android Only)", color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray)
+                    Text("Require Charging (Android Only)", color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray)
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.clickable(enabled = isSupported) { requireDeviceIdle = !requireDeviceIdle }
                 ) {
                     IenCircleCheckbox(checked = requireDeviceIdle, enabled = isSupported, onCheckedChange = null)
-                    IenText("Require Device Idle (Android Only)", color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray)
+                    Text("Require Device Idle (Android Only)", color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray)
                 }
             }
 
@@ -245,7 +245,7 @@ fun ModelDownloaderScreen(
                     state = IenButtonState(enabled = isSupported),
                     modifier = Modifier.weight(1f)
                 ) {
-                    IenText("Download")
+                    Text("Download")
                 }
 
                 IenButton(
@@ -269,7 +269,7 @@ fun ModelDownloaderScreen(
                     
                     modifier = Modifier.weight(1f)
                 ) {
-                    IenText("Delete Model")
+                    Text("Delete Model")
                 }
             }
 
@@ -279,25 +279,25 @@ fun ModelDownloaderScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText("📜 Execution Console Log", fontWeight = FontWeight.Bold)
+                    Text("📜 Execution Console Log", fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(logMessage, )
+                    Text(logMessage, )
                 }
             }
 
             // Downloaded Models List
-            IenText("🗂️ Downloaded Local Models", fontWeight = FontWeight.Bold, color = if (isSupported) primaryColor else Color.Gray)
+            Text("🗂️ Downloaded Local Models", fontWeight = FontWeight.Bold, color = if (isSupported) primaryColor else Color.Gray)
             if (downloadedModelsList.isEmpty()) {
-                IenText("No models registered locally.", )
+                Text("No models registered locally.", )
             } else {
                 downloadedModelsList.forEach { model ->
                     IenSurface(color = IenTheme.colors.surfaceVariant, 
                         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
                         Column(modifier = Modifier.padding(12.dp)) {
-                            IenText("Name: ${model.name}", fontWeight = FontWeight.Bold)
-                            IenText("Hash: ${model.modelHash}", )
-                            IenText("Path: ${model.path}", )
-                            IenText("Size: ${model.size} bytes", )
+                            Text("Name: ${model.name}", fontWeight = FontWeight.Bold)
+                            Text("Hash: ${model.modelHash}", )
+                            Text("Path: ${model.path}", )
+                            Text("Size: ${model.size} bytes", )
                         }
                     }
                 }

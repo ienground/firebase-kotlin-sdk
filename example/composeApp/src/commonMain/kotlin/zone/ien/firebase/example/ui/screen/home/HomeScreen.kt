@@ -9,10 +9,11 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
+import zone.ien.utils.icon.IconData
 import zone.ien.utils.ui.screen.IenScaffold
 import zone.ien.utils.ui.screen.IenTopAppBar
 import zone.ien.utils.ui.screen.IenBackButton
@@ -227,7 +228,7 @@ public fun HomeScreen(
         topBar = {
             IenTopAppBar(
                 title = {
-                    IenText(
+                    Text(
                         text = "Firebase KMP Examples",
                         style = IenTheme.typography.title1,
                         color = IenTheme.colors.textPrimary
@@ -269,14 +270,14 @@ public fun HomeScreen(
                                 modifier = Modifier.size(100.dp)
                             )
                             Spacer(modifier = Modifier.height(12.dp))
-                            IenText(
+                            Text(
                                 text = "Firebase Kotlin SDK",
                                 style = IenTheme.typography.title1,
                                 fontWeight = FontWeight.Bold,
                                 color = IenTheme.colors.textPrimary
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-                             IenText(
+                             Text(
                                 text = "v$libraryVersion",
                                 style = IenTheme.typography.body1,
                                 color = IenTheme.colors.textPrimary.copy(alpha = 0.6f)
@@ -292,11 +293,11 @@ public fun HomeScreen(
                                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
                                     IenIcon(
-                                        imageVector = Icons.GithubFill,
+                                        icon = IconData.Vector(Icons.GithubFill),
                                         contentDescription = "Github Logo",
                                         modifier = Modifier.size(20.dp)
                                     )
-                                    IenText("Github")
+                                    Text("Github")
                                 }
                             }
                         }
@@ -358,7 +359,7 @@ public fun DemoIenSurface(
                         }
                 ) {
                     IenIcon(
-                        imageVector = Icons.AndroidFill,
+                        icon = IconData.Vector(Icons.AndroidFill),
                         contentDescription = "Android supported",
                         modifier = Modifier.size(18.dp),
                         tint = if (item.supportsAndroid) IenTheme.colors.brand else IenTheme.colors.textPrimary.copy(alpha = 0.2f)
@@ -382,7 +383,7 @@ public fun DemoIenSurface(
                         horizontalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
                         IenIcon(
-                            imageVector = Icons.AppleFill,
+                            icon = IconData.Vector(Icons.AppleFill),
                             contentDescription = "iOS supported",
                             modifier = Modifier.size(18.dp),
                             tint = if (item.supportsIos) {
@@ -392,7 +393,7 @@ public fun DemoIenSurface(
                             }
                         )
                         if (item.supportsIos && item.isIosSimulated) {
-                            IenText(
+                            Text(
                                 text = "Sim",
                                 style = IenTheme.typography.label2,
                                 fontWeight = FontWeight.Bold,
@@ -407,13 +408,13 @@ public fun DemoIenSurface(
             Column(
                 modifier = Modifier.align(Alignment.BottomStart)
             ) {
-                IenText(
+                Text(
                     text = item.title,
                     style = IenTheme.typography.title2,
                     color = IenTheme.colors.textPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                IenText(
+                Text(
                     text = item.subtitle,
                     style = IenTheme.typography.body2,
                     color = IenTheme.colors.textPrimary.copy(alpha = 0.6f)

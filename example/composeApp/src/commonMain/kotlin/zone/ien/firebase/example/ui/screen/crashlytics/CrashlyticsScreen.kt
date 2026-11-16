@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -56,7 +56,7 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Firebase Crashlytics") },
+                title = { Text("Firebase Crashlytics") },
                 navigationIcon = { IenBackButton(onClick = onBack) }
             )
         }
@@ -73,13 +73,13 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "ℹ️ Setup Pre-requisites",
                         style = IenTheme.typography.title2,
                         color = primaryColor
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(
+                    Text(
                         text = "1. To view reports, verify your app is registered in Firebase Console.\n" +
                                "2. [Android] Ensure Firebase Crashlytics Gradle plugin is applied in your app module.\n" +
                                "3. [iOS] Make sure to upload dSYM files during the build phase to de-obfuscate stack traces.",
@@ -93,19 +93,19 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "🤖 Android NDK Crash Capture",
                         style = IenTheme.typography.title3,
                         color = primaryColor
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(
+                    Text(
                         text = "Status: $ndkStatus",
                         style = IenTheme.typography.body1,
                         color = if (ndkStatus.startsWith("Enabled")) primaryColor else IenTheme.colors.danger
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(
+                    Text(
                         text = "Prerequisites for Android NDK crash capture:\n" +
                                "- Configure CMake/ndk-build in app build.gradle.\n" +
                                "- Enable NDK symbols upload in Gradle via: \n" +
@@ -124,7 +124,7 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    IenText("User Identifier Configuration", style = IenTheme.typography.title3)
+                    Text("User Identifier Configuration", style = IenTheme.typography.title3)
                     IenTextField(
                         value = userId,
                         onValueChange = { userId = it },
@@ -139,7 +139,7 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
                         },
                         modifier = Modifier.align(Alignment.End)
                     ) {
-                        IenText("Set User ID")
+                        Text("Set User ID")
                     }
                 }
             }
@@ -152,7 +152,7 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    IenText("Custom Metadata Keys", style = IenTheme.typography.title3)
+                    Text("Custom Metadata Keys", style = IenTheme.typography.title3)
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.fillMaxWidth()
@@ -180,7 +180,7 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
                         },
                         modifier = Modifier.align(Alignment.End)
                     ) {
-                        IenText("Set Custom Key")
+                        Text("Set Custom Key")
                     }
                 }
             }
@@ -193,7 +193,7 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    IenText("Logging & Non-Fatal Recording", style = IenTheme.typography.title3)
+                    Text("Logging & Non-Fatal Recording", style = IenTheme.typography.title3)
                     IenTextField(
                         value = logMessage,
                         onValueChange = { logMessage = it },
@@ -214,7 +214,7 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Write Log")
+                            Text("Write Log")
                         }
                         IenButton(
                             onClick = {
@@ -225,7 +225,7 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Record Exception")
+                            Text("Record Exception")
                         }
                     }
                 }
@@ -238,12 +238,12 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    IenText(
+                    Text(
                         text = "⚠️ Force Fatal Crash",
                         style = IenTheme.typography.title3,
                         color = IenTheme.colors.danger
                     )
-                    IenText(
+                    Text(
                         text = "This will immediately terminate the application to simulate a fatal crash. The report will be sent to the console on next launch.",
                         style = IenTheme.typography.body2,
                         color = IenTheme.colors.danger.copy(alpha = 0.8f)
@@ -255,14 +255,14 @@ public fun CrashlyticsScreen(onBack: () -> Unit) {
                         
                         modifier = Modifier.align(Alignment.End)
                     ) {
-                        IenText("Force App Crash")
+                        Text("Force App Crash")
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            IenText(
+            Text(
                 text = "Status: $statusText",
                 color = statusColor,
                 style = IenTheme.typography.body1,

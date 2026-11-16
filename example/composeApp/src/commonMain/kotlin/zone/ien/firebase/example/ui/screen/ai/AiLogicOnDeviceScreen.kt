@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -83,7 +83,7 @@ fun AiLogicOnDeviceScreen(
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("AI On-Device (Hybrid)") },
+                title = { Text("AI On-Device (Hybrid)") },
                 navigationIcon = { IenBackButton(onClick = onNavigateBack) }
             )
         }
@@ -104,13 +104,13 @@ fun AiLogicOnDeviceScreen(
                         .background(IenTheme.colors.brandWeak)
                         .padding(12.dp)
                 ) {
-                    IenText(
+                    Text(
                         text = "ℹ️ iOS cinterop Bridge Notice",
                         style = IenTheme.typography.title2,
                         color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    IenText(
+                    Text(
                         text = "Firebase AI On-Device iOS SDK is Swift-only and cannot be linked directly into KMP via cinterop. This KMP wrapper runs in memory-only mode on iOS (acting as a hybrid simulation engine). To run live on-device inference utilizing Apple Intelligence, integrate the native Swift SDK inside your native iOS target codebase.",
                         style = IenTheme.typography.body2,
                         color = IenTheme.colors.brand
@@ -126,7 +126,7 @@ fun AiLogicOnDeviceScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    IenText(
+                    Text(
                         text = "Hybrid Settings",
                         style = IenTheme.typography.title2,
                         color = if (isSupported) IenTheme.colors.textSecondary else Color.Gray
@@ -140,7 +140,7 @@ fun AiLogicOnDeviceScreen(
                         modifier = Modifier.fillMaxWidth()
                     )
 
-                    IenText(
+                    Text(
                         text = "Inference Mode",
                         style = IenTheme.typography.body1,
                         color = if (isSupported) IenTheme.colors.textSecondary else Color.Gray
@@ -158,7 +158,7 @@ fun AiLogicOnDeviceScreen(
                             ) {
                                 IenDotCheckbox(checked = inferenceMode == mode, onCheckedChange = { }) 
                                 Spacer(modifier = Modifier.width(8.dp))
-                                IenText(
+                                Text(
                                     text = mode.name,
                                     color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray
                                 )
@@ -176,7 +176,7 @@ fun AiLogicOnDeviceScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    IenText(
+                    Text(
                         text = "Prompt Input",
                         style = IenTheme.typography.title2,
                         color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray
@@ -228,7 +228,7 @@ fun AiLogicOnDeviceScreen(
                                 strokeWidth = 2.dp
                             )
                         } else {
-                            IenText("Run Inference")
+                            Text("Run Inference")
                         }
                     }
                 }
@@ -245,7 +245,7 @@ fun AiLogicOnDeviceScreen(
                         .padding(12.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    IenText(
+                    Text(
                         text = consoleLogs,
                         style = IenTheme.typography.body2,
                         color = IenTheme.colors.textSecondary

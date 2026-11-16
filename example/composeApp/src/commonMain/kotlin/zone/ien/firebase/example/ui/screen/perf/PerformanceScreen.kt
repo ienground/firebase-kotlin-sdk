@@ -32,7 +32,7 @@ import zone.ien.utils.ui.interactive.IenTextField
 import zone.ien.utils.ui.interactive.IenTextFieldState
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenSurface
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.screen.IenBackButton
 import zone.ien.utils.ui.screen.IenScaffold
 import zone.ien.utils.ui.screen.IenTopAppBar
@@ -63,7 +63,7 @@ fun PerformanceScreen(
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Performance Monitoring", fontWeight = FontWeight.Bold) },
+                title = { Text("Performance Monitoring", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IenBackButton(onClick = onNavigateBack)
                 }
@@ -93,7 +93,7 @@ fun PerformanceScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "Config & Status",
                         style = IenTheme.typography.title3,
                         fontWeight = FontWeight.Bold,
@@ -105,7 +105,7 @@ fun PerformanceScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        IenText(
+                        Text(
                             text = "Performance Collection Enabled:",
                             style = IenTheme.typography.body2,
                             color = IenTheme.colors.textPrimary
@@ -129,7 +129,7 @@ fun PerformanceScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "Custom Trace Control",
                         style = IenTheme.typography.title2,
                         fontWeight = FontWeight.Bold
@@ -160,7 +160,7 @@ fun PerformanceScreen(
                             modifier = Modifier.weight(1f),
                             state = IenButtonState(enabled = activeTrace == null)
                         ) {
-                            IenText("Start Trace")
+                            Text("Start Trace")
                         }
 
                         IenButton(
@@ -172,13 +172,13 @@ fun PerformanceScreen(
                             modifier = Modifier.weight(1f),
                             state = IenButtonState(enabled = activeTrace != null)
                         ) {
-                            IenText("Stop Trace")
+                            Text("Stop Trace")
                         }
                     }
 
                     if (activeTrace != null) {
-                        IenDivider(modifier = Modifier.padding(vertical = 12.dp))
-                        IenText(
+                        IenDivider.Horizontal(modifier = Modifier.padding(vertical = 12.dp))
+                        Text(
                             text = "Active Trace Mutations",
                             style = IenTheme.typography.body2,
                             fontWeight = FontWeight.SemiBold,
@@ -213,7 +213,7 @@ fun PerformanceScreen(
                                 },
                                 modifier = Modifier.padding(top = 4.dp)
                             ) {
-                                IenText("Add")
+                                Text("Add")
                             }
                         }
 
@@ -245,7 +245,7 @@ fun PerformanceScreen(
                                 },
                                 modifier = Modifier.padding(top = 4.dp)
                             ) {
-                                IenText("Put")
+                                Text("Put")
                             }
                         }
                     }
@@ -259,7 +259,7 @@ fun PerformanceScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "HTTP Request Metric Control",
                         style = IenTheme.typography.title2,
                         fontWeight = FontWeight.Bold
@@ -312,7 +312,7 @@ fun PerformanceScreen(
                             modifier = Modifier.weight(1f),
                             state = IenButtonState(enabled = activeHttpMetric == null)
                         ) {
-                            IenText("Start HTTP Req")
+                            Text("Start HTTP Req")
                         }
 
                         IenButton(
@@ -331,7 +331,7 @@ fun PerformanceScreen(
                             modifier = Modifier.weight(1f),
                             state = IenButtonState(enabled = activeHttpMetric != null)
                         ) {
-                            IenText("Stop & Log")
+                            Text("Stop & Log")
                         }
                     }
                 }
@@ -344,14 +344,14 @@ fun PerformanceScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "Console Output",
                         style = IenTheme.typography.title3,
                         fontWeight = FontWeight.Bold,
                         color = IenTheme.colors.brand
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(
+                    Text(
                         text = logMessage,
                         style = IenTheme.typography.body2,
                         color = IenTheme.colors.textSecondary

@@ -31,7 +31,7 @@ import zone.ien.utils.ui.interactive.IenTextField
 import zone.ien.utils.ui.interactive.IenTextFieldLabelOption
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenSurface
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.screen.IenBackButton
 import zone.ien.utils.ui.screen.IenScaffold
 import zone.ien.utils.ui.screen.IenTopAppBar
@@ -69,7 +69,7 @@ public fun AuthScreen(onBack: () -> Unit) {
     IenScaffold(
         topBar = {
             IenTopAppBar(
-                title = { IenText("Firebase Authentication") },
+                title = { Text("Firebase Authentication") },
                 navigationIcon = { IenBackButton(onClick = onBack) }
             )
         }
@@ -86,13 +86,13 @@ public fun AuthScreen(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    IenText(
+                    Text(
                         text = "ℹ️ Configuration Pre-requisites",
                         style = IenTheme.typography.title2,
                         color = primaryColor
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    IenText(
+                    Text(
                         text = "1. Enable 'Anonymous' and 'Email/Password' providers in the Firebase Console.\n" +
                                "2. Configure social login keys (Google, GitHub, Apple) under Console > Authentication > Sign-in method.\n" +
                                "3. [iOS] Verify Bundle ID and custom URL schemes match configurations when using native OAuth client.",
@@ -109,11 +109,11 @@ public fun AuthScreen(onBack: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    IenText("Current Session Info", style = IenTheme.typography.title3)
+                    Text("Current Session Info", style = IenTheme.typography.title3)
                     if (user != null) {
-                        IenText("UID: ${user.uid}", style = IenTheme.typography.body1)
-                        IenText("Email: ${user.email ?: "N/A"}", style = IenTheme.typography.body1)
-                        IenText("Anonymous: ${user.isAnonymous}", style = IenTheme.typography.body1)
+                        Text("UID: ${user.uid}", style = IenTheme.typography.body1)
+                        Text("Email: ${user.email ?: "N/A"}", style = IenTheme.typography.body1)
+                        Text("Anonymous: ${user.isAnonymous}", style = IenTheme.typography.body1)
                         
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -136,7 +136,7 @@ public fun AuthScreen(onBack: () -> Unit) {
                                 },
                                 modifier = Modifier.weight(1f)
                             ) {
-                                IenText("Get ID Token")
+                                Text("Get ID Token")
                             }
 
                             IenButton(
@@ -157,11 +157,11 @@ public fun AuthScreen(onBack: () -> Unit) {
                                 
                                 modifier = Modifier.weight(1f)
                             ) {
-                                IenText("Delete User")
+                                Text("Delete User")
                             }
                         }
                     } else {
-                        IenText("Signed Out / No Active Session", style = IenTheme.typography.body1, color = errorColor)
+                        Text("Signed Out / No Active Session", style = IenTheme.typography.body1, color = errorColor)
                     }
                 }
             }
@@ -174,7 +174,7 @@ public fun AuthScreen(onBack: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    IenText("Email & Password Authentication", style = IenTheme.typography.title3)
+                    Text("Email & Password Authentication", style = IenTheme.typography.title3)
                     IenTextField(
                         value = email,
                         onValueChange = { email = it },
@@ -209,7 +209,7 @@ public fun AuthScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Sign In")
+                            Text("Sign In")
                         }
                         IenButton(
                             onClick = {
@@ -227,7 +227,7 @@ public fun AuthScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Register")
+                            Text("Register")
                         }
                     }
                 }
@@ -241,7 +241,7 @@ public fun AuthScreen(onBack: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    IenText("Social & Custom Credential Sign In", style = IenTheme.typography.title3)
+                    Text("Social & Custom Credential Sign In", style = IenTheme.typography.title3)
                     
                     IenTextField(
                         value = tokenField,
@@ -273,7 +273,7 @@ public fun AuthScreen(onBack: () -> Unit) {
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
-                    IenText("Select Provider to Sign In", style = IenTheme.typography.body1, color = primaryColor)
+                    Text("Select Provider to Sign In", style = IenTheme.typography.body1, color = primaryColor)
 
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -299,7 +299,7 @@ public fun AuthScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Google")
+                            Text("Google")
                         }
 
                         IenButton(
@@ -319,7 +319,7 @@ public fun AuthScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("GitHub")
+                            Text("GitHub")
                         }
 
                         IenButton(
@@ -344,12 +344,12 @@ public fun AuthScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Apple")
+                            Text("Apple")
                         }
                     }
 
-                    IenDivider(modifier = Modifier.padding(vertical = 8.dp))
-                    IenText("Custom OAuth Provider", style = IenTheme.typography.body1, color = primaryColor)
+                    IenDivider.Horizontal(modifier = Modifier.padding(vertical = 8.dp))
+                    Text("Custom OAuth Provider", style = IenTheme.typography.body1, color = primaryColor)
 
                     IenTextField(
                         value = providerId,
@@ -381,7 +381,7 @@ public fun AuthScreen(onBack: () -> Unit) {
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Sign In with Custom OAuth")
+                        Text("Sign In with Custom OAuth")
                     }
                 }
             }
@@ -394,7 +394,7 @@ public fun AuthScreen(onBack: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    IenText("Quick Access & Session Control", style = IenTheme.typography.title3)
+                    Text("Quick Access & Session Control", style = IenTheme.typography.title3)
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.fillMaxWidth()
@@ -415,7 +415,7 @@ public fun AuthScreen(onBack: () -> Unit) {
                             },
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Anonymous Sign In")
+                            Text("Anonymous Sign In")
                         }
                         IenButton(
                             onClick = {
@@ -427,7 +427,7 @@ public fun AuthScreen(onBack: () -> Unit) {
                             
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Sign Out")
+                            Text("Sign Out")
                         }
                     }
                 }
@@ -438,9 +438,9 @@ public fun AuthScreen(onBack: () -> Unit) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        IenText("Session ID Token", style = IenTheme.typography.title3)
+                        Text("Session ID Token", style = IenTheme.typography.title3)
                         Spacer(modifier = Modifier.height(4.dp))
-                        IenText(
+                        Text(
                             text = idTokenText,
                             style = IenTheme.typography.body2
                         )
@@ -450,7 +450,7 @@ public fun AuthScreen(onBack: () -> Unit) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            IenText(
+            Text(
                 text = "Status: $statusText",
                 color = statusColor,
                 style = IenTheme.typography.body1,

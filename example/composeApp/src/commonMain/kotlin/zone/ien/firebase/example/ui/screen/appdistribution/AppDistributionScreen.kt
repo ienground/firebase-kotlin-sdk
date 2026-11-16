@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -91,7 +91,7 @@ fun AppDistributionScreen(
             IenScaffold(
                 topBar = {
                     IenTopAppBar(
-                        title = { IenText("App Distribution") },
+                        title = { Text("App Distribution") },
                         navigationIcon = { IenBackButton(onClick = onBack) })
                 }
             ) { padding ->
@@ -111,13 +111,13 @@ fun AppDistributionScreen(
                                 .background(IenTheme.colors.brandWeak)
                                 .padding(12.dp)
                         ) {
-                            IenText(
+                            Text(
                                 text = "ℹ️ iOS Platform Notice",
                                 style = IenTheme.typography.title2,
                                 color = IenTheme.colors.brand
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-                            IenText(
+                            Text(
                                 text = "In-app update progress tracking is unsupported on iOS. Checking for releases will automatically prompt the native SDK update flow if a release is available.",
                                 style = IenTheme.typography.body2,
                                 color = IenTheme.colors.brand
@@ -126,7 +126,7 @@ fun AppDistributionScreen(
                         Spacer(modifier = Modifier.height(8.dp))
                     }
 
-                    IenText(
+                    Text(
                         text = "Tester Authentication",
                         style = IenTheme.typography.title2,
                         color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray
@@ -152,7 +152,7 @@ fun AppDistributionScreen(
                             state = IenButtonState(enabled = isSupported && !isTesterSignedIn),
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Sign In Tester")
+                            Text("Sign In Tester")
                         }
 
                         IenButton(
@@ -168,13 +168,13 @@ fun AppDistributionScreen(
                             state = IenButtonState(enabled = isSupported && isTesterSignedIn),
                             modifier = Modifier.weight(1f)
                         ) {
-                            IenText("Sign Out")
+                            Text("Sign Out")
                         }
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    IenText(
+                    Text(
                         text = "Prerelease Updates",
                         style = IenTheme.typography.title2,
                         color = if (isSupported) IenTheme.colors.textPrimary else Color.Gray
@@ -203,7 +203,7 @@ fun AppDistributionScreen(
                         state = IenButtonState(enabled = isSupported && !isChecking),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Check For New Release")
+                        Text("Check For New Release")
                     }
 
                     IenButton(
@@ -223,12 +223,12 @@ fun AppDistributionScreen(
                         state = IenButtonState(enabled = isSupported && latestRelease != null && isUpdateProgressSupported),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText(if (isIos) "Update App (Android Only)" else "Update App")
+                        Text(if (isIos) "Update App (Android Only)" else "Update App")
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    IenText(
+                    Text(
                         text = "Execution Log",
                         style = IenTheme.typography.title2
                     )
@@ -245,14 +245,14 @@ fun AppDistributionScreen(
                             verticalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             if (logs.isEmpty()) {
-                                IenText(
+                                Text(
                                     "No events logged yet.",
                                     style = IenTheme.typography.body2,
                                     color = Color.Gray
                                 )
                             } else {
                                 logs.forEach { msg ->
-                                    IenText(
+                                    Text(
                                         text = msg,
                                         style = IenTheme.typography.body2,
                                         color = IenTheme.colors.textSecondary

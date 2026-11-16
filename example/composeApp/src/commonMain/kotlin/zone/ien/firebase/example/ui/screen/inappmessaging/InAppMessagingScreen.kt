@@ -9,7 +9,7 @@ import zone.ien.utils.ui.interactive.IenSwitch
 import zone.ien.utils.ui.interactive.IenCircleCheckbox
 import zone.ien.utils.ui.interactive.IenDotCheckbox
 import zone.ien.utils.ui.feedback.IenCircularProgressIndicator
-import zone.ien.utils.ui.primitives.IenText
+import androidx.compose.material3.Text
 import zone.ien.utils.ui.primitives.IenSurface
 import zone.ien.utils.ui.primitives.IenDivider
 import zone.ien.utils.ui.primitives.IenIcon
@@ -88,7 +88,7 @@ fun InAppMessagingScreen(
             IenScaffold(
                 topBar = {
                     IenTopAppBar(
-                        title = { IenText("In-App Messaging") },
+                        title = { Text("In-App Messaging") },
                         navigationIcon = { IenBackButton(onClick = onBack) }
                     )
                 }
@@ -109,13 +109,13 @@ fun InAppMessagingScreen(
                                 .background(Color.Red.copy(alpha = 0.1f))
                                 .padding(12.dp)
                         ) {
-                            IenText(
+                            Text(
                                 text = "⚠️ Platform Not Supported",
                                 style = IenTheme.typography.title2,
                                 color = Color.Red
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-                            IenText(
+                            Text(
                                 text = "In-App Messaging is unavailable on this target or failed to initialize native dependencies.",
                                 style = IenTheme.typography.body2,
                                 color = Color.Red
@@ -123,7 +123,7 @@ fun InAppMessagingScreen(
                         }
                     }
 
-                    IenText(
+                    Text(
                         text = "Campaign Display Control",
                         style = IenTheme.typography.title2,
                         color = if (isSupported) Color.Unspecified else Color.Gray
@@ -135,8 +135,8 @@ fun InAppMessagingScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column {
-                            IenText("Automatic Data Collection", color = if (isSupported) Color.Unspecified else Color.Gray)
-                            IenText(
+                            Text("Automatic Data Collection", color = if (isSupported) Color.Unspecified else Color.Gray)
+                            Text(
                                 "Enable/disable telemetry collection",
                                 style = IenTheme.typography.body2,
                                 color = Color.Gray
@@ -163,8 +163,8 @@ fun InAppMessagingScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column {
-                            IenText("Suppress Message Display", color = if (isSupported) Color.Unspecified else Color.Gray)
-                            IenText(
+                            Text("Suppress Message Display", color = if (isSupported) Color.Unspecified else Color.Gray)
+                            Text(
                                 "Silence visual campaigns temporarily",
                                 style = IenTheme.typography.body2,
                                 color = Color.Gray
@@ -187,7 +187,7 @@ fun InAppMessagingScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    IenText(
+                    Text(
                         text = "Trigger Event Dispatcher",
                         style = IenTheme.typography.title2,
                         color = if (isSupported) Color.Unspecified else Color.Gray
@@ -218,7 +218,7 @@ fun InAppMessagingScreen(
                         state = IenButtonState(enabled = isSupported),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Trigger Event")
+                        Text("Trigger Event")
                     }
 
                     IenButton(
@@ -241,10 +241,10 @@ fun InAppMessagingScreen(
                         
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        IenText("Register Display Component Listener")
+                        Text("Register Display Component Listener")
                     }
 
-                    IenText(
+                    Text(
                         text = "Actions History Log",
                         style = IenTheme.typography.title3
                     )
@@ -259,10 +259,10 @@ fun InAppMessagingScreen(
                             .verticalScroll(rememberScrollState())
                     ) {
                         if (logs.isEmpty()) {
-                            IenText("No actions logged yet.", color = Color.Gray, style = IenTheme.typography.body2)
+                            Text("No actions logged yet.", color = Color.Gray, style = IenTheme.typography.body2)
                         } else {
                             logs.forEach { logLine ->
-                                IenText("> $logLine", color = IenTheme.colors.brand, style = IenTheme.typography.body2)
+                                Text("> $logLine", color = IenTheme.colors.brand, style = IenTheme.typography.body2)
                             }
                         }
                     }
@@ -271,10 +271,10 @@ fun InAppMessagingScreen(
                         onClick = { logs.clear() },
                         modifier = Modifier.align(Alignment.End)
                     ) {
-                        IenText("Clear Log")
+                        Text("Clear Log")
                     }
 
-                    IenText(
+                    Text(
                         text = "* Testing Verification Guide:\n" +
                                 "1. Visual rendering of modal/card campaigns requires targets configured via Firebase Console.\n" +
                                 "2. To test immediately on a device/simulator: Retrieve the Firebase Installation ID (available via Installations API) and register it as a 'Test Device' inside In-App Messaging Console.\n" +
